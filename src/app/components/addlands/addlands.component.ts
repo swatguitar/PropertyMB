@@ -280,51 +280,82 @@ export class AddlandsComponent {
   }
 
 
+  propType: string;
+  IDprop: string;
+  onFirststep() {
+    this.credentials.Latitude = this.latitude
+    this.credentials.Longitude = this.longitude
 
-  onSave() {
-    this.onCheck()
-    this.auth.addland(this.credentials).subscribe(
-      () => {
-        this.router.navigateByUrl('/home')
-      },
+    this.onRandom()
+    this.auth.getAllland().subscribe((land) => {
+      this.details = land
+
+      this.details.filter(article => {
+        this.IDprop = article.ID_Lands
+        console.log(this.IDprop + "----------------data")
+        this.onCheckTwo()
+      });
+      console.log("..........." + this.credentials.ID_Property + " END")
+
+      this.auth.addhouse(this.credentials).subscribe(
+        () => {
+
+        },
+        err => {
+          console.error(err)
+
+        }
+
+      )
+    },
       err => {
         console.error(err)
-        alert(JSON.stringify(err.text))
-
       }
-
     )
 
-  }
 
-  onCheck() {
+
+
+
+  }
+  onSave() {
+
+    this.router.navigateByUrl('/home')
+  }
+  onRandom() {
     var max = 9;
     var min = 0;
     var r = Math.floor(Math.random() * (max - min + 1) + min);
     var x = Math.floor(Math.random() * (max - min + 1) + min);
     var y = Math.floor(Math.random() * (max - min + 1) + min);
     var z = Math.floor(Math.random() * (max - min + 1) + min);
-
     this.createID = "l" + r + x + y + z;
-    this.auth.getallhouse().subscribe((house) => {
-      this.details = house
+
+  }
+  loopChack() {
+    this.onRandom()
+    this.auth.getAllland().subscribe((land) => {
+      this.details = land
 
       this.details.filter(article => {
-        while (article.ID_Lands == this.createID) {
-          this.onCheck()
-        }
-        this.credentials.ID_Lands = this.createID
-        console.log(this.credentials.ID_Lands)
-
-
+        this.IDprop = article.ID_Lands
+        console.log(this.IDprop + "-------data2222 ")
+        this.onCheckTwo()
       });
-
-
     },
       err => {
         console.error(err)
       }
     )
+  }
+  onCheckTwo() {
+    console.log(this.createID + "FIrst ")
+    while (this.IDprop == this.createID) {
+      this.loopChack()
+    }
+    this.credentials.ID_Lands = this.createID
+    console.log(this.credentials.ID_Lands)
+
 
   }
 
