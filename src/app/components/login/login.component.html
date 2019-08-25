@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 jumbotron col-12 col-md-6" style="height: 650px;">
+      <div class="text-center  " style="margin: 100px">
+        <h1>WELCOME</h1>
+        <p class="font-weight-light  ">
+          Search for new housing estates all over Bangkok, suburbs and provinces
+          from the most information sources. Convenient to search by separating
+          the location and neighborhood All types, including single houses
+          , townhouses, townhomes, twin houses, etc. with price information,
+          comparison of location and facilities. Easy to decide to buy With loan
+          calculation tools To assess the ability to recover
+          <app-loading-spinner *ngIf="logedin =='success'"></app-loading-spinner>
+      </div>
+    </div>
+    <div class="col-md-4 ">
+          <div class="col-xs-12- col-sm-6 col-md-12 ">
+        <header class="text-center">
+          <img
+            src="https://scontent.fcnx1-1.fna.fbcdn.net/v/t1.15752-9/59273882_593418344511413_1414149515857887232_n.png?_nc_cat=106&_nc_ht=scontent.fcnx1-1.fna&oh=94fdf0248350650f1172181dc1bef123&oe=5D6C78E0"
+            width="300" height="250" alt="">
+          <h3>ลงชื่อเข้าใช้งาน</h3>
+          <div>ใช้บัญชี PropertyMB ของคุณ</div>
+          <div>
+          <div *ngIf="logedin == 'fail'" class="alert alert-danger" role="alert">
+            อีเมลหรือรหัสผ่าน ไม่ถูกต้อง
+          </div>
+        </div>
+        </header>
+        <hr>
+        <form (submit)="login()">
+          <div class="form-group">
+            <label>อีเมล</label>
+            <input type="text" [(ngModel)]="credentials.Email" name="Email" class="form-control" placeholder="อีเมล" />
+          </div>
+          <div class="form-group">
+            <label>รหัสผ่าน</label>
+            <input type="password" [(ngModel)]="credentials.Password" name="Password" class="form-control"
+              placeholder="ป้อนรหัสผ่าน" />
+          </div>
+          <div class="form-group  ">
+            <a class="f" [routerLink]="['/forgetpass']" routerLinkActive="router-link-active">หากลืมรหัสผ่าน</a>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group  ">
+                <a [routerLink]="['/register']" routerLinkActive="router-link-active">สร้างบัญชี</a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <button  class="btn btn-outline-primary float-right" >ลงชื่อเข้าใช้</button>
+                
+                <img *ngIf="loading"
+                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+
+
+
+
+
+
+<div class="container">
+  <hr>
+</div>
+
+
+
+
+<router-outlet></router-outlet>

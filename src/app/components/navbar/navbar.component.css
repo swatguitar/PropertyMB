@@ -1,0 +1,20 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";
+
+
+.bd-navbar{
+    background-color: #292c2f;
+    
+}
+.font-color-gold{
+    color: #C8BD76;
+}
+.font-color-green{
+    color: rgb(14, 150, 20);
+}
+.font-color-blue{
+    color: rgb(34, 132, 243);
+}
+.font-color-orange{
+    color: rgb(243, 127, 50);
+}

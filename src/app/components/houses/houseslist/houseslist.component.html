@@ -1,0 +1,474 @@
+<body>
+  <div id="web-body">
+    <div id="page-content">
+      <!------------------------------------------------------------------------>
+
+      <div class="container">
+        <div id="product-container">
+          <div class="row">
+            <div class="col-md-7">
+              <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+                    typeof="WebPage"><span property="name">หน้าแรก</span></a>
+                  <meta property="position" content="1">
+                </li>
+                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/houses' ]" property="item"
+                    typeof="WebPage"><span property="name">อสังหาสิ่งปลูกสร้าง</span></a>
+                  <meta property="position" content="2">
+                </li>
+              </ul>
+
+              <h1><i class="fa fa-tree" aria-hidden="true"></i>อสังหาของคุณ</h1>
+            </div>
+          
+          </div>
+        </div>
+
+        <div>
+          <div>
+            <div id="content-container">
+              <hr class="specification-dash-line">
+              <div id="search-body" class="d-flex">
+                <div id="search-filter-box">
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-type" aria-expanded="false"
+                      aria-controls="filter-type" class="header collapsed">
+                      ประเภทอสังหาริมทรัพย์
+                    </div>
+                    <ul id="filter-type" class="filter-item collapse" aria-expanded="false" style="height: 0px;">
+                      <li>
+                        <hr>
+                      </li>
+                      <!---->
+                      <div id="more-filter-type" class="">
+                        <li><a href="#"><label><input type="checkbox" value="บ้าน"  >
+                              บ้าน
+                              <!----></label></a></li>
+                        <li><a href=""><label><input type="checkbox" value="คอนโด" >
+                              คอนโด
+                              <!----></label></a></li>
+                        <li><a href=""><label><input type="checkbox" value="อาคารพาณิชย์" >
+                              อาคารพาณิชย์
+                              <!----></label></a></li>
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-price" aria-expanded="false"
+                      aria-controls="filter-price" class="header collapsed">
+                      ช่วงราคา
+                    </div>
+                    <ul id="filter-price" class="filter-item collapse" aria-expanded="false" style="height: 0px;">
+                      <li>
+                        <hr>
+                      </li>
+                      - ราคาขาย
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
+                              type="checkbox" value="0-20000">
+                            500,000 - 1,000,000 บาท
+                            </label></a></li>
+                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                              1,100,000 - 5,000,000 บาท
+                            </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                              5,100,000 - 10,000,000 บาท
+                            </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
+                              type="checkbox" value="&gt;50000">
+                            มากกว่า 10,000,000 บาท
+                            </label></a></li>
+                             - ราคาประเมิน
+                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
+                              type="checkbox" value="0-20000">
+                            500,000 - 1,000,000 บาท
+                            </label></a></li>
+                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                              1,100,000 - 5,000,000 บาท
+                           </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                              5,100,000 - 10,000,000 บาท
+                            </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
+                              type="checkbox" value="&gt;50000">
+                            มากกว่า 10,000,000 บาท
+                            </label></a></li>
+                            - ราคาตลาด
+                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
+                              type="checkbox" value="0-20000">
+                            500,000 - 1,000,000 บาท
+                            </label></a></li>
+                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                              1,100,000 - 5,000,000 บาท
+                            </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                              5,100,000 - 10,000,000 บาท
+                            </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
+                              type="checkbox" value="&gt;50000">
+                            มากกว่า 10,000,000 บาท
+                            </label></a></li>
+                      <li class="filter-range">
+                        <div class="d-flex"><input type="number" placeholder="ต่ำสุด" min="0" step="1"
+                            class="positive-integer">
+                          <div class="divider">-</div><input type="number" placeholder="สูงสุด" min="0" step="1"
+                            class="positive-integer">
+                          <div class="divider"></div><button>
+                            ค้นหา
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-brand" aria-controls="filter-brand" class="header">
+                      จังหวัด
+                    </div>
+                    <ul id="filter-brand" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <li class="filter-search"><button><i class="fa fa-search"></i></button><input type="text"
+                        placeholder="ค้นหา" [(ngModel)]="filterPrice"></li>
+                      <!---->
+                      <div id="more-filter-brand" class="">
+                        
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-cpu" aria-controls="filter-cpu" class="header">
+                      อำเภอ
+                    </div>
+                    <ul id="filter-cpu" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <li class="filter-search"><button><i class="fa fa-search"></i></button><input type="text"
+                          placeholder="ค้นหา"></li>
+                      <div id="more-filter-cpu" class=""></div>
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-vga" aria-controls="filter-vga" class="header">
+                      สภาพโคลงสร้าง
+                    </div>
+                    <ul id="filter-vga" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>                   
+                      <div id="more-filter-vga" class="">
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?vga=NVIDIA+GeForce+MX150"><label><input
+                                type="checkbox" value="NVIDIA GeForce MX150">
+                                ใหม่
+                              </label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?vga=Intel+UHD+Graphics+620"><label><input
+                                type="checkbox" value="Intel UHD Graphics 620">
+                                เก่า
+                              </label></a></li>                                   
+                      </div>
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-ram" aria-controls="filter-ram" class="header">
+                      ทำเลที่ตั้ง
+                    </div>
+                    <ul id="filter-ram" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <!---->
+                      <div id="more-filter-ram" class="">
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?vga=NVIDIA+GeForce+MX150"><label><input
+                          type="checkbox" value="NVIDIA GeForce MX150">
+                          ติดถนน
+                        </label></a></li>
+                  <li><a href="https://notebookspec.com/notebook/searchV4/?vga=Intel+UHD+Graphics+620"><label><input
+                          type="checkbox" value="Intel UHD Graphics 620">
+                          อยู่ในซอย
+                        </label></a></li> 
+                  <li><a href="https://notebookspec.com/notebook/searchV4/?vga=Intel+UHD+Graphics+620"><label><input
+                          type="checkbox" value="Intel UHD Graphics 620">
+                          ใกล้ศูนย์การค้า
+                        </label></a></li> 
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-display" aria-controls="filter-display"
+                      class="header">
+                      ....
+                    </div>
+                    <ul id="filter-display" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <!---->
+                      <div id="more-filter-display" class="">
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?display=%3C13.3"><label><input
+                                type="checkbox" value="&lt;13.3">
+                                ....
+                              <span>(32)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?display=13.3"><label><input
+                                type="checkbox" value="13.3">
+                                ....
+                              <span>(96)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?display=14"><label><input
+                                type="checkbox" value="14">
+                                ....
+                              <span>(270)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?display=15.6"><label><input
+                                type="checkbox" value="15.6">
+                                ....
+                              <span>(444)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?display=17.3"><label><input
+                                type="checkbox" value="17.3">
+                                ....
+                              <span>(56)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?display=%3E17.3"><label><input
+                                type="checkbox" value="&gt;17.3">
+                                ....
+                              <!----></label></a></li>
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-panel" aria-controls="filter-panel" class="header">
+                      ....
+                    </div>
+                    <ul id="filter-panel" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <!---->
+                      <div id="more-filter-panel" class="">
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?panel=N%2FA"><label><input
+                                type="checkbox" value="N/A">
+                                ....
+                              <span>(621)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?panel=IPS"><label><input
+                                type="checkbox" value="IPS">
+                                ....
+                              <span>(193)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?panel=TN"><label><input type="checkbox"
+                                value="TN">
+                                ....
+                              <span>(103)</span></label></a></li>
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-weight" aria-controls="filter-weight"
+                      class="header">
+                      ....
+                    </div>
+                    <ul id="filter-weight" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <!---->
+                      <div id="more-filter-weight" class="">
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?weight=%3C1.5"><label><input
+                                type="checkbox" value="&lt;1.5">
+                                ....
+                              <span>(233)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?weight=1.5-2.0"><label><input
+                                type="checkbox" value="1.5-2.0">
+                                ....
+                              <span>(303)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?weight=2.0-2.5"><label><input
+                                type="checkbox" value="2.0-2.5">
+                                ....
+                              <span>(309)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?weight=2.5-3.0"><label><input
+                                type="checkbox" value="2.5-3.0">
+                                ....
+                              <span>(73)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?weight=%3E3.0"><label><input
+                                type="checkbox" value="&gt;3.0">
+                                ....
+                              <span>(25)</span></label></a></li>
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
+                  <div class="filter-box">
+                    <div data-toggle="collapse" data-target="#filter-os" aria-controls="filter-os" class="header">
+                      ....
+                    </div>
+                    <ul id="filter-os" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <!---->
+                      <div id="more-filter-os" class="">
+                        <li><a
+                            href="https://notebookspec.com/notebook/searchV4/?os=Windows+10+Home+%2864+Bit%29"><label><input
+                                type="checkbox" value="Windows 10 Home (64 Bit)">
+                                ....
+                              <span>(630)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?os=Windows+10"><label><input
+                                type="checkbox" value="Windows 10">
+                                ....
+                              <span>(102)</span></label></a></li>
+                        <li><a
+                            href="https://notebookspec.com/notebook/searchV4/?os=Windows+10+Pro+64+%2864+Bit%29"><label><input
+                                type="checkbox" value="Windows 10 Pro 64 (64 Bit)">
+                                ....
+                              <span>(40)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?os=DOS+Operating+System"><label><input
+                                type="checkbox" value="DOS Operating System">
+                                ....
+                              <span>(36)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?os=Ubuntu"><label><input
+                                type="checkbox" value="Ubuntu">
+                                ....
+                              <span>(36)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?os=Linpus+Linux"><label><input
+                                type="checkbox" value="Linpus Linux">
+                                ....
+                              <span>(33)</span></label></a></li>
+                        <li><a
+                            href="https://notebookspec.com/notebook/searchV4/?os=Windows+10+Home+Single+Language+%2864+Bit%29"><label><input
+                                type="checkbox" value="Windows 10 Home Single Language (64 Bit)">
+                                ....
+                              <span>(23)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?os=macOS"><label><input type="checkbox"
+                                value="macOS">
+                                ....
+                              <span>(11)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?os=macOS+Sierra"><label><input
+                                type="checkbox" value="macOS Sierra">
+                                ....
+                              <span>(5)</span></label></a></li>
+                        <li><a href="https://notebookspec.com/notebook/searchV4/?os=Endless+OS"><label><input
+                                type="checkbox" value="Endless OS">
+                                ....
+                              <span>(1)</span></label></a></li>
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
+                </div>
+                <div id="modal-bg"></div>
+                <div id="search-result">
+                  <div class="search-tools-box"><button id="mobile-filter-btn" class="visible-xs visible-sm"><i
+                        class="fa fa-filter"></i></button>
+                    <div class="search-box">
+                      <div class="search-form">
+                        <div class="input-group mb-3">
+                          <input style="border-radius: 30px 30px 30px 30px;" [(ngModel)]="searchTherm" type="text"
+                            class="form-control" placeholder="ค้นหาที่ดินที่คุณต้องการ">
+                          <div class="input-group-append">
+                            <button class="btn btn-circle"><i class="fa fa-search"></i></button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="result-message">ค้นพบ {{totalItem}} ที่ </div>
+                    </div>
+
+                  </div>
+                  <div class="search-tag-result hidden">
+                    ตัวกรองค้นหา |
+                    <button type="button" class="del-all-tag">
+                      ล้างทั้งหมด <i class="fa fa-times-circle"></i></button>
+                    <ul class="filter-list"></ul>
+                  </div>
+                  <div class="search-grid row col-eq">
+                    <div
+                      *ngFor="let houses of details | slice:pointStart:pointEnd | propertyFilter : filterPrice "
+                      class="col-xs-12 col-sm-6 col-lg-4 item">
+                      <div class="box jumbotron ">
+                        <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
+                              class="fa fa-plus"></i>
+                            Add to group
+                          </button><a [routerLink]="['/houses',houses.ID_Property]" [queryParams]="{page: activePage}"
+                            target="_blank">
+                            <div class="title">
+                              {{houses.AnnounceTH}} <br>
+                            </div>
+                          </a>
+                          <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
+                              [queryParams]="{page: activePage}"><img
+                                src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg"
+                                class="img-responsive notebook-img"></a>
+                            <!---->
+                            <ul class="specification">
+                              <li></li>
+                              <li>{{houses.PropertyType}}</li>
+                              <li>{{houses.LandR}} / {{houses.LandG}} / {{houses.LandWA}}</li>
+                              <li>{{houses.Location}}</li>
+                              <li>{{houses.ObservationPoint}}</li>
+                            </ul>
+                          </div>
+                          <!---->
+                          <div class="info">
+                            <div class="price">
+                              ราคา
+                              <span>{{houses.SellPrice | number}}</span>
+                              บาท
+                            </div>
+                            <ul>
+                              <li>อัพเดทล่าสุด {{houses.Created| timeAgoThai}}</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <!---->
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <nav aria-label="Page navigation" class="text-center">
+                    <ul class="pagination ">
+                      <li class="page-item">
+                        <a class="page-link" [routerLink]="['/houses']" [queryParams]="{page: 1}">หน้าแรก</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="activePage==1">
+                        <a class="page-link" [routerLink]="['/houses']" [queryParams]="{page: prevPage}"> <i
+                            class="fa fa-angle-left"></i></a>
+                      </li>
+                      <li class="page-item" *ngFor="let i of iPage" [class.active]="activePage==i">
+                        <a class="page-link" [routerLink]="['/houses']" [queryParams]="{page: i}"> {{ i }} </a>
+                      </li>
+                      <li class="page-item" [class.disabled]="activePage==totalPage">
+                        <a class="page-link" [routerLink]="['/houses']" [queryParams]="{page: nextPage}"> <i
+                            class="fa fa-angle-right"></i></a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" [routerLink]="['/houses']" [queryParams]="{page: totalPage}">
+                          หน้าสุดท้าย</a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="compare-box" class="">
+            <ul class="compare-list"></ul>
+            <ul class="compare-button-box">
+              <li><a href="#" target="_blank"><button id="compare-submmit" type="button"><i
+                      class="fa fa-plus"></i>เปรียบเทียบ (<span>0</span>)
+                  </button></a></li>
+              <li><button id="clear-compare" type="button"><i class="fa fa-times"></i>
+                  ล้างตัวเลือก
+                </button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /page-content -->
+  </div> <!-- /web-body -->
+</body>

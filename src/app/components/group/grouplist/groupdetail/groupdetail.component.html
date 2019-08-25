@@ -1,0 +1,18 @@
+
+  <div class="text-center jumbotron">
+    <div class="row">
+        <div class="col">
+            <div *ngFor="let lands of results;let i=index "  class="col-2">
+                <div  class="card" [routerLink]="['/lands',lands.ID_land]" [queryParams]="{page: activePage}">
+                  <img class="card-img-top" src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg" alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title">{{lands.announceTH}}</h5>
+                    <p class="card-text">{{lands.price}}</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+  </div>

@@ -1,0 +1,26 @@
+
+  <div class="container">
+      <div class="row">
+          <h3>กลุ่มแชร์กับฉัน</h3>
+      </div>
+      <div class="row">
+          <div class="col-sm-2 jumbotron">
+            <div *ngFor="let group of Groups| slice:pointStart:pointEnd;let i=index " class="col-sm-2">
+                <button type="button" (click)="onClick()" class="btn btn-default btn-circle btn-xl border border-primary"
+                  [routerLink]="['/groups']"><i class="fa fa-users"></i>{{grou}}</button>
+                <div class="">{{group.name}}</div>
+              </div>
+  
+  
+          </div>
+          <div class="col-sm-10 ">
+            <div class="row">
+                <div class="col-12">
+                    <app-groupdetail ></app-groupdetail>
+                
+            </div>
+          </div>
+         
+      </div>
+  </div>
+

@@ -1,0 +1,47 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="jumbotron mt-5">
+    <div class="col-sm-8 mx-auto">
+      <h1 class="text-center">PROFILE</h1>
+    </div>
+    <table class="table col-md-6 mx-auto">
+
+        <div class="container" >
+           <img class="card-img-top " src="{{ details?.Profile }}" style="width:50%;position: absolute; left: -55%; bottom: 40%; border-radius: 100% ">
+           <br><br><br><br>
+          </div>
+
+      <tr>
+        <td>ชื่อผู้ใช้ :</td>
+        <td>{{ details?.Firstname }} {{ details?.Lastname }} </td>
+      </tr>
+      
+      <tr>
+        <td>วันเดือนปีเกิด :</td>
+        <td>{{ details?.Birthday }}</td>
+      </tr>
+     
+      <tr>
+        <td>ที่อยู่ :</td>
+        <td>{{ details?.LocationU }}</td>
+      </tr>
+     
+      <tr>
+        <td>อสังหาริมทรัพย์ทั้งหมด:</td>
+        <td>{{ details?.Email }}</td>
+      </tr>
+
+      <tr>
+        <td>E-mail :</td>
+        <td>{{ details?.Email }}</td>
+      </tr>
+
+      <tr>
+        <td>เบอร์โทรติดต่อ :</td>
+        <td>{{ details?.Created| timeAgoThai }}</td>
+      </tr>
+
+    </table>
+  </div>
+</div>
+<app-footer></app-footer>

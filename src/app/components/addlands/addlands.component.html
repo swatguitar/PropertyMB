@@ -1,0 +1,944 @@
+<app-navbar></app-navbar>
+<div class="page-content">
+    <img src="../../../assets/Land.jpg" alt="index.png" width="1519px">
+</div>
+<div class="container ">
+    <div id="product-container">
+        <form (submit)="onSave()">
+            <div class="row">
+                <div class="col-md-7">
+                    <br>
+                    <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+                        <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+                                typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i>
+                                    หน้าแรก</span></a>
+                            <meta property="position" content="1">
+                        </li>
+                        <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/lands' ]" property="item"
+                                typeof="WebPage"><span property="name">เพิ่มข้อมูลที่ดิน</span></a>
+                            <meta property="position" content="2">
+                        </li>
+                    </ul>
+                    <br>
+                    <h1><i style="color: chocolate" class="fas fa-feather-alt "></i>เพิ่มข้อมูลที่ดิน</h1>
+                </div>
+
+            </div>
+            <hr class="specification-dash-line">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <h3>ข้อมูลทั่วไป</h3>
+                    <div class="row">
+                        <div class="container jumbotron">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div>
+                                        <label>ประเภทอสังหา:</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <div>
+                                        <select style="border-radius: 30px 30px 30px 30px;" id="ColorType"
+                                            class="form-control" name="ColorType" [(ngModel)]="credentials.ColorType">
+                                            <option style="color:rgb(174, 180, 80)"
+                                                value="พื้นที่สีเหลือง – ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย" selected>
+                                                พื้นที่สีเหลือง – ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย</option>
+                                            <option style="color:orangered"
+                                                value="พื้นที่สีส้ม – ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง" selected>
+                                                พื้นที่สีส้ม – ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง</option>
+                                            <option style="color:brown"
+                                                value="พื้นที่สีน้ำตาล – ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก" selected>
+                                                พื้นที่สีน้ำตาล – ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก</option>
+                                            <option style="color:red" value="พื้นที่สีแดง – ที่ดินประเภทพาณิชยกรรม"
+                                                selected>
+                                                พื้นที่สีแดง – ที่ดินประเภทพาณิชยกรรม</option>
+                                            <option style="color:darkmagenta"
+                                                value="พื้นที่สีม่วง – ที่ดินประเภทอุตสาหกรรมและคลังสินค้า" selected>
+                                                พื้นที่สีม่วง – ที่ดินประเภทอุตสาหกรรมและคลังสินค้า</option>
+                                            <option style="color:blueviolet"
+                                                value="พื้นที่สีเม็ดมะปราง – ที่ดินประเภทคลังสินค้า" selected>
+                                                พื้นที่สีเม็ดมะปราง – ที่ดินประเภทคลังสินค้า</option>
+                                            <option style="color:green"
+                                                value="พื้นที่สีเขียว – ที่ดินประเภทชนบทและเกษตรกรรม" selected>
+                                                พื้นที่สีเขียว – ที่ดินประเภทชนบทและเกษตรกรรม</option>
+                                            <option
+                                                value="พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว – ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม"
+                                                selected>
+                                                พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว –
+                                                ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม</option>
+                                            <option style="color:chocolate"
+                                                value="พื้นที่สีน้ำตาลอ่อน – ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย"
+                                                selected>
+                                                พื้นที่สีน้ำตาลอ่อน –
+                                                ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย</option>
+                                            <option style="color: blue"
+                                                value="พื้นที่สีน้ำเงิน – ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ"
+                                                selected>
+                                                พื้นที่สีน้ำเงิน – ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div>
+                                        <label>หัวข้อประกาศ:</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <div>
+                                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="AnnounceTH"
+                                            class="form-control" name="AnnounceTH" placeholder="หัวข้อประกาศ" required
+                                            [(ngModel)]="credentials.AnnounceTH">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4><i class="fas fa-dollar-sign"></i> ราคา</h4>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                        <i class="fas fa-comment-dollar"></i>
+                                                    ราคาขาย
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        id="SellPrice" class="form-control" (change)="selectprovince($event.target.value)"
+                                                        placeholder="ราคาขาย (ที่คนขายกำหนด)" name="SellPrice" required
+                                                        [(ngModel)]="credentials.SellPrice">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                        <i class="fas fa-comments-dollar"></i>
+                                                    ราคาประเมิน
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        id="CostestimateB" class="form-control"
+                                                        placeholder="ราคาประเมิน(ธนาคารประเมิน)" name="Costestimate"
+                                                        required [(ngModel)]="credentials.CostestimateB">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                        <i class="fas fa-comments-dollar"></i>
+                                                    ราคาประเมิน
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        id="Costestimate" class="form-control"
+                                                        placeholder="ราคาประเมิน(กรมที่ดินประเมิน)" name="Costestimate"
+                                                        required [(ngModel)]="credentials.Costestimate">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                        <i class="fas fa-dollar-sign"></i>
+                                                    ราคาตลาด
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        id="MarketPrice" class="form-control" placeholder="ราคาตลาด"
+                                                        name="MarketPrice" required
+                                                        [(ngModel)]="credentials.MarketPrice">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                        <i class="fas fa-dollar-sign"></i>
+                                                    ราคาต่อตารางวา
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        id="PricePM" class="form-control" value="{{cal}}" placeholder="ราคาต่อตารางวา"
+                                                        name="PricePM" required [(ngModel)]="credentials.PriceWA" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <br>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4>รายละเอียดที่ดิน</h4>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <i class="fas fa-ruler-combined"></i>
+                                                            พื้นที่ (ไร่)
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            <input style="border-radius: 30px 30px 30px 30px;"
+                                                                type="text" id="LandR" class="form-control"
+                                                                placeholder="ไร่" name="LandR" required
+                                                                [(ngModel)]="credentials.LandR">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <i class="fas fa-ruler-combined"></i>
+                                                            พื้นที่ (งาน)
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            <input style="border-radius: 30px 30px 30px 30px;"
+                                                                type="text" id="LandG" class="form-control"
+                                                                placeholder="งาน" name="LandG" required
+                                                                [(ngModel)]="credentials.LandG">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <i class="fas fa-ruler-combined"></i>
+                                                            พื้นที่ (ตร.ว.)
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            <input style="border-radius: 30px 30px 30px 30px;"
+                                                                type="text" id="LandWA" class="form-control"
+                                                                placeholder="ตารางวา" name="LandWA" required
+                                                                [(ngModel)]="credentials.LandWA">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <i class="fas fa-ruler-combined"></i>
+                                                            พื้นที่ (กว้าง*ลึก)
+                                                        </div>
+                                                        <div class="col-sm-10">
+                                                            <input style="border-radius: 30px 30px 30px 30px;"
+                                                                type="text" id="Land" class="form-control"
+                                                                placeholder="(10*10) เมตร" name="Land" required
+                                                                [(ngModel)]="credentials.Land">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <hr>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div>
+                                            <label>รหัสทรัพย์สิน:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <div cl>
+                                            <input style="border-radius: 30px 30px 30px 30px;" type="text" id="CodeDeed"
+                                                class="form-control search-input" name="CodeDeed"
+                                                placeholder="รหัสทรัพย์สิน(จากธนาคาร หรือ กรมที่ดิน)" required
+                                                [(ngModel)]="credentials.CodeProp">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div>
+                                            <label>เลขโฉนด:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <div cl>
+                                            <input style="border-radius: 30px 30px 30px 30px;" type="text" id="CodeDeed"
+                                                class="form-control search-input" name="CodeDeed" placeholder="เลขโฉนด"
+                                                required [(ngModel)]="credentials.CodeDeed">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div>
+                                            <label>โฉนด :</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 ">
+                                        <select style="border-radius: 30px 30px 30px 30px;" id="Deed"
+                                            class="form-control" name="Deed" [(ngModel)]="credentials.Deed">
+                                            <option value="1 เลน">น.ส.4จ.</option>
+                                            <option value="2 เลน">น.ส.3ก.</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div>
+                                            <label>สถานะทรัพย์สิน :</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 ">
+
+                                        <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
+                                            placeholder="สถานะทรัพย์สิน" class="form-control" name="AsseStatus"
+                                            [(ngModel)]="credentials.AsseStatus">
+                                            <option value="ว่าง" selected>
+                                                ว่าง</option>
+                                            <option value="จำนอง" selected>
+                                                จำนอง</option>
+                                            <option value="ขายฝาก" selected>
+                                                ขายฝาก</option>
+                                            <option value="ฝากขาย" selected>
+                                                ฝากขาย</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row ">
+                                    <div class="col-md-12 ">
+                                        <h4>ทำเล</h4>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="Blind"
+                                                [(ngModel)]="credentials.Blind">ที่ตาบอด
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="Neareducation"
+                                                [(ngModel)]="credentials.Neareducation">ใกล้สถานศึกษา
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="Cenmarket"
+                                                [(ngModel)]="credentials.Cenmarket">ใกล้ศูนย์การค้า
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="Market"
+                                                [(ngModel)]="credentials.Market">ใกล้ตลาด
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="River"
+                                                [(ngModel)]="credentials.River">ติดแม่น้ำ
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="Mainroad"
+                                                [(ngModel)]="credentials.Mainroad">ติดถนน
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="Insoi"
+                                                [(ngModel)]="credentials.Insoi">อยู่ในซอย
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="checkbox" id="" value="yes" checked name="onther"
+                                                [(ngModel)]="onther">อื่นๆ
+                                        </div>
+                                        <div *ngIf="onther == 'yes'" class="col-sm-12">
+                                            <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Letc"
+                                                class="form-control" placeholder="โปรดระบุ" name="Letc" required
+                                                [(ngModel)]="credentials.Letc">
+                                        </div>
+                                        <h4>สถานะถนน</h4>
+                                        <div class="col-sm-12">
+                                            <input type="radio" id="" value="โคลน" checked name="RoadType"
+                                                [(ngModel)]="credentials.RoadType">โคลน
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="radio" id="" value="ยางมะตอย" checked name="RoadType"
+                                                [(ngModel)]="credentials.RoadType">ยางมะตอย
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="radio" id="" value="คอนกรีต" checked name="RoadType"
+                                                [(ngModel)]="credentials.RoadType">คอนกรีต
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="radio" id=" " value="1" checked name="Ronther"
+                                                [(ngModel)]="Ronther">อื่นๆ
+                                        </div>
+                                        <div *ngIf="Ronther == '1' " class="col-sm-12">
+                                            <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType"
+                                                class="form-control" placeholder="โปรดระบุ" name="RoadType" required
+                                                [(ngModel)]="credentials.RoadType">
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <br>
+                                            <label>ความกว้างถนน</label>
+                                            <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide"
+                                                class="form-control" name="RoadWide" [(ngModel)]="credentials.RoadWide">
+                                                <option>- ความกว้างถนน -</option>
+                                                <option value="ซอยแคบ">ซอยแคบ</option>
+                                                <option value="1 เลน">1 เลน</option>
+                                                <option value="2 เลน">2 เลน</option>
+                                                <option value="4 เลน">4 เลน</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <br>
+                                            <label>ระดับพื้นดิน</label>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <input type="radio" id="GroundLevel" value="สูงกว่าถนน"
+                                                        name="GroundLevelhigh"
+                                                        [(ngModel)]="credentials.GroundLevel">สูงกว่าถนน
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน"
+                                                        name="GroundLevellow"
+                                                        [(ngModel)]="credentials.GroundLevel">ต่ำกว่าถนน
+                                                </div>
+
+                                            </div>
+                                            <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                id="GroundValue" class="form-control"
+                                                placeholder="ระดับพื้นดินจากถนน (เมตร)" name="GroundValue" required>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12  ">
+                    <h3><i class="far fa-file-alt"></i> รายละเอียดเพิ่มเติม</h3>
+                    <div class="row">
+                        <div class="container jumbotron">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="FormControlTextarea">กรอกรายละเอียดของอสังหา</label>
+                                    <textarea class="form-control" id="FormControlTextarea" rows="3"
+                                        [(ngModel)]="credentials.MoreDetails"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12  ">
+                    <h3><i class="fas fa-map-marker-alt"></i> ที่อยู่อสังหา</h3>
+                    <div class="row">
+                        <div class="container jumbotron">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>ค้นหาที่อยู่</h4>
+                                    <div class="form-group">
+                                        <div class="text-right text-danger">
+                                            *ท่านสามารถเลือนจุดไปยังสถานที่ที่ท่านต้องการได้
+                                        </div>
+                                        <input type="text" class="form-control"
+                                            (keydown.enter)="$event.preventDefault()" placeholder="ค้นหาอยู่ของอสังหา"
+                                            autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+                                    </div>
+                                    <div>
+                                        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                                            <agm-marker [latitude]="latitude" [longitude]="longitude"
+                                                [markerDraggable]="true" (dragEnd)="markerDragEnd($event)"></agm-marker>
+                                        </agm-map>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">ละติจูต: <input class="form-control" disabled type="text"
+                                                id="latitude" [(ngModel)]="credentials.Latitude" value='{{latitude}}'
+                                                name="latitude"> </div>
+                                        <div class="col-sm-3">ลองจิจูต: <input class="form-control" disabled type="text"
+                                                id="longitude" [(ngModel)]="credentials.Longitude" value='{{longitude}}'
+                                                name="longitude"> </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <br>
+                                    <hr>
+                                    <h4>รายละเอียดที่อยู่</h4>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div>
+                                                <label>จุดสังเกตุ :</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 ">
+                                            <div cl>
+                                                <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                    id="ObservationPoint" class="form-control search-input"
+                                                    name="ObservationPoint" placeholder="สถานที่ใกล้เคียง" required
+                                                    [(ngModel)]="credentials.ObservationPoint">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12 ">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <label>ที่อยู่:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="Location" class="form-control" name="Location"
+                                                            placeholder="ที่อยู่" required
+                                                            [(ngModel)]="credentials.Location">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            จังหวัด:
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <select style="border-radius: 30px 30px 30px 30px;"
+                                                                id="LProvince" class="form-control" name="LProvince"
+                                                                required [(ngModel)]="credentials.LProvince "
+                                                                (change)="selectprovince($event.target.value)">
+                                                                <option>- จังหวัด -</option>
+                                                                <option *ngFor="let p of province"
+                                                                    value="{{p.PROVINCE_ID}}">{{p.PROVINCE_NAME}}
+                                                                </option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            อำเภอ:
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            <select style="border-radius: 30px 30px 30px 30px;"
+                                                                id="LAmphur" class="form-control" name="LAmphur"
+                                                                required [(ngModel)]="credentials.LAmphur"
+                                                                (change)="selectamphur($event.target.value)">
+                                                                <option>- อำเภอ -</option>
+                                                                <option *ngFor="let p of amphur"
+                                                                    value="{{p.AMPHUR_ID}}">{{p.AMPHUR_NAME}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            ตำบล:
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <select style="border-radius: 30px 30px 30px 30px;"
+                                                                id="LDistrict" class="form-control" name="LDistrict"
+                                                                required [(ngModel)]="credentials.LDistrict"
+                                                                (change)="selectdistrict($event.target.value)">
+                                                                <option>- ตำบล -</option>
+                                                                <option *ngFor="let p of district"
+                                                                    value="{{p.DISTRICT_ID}}">{{p.DISTRICT_NAME}}
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            รหัสไปรษณี:
+                                                        </div>
+                                                        <div class="col-sm-8" *ngFor="let pp of zipcode">
+                                                            <label for="">{{pp.ZIPCODE}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12  ">
+                    <h3><i class="fas fa-images"></i> รูปภาพ</h3>
+                    <div class="row">
+                        <div class="container jumbotron">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile01">
+                                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-12  ">
+                        <h3><i class="fas fa-file-alt"></i> ข้อมูลติดต่อ</h3>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                    aria-controls="home" aria-selected="true">ผู้ติดต่อบุคคลที่ 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                    aria-controls="profile" aria-selected="false">ผู้ติดต่อบุคคลที่ 2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                                    aria-controls="contact" aria-selected="false">ผู้ติดต่อบุคคลที่ 3</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="container jumbotron">
+                                        <div class="row">
+    
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <i class="far fa-user-circle"></i>
+                                                            <label> ขื่อผู้ติดต่อ:</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 ">
+                                                        <div>
+                                                            <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                                id="ContactU" class="form-control search-input"
+                                                                name="ContactU" placeholder="" required
+                                                                [(ngModel)]="credentials.ContactU">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <i class="fas fa-user-alt"></i>
+                                                            <label> สถานะ:</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 ">
+                                                        <div cl>
+                                                                <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                                id="ContactS" class="form-control search-input"
+                                                                name="ContactS" placeholder="" required
+                                                                [(ngModel)]="credentials.ContactS">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <i class="fas fa-phone-square-alt"></i>
+                                                            <label> เบอร์โทร:</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 ">
+                                                        <div>
+                                                            <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                                id="ContactP" class="form-control search-input"
+                                                                name="ContactP" placeholder="" required
+                                                                [(ngModel)]="credentials.ContactP">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <i class="far fa-envelope"></i>
+                                                            <label> อีเมล:</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 ">
+                                                        <div>
+                                                            <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                                id="ContactE" class="form-control search-input"
+                                                                name="ContactE" placeholder="" required
+                                                                [(ngModel)]="credentials.ContactE">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <i class="fab fa-line"></i>
+                                                            <label> ไลน์:</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 ">
+                                                        <div cl>
+                                                            <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                                id="ContactL" class="form-control search-input"
+                                                                name="ContactL" placeholder="" required
+                                                                [(ngModel)]="credentials.ContactL">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+    
+    
+    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="container jumbotron">
+                                    <div class="row">
+    
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="far fa-user-circle"></i>
+                                                        <label> ขื่อผู้ติดต่อ:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactUo" class="form-control search-input" name="ContactUo"
+                                                            placeholder="" required [(ngModel)]="credentials.ContactUo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="fas fa-user-alt"></i>
+                                                        <label> สถานะ:</label>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="col-md-8 ">
+                                                    <div cl>
+                                                            <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactSo" class="form-control search-input"
+                                                            name="ContactSo" placeholder="" required
+                                                            [(ngModel)]="credentials.ContactSo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="fas fa-phone-square-alt"></i>
+                                                        <label> เบอร์โทร:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactPo" class="form-control search-input" name="ContactPo"
+                                                            placeholder="" required [(ngModel)]="credentials.ContactPo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="far fa-envelope"></i>
+                                                        <label> อีเมล:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactEo" class="form-control search-input" name="ContactEo"
+                                                            placeholder="" required [(ngModel)]="credentials.ContactEo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="fab fa-line"></i>
+                                                        <label> ไลน์:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div cl>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactLo" class="form-control search-input" name="ContactLo"
+                                                            placeholder="" required [(ngModel)]="credentials.ContactLo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+    
+    
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <div class="container jumbotron">
+                                    <div class="row">
+    
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="far fa-user-circle"></i>
+                                                        <label> ขื่อผู้ติดต่อ:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactUt" class="form-control search-input"
+                                                            name="ContactUt" placeholder="" required
+                                                            [(ngModel)]="credentials.ContactUt">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="fas fa-user-alt"></i>
+                                                        <label> สถานะ:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div cl>
+                                                            <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactSth" class="form-control search-input"
+                                                            name="ContactSt" placeholder="" required
+                                                            [(ngModel)]="credentials.ContactSt">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="fas fa-phone-square-alt"></i>
+                                                        <label> เบอร์โทร:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactPth" class="form-control search-input"
+                                                            name="ContactPt" placeholder="" required
+                                                            [(ngModel)]="credentials.ContactPt">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="far fa-envelope"></i>
+                                                        <label> อีเมล:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactEt" class="form-control search-input"
+                                                            name="ContactEt" placeholder="" required
+                                                            [(ngModel)]="credentials.ContactEt">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div>
+                                                        <i class="fab fa-line"></i>
+                                                        <label> ไลน์:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 ">
+                                                    <div cl>
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="ContactLt" class="form-control search-input"
+                                                            name="ContactLt" placeholder="" required
+                                                            [(ngModel)]="credentials.ContactLt">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         
+    
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-8">
+                        <button class="btn btn-primary float-right" type="submit">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
+                        </button>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="btn btn-outline-success  "
+                            [routerLink]="[ '/studentList']">ดูรายการที่บันทึก</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+</div>
+
+
+<hr>
+<app-footer></app-footer>

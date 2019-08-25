@@ -1,0 +1,65 @@
+<section class="container" >
+  <div class="container" ><hr></div>
+  <nav class="container"  >
+      <a class="navbar-brand">Filter</a>
+      <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" >
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </nav>
+    <div class="container" ><hr></div>
+<div class="row"  >
+  
+
+    <div *ngFor="let house of details| slice:pointStart:pointEnd;let i=index "  class="col-sm-2">
+        <div  class="card" [routerLink]="['/houses',house.ID_houses]" [queryParams]="{page: activePage}">
+          <img class="card-img-top" src="https://sf.pruksa.com/cache/subdomain/passorn/images/PS79_363x227__363x227.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{house.announceTH}}</h5>
+            <p class="card-text">{{house.price}}</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+        <br>
+    </div>
+    <div *ngFor="let lands of results| slice:pointStart:pointEnd;let i=index "  class="col-sm-2">
+      <div  class="card" [routerLink]="['/lands',lands.ID_land]" [queryParams]="{page: activePage}">
+        <img class="card-img-top" src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{lands.announceTH}}</h5>
+          <p class="card-text">{{lands.price}}</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+      <br>
+  </div>
+
+
+  </div>
+
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <li class="page-item">
+          <a class="page-link" [routerLink]="['/property']"  [queryParams]="{page: 1}"> First</a>
+      </li>
+      <li class="page-item" [class.disabled]="activePage==1">
+          <a class="page-link" [routerLink]="['/property']"  [queryParams]="{page: prevPage}"> Previous</a> 
+      </li>
+      <li class="page-item" *ngFor="let i of iPage" [class.active]="activePage==i"> 
+          <a class="page-link" [routerLink]="['/property']"  [queryParams]="{page: i}"> {{ i }} </a> 
+      </li>
+      <li class="page-item" [class.disabled]="activePage==totalPage"> 
+          <a class="page-link" [routerLink]="['/property']"  
+                  [queryParams]="{page: nextPage}"> Next</a>
+      </li>
+      <li class="page-item">
+        <input #pageInput type="number"class="form-control" min="1" max="{{ totalPage }}"
+                style="width:80px;" (input)="changePage(pageInput.value)" value="{{ activePage }}" />
+      </li>
+      <li class="page-item"> 
+          <a class="page-link" [routerLink]="['/property']"  [queryParams]="{page: totalPage}"> Last</a> 
+      </li>
+    </ul>
+  </nav>
+  
+  </section>

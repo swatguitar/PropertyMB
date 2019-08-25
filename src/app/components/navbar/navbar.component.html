@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg navbar-light bd-light " >
+    <a class="navbar-brand" routerLink="/index">
+        <img src="https://scontent.fcnx1-1.fna.fbcdn.net/v/t1.15752-9/59273882_593418344511413_1414149515857887232_n.png?_nc_cat=106&_nc_ht=scontent.fcnx1-1.fna&oh=94fdf0248350650f1172181dc1bef123&oe=5D6C78E0" width="30" height="30" class="d-inline-block align-top" alt="">
+        PropertyMB
+      </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarText">
+          <ul class="navbar-nav mr-auto ">
+            <li *ngIf="auth.isLoggedIn()" class="nav-item active">
+              <a class="nav-link " routerLink="/home">หน้าแรก <span class="sr-only">(current)</span></a>
+            </li>
+            <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+                <a class="nav-link" routerLink="/property"><i class="fa fa-home font-color-orange" aria-hidden="true"></i><i class="fa fa-tree font-color-green" aria-hidden="true"></i> อสังหาของฉัน<span class="sr-only">(current)</span></a>
+              </li>
+               <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+                <a class="nav-link" routerLink="/groups"><i class="fa fa-users font-color-blue " aria-hidden="true"></i> กลุ่มของฉัน <span class="sr-only">(current)</span></a>
+              </li>
+              <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+                  <a class="nav-link" routerLink="/recommend"><i class="fa fa-star font-color-gold" aria-hidden="true"></i> แนะนำ<span class="sr-only">(current)</span></a>
+                </li>
+              <li *ngIf="auth.isLoggedIn()" class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    เพิ่มอสังหาริมทรัพย์
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="addhouse"><i class="fa fa-home font-color-orange "  aria-hidden="true"></i> บ้าน</a>
+                    <a class="dropdown-item" href="addlands"><i class="fa fa-tree font-color-green" aria-hidden="true"></i> ที่ดิน</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </li>
+              
+              
+          </ul>
+        
+
+              
+              
+          
+          <div class="d-flex flex-row-reverse">
+            
+            <ul class="navbar-nav mr-auto">
+              
+              <li *ngIf="auth.isLoggedIn()" class="nav-item">
+                <a class="nav-link" routerLink="/profile" ><img src="{{ auth.getUserDetails()?.Profile1}}" alt=""><i class="fa fa-user-circle"></i></a>
+              </li>
+              <li *ngIf="auth.isLoggedIn()" class="nav-item active" >
+                <a class="nav-link" routerLink="/profile">{{ auth.getUserDetails()?.Firstname }}</a>
+              </li>
+              <li *ngIf="auth.isLoggedIn()" class="nav-item">
+                <a class="nav-link" routerLink="" (click)="auth.logout()">Logout</a>
+              </li>
+                <li *ngIf="!auth.isLoggedIn()" class="nav-item">
+                <a class="nav-link" routerLink="/login">Login</a>
+              </li>
+              <li *ngIf="!auth.isLoggedIn()" class="nav-item">
+                <a class="nav-link" routerLink="/register">Register</a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>

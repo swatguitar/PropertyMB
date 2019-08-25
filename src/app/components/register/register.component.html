@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 jumbotron col-12 col-md-6" style="height: 650px;">
+      <div class="text-center  " style="margin: 100px">
+        <h1>WELCOME</h1>
+        <p class="font-weight-light  ">
+          Search for new housing estates all over Bangkok, suburbs and provinces
+          from the most information sources. Convenient to search by separating
+          the location and neighborhood All types, including single houses
+          , townhouses, townhomes, twin houses, etc. with price information,
+          comparison of location and facilities. Easy to decide to buy With loan
+          calculation tools To assess the ability to recover
+         
+      </div>
+    </div>
+
+
+
+
+
+    <div class="col-md-4 ">
+      <div class="col-xs-12- col-sm-6 col-md-12 ">
+        <header class="text-center">
+          <img
+            src="https://scontent.fcnx1-1.fna.fbcdn.net/v/t1.15752-9/59273882_593418344511413_1414149515857887232_n.png?_nc_cat=106&_nc_ht=scontent.fcnx1-1.fna&oh=94fdf0248350650f1172181dc1bef123&oe=5D6C78E0"
+            width="300" height="250" alt="">
+          <h3>สร้างบัญชี</h3>
+          <div>สร้างบัญชี PropertyMBW </div>
+        </header>
+        <hr>
+
+        <form [formGroup]="registerForm" (submit)="register()">
+          <div class="form-group">
+            <label>ชื่อ</label>
+            <input type="text" [(ngModel)]="credentials.Firstname" formControlName="firstName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+              <div *ngIf="f.firstName.errors.required">ป้อนชื่อ</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>นามสกุล</label>
+            <input type="text" [(ngModel)]="credentials.Lastname" formControlName="lastName" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+              <div *ngIf="f.lastName.errors.required">ป้อนนามสกุล</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>ที่อยู่อีเมลของคุณ</label>
+            <input type="text" [(ngModel)]="credentials.Email" formControlName="email" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">เลือกที่อยู่อีเมล</div>
+              <div *ngIf="f.email.errors.email">รูปแบบไม่ถูกต้อง</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>รหัสผ่าน</label>
+            <input type="password" [(ngModel)]="credentials.Password" formControlName="password" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">ป้อนรหัสผ่าน</div>
+              <div *ngIf="f.password.errors.minlength">ใช้อักขระ 6 ตัวขึ้นไป สำหรับรหัสผ่าน</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>ยืนยัน</label>
+            <input type="password" formControlName="confirmPassword" class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }" />
+            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+              <div *ngIf="f.confirmPassword.errors.required">กรุณายืนยัน รหัสผ่าน</div>
+              <div *ngIf="f.confirmPassword.errors.mustMatch">รหัสผ่านเหล่านี้ไม่ตรงกัน โปรดลองอีกครั้ง</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary">ยืนยันการลงทะเบียน</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <hr>
+</div>
+
+
+<router-outlet></router-outlet>

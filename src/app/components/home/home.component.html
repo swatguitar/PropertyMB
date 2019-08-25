@@ -1,0 +1,268 @@
+<ngx-spinner></ngx-spinner>
+<app-navbar></app-navbar>
+<img src="../../../assets/Home.jpg" class="img-fluid" alt="Responsive image"
+  style="width:100%;">
+<div class="container">
+  <hr>
+</div>
+<section class="container">
+  <div class="row">
+    <div class="col-12 col-md-8 content-box ">
+      <div class="d-flex">
+        <header>
+          <a href="groups" alt="ShareGroup" title="House">กลุ่ม แชร์สำหรับฉัน<i class="fa fa-angle-right"
+              aria-hidden="true"></i></a>
+          <div>กลุ่มของคุณ</div>
+          <button type="button" class="btn btn-default btn-circle"><i class="fa fa-check"></i></button>
+          <button type="button" class="btn btn-success btn-circle"><i class="fa fa-link"></i></button>
+        </header>
+      </div>
+      <div class="row">
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-default btn-circle btn-xl border border-dark" data-toggle="modal"
+            data-target="#Crgroup"><i class="fa fa-plus"></i></button>
+          <div class="">สร้างกลุ่ม</div>
+        </div>
+      <div *ngFor="let group of Groups| slice:pointStart:pointEnd;let i=index " class="col-sm-2">
+          <button type="button" class="btn btn-default btn-circle btn-xl border border-primary"
+            [routerLink]="['/groups',group.ID_Group]"><i class="fa fa-users"></i></button>
+          <div class=""></div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="Crgroup" tabindex="-1" role="dialog" aria-labelledby="Crgroup" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <form >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="Crgroup">สร้างกลุ่ม</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="was-validated">
+
+                  <div class="form-inline">
+                    <div class="form-group">
+                      <button type="file"
+                        class="btn btn-default btn-circle btn-xl border border-dark form-control-file"><i
+                          class="fa fa-image"></i></button>
+                      <input type="text" id="namegroup" class="form-control mx-sm-3" required
+                         name="name">
+                      <label for="namegroup">ชื่อกลุ่ม</label>
+                      <div class="invalid-feedback">กรุณาใส่ชื่อกลุ่ม</div>
+                    </div>
+                  </div>
+                  <hr>
+
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile" required
+                       placeholder="เลือกรูปภาพ">
+                    <label class="custom-file-label" for="validatedCustomFile"></label>
+                    <div class="invalid-feedback">กรุณาเพิ่มรูปกลุ่ม</div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                <button type="submit" class="btn btn-primary">สร้างกลุ่ม</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+      <hr>
+      <div class="d-flex">
+        <header>
+          <a [routerLink]="['/houses']" alt="House" title="House">อสังหาสิ่งปลูกสร้าง<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+          <div>อสังหาสิ่งปลูกสร้างถูกเพิ่มล่าสุด</div>
+        </header>
+      </div>
+
+      <div class="list-table">
+        <ul *ngIf="emptyP" class="d-flex nav product-list">
+          <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
+            class="col-sm-4 col-6 d-flex justify-content-center">
+            <a [routerLink]="['/addhouse']">
+              <div class="item">
+                <i class="fas fa-plus-circle"></i>
+                <div class="info">
+                  <header>เพิ่มข้อมูลอสังหาสิ่งปลูกสร้างของคุณ</header>
+
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <ul class="d-flex nav product-list">
+          <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
+            class="col-sm-4 col-6 d-flex justify-content-center">
+            <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
+          </li>
+          <li *ngFor="let house of details| slice:pointStart:pointEnd;let i=index "
+            class="col-sm-4 col-6 d-flex justify-content-center">
+
+            <a [routerLink]="['/houses',house.ID_Property]">
+              <div class="item">
+                <img src="https://sf.pruksa.com/cache/subdomain/passorn/images/PS79_363x227__363x227.jpg" width="180"
+                  class="img-fluid ">
+                <div class="info">
+                  <header>{{house.AnnounceTH}}</header>
+                  <div class="price">ราคา <span>{{house.SellPrice | number}}</span> บาท</div>
+                  <div class="stat"> อัพเดทล่าสุด<span> {{house.Created| timeAgoThai}}</span></div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+
+
+      <hr>
+      <div class="d-flex">
+        <header>
+          <a [routerLink]="['/lands']" alt="Lands" title="Lands">ที่ดิน<i class="fa fa-angle-right"
+              aria-hidden="true"></i></a>
+          <div>ที่ดินที่ถูกเพิ่มล่าสุด</div>
+        </header>
+      </div>
+      <div class="list-table">
+        <ul *ngIf="emptyL" class="d-flex nav product-list">
+          <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
+            class="col-sm-4 col-6 d-flex justify-content-center">
+            <a [routerLink]="['/addlands']">
+              <div class="item">
+                <i class="fas fa-plus-circle"></i>
+                <div class="info">
+                  <header>เพิ่มข้อมูลที่ดินของคุณ</header>
+
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="d-flex nav product-list">
+
+          <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
+            class="col-sm-4 col-6 d-flex justify-content-center">
+            <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
+          </li>
+
+
+
+
+
+          <li *ngFor="let lands of results| slice:pointStart:pointEnd;"
+            class="col-sm-4 col-6 d-flex justify-content-center">
+
+            <a [routerLink]="['/lands',lands.ID_Lands]" [queryParams]="{page: activePage}">
+              <div class="item">
+                <img
+                  src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg"
+                  width="180" class="img-fluid ">
+                <div class="info">
+                  <header>{{lands.AnnounceTH}}</header>
+                  <div class="price">ราคา <span>{{lands.SellPrice | number}}</span> บาท</div>
+                  <div class="stat"> อัพเดทล่าสุด<span> {{lands.Created| timeAgoThai}}</span></div>
+                </div>
+              </div>
+            </a>
+          </li>
+
+
+        </ul>
+
+
+
+
+
+      </div>
+    </div>
+
+
+    <hr>
+
+    <div class="col-12 col-md-4 content-box">
+      <header>
+        อสังหาริมทรัพย์ แนะนำ<i class="fa fa-angle-right" aria-hidden="true"></i>
+        <div>แนะนำ บ้านหรือที่ดิน ที่เหมาะกับคุณ</div>
+      </header>
+
+      <div class="recommend-spec">
+        <ul class="nav">
+          <li>
+            <a class="d-flex" href="#">
+              <div class="banner"><img
+                  src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg"
+                  width="90" class="img-fluid"></div>
+              <div class="info">
+                <div class="title">Land</div>
+                <div class="price">8000000xx</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="d-flex" href="#">
+              <div class="banner"><img
+                  src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg"
+                  width="90" class="img-fluid"></div>
+              <div class="info">
+                <div class="title">Land</div>
+                <div class="price">1500000xx</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="d-flex" href="#">
+              <div class="banner"><img
+                  src="https://sf.pruksa.com/cache/subdomain/passorn/images/PS79_363x227__363x227.jpg" width="90"
+                  class="img-fluid"></div>
+              <div class="info">
+                <div class="title">House</div>
+                <div class="price">750000000</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="d-flex" href="#">
+              <div class="banner"><img
+                  src="https://sf.pruksa.com/cache/subdomain/passorn/images/PS79_363x227__363x227.jpg" width="90"
+                  class="img-fluid"></div>
+              <div class="info">
+                <div class="title">House</div>
+                <div class="price">680000000</div>
+              </div>
+            </a>
+          </li>
+
+
+
+
+
+        </ul>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+</section>
+<app-footer></app-footer>
