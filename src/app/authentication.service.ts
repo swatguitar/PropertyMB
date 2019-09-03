@@ -393,6 +393,11 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  public getimghouse(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/imghouse`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
 
   public getProvine(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/Province`, {

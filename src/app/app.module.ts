@@ -14,6 +14,7 @@ import { AgmCoreModule } from '@agm/core';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import {FileUploadModule} from 'ng2-file-upload';
 import { ArchwizardModule } from 'angular-archwizard';
+import { NgxImageGalleryModule } from 'ngx-image-gallery';
 
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -45,6 +46,10 @@ import { PagenotfoundComponent } from './lib/pagenotfound/pagenotfound.component
 import { GroupdetailComponent } from './components/group/grouplist/groupdetail/groupdetail.component';
 import { RecdetailsComponent } from './components/recommend/recdetails/recdetails.component';
 import { UploadimgComponent } from './components/addhouse/uploadimg/uploadimg.component';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 
 
 
@@ -98,10 +103,13 @@ import { UploadimgComponent } from './components/addhouse/uploadimg/uploadimg.co
     TimeagoModule,
     FileUploadModule,
     ArchwizardModule,
+    NgxImageGalleryModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAJZWeALRjPTmtec1IjK50FaPCmrda02Oc',
       libraries: ['places']
     }),
+    PDFExportModule,
+    BrowserAnimationsModule,
    
 
   ],

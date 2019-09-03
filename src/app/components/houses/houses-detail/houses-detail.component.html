@@ -33,12 +33,22 @@
             <div class="col-md-5 ">
               <div class="logo-distributed ">
                 <h3>Property<span>Management</span></h3>
+                <button kendo-button (click)="pdf.saveAs('invoice.pdf')">
+                  บันทึกเป็น PDF
+                </button>
               </div>
 
             </div>
           </div>
         </div>
+        <div style="position: absolute; left: -1000px; top: 0;">
+          <kendo-pdf-export #pdf paperSize="A4" margin="1cm">
+            <div style="width: 500px;">
 
+
+            </div>
+          </kendo-pdf-export>
+        </div>
         <div class="card">
           <div class="card-body">
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -73,6 +83,25 @@
 
 
           </div>
+        </div>
+        <ngx-image-gallery 
+        [images]="images" 
+        [conf]="conf"
+        (onOpen)="galleryOpened($event)"
+        (onClose)="galleryClosed()"
+        (onImageClicked)="galleryImageClicked($event)"
+        (onImageChange)="galleryImageChanged($event)"
+        (onDelete)="deleteImage($event)"
+        ></ngx-image-gallery>
+        
+        <div class="row">
+          <ul>
+            <li *ngFor="let img of imgnew">
+              <a [routerLink]="['/image', img.id]">
+                <img src="http://localhost:3001/ftp/{{img.URL}}" class="img" width="240" height="170">
+              </a>
+            </li>
+          </ul>
         </div>
         <div id="product-specificate">
 
@@ -231,11 +260,11 @@
                       <div class="icon-rank">
                         <ul>
                           <li>
-                            
-                          
+
+
                           </li>
                           <li>
-                           
+
                           </li>
                         </ul>
                       </div>
@@ -281,40 +310,40 @@
               <div class="row">
                 <div class="col-md-4">
                   <div class="jumbotron">
-                    
-                        <div class="header-blog">ทำเล</div>
-                        <div class="specificate-panel">
-                          <div class="specificate-list">
-                            <div class="specificate-title">ที่ตาบอด</div>
-                            <div class="specificate-info">{{ house.Blind }}</div>
-                          </div>
-                          <div class="specificate-list">
-                            <div class="specificate-title">ใกล้สถานศึกษา</div>
-                            <div class="specificate-info">{{ house.Neareducation }}</div>
-                          </div>
-                          <div class="specificate-list">
-                            <div class="specificate-title">ใกล้ศูนย์การค้า</div>
-                            <div class="specificate-info">{{ house.Cenmarket }}</div>
-                          </div>
-                          <div class="specificate-list">
-                            <div class="specificate-title">ใกล้ตลาด</div>
-                            <div class="specificate-info">{{ house.Market }}</div>
-                          </div>
-                          <div class="specificate-list">
-                            <div class="specificate-title">ติดแม่น้ำ</div>
-                            <div class="specificate-info">{{ house.River }}</div>
-                          </div>
-                          <div class="specificate-list">
-                            <div class="specificate-title">ติดถนน</div>
-                            <div class="specificate-info">{{ house.Mainroad }} </div>
-                          </div>
-                          <div class="specificate-list">
-                            <div class="specificate-title">อยู่ในซอย</div>
-                            <div class="specificate-info">{{ house.Insoi }} </div>
-                          </div>
-                          <div class="specificate-list">
-                            <div class="specificate-title">อื่นๆ</div>
-                            <div class="specificate-info">{{ house.Letc }} </div>
+
+                    <div class="header-blog">ทำเล</div>
+                    <div class="specificate-panel">
+                      <div class="specificate-list">
+                        <div class="specificate-title">ที่ตาบอด</div>
+                        <div class="specificate-info">{{ house.Blind }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้สถานศึกษา</div>
+                        <div class="specificate-info">{{ house.Neareducation }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้ศูนย์การค้า</div>
+                        <div class="specificate-info">{{ house.Cenmarket }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้ตลาด</div>
+                        <div class="specificate-info">{{ house.Market }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ติดแม่น้ำ</div>
+                        <div class="specificate-info">{{ house.River }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ติดถนน</div>
+                        <div class="specificate-info">{{ house.Mainroad }} </div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">อยู่ในซอย</div>
+                        <div class="specificate-info">{{ house.Insoi }} </div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">อื่นๆ</div>
+                        <div class="specificate-info">{{ house.Letc }} </div>
                       </div>
                     </div>
                   </div>
