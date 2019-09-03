@@ -15,7 +15,6 @@ export class HousesDetailComponent implements OnInit {
   imgbox :any[];
   imgnew : any[];
   public postID: string;
-  //no comment
   public activePage: number;
   public results: PropertyDetails[];
   zoom: number;
