@@ -23,7 +23,7 @@ export class HousesDetailComponent implements OnInit {
   imageIndex = 1;
   galleryId = 1;
   isPlaying = true;
-
+// แก้ไข 1
   // gallery images
   images: GALLERY_IMAGE[] = [
     {
