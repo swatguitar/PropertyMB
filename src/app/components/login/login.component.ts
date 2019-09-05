@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../../authentication.service'
 import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -19,6 +20,7 @@ export class LoginComponent {
     Email: '',
     Password: '',
     Birthday: '',
+    CodeProperty: '',
     LocationU: '',
     Phone: '',
     ProfileImg: '',
@@ -127,10 +129,31 @@ export class LoginComponent {
     Place: '',
     imgProperty: null,
   }
+  form: FormGroup;
+  submitted: boolean;
+
 
   constructor(private auth: AuthenticationService, private router: Router) { }
+  ngOnInit() {
+  this.form = new FormGroup ({
+    Email: new FormControl ('', [Validators.required,Validators.email]),
+    Password: new FormControl ('', Validators.required),
+  });
+}
+
+  get f() { return this.form.controls; }
+
+
 
   login() {
+
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.form.invalid) {
+      return;
+    }
+    
     this.auth.login(this.credentials).subscribe(
       () => {
         this.loading = false;

@@ -17,6 +17,7 @@ export class HomeComponent {
     Email: '',
     Password: '',
     Birthday: '',
+    CodeProperty: '',
     LocationU: '',
     Phone: '',
     ProfileImg: '',
@@ -128,8 +129,8 @@ export class HomeComponent {
   public details: any;
   public results: any;
   public loading: any;
-  emptyL:boolean = false;
-  emptyP:boolean = false;
+  emptyL: boolean = false;
+  emptyP: boolean = false;
   public Groups: any;
   public pointStart: number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointEnd: number = 3; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
@@ -145,16 +146,16 @@ export class HomeComponent {
       this.showSpinner = false
       this.auth.gethouse().subscribe((house) => {
         this.details = house;
-       
+        if (this.details == 0) {
+          this.emptyP = true
+
+        }
       },
         err => {
           console.error(err)
         }
       )
-      if(this.details == 0){
-        this.emptyP = true
-        
-      }
+
     }, 2000);
 
 
@@ -164,7 +165,7 @@ export class HomeComponent {
       this.auth.getland().subscribe((land) => {
 
         this.results = land;
-        if(this.results == 0){
+        if (this.results == 0) {
           this.emptyL = true
         }
 
@@ -203,6 +204,6 @@ export class HomeComponent {
       }
 
     )
-    
+
   }
 }

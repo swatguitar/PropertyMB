@@ -37,6 +37,7 @@ export class AddlandsComponent {
     Email: '',
     Password: '',
     Birthday: '',
+    CodeProperty: '',
     LocationU: '',
     Phone: '',
     ProfileImg: '',

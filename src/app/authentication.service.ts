@@ -13,7 +13,7 @@ export interface UserDetails {
   Email: string
   Password: string
   Birthday: string
-  Location: string
+  LocationU: string
   Phone: string
   ProfileImg: string
   Age: string
@@ -49,7 +49,7 @@ export interface PropertyDetails {
   //----land---
   ID_Lands: string
   ColorType: string
-  PricePM: string
+  CodeProperty: string
   Land: string
   Deed: string
   Place: string
@@ -179,6 +179,7 @@ export interface TokenPayload {
   ColorType: string
   PricePM: string
   Land: string
+  CodeProperty: string
   Deed: string
   Place: string
   TypeCode: string
@@ -284,7 +285,7 @@ export interface TokenPayload {
 
 @Injectable()
 export class AuthenticationService {
-  ROOT_URL = "http://localhost:3001";
+  ROOT_URL = "https://thinking-armor-245907.appspot.com";
   private token: string
 
   constructor(private http: HttpClient, private router: Router) { }

@@ -105,7 +105,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ArchwizardModule,
     NgxImageGalleryModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAJZWeALRjPTmtec1IjK50FaPCmrda02Oc',
+      apiKey: 'AIzaSyCnxeJ2GRXPxGJh4ooPuvbLVQ7g37F1QSY',
       libraries: ['places']
     }),
     PDFExportModule,

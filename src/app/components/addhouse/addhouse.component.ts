@@ -41,6 +41,7 @@ export class AddhouseComponent implements OnInit {
     Email: '',
     Password: '',
     Birthday: '',
+    CodeProperty: '',
     LocationU: '',
     Phone: '',
     ProfileImg: '',

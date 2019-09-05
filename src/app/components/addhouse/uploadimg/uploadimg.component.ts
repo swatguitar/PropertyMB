@@ -24,6 +24,7 @@ export class UploadimgComponent implements OnInit {
     this.uploader.onAfterAddingFile = (fileItem) => {
       let url = (window.URL) ? window.URL.createObjectURL(fileItem._file) : (window as any).webkitURL.createObjectURL(fileItem._file);
       this.localImageUrl.push(url)
+      console.log(fileItem._file.size);
     }
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
       form.append('ID_property' , this.ID_Property);
