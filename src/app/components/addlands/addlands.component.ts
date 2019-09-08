@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./addlands.component.css']
 })
 
+//comment555
+
 export class AddlandsComponent {
   latitude: number;
   longitude: number;
