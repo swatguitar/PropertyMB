@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
-import { NgxImageGalleryComponent, GALLERY_IMAGE, GALLERY_CONF } from "ngx-image-gallery";
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 
 @Component({
   selector: 'app-houses-detail',
@@ -12,8 +12,8 @@ import { NgxImageGalleryComponent, GALLERY_IMAGE, GALLERY_CONF } from "ngx-image
 })
 export class HousesDetailComponent implements OnInit {
   details: PropertyDetails[];
-  imgbox :any[];
-  imgnew : any[];
+  imgbox: any[];
+  imgnew: any[];
   public postID: string;
   public activePage: number;
   public results: PropertyDetails[];
@@ -23,28 +23,36 @@ export class HousesDetailComponent implements OnInit {
   imageIndex = 1;
   galleryId = 1;
   isPlaying = true;
-// แก้ไข 1
-  // gallery images
-  images: GALLERY_IMAGE[] = [
-    {
-      url: "https://images.pexels.com/photos/669013/pexels-photo-669013.jpeg?w=1260", 
-      altText: 'woman-in-black-blazer-holding-blue-cup', 
-      title: 'woman-in-black-blazer-holding-blue-cup',
-      thumbnailUrl: "https://images.pexels.com/photos/669013/pexels-photo-669013.jpeg?w=60"
-    },
-    {
-      url: "https://images.pexels.com/photos/669006/pexels-photo-669006.jpeg?w=1260", 
-      altText: 'two-woman-standing-on-the-ground-and-staring-at-the-mountain', 
-      extUrl: 'https://www.pexels.com/photo/two-woman-standing-on-the-ground-and-staring-at-the-mountain-669006/',
-      thumbnailUrl: "https://images.pexels.com/photos/669006/pexels-photo-669006.jpeg?w=60"
-    },
-  ];
-  
+  galleryOptions: NgxGalleryOptions[];
+  galleryImages: NgxGalleryImage[];
+
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit() {
+    this.galleryOptions = [
+      { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
+      { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
+      { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
+      ]
 
+    this.galleryImages = [
+      {
+        small: '../../../assets/Property.jpg',
+        medium: '../../../assets/Property.jpg',
+        big: '../../../assets/Property.jpg'
+      },
+      {
+        small: '../../../assets/Home.jpg',
+        medium: '../../../assets/Home.jpg',
+        big: '../../../assets/Home.jpg'
+      },
+      {
+        small: '../../../assets/Land.jpg',
+        medium: '../../../assets/Land.jpg',
+        big: '../../../assets/Land.jpg'
+      }
+    ];
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = params.get('id');

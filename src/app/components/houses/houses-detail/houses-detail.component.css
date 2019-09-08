@@ -6,6 +6,12 @@ kendo-pdf-export {
   font-family: "DejaVu Sans", "Arial", sans-serif;
   font-size: 12px;
 }
+button {
+  margin-right: 1em;
+}
+gallery{
+  background: #ECEFF1;
+}
 .img{      
   margin:6px 6px;      
   border: 4px solid #eee;      

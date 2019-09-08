@@ -14,7 +14,7 @@ import { AgmCoreModule } from '@agm/core';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import {FileUploadModule} from 'ng2-file-upload';
 import { ArchwizardModule } from 'angular-archwizard';
-import { NgxImageGalleryModule } from 'ngx-image-gallery';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -103,7 +103,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TimeagoModule,
     FileUploadModule,
     ArchwizardModule,
-    NgxImageGalleryModule,
+    NgxGalleryModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCnxeJ2GRXPxGJh4ooPuvbLVQ7g37F1QSY',
       libraries: ['places']
