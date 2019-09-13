@@ -72,6 +72,7 @@ export class RegisterComponent implements OnInit {
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
+    ImageEX : '',
     TypeCode: '',
     PriceWA: '',
     WxD: '',
@@ -129,6 +130,12 @@ export class RegisterComponent implements OnInit {
     Deed: '',
     Place: '',
     imgProperty: null,
+     //------ contact ------
+     ID_Contact: 0,
+     ContactName: " ",
+     ContactEmail: " ",
+     ContactLine: " ",
+     ContactPhone: " ",
   }
   registerForm: FormGroup;
   submitted = false;
@@ -166,7 +173,7 @@ export class RegisterComponent implements OnInit {
 
     this.auth.register(this.credentials).subscribe(
       () => {
-        alert(JSON.stringify("ลงทะเบียสำเร็จแล้ว กรุณา ล๊อกอิน"))
+        alert(JSON.stringify("ลงทะเบียสำเร็จ กรุณา เข้าสู่ระบบ"))
         this.router.navigateByUrl('/profile');
       },
       err => {

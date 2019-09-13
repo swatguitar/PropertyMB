@@ -44,21 +44,20 @@
         <div style="position: absolute; left: -1000px; top: 0;">
           <kendo-pdf-export #pdf paperSize="A4" margin="1cm">
             <div style="width: 500px;">
-
-
             </div>
           </kendo-pdf-export>
         </div>
-        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-        
         <div class="row">
-          <ul>
-            <li *ngFor="let img of imgnew">
-              <a [routerLink]="['/image', img.id]">
-                <img src="http://localhost:3001/ftp/{{img.URL}}" class="img" width="240" height="170">
-              </a>
-            </li>
-          </ul>
+          <div class="col-md-6">
+            <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+          </div>
+          <div class="col-md-6">
+            <div class="jumbotron">
+              <div class="header-blog">สถานะการซื้อขาย</div>
+              <textarea class="form-control" id="FormControlTextarea" rows="5" value="{{house.PPStatus}}"
+                disabled></textarea>
+            </div>
+          </div>
         </div>
         <div id="product-specificate">
 
@@ -237,6 +236,12 @@
                   <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
                     <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
                   </agm-map>
+                </div>
+                <div class="row">
+                  <div class="col-sm-3">ละติจูต: <input class="form-control" disabled type="text" id="latitude"
+                      value='{{house.Latitude}}' name="latitude"> </div>
+                  <div class="col-sm-3">ลองจิจูต: <input class="form-control" disabled type="text" id="longitude"
+                      value='{{house.Longitude}}' name="longitude"> </div>
                 </div>
 
               </div>

@@ -28,7 +28,11 @@ export class AddlandsComponent {
   years: any[];
   onther: any
   Ronther: any
-  cal:number
+  cal: number
+  contactUser: any[];
+  selectContact: any[];
+  selectContact2: any[];
+  selectContact3: any[];
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
 
@@ -90,6 +94,7 @@ export class AddlandsComponent {
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
+    ImageEX: '',
     TypeCode: '',
     PriceWA: '',
     WxD: '',
@@ -147,6 +152,12 @@ export class AddlandsComponent {
     Deed: '',
     Place: '',
     imgProperty: null,
+    //------ contact ------
+    ID_Contact: 0,  
+    ContactName: " ",
+    ContactEmail: " ",
+    ContactLine: " ",
+    ContactPhone: " ",
   }
 
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
@@ -180,9 +191,9 @@ export class AddlandsComponent {
       });
     });
     //---------------calulate p/wa-----
- 
-     this.cal = parseInt(this.credentials.SellPrice)/parseInt(this.credentials.LandWA);
-     this.credentials.PriceWA = this.cal.toString()
+
+    this.cal = parseInt(this.credentials.SellPrice) / parseInt(this.credentials.LandWA);
+    this.credentials.PriceWA = this.cal.toString()
     //-------------------------------------------------
     var year = new Date().getFullYear();
     var yearth = year + 543
@@ -204,6 +215,8 @@ export class AddlandsComponent {
 
       }
     )
+
+    this.onResiveContact()
   }
 
   // Get Current Location Coordinates
@@ -282,7 +295,64 @@ export class AddlandsComponent {
     )
   }
 
+  onFinish() {
+    this.auth.uploadftp().subscribe(() => {
+    },
+      err => {
+        console.error(err)
+      }
+    )
 
+  }
+  onResiveContact() {
+    //-------- get contact ----
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  onCreateContact() {
+    this.auth.addcontact(this.credentials).subscribe(() => {
+      this.onResiveContact()
+      alert(JSON.stringify("บันทึกสำเร็จ"))
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  onEditContact() {
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  onGetContact(value) {
+    this.credentials.ID_Contact = value
+    this.selectContact = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
+  onGetContact2(value) {
+    this.credentials.ID_Contact = value
+    this.selectContact2 = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
+  onGetContact3(value) {
+    this.credentials.ID_Contact = value
+    console.log(this.credentials.ContactName )
+    this.selectContact3 = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
   propType: string;
   IDprop: string;
   onFirststep() {
@@ -298,9 +368,9 @@ export class AddlandsComponent {
         console.log(this.IDprop + "----------------data")
         this.onCheckTwo()
       });
-      console.log("..........." + this.credentials.ID_Property + " END")
+      console.log("..........." + this.credentials.ID_Lands+ " END")
 
-      this.auth.addhouse(this.credentials).subscribe(
+      this.auth.addland(this.credentials).subscribe(
         () => {
 
         },

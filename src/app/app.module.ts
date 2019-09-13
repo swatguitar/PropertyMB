@@ -48,6 +48,8 @@ import { RecdetailsComponent } from './components/recommend/recdetails/recdetail
 import { UploadimgComponent } from './components/addhouse/uploadimg/uploadimg.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UploadimglandComponent } from './components/addlands/uploadimgland/uploadimgland.component';
+import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
 
 
 
@@ -87,7 +89,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RecdetailsComponent,
     PropertyFilterPipe,
     UploadimgComponent,
-
+    UploadimglandComponent,
+    CommingsoonComponent,
 
 
   ],

@@ -31,6 +31,14 @@ export class AddhouseComponent implements OnInit {
   public details: any;
   createID: string
   years: any[];
+  contactUser: any[];
+  selectContact: any[];
+  selectContact2: any[];
+  selectContact3: any[];
+  Name:string 
+  EmailContact:string
+  PhoneContact:string
+  LineContact:string
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
 
@@ -92,6 +100,7 @@ export class AddhouseComponent implements OnInit {
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
+    ImageEX: '',
     TypeCode: '',
     PriceWA: '',
     WxD: '',
@@ -149,7 +158,12 @@ export class AddhouseComponent implements OnInit {
     Deed: '',
     Place: '',
     imgProperty: null,
-
+    //------ contact ------
+    ID_Contact: 0,
+    ContactName: " ",
+    ContactEmail: " ",
+    ContactLine: " ",
+    ContactPhone: " ",
   }
 
   ngOnInit() {
@@ -202,6 +216,7 @@ export class AddhouseComponent implements OnInit {
 
       }
     )
+    this.onResiveContact()
   }
 
   // Get Current Location Coordinates
@@ -282,6 +297,77 @@ export class AddhouseComponent implements OnInit {
 
   propType: string;
   IDprop: string;
+  onFinish() {
+    this.auth.uploadftp().subscribe(() => {
+    },
+      err => {
+        console.error(err)
+      }
+    )
+
+  }
+  onResiveContact() {
+    //-------- get contact ----
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  onCreateContact() {
+    this.auth.addcontact(this.credentials).subscribe(() => {
+      this.onResiveContact()
+      alert(JSON.stringify("บันทึกสำเร็จ"))
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  onEditContact() {
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  onGetContact(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.Name
+    this.credentials.ContactEmail = this.EmailContact
+    this.credentials.ContactPhone = this.PhoneContact
+    this.credentials.ContactLine = this.LineContact
+    this.selectContact = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
+  onGetContact2(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.Name
+    this.credentials.ContactEmail = this.EmailContact
+    this.credentials.ContactPhone = this.PhoneContact
+    this.credentials.ContactLine = this.LineContact
+    this.selectContact2 = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
+  onGetContact3(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.Name
+    this.credentials.ContactEmail = this.EmailContact
+    this.credentials.ContactPhone = this.PhoneContact
+    this.credentials.ContactLine = this.LineContact
+    console.log(this.credentials.ContactName )
+    this.selectContact3 = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
+
   onFirststep() {
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude

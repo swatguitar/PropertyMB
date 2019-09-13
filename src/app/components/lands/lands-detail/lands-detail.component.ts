@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
+import { } from 'googlemaps';
+import { MapsAPILoader, MouseEvent } from '@agm/core';
+
+
 @Component({
   selector: 'app-lands-detail',
   templateUrl: './lands-detail.component.html',
@@ -8,18 +13,28 @@ import { AuthenticationService, UserDetails, PropertyDetails } from '../../../au
 })
 export class LandsDetailComponent implements OnInit {
   details: PropertyDetails[];
-  public postID:number;
+  imgbox: any[];
+  imagenew: any[];
+  public postID:string;
   public activePage:number;
   public results:any;
+  isPlaying = true;
+  galleryOptions: NgxGalleryOptions[];
+  galleryImages: NgxGalleryImage[];
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
     private router:Router) { }
 
   ngOnInit() {
-/*
+
+    this.galleryOptions = [
+      { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
+      { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
+      { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
+    ]
 
     let params = this.route.snapshot.paramMap;
     if(params.has('id')){
-      this.postID = +params.get('id');
+      this.postID = params.get('id');
     }
     this.route
     .queryParams
@@ -33,12 +48,60 @@ export class LandsDetailComponent implements OnInit {
       this.details = land
       // กรณี resuponse success
         this.results = this.details.filter( article => {
-          return article.ID_land == this.postID;
+          return article.ID_Lands == this.postID;
           
         });
-        
-    })*/
+      
+    })
+    this.auth.getimgland().subscribe((img) => {
+      this.imgbox = img
+      // กรณี resuponse success
+      this.imagenew = this.imgbox.filter(article => {
+        return article.ID_land == this.postID;
 
+      });
+      if(this.imagenew.length == 0){
+        this.galleryImages = [
+          {
+            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' 
+          },
+          {
+            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' 
+          },
+          {
+            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' 
+          },
+          {
+            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' 
+          },
+          {
+            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' ,
+            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg' 
+          },
+        ]
+
+      }else{
+        this.galleryImages = this.imagenew.map(item => {
+        
+          return {
+            small: 'http://www.landvist.xyz/images/' + item.URL,
+            medium: 'http://www.landvist.xyz/images/' + item.URL,
+            big: 'http://www.landvist.xyz/images/' + item.URL
+          };
+  
+        });
+      }
+      
+    })
   }
 
 }

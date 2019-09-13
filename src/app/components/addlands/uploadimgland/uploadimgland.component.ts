@@ -2,21 +2,20 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'https://thinking-armor-245907.appspot.com/users/upload';
+const uri = 'https://thinking-armor-245907.appspot.com/users/uploadimageLand';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../../authentication.service';
 
 @Component({
-  selector: 'app-uploadimg',
-  templateUrl: './uploadimg.component.html',
-  styleUrls: ['./uploadimg.component.css']
-
+  selector: 'app-uploadimgland',
+  templateUrl: './uploadimgland.component.html',
+  styleUrls: ['./uploadimgland.component.css']
 })
-export class UploadimgComponent implements OnInit {
+export class UploadimglandComponent implements OnInit {
   localImageUrl = [];
   attachmentList: any = [];
   uploader: FileUploader = new FileUploader({ url: uri 
   });
-  @Input() ID_Property: string
+  @Input() ID_Lands: string
   constructor(private http: HttpClient, public sanitizer: DomSanitizer) {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
@@ -27,7 +26,7 @@ export class UploadimgComponent implements OnInit {
       console.log(fileItem._file.size);
     }
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('ID_property' , this.ID_Property);
+      form.append('ID_lands' , this.ID_Lands);
      };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
@@ -51,5 +50,4 @@ export class UploadimgComponent implements OnInit {
 
 
   }
-
 }

@@ -102,6 +102,7 @@ export interface PropertyDetails {
   ContactSt: string
   LandAge: string
   PPStatus: string
+  ImageEX: string
   Owner: string
   //------ forniture-----
 
@@ -151,7 +152,12 @@ export interface PropertyDetails {
   Mainroad: number
   Insoi: number
   Letc: string
-
+  //------ contact ------
+  ID_Contact: number
+  ContactName: string
+  ContactEmail: string
+  ContactLine: string
+  ContactPhone: string
 
 
 }
@@ -231,6 +237,7 @@ export interface TokenPayload {
   ContactSt: string
   LandAge: string
   PPStatus: string
+  ImageEX: string
   Owner: string
   //------ forniture-----
 
@@ -281,6 +288,14 @@ export interface TokenPayload {
   Insoi: number
   Letc: string
   imgProperty: File
+  //------ contact ------
+  ID_Contact: number
+  ContactName: string
+  ContactEmail: string
+  ContactLine: string
+  ContactPhone: string
+
+ 
 }
 
 @Injectable()
@@ -338,6 +353,16 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  public EditContact(contact: TokenPayload): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/EditContact`, contact, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public addcontact(contact: TokenPayload): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/addContact`, contact, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
   public addhouse(house: TokenPayload): Observable<any> {
     return this.http.post(this.ROOT_URL + `/users/addhouse`, house, {
       headers: { Authorization: ` ${this.getToken()}` }
@@ -348,6 +373,7 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+
 
   public login(user: TokenPayload): Observable<any> {
     const base = this.http.post(this.ROOT_URL + `/users/login`, user)
@@ -374,6 +400,16 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  public getContact(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/contact`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public uploadftp(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/uploadftp`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
   public getAllland(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/landsall`, {
       headers: { Authorization: ` ${this.getToken()}` }
@@ -396,6 +432,11 @@ export class AuthenticationService {
   }
   public getimghouse(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/imghouse`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+   public getimgland(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/imgland`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }

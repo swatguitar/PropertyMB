@@ -68,6 +68,7 @@ export class HomeComponent {
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
+    ImageEX : '',
     TypeCode: '',
     PriceWA: '',
     WxD: '',
@@ -125,6 +126,12 @@ export class HomeComponent {
     Deed: '',
     Place: '',
     imgProperty: null,
+     //------ contact ------
+     ID_Contact: 0,
+     ContactName: " ",
+     ContactEmail: " ",
+     ContactLine: " ",
+     ContactPhone: " ",
   }
   public details: any;
   public results: any;

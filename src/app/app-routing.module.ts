@@ -30,6 +30,7 @@ import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.co
 import { PagenotfoundComponent } from './lib/pagenotfound/pagenotfound.component';
 import { RecdetailsComponent } from './components/recommend/recdetails/recdetails.component';
 import { UploadimgComponent } from './components/addhouse/uploadimg/uploadimg.component';
+import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -38,6 +39,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   { path: "pagenotfound", component: PagenotfoundComponent },
+  { path: "commingsoon", component: CommingsoonComponent },
   { path: "aboutus", component: AboutusComponent },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },

@@ -71,6 +71,7 @@ export class LoginComponent {
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
+    ImageEX : '',
     TypeCode: '',
     PriceWA: '',
     WxD: '',
@@ -128,6 +129,12 @@ export class LoginComponent {
     Deed: '',
     Place: '',
     imgProperty: null,
+     //------ contact ------
+     ID_Contact: 0,
+     ContactName: " ",
+     ContactEmail: " ",
+     ContactLine: " ",
+     ContactPhone: " ",
   }
   form: FormGroup;
   submitted: boolean;

@@ -103,6 +103,7 @@ export class HouseslistComponent implements OnInit {
       this.details = house;
       
     })
+    
     // ส่วนของการรับค่า paramMap ที่ส่งกลับมาจากหน้า รายละเอียด
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {

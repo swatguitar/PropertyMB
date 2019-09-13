@@ -1,4 +1,17 @@
 
+.logo-distributed h3{
+  color:  #000000;
+  font: normal 36px 'Cookie', cursive;
+  margin: 0;
+}
+
+.logo-distributed h3 span{
+  color:  #2fbd2a;
+}
+input.ng-invalid.ng-touched {
+    border: solid 1px red;
+}
+
 input.ng-invalid.ng-touched {
     border: solid 1px red;
 }
