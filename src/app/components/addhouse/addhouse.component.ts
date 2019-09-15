@@ -26,7 +26,7 @@ export class AddhouseComponent implements OnInit {
   amphur: any[];
   PA: locationsDetails;
   district: locationsDetails;
-  zipcode: locationsDetails;
+  zipcode: any[];
   private geoCoder;
   public details: any;
   createID: string
@@ -36,6 +36,7 @@ export class AddhouseComponent implements OnInit {
   selectContact2: any[];
   selectContact3: any[];
   Name:string 
+  ZIPCODE:string
   EmailContact:string
   PhoneContact:string
   LineContact:string
@@ -257,11 +258,12 @@ export class AddhouseComponent implements OnInit {
 
   }
 
-  selectprovince(value) {
+  selectprovince(data) {
+   this.credentials.LProvince = data.PROVINCE_NAME
     this.auth.getAmphur().subscribe((amphur) => {
       // กรณี resuponse success
       this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == value;
+        return article.PROVINCE_ID == data.PROVINCE_ID;
       });
     },
       err => {
@@ -270,11 +272,12 @@ export class AddhouseComponent implements OnInit {
     )
   }
 
-  selectamphur(value) {
+  selectamphur(data) {
+    this.credentials.LAmphur = data.AMPHUR_NAME
     this.auth.getDistrict().subscribe((district) => {
       // กรณี resuponse success
       this.district = district.filter(article => {
-        return article.AMPHUR_ID == value;
+        return article.AMPHUR_ID == data.AMPHUR_ID;
       });
     },
       err => {
@@ -282,17 +285,26 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
-  selectdistrict(value) {
+  selectdistrict(data) {
+    this.credentials.LDistrict= data.DISTRICT_NAME
     this.auth.getZipcode().subscribe((zipcode) => {
       // กรณี resuponse success
       this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == value;
+        return article.DISTRICT_ID == data.DISTRICT_ID;
       });
+      
     },
       err => {
         console.error(err)
       }
     )
+
+  }
+  getZipCode(){
+    this.zipcode.forEach((element, index) => {
+        this.credentials.LZipCode = element.ZIPCODE 
+    });
+    
   }
 
   propType: string;
@@ -338,6 +350,8 @@ export class AddhouseComponent implements OnInit {
 
   onGetContact(value) {
     this.credentials.ID_Contact = value
+    this.credentials.ContactUt = value
+    this.credentials.ContactUo = value
     this.credentials.ContactName = this.Name
     this.credentials.ContactEmail = this.EmailContact
     this.credentials.ContactPhone = this.PhoneContact
@@ -348,6 +362,7 @@ export class AddhouseComponent implements OnInit {
   }
   onGetContact2(value) {
     this.credentials.ID_Contact = value
+    this.credentials.ContactUo = value
     this.credentials.ContactName = this.Name
     this.credentials.ContactEmail = this.EmailContact
     this.credentials.ContactPhone = this.PhoneContact
@@ -367,8 +382,11 @@ export class AddhouseComponent implements OnInit {
       return article.ID_Contact == value;
     });
   }
-
+nextstep:string ='false'
   onFirststep() {
+    this.getZipCode()
+  
+    this.nextstep = 'true'
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     if (this.credentials.PropertyType == "อาคารพานิชย์") {

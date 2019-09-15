@@ -288,12 +288,14 @@ export class AddlandsComponent {
       this.zipcode = zipcode.filter(article => {
         return article.DISTRICT_ID == value;
       });
+      
     },
       err => {
         console.error(err)
       }
     )
   }
+ 
 
   onFinish() {
     this.auth.uploadftp().subscribe(() => {
@@ -356,6 +358,8 @@ export class AddlandsComponent {
   propType: string;
   IDprop: string;
   onFirststep() {
+   
+    this.credentials.LZipCode= this.zipcode.ZIPCODE
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
 
