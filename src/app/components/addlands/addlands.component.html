@@ -275,7 +275,8 @@
                                             <div class="col-md-4 ">
                                                 <div cl>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                        id="CodeDeed" class="form-control search-input" name="CodeProperty"
+                                                        id="CodeDeed" class="form-control search-input"
+                                                        name="CodeProperty"
                                                         placeholder="รหัสทรัพย์สิน(จากธนาคาร หรือ กรมที่ดิน)" required
                                                         [(ngModel)]="credentials.CodeProperty">
                                                 </div>
@@ -304,7 +305,7 @@
                                                     <label>โฉนด :</label>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-2 ">
+                                            <div class="col-md-2 ">
                                                 <select style="border-radius: 30px 30px 30px 30px;" id="Deed"
                                                     class="form-control" name="Deed" [(ngModel)]="credentials.Deed">
                                                     <option value="1 เลน">น.ส.4จ.</option>
@@ -336,9 +337,25 @@
 
                                             </div>
                                         </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div>
+                                                    <label>อายุการถือครองที่ดิน :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 ">
+
+                                                <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                    id="LandAge" class="form-control"
+                                                    placeholder="อายุการถือครองที่ดิน(ปี)" name="LandAge" required
+                                                    [(ngModel)]="credentials.LandAge">
+
+                                            </div>
+                                        </div>
                                         <hr>
                                         <div class="row ">
-                                            <div class="col-md-12 ">
+                                            <div class="col-md-6 ">
                                                 <h4>ทำเล</h4>
                                                 <div class="col-sm-12">
                                                     <input type="checkbox" id="" value="yes" checked name="Blind"
@@ -373,11 +390,13 @@
                                                     <input type="checkbox" id="" value="yes" checked name="onther"
                                                         [(ngModel)]="onther">อื่นๆ
                                                 </div>
-                                                <div *ngIf="onther == 'yes'" class="col-sm-12">
+                                                <div *ngIf="onther=='yes'" class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="Letc" class="form-control" placeholder="โปรดระบุ"
                                                         name="Letc" required [(ngModel)]="credentials.Letc">
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <h4>สถานะถนน</h4>
                                                 <div class="col-sm-12">
                                                     <input type="radio" id="" value="โคลน" checked name="RoadType"
@@ -400,8 +419,9 @@
                                                         id="RoadType" class="form-control" placeholder="โปรดระบุ"
                                                         name="RoadType" required [(ngModel)]="credentials.RoadType">
                                                 </div>
-
-                                                <div class="col-sm-12">
+                                            
+                                           
+                                                <div class="col-md-6">
                                                     <br>
                                                     <label>ความกว้างถนน</label>
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide"
@@ -435,7 +455,6 @@
                                                         id="GroundValue" class="form-control"
                                                         placeholder="ระดับพื้นดินจากถนน (เมตร)" name="GroundValue"
                                                         required>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -542,15 +561,16 @@
                                                                     <select style="border-radius: 30px 30px 30px 30px;"
                                                                         id="LProvince" class="form-control"
                                                                         name="LProvince" required
-                                                                        [(ngModel)]="credentials.LProvince "
-                                                                        (change)="selectprovince($event.target.value)">
+                                                                        [(ngModel)]="LProvince"
+                                                                        (ngModelChange)="selectprovince($event)">
                                                                         <option>- จังหวัด -</option>
                                                                         <option *ngFor="let p of province"
-                                                                            value="{{p.PROVINCE_ID}}">
+                                                                            [ngValue]="p">
                                                                             {{p.PROVINCE_NAME}}
                                                                         </option>
 
                                                                     </select>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -562,12 +582,11 @@
                                                                 <div class="col-sm-8">
                                                                     <select style="border-radius: 30px 30px 30px 30px;"
                                                                         id="LAmphur" class="form-control" name="LAmphur"
-                                                                        required [(ngModel)]="credentials.LAmphur"
-                                                                        (change)="selectamphur($event.target.value)">
+                                                                        required [(ngModel)]="LAmphur"
+                                                                        (ngModelChange)="selectamphur($event)">
                                                                         <option>- อำเภอ -</option>
-                                                                        <option *ngFor="let p of amphur"
-                                                                            value="{{p.AMPHUR_ID}}">{{p.AMPHUR_NAME}}
-                                                                        </option>
+                                                                        <option *ngFor="let a of amphur" [ngValue]="a">
+                                                                            {{a.AMPHUR_NAME}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -584,12 +603,12 @@
                                                                     <select style="border-radius: 30px 30px 30px 30px;"
                                                                         id="LDistrict" class="form-control"
                                                                         name="LDistrict" required
-                                                                        [(ngModel)]="credentials.LDistrict"
-                                                                        (change)="selectdistrict($event.target.value)">
+                                                                        [(ngModel)]="LDistrict"
+                                                                        (ngModelChange)="selectdistrict($event)">
                                                                         <option>- ตำบล -</option>
-                                                                        <option *ngFor="let p of district"
-                                                                            value="{{p.DISTRICT_ID}}">
-                                                                            {{p.DISTRICT_NAME}}
+                                                                        <option *ngFor="let d of district"
+                                                                            [ngValue]="d">
+                                                                            {{d.DISTRICT_NAME}}
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -601,7 +620,9 @@
                                                                     รหัสไปรษณี:
                                                                 </div>
                                                                 <div class="col-sm-8" *ngFor="let pp of zipcode">
-                                                                    <label for="">{{pp.ZIPCODE}}</label>
+                                                                    <input class="form-control" type="text"
+                                                                        style="border-radius: 30px 30px 30px 30px;"
+                                                                        value="{{pp.ZIPCODE}}" readonly>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -616,20 +637,20 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12  ">
-                            <h3><i class="fas fa-file-alt"></i> ข้อมูลติด</h3>
+                            <h3><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"
-                                        role="tab" aria-controls="home" aria-selected="true">ผู้ติดต่อบุคคลที่ 1</a>
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                        aria-controls="home" aria-selected="true">ผู้ติดต่อบุคคลที่ 1</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile"
-                                        role="tab" aria-controls="profile" aria-selected="false">ผู้ติดต่อบุคคลที่
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                        aria-controls="profile" aria-selected="false">ผู้ติดต่อบุคคลที่
                                         2</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact"
-                                        role="tab" aria-controls="contact" aria-selected="false">ผู้ติดต่อบุคคลที่
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                                        aria-controls="contact" aria-selected="false">ผู้ติดต่อบุคคลที่
                                         3</a>
                                 </li>
                             </ul>
@@ -645,12 +666,10 @@
                                                             <label for="inputEmail4">รายชื่อผู้ติดต่อ</label>
                                                             <select style="border-radius: 30px 30px 30px 30px;"
                                                                 id="ContactUt" class="form-control" name="ContactU"
-                                                                required
-                                                                (change)="onGetContact($event.target.value)"
+                                                                required (change)="onGetContact($event.target.value)"
                                                                 [(ngModel)]="credentials.ContactU">
                                                                 <option value="0">เลือกผู้ติดต่อ</option>
-                                                                <option
-                                                                    *ngFor="let user of contactUser; index as i; "
+                                                                <option *ngFor="let user of contactUser; index as i; "
                                                                     value="{{user.ID_Contact}}"> {{user.Name}}
                                                                 </option>
                                                             </select>
@@ -663,10 +682,9 @@
                                                         </button>
                                                     </div>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="Modelone" tabindex="-1"
-                                                        role="dialog" aria-labelledby="Modelone" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered"
-                                                            role="document">
+                                                    <div class="modal fade" id="Modelone" tabindex="-1" role="dialog"
+                                                        aria-labelledby="Modelone" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
@@ -684,18 +702,15 @@
                                                                             <div class="form-group col-md-6">
                                                                                 <label
                                                                                     for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                                                                                <input type="Text"
-                                                                                    class="form-control"
+                                                                                <input type="Text" class="form-control"
                                                                                     placeholder="ชื่อผู้ติดต่อ"
                                                                                     name="ContactName"
                                                                                     [(ngModel)]="credentials.ContactName"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                                             </div>
                                                                             <div class="form-group col-md-6">
-                                                                                <label
-                                                                                    for="ContactEmail">อีเมล</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <label for="ContactEmail">อีเมล</label>
+                                                                                <input type="text" class="form-control"
                                                                                     name="ContactEmail"
                                                                                     [(ngModel)]="credentials.ContactEmail"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
@@ -706,17 +721,14 @@
                                                                             <div class="form-group col-md-6">
                                                                                 <label
                                                                                     for="ContactPhone">เบอร์โทร</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <input type="text" class="form-control"
                                                                                     name="ContactPhone"
                                                                                     [(ngModel)]="credentials.ContactPhone"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                                             </div>
                                                                             <div class="form-group col-md-4">
-                                                                                <label
-                                                                                    for="ContactLine">ไลน์</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <label for="ContactLine">ไลน์</label>
+                                                                                <input type="text" class="form-control"
                                                                                     name="ContactLine"
                                                                                     [(ngModel)]="credentials.ContactLine"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
@@ -727,8 +739,9 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">ปิด</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary"  (click)="onCreateContact()" data-dismiss="modal">บันทึกข้อมูล</button>
+                                                                    <button type="submit" class="btn btn-primary"
+                                                                        (click)="onCreateContact()"
+                                                                        data-dismiss="modal">บันทึกข้อมูล</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -747,8 +760,8 @@
                                                             <div class="form-group col-md-4">
                                                                 <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
                                                                 <input type="name" class="form-control"
-                                                                    value="{{item.Name}}"
-                                                                    placeholder="ชื่อผู้ติดต่อ" readonly
+                                                                    value="{{item.Name}}" placeholder="ชื่อผู้ติดต่อ"
+                                                                    readonly
                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                             </div>
                                                             <div class="form-group col-md-4">
@@ -799,8 +812,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="profile" role="tabpanel"
-                                    aria-labelledby="profile-tab">
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                     <div class="container jumbotron">
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -809,13 +821,11 @@
                                                         <div class="form-group col-md-6">
                                                             <label for="inputEmail4">รายชื่อผู้ติดต่อ</label>
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                class="form-control" name="ContactUt"
-                                                                required
+                                                                class="form-control" name="ContactUt" required
                                                                 (change)="onGetContact2($event.target.value)"
                                                                 [(ngModel)]="credentials.ContactUt">
                                                                 <option value="0">เลือกผู้ติดต่อ</option>
-                                                                <option
-                                                                    *ngFor="let user of contactUser; index as i; "
+                                                                <option *ngFor="let user of contactUser; index as i; "
                                                                     value="{{user.ID_Contact}}"> {{user.Name}}
                                                                 </option>
                                                             </select>
@@ -828,10 +838,9 @@
                                                         </button>
                                                     </div>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="Modeltwo" tabindex="-1"
-                                                        role="dialog" aria-labelledby="Modeltwo" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered"
-                                                            role="document">
+                                                    <div class="modal fade" id="Modeltwo" tabindex="-1" role="dialog"
+                                                        aria-labelledby="Modeltwo" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
@@ -849,18 +858,15 @@
                                                                             <div class="form-group col-md-6">
                                                                                 <label
                                                                                     for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                                                                                <input type="Text"
-                                                                                    class="form-control"
+                                                                                <input type="Text" class="form-control"
                                                                                     placeholder="ชื่อผู้ติดต่อ"
                                                                                     name="ContactName"
                                                                                     [(ngModel)]="credentials.ContactName"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                                             </div>
                                                                             <div class="form-group col-md-6">
-                                                                                <label
-                                                                                    for="ContactEmail">อีเมล</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <label for="ContactEmail">อีเมล</label>
+                                                                                <input type="text" class="form-control"
                                                                                     name="ContactEmail"
                                                                                     [(ngModel)]="credentials.ContactEmail"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
@@ -871,17 +877,14 @@
                                                                             <div class="form-group col-md-6">
                                                                                 <label
                                                                                     for="ContactPhone">เบอร์โทร</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
-                                                                                    name="ContactPhone" 
+                                                                                <input type="text" class="form-control"
+                                                                                    name="ContactPhone"
                                                                                     [(ngModel)]="credentials.ContactPhone"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                                             </div>
                                                                             <div class="form-group col-md-4">
-                                                                                <label
-                                                                                    for="ContactLine">ไลน์</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <label for="ContactLine">ไลน์</label>
+                                                                                <input type="text" class="form-control"
                                                                                     name="ContactLine"
                                                                                     [(ngModel)]="credentials.ContactLine"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
@@ -892,15 +895,16 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">ปิด</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary" (click)="onCreateContact()" data-dismiss="modal">บันทึกข้อมูล</button>
+                                                                    <button type="submit" class="btn btn-primary"
+                                                                        (click)="onCreateContact()"
+                                                                        data-dismiss="modal">บันทึกข้อมูล</button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </form>
 
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                     <div *ngIf="credentials.ContactUt != 0 ">
@@ -912,14 +916,13 @@
                                                             <div class="form-group col-md-4">
                                                                 <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
                                                                 <input type="name" class="form-control"
-                                                                    value="{{item.Name}}" 
-                                                                    placeholder="ชื่อผู้ติดต่อ" readonly
+                                                                    value="{{item.Name}}" placeholder="ชื่อผู้ติดต่อ"
+                                                                    readonly
                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                             </div>
                                                             <div class="form-group col-md-4">
                                                                 <label for="inputPassword4">สถานะ</label>
                                                                 <input type="text" class="form-control"
-                                                                    
                                                                     placeholder="เจ้าของ , นายหน้า" name="ContactSt"
                                                                     [(ngModel)]="credentials.ContactSt"
                                                                     style="border-radius: 30px 30px 30px 30px;">
@@ -966,8 +969,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="contact" role="tabpanel"
-                                    aria-labelledby="contact-tab">
+                                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                     <div class="container jumbotron">
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -977,12 +979,10 @@
                                                             <label for="inputEmail4">รายชื่อผู้ติดต่อ</label>
                                                             <select style="border-radius: 30px 30px 30px 30px;"
                                                                 id="ContactUt" class="form-control" name="ContactUo"
-                                                                required
-                                                                (change)="onGetContact3($event.target.value)"
+                                                                required (change)="onGetContact3($event.target.value)"
                                                                 [(ngModel)]="credentials.ContactUo">
                                                                 <option value="0">เลือกผู้ติดต่อ</option>
-                                                                <option
-                                                                    *ngFor="let user of contactUser; index as i; "
+                                                                <option *ngFor="let user of contactUser; index as i; "
                                                                     value="{{user.ID_Contact}}"> {{user.Name}}
                                                                 </option>
                                                             </select>
@@ -995,11 +995,9 @@
                                                         </button>
                                                     </div>
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="Modelthree" tabindex="-1"
-                                                        role="dialog" aria-labelledby="Modelthree"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered"
-                                                            role="document">
+                                                    <div class="modal fade" id="Modelthree" tabindex="-1" role="dialog"
+                                                        aria-labelledby="Modelthree" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title"
@@ -1017,8 +1015,7 @@
                                                                             <div class="form-group col-md-6">
                                                                                 <label
                                                                                     for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                                                                                <input type="Text"
-                                                                                    class="form-control"
+                                                                                <input type="Text" class="form-control"
                                                                                     id="ContactName"
                                                                                     placeholder="ชื่อผู้ติดต่อ"
                                                                                     name="ContactName"
@@ -1026,10 +1023,8 @@
                                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                                             </div>
                                                                             <div class="form-group col-md-6">
-                                                                                <label
-                                                                                    for="ContactEmail">อีเมล</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <label for="ContactEmail">อีเมล</label>
+                                                                                <input type="text" class="form-control"
                                                                                     id="ContactEmail"
                                                                                     name="ContactEmail"
                                                                                     [(ngModel)]="credentials.ContactEmail"
@@ -1041,20 +1036,16 @@
                                                                             <div class="form-group col-md-6">
                                                                                 <label
                                                                                     for="ContactPhone">เบอร์โทร</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <input type="text" class="form-control"
                                                                                     name="ContactPhone"
                                                                                     [(ngModel)]="credentials.ContactPhone"
                                                                                     style="border-radius: 30px 30px 30px 30px;"
                                                                                     id="ContactPhone">
                                                                             </div>
                                                                             <div class="form-group col-md-4">
-                                                                                <label
-                                                                                    for="ContactLine">ไลน์</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
+                                                                                <label for="ContactLine">ไลน์</label>
+                                                                                <input type="text" class="form-control"
                                                                                     [(ngModel)]="credentials.ContactLine"
-                                                                                    
                                                                                     name="ContactLine"
                                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                                             </div>
@@ -1064,8 +1055,9 @@
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">ปิด</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary" (click)="onCreateContact()" data-dismiss="modal">บันทึกข้อมูล</button>
+                                                                    <button type="submit" class="btn btn-primary"
+                                                                        (click)="onCreateContact()"
+                                                                        data-dismiss="modal">บันทึกข้อมูล</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1099,20 +1091,19 @@
                                                         <div class="form-row">
                                                             <div class="form-group col-md-4">
                                                                 <label for="inputCity">อีเมล</label>
-                                                                <input type="text" class="form-control" 
-                                                                    value="{{item.Email}}"  readonly
+                                                                <input type="text" class="form-control"
+                                                                    value="{{item.Email}}" readonly
                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                             </div>
                                                             <div class="form-group col-md-4">
                                                                 <label for="inputZip">เบอร์โทร</label>
                                                                 <input type="text" class="form-control" readonly
-                                                                    style="border-radius: 30px 30px 30px 30px;"
-                                                                    >
+                                                                    style="border-radius: 30px 30px 30px 30px;">
                                                             </div>
                                                             <div class="form-group col-md-4">
                                                                 <label for="inputZip">ไลน์</label>
                                                                 <input type="text" class="form-control"
-                                                                    value="{{item.Line}}"  readonly
+                                                                    value="{{item.Line}}" readonly
                                                                     style="border-radius: 30px 30px 30px 30px;">
                                                             </div>
                                                         </div>
@@ -1120,7 +1111,7 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     id="gridCheck" [(ngModel)]="allowedit3"
-                                                                    name="allowedit3" value="1"> 
+                                                                    name="allowedit3" value="1">
                                                                 <label class="form-check-label" for="gridCheck">
                                                                     แก้ไข ข้อมูลผู้ติดต่อ
                                                                 </label>
@@ -1162,7 +1153,8 @@
                     </div>
 
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary float-right" awNextStep (click)="onFinish()" >ถัดไป</button>
+                        <button type="button" class="btn btn-primary float-right" awNextStep
+                            (click)="onFinish()">ถัดไป</button>
                     </div>
                 </div>
             </aw-wizard-step>

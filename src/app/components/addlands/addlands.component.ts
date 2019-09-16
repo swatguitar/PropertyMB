@@ -21,7 +21,7 @@ export class AddlandsComponent {
   amphur: any[];
   PA: locationsDetails;
   district: locationsDetails;
-  zipcode: locationsDetails;
+  zipcode: any[];
   private geoCoder;
   public details: any;
   createID: string
@@ -153,7 +153,7 @@ export class AddlandsComponent {
     Place: '',
     imgProperty: null,
     //------ contact ------
-    ID_Contact: 0,  
+    ID_Contact: 0,
     ContactName: " ",
     ContactEmail: " ",
     ContactLine: " ",
@@ -257,11 +257,12 @@ export class AddlandsComponent {
     });
 
   }
-  selectprovince(value) {
+  selectprovince(data) {
+    this.credentials.LProvince = data.PROVINCE_NAME
     this.auth.getAmphur().subscribe((amphur) => {
       // กรณี resuponse success
       this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == value;
+        return article.PROVINCE_ID == data.PROVINCE_ID;
       });
     },
       err => {
@@ -270,11 +271,12 @@ export class AddlandsComponent {
     )
   }
 
-  selectamphur(value) {
+  selectamphur(data) {
+    this.credentials.LAmphur = data.AMPHUR_NAME
     this.auth.getDistrict().subscribe((district) => {
       // กรณี resuponse success
       this.district = district.filter(article => {
-        return article.AMPHUR_ID == value;
+        return article.AMPHUR_ID == data.AMPHUR_ID;
       });
     },
       err => {
@@ -282,20 +284,27 @@ export class AddlandsComponent {
       }
     )
   }
-  selectdistrict(value) {
+  selectdistrict(data) {
+    this.credentials.LDistrict = data.DISTRICT_NAME
     this.auth.getZipcode().subscribe((zipcode) => {
       // กรณี resuponse success
       this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == value;
+        return article.DISTRICT_ID == data.DISTRICT_ID;
       });
-      
+
     },
       err => {
         console.error(err)
       }
     )
+
   }
- 
+  getZipCode() {
+    this.zipcode.forEach((element, index) => {
+      this.credentials.LZipCode = element.ZIPCODE
+    });
+
+  }
 
   onFinish() {
     this.auth.uploadftp().subscribe(() => {
@@ -350,7 +359,7 @@ export class AddlandsComponent {
   }
   onGetContact3(value) {
     this.credentials.ID_Contact = value
-    console.log(this.credentials.ContactName )
+    console.log(this.credentials.ContactName)
     this.selectContact3 = this.contactUser.filter(article => {
       return article.ID_Contact == value;
     });
@@ -358,8 +367,8 @@ export class AddlandsComponent {
   propType: string;
   IDprop: string;
   onFirststep() {
-   
-    this.credentials.LZipCode= this.zipcode.ZIPCODE
+
+    this.getZipCode()
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
 
@@ -372,7 +381,7 @@ export class AddlandsComponent {
         console.log(this.IDprop + "----------------data")
         this.onCheckTwo()
       });
-      console.log("..........." + this.credentials.ID_Lands+ " END")
+      console.log("..........." + this.credentials.ID_Lands + " END")
 
       this.auth.addland(this.credentials).subscribe(
         () => {

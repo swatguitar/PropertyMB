@@ -3,7 +3,7 @@ import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { } from 'googlemaps';
 import { AuthenticationService, TokenPayload, locationsDetails } from '../../authentication.service'
 import { Router } from '@angular/router';
-import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 
 
@@ -18,12 +18,11 @@ import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 
 export class AddhouseComponent implements OnInit {
   addhouseForm: FormGroup;
-  formSubmitted = false;
-  constructor(private formBuilder: FormBuilder, private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) {}
-      buildForm() {
-        this.addhouseForm = new FormGroup ({
-          PropertyType: new FormControl (''),
+  submitted = false;
+  constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone) { 
+      this.addhouseForm = new FormGroup ({
+        PropertyType: new FormControl ('', Validators.required),
         AnnounceTH: new FormControl ('', Validators.required),
         SellPrice: new FormControl ('', Validators.required),
         CodeDeed: new FormControl ('', Validators.required),
@@ -38,13 +37,12 @@ export class AddhouseComponent implements OnInit {
         MFee: new FormControl ('', Validators.required),
         newhouse: new FormControl (''),
         oldhouse: new FormControl (''),
-        AsseStatus: new FormControl (''),
+        AsseStatus: new FormControl ('', Validators.required),
         BuildingAge: new FormControl ('', Validators.required),
         BuildFD: new FormControl (''),
-        BuildFM: new FormControl (''),
-        BuildFY: new FormControl (''),
         ObservationPoint: new FormControl ('', Validators.required),
-        Directions: new FormControl (''),
+        BuildFY: new FormControl ('', Validators.required),
+        Directions: new FormControl ('', Validators.required),
         LandR: new FormControl ('', Validators.required),
         LandG: new FormControl ('', Validators.required),
         LandWA: new FormControl ('', Validators.required),
@@ -53,10 +51,8 @@ export class AddhouseComponent implements OnInit {
         LProvince: new FormControl ('', Validators.required),
         LAmphur: new FormControl ('', Validators.required),
         LDistrict: new FormControl ('', Validators.required),
-        RoadWide: new FormControl (''),
-        });
-      }
-  
+      });
+    }
   latitude: number;
   longitude: number;
   zoom: number;
@@ -65,20 +61,11 @@ export class AddhouseComponent implements OnInit {
   amphur: any[];
   PA: locationsDetails;
   district: locationsDetails;
-  zipcode: any[];
+  zipcode: locationsDetails;
   private geoCoder;
   public details: any;
   createID: string
   years: any[];
-  contactUser: any[];
-  selectContact: any[];
-  selectContact2: any[];
-  selectContact3: any[];
-  Name:string 
-  ZIPCODE:string
-  EmailContact:string
-  PhoneContact:string
-  LineContact:string
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
 
@@ -207,7 +194,6 @@ export class AddhouseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.buildForm();
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -257,9 +243,10 @@ export class AddhouseComponent implements OnInit {
 
       }
     )
-    this.onResiveContact()
   }
   get f() { return this.addhouseForm.controls; }
+
+
   // Get Current Location Coordinates
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
@@ -298,12 +285,11 @@ export class AddhouseComponent implements OnInit {
 
   }
 
-  selectprovince(data) {
-   this.credentials.LProvince = data.PROVINCE_NAME
+  selectprovince(value) {
     this.auth.getAmphur().subscribe((amphur) => {
       // กรณี resuponse success
       this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == data.PROVINCE_ID;
+        return article.PROVINCE_ID == value;
       });
     },
       err => {
@@ -312,12 +298,11 @@ export class AddhouseComponent implements OnInit {
     )
   }
 
-  selectamphur(data) {
-    this.credentials.LAmphur = data.AMPHUR_NAME
+  selectamphur(value) {
     this.auth.getDistrict().subscribe((district) => {
       // กรณี resuponse success
       this.district = district.filter(article => {
-        return article.AMPHUR_ID == data.AMPHUR_ID;
+        return article.AMPHUR_ID == value;
       });
     },
       err => {
@@ -325,115 +310,29 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
-  selectdistrict(data) {
-    this.credentials.LDistrict= data.DISTRICT_NAME
+  selectdistrict(value) {
     this.auth.getZipcode().subscribe((zipcode) => {
       // กรณี resuponse success
       this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == data.DISTRICT_ID;
+        return article.DISTRICT_ID == value;
       });
-      
     },
       err => {
         console.error(err)
       }
     )
-
-  }
-  getZipCode(){
-    this.zipcode.forEach((element, index) => {
-        this.credentials.LZipCode = element.ZIPCODE 
-    });
-    
   }
 
   propType: string;
   IDprop: string;
-  onFinish() {
-    this.auth.uploadftp().subscribe(() => {
-    },
-      err => {
-        console.error(err)
-      }
-    )
-
-  }
-  onResiveContact() {
-    //-------- get contact ----
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
-  onCreateContact() {
-    this.auth.addcontact(this.credentials).subscribe(() => {
-      this.onResiveContact()
-      alert(JSON.stringify("บันทึกสำเร็จ"))
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
-
-  onEditContact() {
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
-
-  onGetContact(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactUt = value
-    this.credentials.ContactUo = value
-    this.credentials.ContactName = this.Name
-    this.credentials.ContactEmail = this.EmailContact
-    this.credentials.ContactPhone = this.PhoneContact
-    this.credentials.ContactLine = this.LineContact
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
-  }
-  onGetContact2(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactUo = value
-    this.credentials.ContactName = this.Name
-    this.credentials.ContactEmail = this.EmailContact
-    this.credentials.ContactPhone = this.PhoneContact
-    this.credentials.ContactLine = this.LineContact
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
-  }
-  onGetContact3(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.Name
-    this.credentials.ContactEmail = this.EmailContact
-    this.credentials.ContactPhone = this.PhoneContact
-    this.credentials.ContactLine = this.LineContact
-    console.log(this.credentials.ContactName )
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
-  }
-
-  nextstep:string ='false'
   onFirststep(event) {
     event.preventDefault();
-    this.formSubmitted = true
-
-    if (this.addhouseForm.valid) {
-      console.log(this.addhouseForm.value); // Process your form
-    }else{
-      this.nextstep = 'true'
-    }
+    this.submitted = true;
    
+  // stop here if form is invalid
+  if (this.addhouseForm.invalid) {
+      return;
+  }
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     if (this.credentials.PropertyType == "อาคารพานิชย์") {
