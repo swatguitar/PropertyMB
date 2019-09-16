@@ -190,10 +190,7 @@ export class AddlandsComponent {
         });
       });
     });
-    //---------------calulate p/wa-----
-
-    this.cal = parseInt(this.credentials.SellPrice) / parseInt(this.credentials.LandWA);
-    this.credentials.PriceWA = this.cal.toString()
+    
     //-------------------------------------------------
     var year = new Date().getFullYear();
     var yearth = year + 543
@@ -219,6 +216,12 @@ export class AddlandsComponent {
     this.onResiveContact()
   }
 
+  calPWA(){
+//---------------calulate p/wa-----
+
+this.cal = parseInt(this.credentials.SellPrice) / parseInt(this.credentials.LandWA);
+this.credentials.PriceWA = this.cal.toString()
+  }
   // Get Current Location Coordinates
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
@@ -347,19 +350,22 @@ export class AddlandsComponent {
 
   onGetContact(value) {
     this.credentials.ID_Contact = value
+    this.credentials.ContactUt = value
+    this.credentials.ContactUo = value
     this.selectContact = this.contactUser.filter(article => {
       return article.ID_Contact == value;
     });
   }
   onGetContact2(value) {
     this.credentials.ID_Contact = value
+    this.credentials.ContactUo = value
+  
     this.selectContact2 = this.contactUser.filter(article => {
       return article.ID_Contact == value;
     });
   }
   onGetContact3(value) {
     this.credentials.ID_Contact = value
-    console.log(this.credentials.ContactName)
     this.selectContact3 = this.contactUser.filter(article => {
       return article.ID_Contact == value;
     });
