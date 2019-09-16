@@ -32,6 +32,8 @@ export class HousesDetailComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+      
+
     this.galleryOptions = [
       { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
       { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
@@ -58,12 +60,11 @@ export class HousesDetailComponent implements OnInit {
       // กรณี resuponse success
       this.results = this.details.filter(article => {
         return article.ID_Property == this.postID;
-
       });
-      this.getMap()
+     
     })
    
-
+    this.getMap()
     this.zoom = 15;
     this.auth.getimghouse().subscribe((img) => {
       this.imgbox = img
@@ -115,14 +116,10 @@ export class HousesDetailComponent implements OnInit {
     })
   }
   getMap() {
-    for(let key in this.results) {
-      console.log(key )
-      
-    }
-    
-     
-    console.log(this.a)
-    this.lng =
-    this.lat = 20.0411793
+    this.results.forEach((element, index) => {
+      this.lat = element.Latitude
+      this.lng = element.Latitude
+      alert(JSON.stringify(this.lng+ " " + this.lat ))
+    });
   }
 }
