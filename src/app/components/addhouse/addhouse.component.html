@@ -559,22 +559,6 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div>
-                                                        <label>อายุคอนโด :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 ">
-
-                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                        id="BuildingAge" class="form-control"
-                                                        placeholder="อายุคอนโด(ปี)" name="BuildingAge" required
-                                                        [(ngModel)]="credentials.BuildingAge">
-
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div>
                                                         <label>ปีที่ก่อสร้าง :</label>
                                                     </div>
                                                 </div>
@@ -640,6 +624,7 @@
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
                                                                 id="BuildFY" class="form-control" name="BuildFY"
+                                                                (change)="getbuildage($event.target.value)"
                                                                 [(ngModel)]="credentials.BuildFY">
                                                                 <option>- ปี -</option>
                                                                 <option *ngFor="let year of years" value="{{year}}">
@@ -652,6 +637,22 @@
                                                 </div>
                                             </div>
                                             <br>
+                                            <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <label>อายุคอนโด :</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 ">
+    
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="BuildingAge" class="form-control"
+                                                            placeholder="อายุคอนโด(ปี)" name="BuildingAge" value="{{buildage}}" readonly
+                                                            [>
+    
+                                                    </div>
+                                                </div>
+                                                <br>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div>
@@ -878,38 +879,6 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div>
-                                                        <label>อายุการถือครองที่ดิน :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 ">
-
-                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                        id="LandAge" class="form-control"
-                                                        placeholder="อายุการถือครองที่ดิน(ปี)" name="LandAge" required
-                                                        [(ngModel)]="credentials.LandAge">
-
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div>
-                                                        <label>อายุบ้าน :</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 ">
-
-                                                    <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                        id="BuildingAge" class="form-control" placeholder="อายุบ้าน(ปี)"
-                                                        name="BuildingAge" required
-                                                        [(ngModel)]="credentials.BuildingAge">
-
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div>
                                                         <label>ปีที่ก่อสร้าง :</label>
                                                     </div>
                                                 </div>
@@ -975,6 +944,7 @@
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
                                                                 id="BuildFY" class="form-control" name="BuildFY"
+                                                                (change)="getbuildage($event.target.value)"
                                                                 [(ngModel)]="credentials.BuildFY">
                                                                 <option>- ปี -</option>
                                                                 <option *ngFor="let year of years" value="{{year}}">
@@ -987,6 +957,20 @@
                                                 </div>
                                             </div>
                                             <br>
+                                            <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <label>อายุบ้าน :</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 ">
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                            id="BuildingAge" class="form-control" placeholder="อายุบ้าน(ปี)"
+                                                            name="BuildingAge" value="{{buildage}}" readonly
+                                                            >
+                                                    </div>
+                                                </div>
+                                                <br>
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div>
@@ -2012,7 +1996,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12  ">
-                                <h3><i class="fas fa-file-alt"></i> ข้อมูลติด</h3>
+                                <h3><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"

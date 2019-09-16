@@ -305,7 +305,7 @@
                                                     <label>โฉนด :</label>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-2 ">
+                                            <div class="col-md-2 ">
                                                 <select style="border-radius: 30px 30px 30px 30px;" id="Deed"
                                                     class="form-control" name="Deed" [(ngModel)]="credentials.Deed">
                                                     <option value="1 เลน">น.ส.4จ.</option>
@@ -337,9 +337,25 @@
 
                                             </div>
                                         </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div>
+                                                    <label>อายุการถือครองที่ดิน :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 ">
+
+                                                <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                    id="LandAge" class="form-control"
+                                                    placeholder="อายุการถือครองที่ดิน(ปี)" name="LandAge" required
+                                                    [(ngModel)]="credentials.LandAge">
+
+                                            </div>
+                                        </div>
                                         <hr>
                                         <div class="row ">
-                                            <div class="col-md-12 ">
+                                            <div class="col-md-6 ">
                                                 <h4>ทำเล</h4>
                                                 <div class="col-sm-12">
                                                     <input type="checkbox" id="" value="yes" checked name="Blind"
@@ -374,11 +390,13 @@
                                                     <input type="checkbox" id="" value="yes" checked name="onther"
                                                         [(ngModel)]="onther">อื่นๆ
                                                 </div>
-                                                <div *ngIf="onther == 'yes'" class="col-sm-12">
+                                                <div *ngIf="onther=='yes'" class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="Letc" class="form-control" placeholder="โปรดระบุ"
                                                         name="Letc" required [(ngModel)]="credentials.Letc">
                                                 </div>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <h4>สถานะถนน</h4>
                                                 <div class="col-sm-12">
                                                     <input type="radio" id="" value="โคลน" checked name="RoadType"
@@ -401,8 +419,9 @@
                                                         id="RoadType" class="form-control" placeholder="โปรดระบุ"
                                                         name="RoadType" required [(ngModel)]="credentials.RoadType">
                                                 </div>
-
-                                                <div class="col-sm-12">
+                                            
+                                           
+                                                <div class="col-md-6">
                                                     <br>
                                                     <label>ความกว้างถนน</label>
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide"
@@ -436,7 +455,6 @@
                                                         id="GroundValue" class="form-control"
                                                         placeholder="ระดับพื้นดินจากถนน (เมตร)" name="GroundValue"
                                                         required>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -619,7 +637,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12  ">
-                            <h3><i class="fas fa-file-alt"></i> ข้อมูลติด</h3>
+                            <h3><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"

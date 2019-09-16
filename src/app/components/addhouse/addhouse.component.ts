@@ -219,7 +219,12 @@ export class AddhouseComponent implements OnInit {
     )
     this.onResiveContact()
   }
-
+  buildage:number
+getbuildage(year){
+var yearEN = new Date().getFullYear();
+this.buildage = ((yearEN+543)-year)
+this.credentials.BuildingAge = this.buildage.toString()
+}
   // Get Current Location Coordinates
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
