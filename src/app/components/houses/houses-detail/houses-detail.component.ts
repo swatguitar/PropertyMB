@@ -60,15 +60,22 @@ export class HousesDetailComponent implements OnInit {
       // กรณี resuponse success
       this.results = this.details.filter(article => {
         return article.ID_Property == this.postID;
+        
       });
      
     })
    
     
-    this.zoom = 15;
+    
     this.auth.getimghouse().subscribe((img) => {
       this.imgbox = img
       // กรณี resuponse success
+      this.results.forEach((element, index) => {
+        this.lat = element.Latitude
+        this.lng = element.Longitude
+        this.zoom = 15;
+      });
+      
       this.imagenew = this.imgbox.filter(article => {
         return article.ID_property == this.postID;
 
@@ -115,11 +122,7 @@ export class HousesDetailComponent implements OnInit {
       }
     
     })
-      this.results.forEach((element, index) => {
-        this.lat = element.Latitude
-        this.lng = element.Latitude
-        
-      });
+     
   }
   
 }

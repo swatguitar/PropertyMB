@@ -17,10 +17,10 @@ export class AddlandsComponent {
   longitude: number;
   zoom: number;
   address: string;
-  province: locationsDetails;
+  province: any[];
   amphur: any[];
   PA: locationsDetails;
-  district: locationsDetails;
+  district: any[];
   zipcode: any[];
   private geoCoder;
   public details: any;
