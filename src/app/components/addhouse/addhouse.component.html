@@ -115,19 +115,14 @@
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="number"
                                                             id="Costestimate" class="form-control"
                                                             placeholder="ราคาประเมิน(ธนาคารประเมิน)" formControlName="Costestimate"
-                                                            required [(ngModel)]="credentials.Costestimate" [ngClass]="{ 'is-invalid': submitted && f.Costestimate.errors }">
-                                                            <div *ngIf="submitted && f.Costestimate.errors" class="invalid-feedback">
-                                                                    <div *ngIf="f.Costestimate.errors.required">กรุณากรอกข้อมูล</div>
-                                                              </div>
+                                                             [(ngModel)]="credentials.Costestimate">
+                                                            
                                                     </div>|
                                                     <div class="col-sm-3">
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="number"
                                                             id="MarketPrice" class="form-control" placeholder="ราคาตลาด"
-                                                            formControlName="MarketPrice" required
-                                                            [(ngModel)]="credentials.MarketPrice" [ngClass]="{ 'is-invalid': submitted && f.MarketPrice.errors }">
-                                                            <div *ngIf="submitted && f.MarketPrice.errors" class="invalid-feedback">
-                                                                    <div *ngIf="f.MarketPrice.errors.required">กรุณากรอกข้อมูล</div>
-                                                              </div>
+                                                            formControlName="MarketPrice"
+                                                            [(ngModel)]="credentials.MarketPrice">
                                                     </div>
                                                 </div>
                                             </div>
@@ -294,7 +289,8 @@
                                                 <div class="col-md-2 ">
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
                                                         placeholder="สถานะทรัพย์สิน" class="form-control"
-                                                        formControlName="AsseStatus" [(ngModel)]="credentials.AsseStatus">
+                                                        formControlName="AsseStatus" [(ngModel)]="credentials.AsseStatus" [ngClass]="{ 'is-invalid': submitted && f.AsseStatus.errors }">
+                                                        
                                                         <option value="ว่าง" selected>
                                                             ว่าง</option>
                                                         <option value="จำนอง" selected>
@@ -703,7 +699,7 @@
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                             id="BuildingAge" class="form-control"
                                                             placeholder="อายุคอนโด(ปี)" name="BuildingAge" value="{{buildage}}" readonly
-                                                            [>
+                                                            >
     
                                                     </div>
                                                 </div>
@@ -1962,10 +1958,8 @@
                                                                 type="text" id="ObservationPoint"
                                                                 class="form-control search-input"
                                                                 formControlName="ObservationPoint" placeholder="สถานที่ใกล้เคียง"
-                                                                required [(ngModel)]="credentials.ObservationPoint" [ngClass]="{ 'is-invalid': submitted && f.ObservationPoint.errors }">
-                                                                <div *ngIf="submitted && f.ObservationPoint.errors" class="invalid-feedback">
-                                                                        <div *ngIf="f.ObservationPoint.errors.required">กรุณากรอกข้อมูล</div>
-                                                                  </div>
+                                                                required [(ngModel)]="credentials.ObservationPoint" >
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2002,7 +1996,7 @@
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             id="province" class="form-control"
-                                                                            name="province" required [(ngModel)]="province"
+                                                                            name="Lprovince" required [(ngModel)]="Lprovince"
                                                                             (ngModelChange)="selectprovince($event)">
                                                                             <option>- จังหวัด -</option>
                                                                             <option *ngFor="let p of province"
@@ -2025,8 +2019,8 @@
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             id="amphur" class="form-control"
-                                                                            name="amphur" required
-                                                                            [(ngModel)]="amphur"
+                                                                            name="Lamphur" required
+                                                                            [(ngModel)]="Lamphur"
                                                                             (ngModelChange)="selectamphur($event)">
                                                                             <option>- อำเภอ -</option>
                                                                             <option *ngFor="let a of amphur"
@@ -2048,8 +2042,8 @@
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             id="district" class="form-control"
-                                                                            name="district" required
-                                                                            [(ngModel)]="district"
+                                                                            name="Ldistrict" required
+                                                                            [(ngModel)]="Ldistrict"
                                                                             (ngModelChange)="selectdistrict($event)">
                                                                             <option >- ตำบล -</option>
                                                                             <option *ngFor="let d of district"
@@ -2112,7 +2106,8 @@
                                                                     id="ContactUt" class="form-control" name="ContactU"
                                                                     required
                                                                     (change)="onGetContact($event.target.value)"
-                                                                    [(ngModel)]="credentials.ContactU">
+                                                                    [(ngModel)]="credentials.ContactU" [ngClass]="{ 'is-invalid': submitted && f.ContactU.errors }">
+                                                
                                                                     <option value="0">เลือกผู้ติดต่อ</option>
                                                                     <option
                                                                         *ngFor="let user of contactUser; index as i; "

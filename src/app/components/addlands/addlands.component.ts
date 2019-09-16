@@ -3,6 +3,7 @@ import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { } from 'googlemaps';
 import { AuthenticationService, TokenPayload, locationsDetails } from '../../authentication.service'
 import { Router } from '@angular/router';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-addlands',
@@ -35,6 +36,36 @@ export class AddlandsComponent {
   selectContact3: any[];
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
+
+  constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone) {
+      this.addlandForm = new FormGroup ({
+        ColorType: new FormControl (''),
+        AnnounceTH: new FormControl ('', Validators.required),
+        SellPrice: new FormControl ('', Validators.required),
+        CodeDeed: new FormControl ('', Validators.required),
+        Costestimate: new FormControl (''),
+        CostestimateB: new FormControl (''),
+        MarketPrice: new FormControl (''),
+        CodeProperty: new FormControl ('', Validators.required),
+        GroundValue: new FormControl ('', Validators.required),
+        MFee: new FormControl ('', Validators.required),
+        newhouse: new FormControl (''),
+        oldhouse: new FormControl (''),
+        AsseStatus: new FormControl ('', Validators.required),
+        BuildingAge: new FormControl ('', Validators.required),
+        BuildFD: new FormControl (''),
+        ObservationPoint: new FormControl (''),
+        BuildFY: new FormControl ('', Validators.required),
+        Directions: new FormControl ('', Validators.required),
+        LandR: new FormControl ('', Validators.required),
+        LandG: new FormControl ('', Validators.required),
+        LandWA: new FormControl ('', Validators.required),
+        LandAge: new FormControl (''),
+        Location: new FormControl ('', Validators.required),
+        ContactU: new FormControl ('', Validators.required),
+      });
+     }
 
   credentials: TokenPayload = {
     ID_User: 0,
@@ -159,9 +190,10 @@ export class AddlandsComponent {
     ContactLine: " ",
     ContactPhone: " ",
   }
+  addlandForm: FormGroup;
+  formSubmited = false;
 
-  constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) { }
+  
 
   ngOnInit() {
 
@@ -215,6 +247,7 @@ export class AddlandsComponent {
 
     this.onResiveContact()
   }
+  get f() { return this.addlandForm.controls; }
 
   calPWA(){
 //---------------calulate p/wa-----
@@ -373,6 +406,12 @@ this.credentials.PriceWA = this.cal.toString()
   propType: string;
   IDprop: string;
   onFirststep() {
+    this.formSubmited = true;
+   
+  // stop here if form is invalid
+  if (this.addlandForm.invalid) {
+      return;
+  }
 
     this.getZipCode()
     this.credentials.Latitude = this.latitude

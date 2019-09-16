@@ -29,6 +29,7 @@
         <aw-wizard #wizard [navBarLayout]="'large-empty-symbols'">
             <aw-wizard-step [stepTitle]="'ข้อมูลทั่วไป'">
                 <ng-template awWizardStepSymbol><i class="far fa-file-alt"></i></ng-template>
+                <form [formGroup]="addlandForm" (ngSubmit)="onFirststep($event)">
                 <div class="centered-content">
                     <div class="row">
                         <div class="col-md-12 ">
@@ -44,7 +45,7 @@
                                         <div class="col-md-8 ">
                                             <div>
                                                 <select style="border-radius: 30px 30px 30px 30px;" id="ColorType"
-                                                    class="form-control" name="ColorType"
+                                                    class="form-control" formControlName="ColorType"
                                                     [(ngModel)]="credentials.ColorType">
                                                     <option style="color:rgb(174, 180, 80)"
                                                         value="พื้นที่สีเหลือง – ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย"
@@ -102,9 +103,12 @@
                                         <div class="col-md-8 ">
                                             <div>
                                                 <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                    id="AnnounceTH" class="form-control" name="AnnounceTH"
+                                                    id="AnnounceTH" class="form-control" formControlName="AnnounceTH"
                                                     placeholder="หัวข้อประกาศ" required
-                                                    [(ngModel)]="credentials.AnnounceTH">
+                                                    [(ngModel)]="credentials.AnnounceTH" [ngClass]="{ 'is-invalid': submitted && f.AnnounceTH.errors }" >
+                                                    <div *ngIf="submitted && f.AnnounceTH.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.AnnounceTH.errors.required">กรุณากรอกข้อมูล</div>
+                                                  </div>
                                             </div>
                                         </div>
                                     </div>
@@ -124,8 +128,11 @@
                                                             <input style="border-radius: 30px 30px 30px 30px;"
                                                                 type="number" id="SellPrice" class="form-control"
                                                                 (change)="selectprovince($event.target.value)"
-                                                                placeholder="ราคาขาย (ที่คนขายกำหนด)" name="SellPrice"
-                                                                required [(ngModel)]="credentials.SellPrice">
+                                                                placeholder="ราคาขาย (ที่คนขายกำหนด)" formControlName="SellPrice"
+                                                                required [(ngModel)]="credentials.SellPrice" [ngClass]="{ 'is-invalid': submitted && f.SellPrice.errors }" >
+                                                                <div *ngIf="submitted && f.SellPrice.errors" class="invalid-feedback">
+                                                                    <div *ngIf="f.SellPrice.errors.required">กรุณากรอกข้อมูล</div>
+                                                              </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -139,7 +146,7 @@
                                                             <input style="border-radius: 30px 30px 30px 30px;"
                                                                 type="number" id="CostestimateB" class="form-control"
                                                                 placeholder="ราคาประเมิน(ธนาคารประเมิน)"
-                                                                name="Costestimate" required
+                                                                formControlName="CostestimateB"
                                                                 [(ngModel)]="credentials.CostestimateB">
                                                         </div>
                                                     </div>
@@ -154,7 +161,7 @@
                                                             <input style="border-radius: 30px 30px 30px 30px;"
                                                                 type="number" id="Costestimate" class="form-control"
                                                                 placeholder="ราคาประเมิน(กรมที่ดินประเมิน)"
-                                                                name="Costestimate" required
+                                                                formControlName="Costestimate"
                                                                 [(ngModel)]="credentials.Costestimate">
                                                         </div>
                                                     </div>
@@ -168,8 +175,11 @@
                                                         <div class="col-sm-12">
                                                             <input style="border-radius: 30px 30px 30px 30px;"
                                                                 type="text" id="MarketPrice" class="form-control"
-                                                                placeholder="ราคาตลาด" name="MarketPrice" required
-                                                                [(ngModel)]="credentials.MarketPrice">
+                                                                placeholder="ราคาตลาด" formControlName="MarketPrice" required
+                                                                [(ngModel)]="credentials.MarketPrice" [ngClass]="{ 'is-invalid': submitted && f.MarketPrice.errors }" >
+                                                                <div *ngIf="submitted && f.MarketPrice.errors" class="invalid-feedback">
+                                                                    <div *ngIf="f.MarketPrice.errors.required">กรุณากรอกข้อมูล</div>
+                                                              </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -183,7 +193,7 @@
                                                             <input style="border-radius: 30px 30px 30px 30px;"
                                                                 type="text" id="PricePM" class="form-control"
                                                                 value="{{cal | number}}" placeholder="ราคาต่อตารางวา"
-                                                                name="PricePM" required
+                                                                formControlName="PricePM" required
                                                                  readonly>
                                                         </div>
                                                     </div>
@@ -210,7 +220,7 @@
                                                                 <div class="col-sm-10">
                                                                     <input style="border-radius: 30px 30px 30px 30px;"
                                                                         type="text" id="LandR" class="form-control"
-                                                                        placeholder="ไร่" name="LandR" required
+                                                                        placeholder="ไร่" formControlName="LandR" required
                                                                         [(ngModel)]="credentials.LandR">
                                                                 </div>
                                                             </div>
@@ -224,7 +234,7 @@
                                                                 <div class="col-sm-10">
                                                                     <input style="border-radius: 30px 30px 30px 30px;"
                                                                         type="text" id="LandG" class="form-control"
-                                                                        placeholder="งาน" name="LandG" required
+                                                                        placeholder="งาน" formControlName="LandG" required
                                                                         [(ngModel)]="credentials.LandG">
                                                                 </div>
                                                             </div>
@@ -241,7 +251,7 @@
                                                                     <input style="border-radius: 30px 30px 30px 30px;"
                                                                         type="text" id="LandWA" class="form-control"
                                                                         (change)="calPWA()"
-                                                                        placeholder="ตารางวา" name="LandWA" required
+                                                                        placeholder="ตารางวา" formControlName="LandWA" required
                                                                         [(ngModel)]="credentials.LandWA">
                                                                 </div>
                                                             </div>
@@ -255,7 +265,7 @@
                                                                 <div class="col-sm-10">
                                                                     <input style="border-radius: 30px 30px 30px 30px;"
                                                                         type="text" id="Land" class="form-control"
-                                                                        placeholder="(10*10) เมตร" name="Land" required
+                                                                        placeholder="(10*10) เมตร" formControlName="Land" required
                                                                         [(ngModel)]="credentials.Land">
                                                                 </div>
                                                             </div>
@@ -277,7 +287,7 @@
                                                 <div cl>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="CodeDeed" class="form-control search-input"
-                                                        name="CodeProperty"
+                                                        formControlName="CodeProperty"
                                                         placeholder="รหัสทรัพย์สิน(จากธนาคาร หรือ กรมที่ดิน)" required
                                                         [(ngModel)]="credentials.CodeProperty">
                                                 </div>
@@ -293,7 +303,7 @@
                                             <div class="col-md-4 ">
                                                 <div cl>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                        id="CodeDeed" class="form-control search-input" name="CodeDeed"
+                                                        id="CodeDeed" class="form-control search-input" formControlName="CodeDeed"
                                                         placeholder="เลขโฉนด" required
                                                         [(ngModel)]="credentials.CodeDeed">
                                                 </div>
@@ -308,7 +318,7 @@
                                             </div>
                                             <div class="col-md-2 ">
                                                 <select style="border-radius: 30px 30px 30px 30px;" id="Deed"
-                                                    class="form-control" name="Deed" [(ngModel)]="credentials.Deed">
+                                                    class="form-control" formControlName="Deed" [(ngModel)]="credentials.Deed">
                                                     <option value="1 เลน">น.ส.4จ.</option>
                                                     <option value="2 เลน">น.ส.3ก.</option>
                                                 </select>
@@ -324,7 +334,7 @@
                                             <div class="col-md-2 ">
 
                                                 <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
-                                                    placeholder="สถานะทรัพย์สิน" class="form-control" name="AsseStatus"
+                                                    placeholder="สถานะทรัพย์สิน" class="form-control" formControlName="AsseStatus"
                                                     [(ngModel)]="credentials.AsseStatus">
                                                     <option value="ว่าง" selected>
                                                         ว่าง</option>
@@ -349,7 +359,7 @@
 
                                                 <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                     id="LandAge" class="form-control"
-                                                    placeholder="อายุการถือครองที่ดิน(ปี)" name="LandAge" required
+                                                    placeholder="อายุการถือครองที่ดิน(ปี)" formControlName="LandAge"
                                                     [(ngModel)]="credentials.LandAge">
 
                                             </div>
@@ -359,48 +369,48 @@
                                             <div class="col-md-6 ">
                                                 <h4>ทำเล</h4>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Blind"
+                                                    <input type="checkbox" id="" value="yes" name="Blind"
                                                         [(ngModel)]="credentials.Blind">ที่ตาบอด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked
+                                                    <input type="checkbox" id="" value="yes" 
                                                         name="Neareducation"
                                                         [(ngModel)]="credentials.Neareducation">ใกล้สถานศึกษา
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Cenmarket"
+                                                    <input type="checkbox" id="" value="yes" name="Cenmarket"
                                                         [(ngModel)]="credentials.Cenmarket">ใกล้ศูนย์การค้า
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Market"
+                                                    <input type="checkbox" id="" value="yes" name="Market"
                                                         [(ngModel)]="credentials.Market">ใกล้ตลาด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="River"
+                                                    <input type="checkbox" id="" value="yes" name="River"
                                                         [(ngModel)]="credentials.River">ติดแม่น้ำ
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Mainroad"
+                                                    <input type="checkbox" id="" value="yes" name="Mainroad"
                                                         [(ngModel)]="credentials.Mainroad">ติดถนน
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Insoi"
+                                                    <input type="checkbox" id="" value="yes" name="Insoi"
                                                         [(ngModel)]="credentials.Insoi">อยู่ในซอย
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="onther"
+                                                    <input type="checkbox" id="" value="yes" name="onther"
                                                         [(ngModel)]="onther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="onther=='yes'" class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="Letc" class="form-control" placeholder="โปรดระบุ"
-                                                        name="Letc" required [(ngModel)]="credentials.Letc">
+                                                        name="Letc" [(ngModel)]="credentials.Letc">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <h4>สถานะถนน</h4>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="โคลน" checked name="RoadType"
+                                                    <input type="radio" id="" value="โคลน"  name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">โคลน
                                                 </div>
                                                 <div class="col-sm-12">
@@ -408,17 +418,17 @@
                                                         [(ngModel)]="credentials.RoadType">ยางมะตอย
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="คอนกรีต" checked name="RoadType"
+                                                    <input type="radio" id="" value="คอนกรีต"  name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">คอนกรีต
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id=" " value="1" checked name="Ronther"
+                                                    <input type="radio" id=" " value="1" name="Ronther"
                                                         [(ngModel)]="Ronther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="Ronther == '1' " class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="RoadType" class="form-control" placeholder="โปรดระบุ"
-                                                        name="RoadType" required [(ngModel)]="credentials.RoadType">
+                                                        name="RoadType" [(ngModel)]="credentials.RoadType">
                                                 </div>
                                             
                                            
@@ -426,7 +436,7 @@
                                                     <br>
                                                     <label>ความกว้างถนน</label>
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide"
-                                                        class="form-control" name="RoadWide"
+                                                        class="form-control" formControlName="RoadWide"
                                                         [(ngModel)]="credentials.RoadWide">
                                                         <option>- ความกว้างถนน -</option>
                                                         <option value="ซอยแคบ">ซอยแคบ</option>
@@ -442,20 +452,19 @@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <input type="radio" id="GroundLevel" value="สูงกว่าถนน"
-                                                                name="GroundLevelhigh"
+                                                                name="GroundLevel"
                                                                 [(ngModel)]="credentials.GroundLevel">สูงกว่าถนน
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน"
-                                                                name="GroundLevellow"
+                                                                name="GroundLevel"
                                                                 [(ngModel)]="credentials.GroundLevel">ต่ำกว่าถนน
                                                         </div>
 
                                                     </div>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="GroundValue" class="form-control"
-                                                        placeholder="ระดับพื้นดินจากถนน (เมตร)" name="GroundValue"
-                                                        required>
+                                                        placeholder="ระดับพื้นดินจากถนน (เมตร)" name="GroundValue">
                                                 </div>
                                             </div>
                                         </div>
@@ -527,8 +536,8 @@
                                                     <div cl>
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                             id="ObservationPoint" class="form-control search-input"
-                                                            name="ObservationPoint" placeholder="สถานที่ใกล้เคียง"
-                                                            required [(ngModel)]="credentials.ObservationPoint">
+                                                            formControlName="ObservationPoint" placeholder="สถานที่ใกล้เคียง"
+                                                            [(ngModel)]="credentials.ObservationPoint">
                                                     </div>
                                                 </div>
                                             </div>
@@ -545,7 +554,7 @@
                                                             <div>
                                                                 <input style="border-radius: 30px 30px 30px 30px;"
                                                                     type="text" id="Location" class="form-control"
-                                                                    name="Location" placeholder="ที่อยู่" required
+                                                                    formControlName="Location" placeholder="ที่อยู่" required
                                                                     [(ngModel)]="credentials.Location">
                                                             </div>
                                                         </div>
@@ -1145,6 +1154,7 @@
                     </div>
 
                 </div>
+            </form>
             </aw-wizard-step>
             <aw-wizard-step [stepTitle]="'รูปภาพ'">
                 <ng-template awWizardStepSymbol><i class="far fa-images"></i></ng-template>

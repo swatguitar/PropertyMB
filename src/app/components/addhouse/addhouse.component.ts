@@ -19,6 +19,10 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 export class AddhouseComponent implements OnInit {
   addhouseForm: FormGroup;
   submitted = false;
+  contactUser: any[];
+  selectContact3: any[];
+  selectContact: any[];
+  selectContact2: any[];
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) { 
       this.addhouseForm = new FormGroup ({
@@ -26,8 +30,8 @@ export class AddhouseComponent implements OnInit {
         AnnounceTH: new FormControl ('', Validators.required),
         SellPrice: new FormControl ('', Validators.required),
         CodeDeed: new FormControl ('', Validators.required),
-        Costestimate: new FormControl ('', Validators.required),
-        MarketPrice: new FormControl ('', Validators.required),
+        Costestimate: new FormControl (''),
+        MarketPrice: new FormControl (''),
         HouseArea: new FormControl ('', Validators.required),
         BathRoom: new FormControl ('', Validators.required),
         BedRoom: new FormControl ('', Validators.required),
@@ -40,7 +44,7 @@ export class AddhouseComponent implements OnInit {
         AsseStatus: new FormControl ('', Validators.required),
         BuildingAge: new FormControl ('', Validators.required),
         BuildFD: new FormControl (''),
-        ObservationPoint: new FormControl ('', Validators.required),
+        ObservationPoint: new FormControl (''),
         BuildFY: new FormControl ('', Validators.required),
         Directions: new FormControl ('', Validators.required),
         LandR: new FormControl ('', Validators.required),
@@ -48,9 +52,7 @@ export class AddhouseComponent implements OnInit {
         LandWA: new FormControl ('', Validators.required),
         LandAge: new FormControl ('', Validators.required),
         Location: new FormControl ('', Validators.required),
-        LProvince: new FormControl ('', Validators.required),
-        LAmphur: new FormControl ('', Validators.required),
-        LDistrict: new FormControl ('', Validators.required),
+        ContactU: new FormControl ('', Validators.required),
       });
     }
   latitude: number;
@@ -61,7 +63,7 @@ export class AddhouseComponent implements OnInit {
   amphur: any[];
   PA: locationsDetails;
   district: locationsDetails;
-  zipcode: locationsDetails;
+  zipcode: any[];
   private geoCoder;
   public details: any;
   createID: string
@@ -191,6 +193,8 @@ export class AddhouseComponent implements OnInit {
     ContactEmail: " ",
     ContactLine: " ",
     ContactPhone: " ",
+  
+
   }
 
   ngOnInit() {
@@ -242,7 +246,8 @@ export class AddhouseComponent implements OnInit {
         console.error(err)
 
       }
-    )
+    ) 
+    this.onResiveContact()
   }
   get f() { return this.addhouseForm.controls; }
 
@@ -258,6 +263,7 @@ export class AddhouseComponent implements OnInit {
       });
     }
   }
+
 
   markerDragEnd($event: MouseEvent) {
     console.log($event);
@@ -284,12 +290,12 @@ export class AddhouseComponent implements OnInit {
     });
 
   }
-
-  selectprovince(value) {
+  selectprovince(data) {
+    this.credentials.LProvince = data.PROVINCE_NAME
     this.auth.getAmphur().subscribe((amphur) => {
       // กรณี resuponse success
       this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == value;
+        return article.PROVINCE_ID == data.PROVINCE_ID;
       });
     },
       err => {
@@ -298,11 +304,12 @@ export class AddhouseComponent implements OnInit {
     )
   }
 
-  selectamphur(value) {
+  selectamphur(data) {
+    this.credentials.LAmphur = data.AMPHUR_NAME
     this.auth.getDistrict().subscribe((district) => {
       // กรณี resuponse success
       this.district = district.filter(article => {
-        return article.AMPHUR_ID == value;
+        return article.AMPHUR_ID == data.AMPHUR_ID;
       });
     },
       err => {
@@ -310,23 +317,93 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
-  selectdistrict(value) {
+  selectdistrict(data) {
+    this.credentials.LDistrict = data.DISTRICT_NAME
     this.auth.getZipcode().subscribe((zipcode) => {
       // กรณี resuponse success
       this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == value;
+        return article.DISTRICT_ID == data.DISTRICT_ID;
       });
+
     },
       err => {
         console.error(err)
       }
     )
+
+  }
+  getZipCode() {
+    this.zipcode.forEach((element, index) => {
+      this.credentials.LZipCode = element.ZIPCODE
+    });
+
+  }
+
+  onFinish() {
+    this.auth.uploadftp().subscribe(() => {
+    },
+      err => {
+        console.error(err)
+      }
+    )
+
+  }
+  onResiveContact() {
+    //-------- get contact ----
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  onCreateContact() {
+    this.auth.addcontact(this.credentials).subscribe(() => {
+      this.onResiveContact()
+      alert(JSON.stringify("บันทึกสำเร็จ"))
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  onEditContact() {
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  onGetContact(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactUt = value
+    this.credentials.ContactUo = value
+    this.selectContact = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
+  onGetContact2(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactUo = value
+  
+    this.selectContact2 = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
+  }
+  onGetContact3(value) {
+    this.credentials.ID_Contact = value
+    this.selectContact3 = this.contactUser.filter(article => {
+      return article.ID_Contact == value;
+    });
   }
 
   propType: string;
   IDprop: string;
-  onFirststep(event) {
-    event.preventDefault();
+  onFirststep() {
     this.submitted = true;
    
   // stop here if form is invalid
@@ -418,7 +495,3 @@ export class AddhouseComponent implements OnInit {
 
   }
 }
-
-
-
-
