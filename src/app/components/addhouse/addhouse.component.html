@@ -26,6 +26,7 @@
         <aw-wizard #wizard [navBarLayout]="'large-empty-symbols'">
             <aw-wizard-step [stepTitle]="'ข้อมูลทั่วไป'">
                 <ng-template awWizardStepSymbol><i class="far fa-file-alt"></i></ng-template>
+                <form [formGroup]="addhouseForm" (ngSubmit)="onFirststep($event)">
                 <div class="centered-content">
                     <div>
                         <div class="row">
@@ -42,7 +43,7 @@
                                             <div class="col-md-8 ">
                                                 <div>
                                                     <select style="border-radius: 30px 30px 30px 30px;"
-                                                        id="PropertyType" class="form-control" name="PropertyType"
+                                                        id="PropertyType" class="form-control" formControlName="PropertyType"
                                                         [(ngModel)]="credentials.PropertyType">
                                                         <option value="อาคารพานิชย์" selected>
                                                             อาคารพานิชย์</option>
@@ -64,9 +65,12 @@
                                             <div class="col-md-8 ">
                                                 <div>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                        id="AnnounceTH" class="form-control" name="AnnounceTH"
+                                                        id="AnnounceTH" class="form-control" formControlName="AnnounceTH"
                                                         placeholder="หัวข้อประกาศ" required
-                                                        [(ngModel)]="credentials.AnnounceTH">
+                                                        [(ngModel)]="credentials.AnnounceTH" [ngClass]="{ 'is-invalid': submitted && f.AnnounceTH.errors }" >
+                                                        <div *ngIf="submitted && f.AnnounceTH.errors" class="invalid-feedback">
+                                                            <div *ngIf="f.AnnounceTH.errors.required">กรุณากรอกข้อมูล</div>
+                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,9 +84,12 @@
                                             <div class="col-md-8 ">
                                                 <div cl>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
-                                                        id="CodeDeed" class="form-control search-input" name="CodeDeed"
+                                                        id="CodeDeed" class="form-control search-input" formControlName="CodeDeed"
                                                         placeholder="รหัสโฉนดที่ดิน" required
-                                                        [(ngModel)]="credentials.CodeDeed">
+                                                        [(ngModel)]="credentials.CodeDeed" [ngClass]="{ 'is-invalid': submitted && f.CodeDeed.errors }">
+                                                        <div *ngIf="submitted && f.CodeDeed.errors" class="invalid-feedback">
+                                                                <div *ngIf="f.CodeDeed.errors.required">กรุณากรอกข้อมูล</div>
+                                                          </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,20 +105,29 @@
                                                     <div class="col-sm-4">
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                             id="SellPrice" class="form-control"
-                                                            placeholder="ราคาขาย (ที่คนขายกำหนด)" name="SellPrice"
-                                                            required [(ngModel)]="credentials.SellPrice">
+                                                            placeholder="ราคาขาย (ที่คนขายกำหนด)" formControlName="SellPrice" 
+                                                            required [(ngModel)]="credentials.SellPrice" [ngClass]="{ 'is-invalid': submitted && f.SellPrice.errors }">
+                                                            <div *ngIf="submitted && f.SellPrice.errors" class="invalid-feedback">
+                                                                    <div *ngIf="f.SellPrice.errors.required">กรุณากรอกข้อมูล</div>
+                                                              </div>
                                                     </div>|
                                                     <div class="col-sm-4">
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                             id="Costestimate" class="form-control"
-                                                            placeholder="ราคาประเมิน(ธนาคารประเมิน)" name="Costestimate"
-                                                            required [(ngModel)]="credentials.Costestimate">
+                                                            placeholder="ราคาประเมิน(ธนาคารประเมิน)" formControlName="Costestimate"
+                                                            required [(ngModel)]="credentials.Costestimate" [ngClass]="{ 'is-invalid': submitted && f.Costestimate.errors }">
+                                                            <div *ngIf="submitted && f.Costestimate.errors" class="invalid-feedback">
+                                                                    <div *ngIf="f.Costestimate.errors.required">กรุณากรอกข้อมูล</div>
+                                                              </div>
                                                     </div>|
                                                     <div class="col-sm-3">
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                             id="MarketPrice" class="form-control" placeholder="ราคาตลาด"
-                                                            name="MarketPrice" required
-                                                            [(ngModel)]="credentials.MarketPrice">
+                                                            formControlName="MarketPrice" required
+                                                            [(ngModel)]="credentials.MarketPrice" [ngClass]="{ 'is-invalid': submitted && f.MarketPrice.errors }">
+                                                            <div *ngIf="submitted && f.MarketPrice.errors" class="invalid-feedback">
+                                                                    <div *ngIf="f.MarketPrice.errors.required">กรุณากรอกข้อมูล</div>
+                                                              </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -136,8 +152,11 @@
                                                                             type="text" id="HouseArea"
                                                                             class="form-control"
                                                                             placeholder="พื้นที่ใช้สอย (ตร.ม.)"
-                                                                            name="HouseArea" required
-                                                                            [(ngModel)]="credentials.HouseArea">
+                                                                            formControlName="HouseArea" required
+                                                                            [(ngModel)]="credentials.HouseArea" [ngClass]="{ 'is-invalid': submitted && f.HouseArea.errors }">
+                                                                            <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.HouseArea.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -153,8 +172,11 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="10" step="1"
                                                                             id="BathRoom" placeholder="จำนวนห้องน้ำ"
-                                                                            class="form-control" name="BathRoom"
-                                                                            required [(ngModel)]="credentials.BathRoom">
+                                                                            class="form-control" formControlName="BathRoom"
+                                                                            required [(ngModel)]="credentials.BathRoom" [ngClass]="{ 'is-invalid': submitted && f.BathRoom.errors }">
+                                                                            <div *ngIf="submitted && f.BathRoom.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.BathRoom.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -170,8 +192,11 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="10" step="1"
                                                                             id="BedRoom" class="form-control"
-                                                                            placeholder="จำนวนห้องนอน" name="BedRoom"
-                                                                            required [(ngModel)]="credentials.BedRoom">
+                                                                            placeholder="จำนวนห้องนอน" formControlName="BedRoom"
+                                                                            required [(ngModel)]="credentials.BedRoom" [ngClass]="{ 'is-invalid': submitted && f.BedRoom.errors }">
+                                                                            <div *ngIf="submitted && f.BedRoom.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.BedRoom.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -186,8 +211,11 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="20" step="1"
                                                                             id="CarPark" class="form-control"
-                                                                            placeholder="จำนวนที่จอดรถ" name="CarPark"
-                                                                            required [(ngModel)]="credentials.CarPark">
+                                                                            placeholder="จำนวนที่จอดรถ" formControlName="CarPark"
+                                                                            required [(ngModel)]="credentials.CarPark" [ngClass]="{ 'is-invalid': submitted && f.CarPark.errors }">
+                                                                            <div *ngIf="submitted && f.CarPark.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.CarPark.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -204,8 +232,11 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="10" step="1"
                                                                             id="Floor" class="form-control"
-                                                                            placeholder="จำนวนชั้น" name="Floor"
-                                                                            required [(ngModel)]="credentials.Floor">
+                                                                            placeholder="จำนวนชั้น" formControlName="Floor"
+                                                                            required [(ngModel)]="credentials.Floor" [ngClass]="{ 'is-invalid': submitted && f.Floor.errors }">
+                                                                            <div *ngIf="submitted && f.Floor.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.Floor.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -219,8 +250,11 @@
                                                                         <input
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="MFee" class="form-control"
-                                                                            placeholder="ค่าใช้จ่ายส่วนกลาง" name="MFee"
-                                                                            required [(ngModel)]="credentials.MFee">
+                                                                            placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee"
+                                                                            required [(ngModel)]="credentials.MFee" [ngClass]="{ 'is-invalid': submitted && f.MFee.errors }">
+                                                                            <div *ngIf="submitted && f.MFee.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.MFee.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -260,7 +294,7 @@
                                                 <div class="col-md-2 ">
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
                                                         placeholder="สถานะทรัพย์สิน" class="form-control"
-                                                        name="AsseStatus" [(ngModel)]="credentials.AsseStatus">
+                                                        formControlName="AsseStatus" [(ngModel)]="credentials.AsseStatus">
                                                         <option value="ว่าง" selected>
                                                             ว่าง</option>
                                                         <option value="จำนอง" selected>
@@ -283,7 +317,7 @@
 
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="number"
                                                         min="0" max="200" step="1" id="BuildingAge" class="form-control"
-                                                        placeholder="อายุอาคาร(ปี)" name="BuildingAge" required
+                                                        placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge" required
                                                         [(ngModel)]="credentials.BuildingAge">
 
                                                 </div>
@@ -299,7 +333,7 @@
                                                     <div class="row">
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFD" class="form-control" name="BuildFD"
+                                                                id="BuildFD" class="form-control" formControlName="BuildFD"
                                                                 [(ngModel)]="credentials.BuildFD">
                                                                 <option>- วัน-</option>
                                                                 <option value="1">1</option>
@@ -337,7 +371,7 @@
                                                         </div>/
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFM" class="form-control" name="BuildFM"
+                                                                id="BuildFM" class="form-control" formControlName="BuildFM"
                                                                 [(ngModel)]="credentials.BuildFM">
                                                                 <option>- เดือน -</option>
                                                                 <option value="มกราคม">มกราคม</option>
@@ -356,7 +390,7 @@
                                                         </div>/
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFY" class="form-control" name="BuildFY"
+                                                                id="BuildFY" class="form-control" formControlName="BuildFY"
                                                                 [(ngModel)]="credentials.BuildFY">
                                                                 <option>- ปี -</option>
                                                                 <option *ngFor="let year of years" value="{{year}}">
@@ -379,7 +413,7 @@
                                                 <div class="col-md-4 ">
                                                     <div>
                                                         <select style="border-radius: 30px 30px 30px 30px;"
-                                                            id="Directions" class="form-control" name="Directions"
+                                                            id="Directions" class="form-control" formControlName="Directions"
                                                             [(ngModel)]="credentials.Directions">
                                                             <option>- ทิฺศ -</option>
                                                             <option value="ทิศเหนือ">ทิศเหนือ</option>
@@ -419,8 +453,8 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="HouseArea"
                                                                             class="form-control"
-                                                                            placeholder="พื้นที่ใช้สอย (ตร.ม.)"
-                                                                            name="HouseArea" required
+                                                                            placeholder="พื้นที่ใช้สอย (ตร.ม.)" 
+                                                                            formControlName="HouseArea" required
                                                                             [(ngModel)]="credentials.HouseArea">
                                                                     </div>
                                                                 </div>
@@ -436,7 +470,7 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="200" step="1"
                                                                             id="BathRoom" class="form-control"
-                                                                            placeholder="จำนวนห้องน้ำ" name="BathRoom"
+                                                                            placeholder="จำนวนห้องน้ำ" formControlName="BathRoom"
                                                                             required [(ngModel)]="credentials.BathRoom">
                                                                     </div>
                                                                 </div>
@@ -452,7 +486,7 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="200" step="1"
                                                                             id="BedRoom" class="form-control"
-                                                                            placeholder="จำนวนห้องนอน" name="BedRoom"
+                                                                            placeholder="จำนวนห้องนอน" formControlName="BedRoom"
                                                                             required [(ngModel)]="credentials.BedRoom">
                                                                     </div>
                                                                 </div>
@@ -468,7 +502,7 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="200" step="1"
                                                                             id="CarPark" class="form-control"
-                                                                            placeholder="จำนวนที่จอดรถ" name="CarPark"
+                                                                            placeholder="จำนวนที่จอดรถ" formControlName="CarPark" 
                                                                             required [(ngModel)]="credentials.CarPark">
                                                                     </div>
                                                                 </div>
@@ -485,7 +519,7 @@
                                                                         <input
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="Floor" class="form-control"
-                                                                            placeholder="ชั้นที่อยู่" name="Floor"
+                                                                            placeholder="ชั้นที่อยู่" formControlName="Floor" 
                                                                             required [(ngModel)]="credentials.Floor">
                                                                     </div>
                                                                 </div>
@@ -500,7 +534,7 @@
                                                                         <input
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="MFee" class="form-control"
-                                                                            placeholder="ค่าใช้จ่ายส่วนกลาง" name="MFee"
+                                                                            placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee" 
                                                                             required [(ngModel)]="credentials.MFee">
                                                                     </div>
                                                                 </div>
@@ -542,7 +576,7 @@
 
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
                                                         placeholder="สถานะทรัพย์สิน" class="form-control"
-                                                        name="AsseStatus" [(ngModel)]="credentials.AsseStatus">
+                                                        formControlName="AsseStatus" [(ngModel)]="credentials.AsseStatus">
                                                         <option value="ว่าง" selected>
                                                             ว่าง</option>
                                                         <option value="จำนอง" selected>
@@ -566,7 +600,7 @@
 
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="BuildingAge" class="form-control"
-                                                        placeholder="อายุคอนโด(ปี)" name="BuildingAge" required
+                                                        placeholder="อายุคอนโด(ปี)" formControlName="BuildingAge" required
                                                         [(ngModel)]="credentials.BuildingAge">
 
                                                 </div>
@@ -582,7 +616,7 @@
                                                     <div class="row">
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFD" class="form-control" name="BuildFD"
+                                                                id="BuildFD" class="form-control" formControlName="BuildFD"
                                                                 [(ngModel)]="credentials.BuildFD">
                                                                 <option>- วัน-</option>
                                                                 <option value="1">1</option>
@@ -620,7 +654,7 @@
                                                         </div>/
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFM" class="form-control" name="BuildFM"
+                                                                id="BuildFM" class="form-control" formControlName="BuildFM"
                                                                 [(ngModel)]="credentials.BuildFM">
                                                                 <option>- เดือน -</option>
                                                                 <option value="มกราคม">มกราคม</option>
@@ -639,7 +673,7 @@
                                                         </div>/
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFY" class="form-control" name="BuildFY"
+                                                                id="BuildFY" class="form-control" formControlName="BuildFY"
                                                                 [(ngModel)]="credentials.BuildFY">
                                                                 <option>- ปี -</option>
                                                                 <option *ngFor="let year of years" value="{{year}}">
@@ -662,7 +696,7 @@
                                                 <div class="col-md-4 ">
                                                     <div>
                                                         <select style="border-radius: 30px 30px 30px 30px;"
-                                                            id="Directions" class="form-control" name="Directions"
+                                                            id="Directions" class="form-control" formControlName="Directions"
                                                             [(ngModel)]="credentials.Directions">
                                                             <option>- ทิฺศ -</option>
                                                             <option value="ทิศเหนือ">ทิศเหนือ</option>
@@ -702,7 +736,7 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="BathRoom" class="form-control"
-                                                                            placeholder="จำนวนห้องน้ำ" name="BathRoom"
+                                                                            placeholder="จำนวนห้องน้ำ" formControlName="BathRoom"
                                                                             required [(ngModel)]="credentials.BathRoom">
                                                                     </div>
                                                                 </div>
@@ -718,7 +752,7 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="BedRoom" class="form-control"
-                                                                            placeholder="จำนวนห้องนอน" name="BedRoom"
+                                                                            placeholder="จำนวนห้องนอน" formControlName="BedRoom"
                                                                             required [(ngModel)]="credentials.BedRoom">
                                                                     </div>
                                                                 </div>
@@ -734,7 +768,7 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="CarPark" class="form-control"
-                                                                            placeholder="จำนวนที่จอดรถ" name="CarPark"
+                                                                            placeholder="จำนวนที่จอดรถ" formControlName="CarPark"
                                                                             required [(ngModel)]="credentials.CarPark">
                                                                     </div>
                                                                 </div>
@@ -751,7 +785,7 @@
                                                                             type="text" id="HouseArea"
                                                                             class="form-control"
                                                                             placeholder="พื้นที่ตัวบ้าน (ตร.ว.)"
-                                                                            name="HouseArea" required
+                                                                            formControlName="HouseArea" required
                                                                             [(ngModel)]="credentials.HouseArea">
                                                                     </div>
                                                                 </div>
@@ -768,7 +802,7 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="Floor" class="form-control"
-                                                                            placeholder="จำนวนชั้นของบ้าน" name="Floor"
+                                                                            placeholder="จำนวนชั้นของบ้าน" formControlName="Floor"
                                                                             required [(ngModel)]="credentials.Floor">
                                                                     </div>
                                                                 </div>
@@ -787,9 +821,9 @@
                                                                     </div>
                                                                     <div class="col-sm-10">
                                                                         <input
-                                                                            style="border-radius: 30px 30px 30px 30px;"
+                                                                            style="border-radius: 30px 30px 30px 30px;" 
                                                                             type="text" id="LandR" class="form-control"
-                                                                            placeholder="จำนวนไร" name="LandR" required
+                                                                            placeholder="จำนวนไร" formControlName="LandR" required
                                                                             [(ngModel)]="credentials.LandR">
                                                                     </div>
                                                                 </div>
@@ -804,7 +838,7 @@
                                                                         <input
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="LandG" class="form-control"
-                                                                            placeholder="จำนวนงาน" name="LandG" required
+                                                                            placeholder="จำนวนงาน" formControlName="LandG" required
                                                                             [(ngModel)]="credentials.LandG">
                                                                     </div>
                                                                 </div>
@@ -819,7 +853,7 @@
                                                                         <input
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="LandWA" class="form-control"
-                                                                            placeholder="จำนวนตารางวา" name="LandWA"
+                                                                            placeholder="จำนวนตารางวา" formControlName="LandWA"
                                                                             required [(ngModel)]="credentials.LandWA">
                                                                     </div>
                                                                 </div>
@@ -861,7 +895,7 @@
 
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
                                                         placeholder="สถานะทรัพย์สิน" class="form-control"
-                                                        name="AsseStatus" [(ngModel)]="credentials.AsseStatus">
+                                                        formControlName="AsseStatus" [(ngModel)]="credentials.AsseStatus">
                                                         <option value="ว่าง" selected>
                                                             ว่าง</option>
                                                         <option value="จำนอง" selected>
@@ -885,9 +919,8 @@
 
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="LandAge" class="form-control"
-                                                        placeholder="อายุการถือครองที่ดิน(ปี)" name="LandAge" required
+                                                        placeholder="อายุการถือครองที่ดิน(ปี)" formControlName="LandAge" required
                                                         [(ngModel)]="credentials.LandAge">
-
                                                 </div>
                                             </div>
                                             <br>
@@ -901,7 +934,7 @@
 
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="BuildingAge" class="form-control" placeholder="อายุบ้าน(ปี)"
-                                                        name="BuildingAge" required
+                                                        formControlName="BuildingAge" required
                                                         [(ngModel)]="credentials.BuildingAge">
 
                                                 </div>
@@ -917,7 +950,7 @@
                                                     <div class="row">
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFD" class="form-control" name="BuildFD"
+                                                                id="BuildFD" class="form-control" formControlName="BuildFD"
                                                                 [(ngModel)]="credentials.BuildFD">
                                                                 <option>- วัน-</option>
                                                                 <option value="1">1</option>
@@ -955,7 +988,7 @@
                                                         </div>/
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFM" class="form-control" name="BuildFM"
+                                                                id="BuildFM" class="form-control" formControlName="BuildFM"
                                                                 [(ngModel)]="credentials.BuildFM">
                                                                 <option>- เดือน -</option>
                                                                 <option value="มกราคม">มกราคม</option>
@@ -974,7 +1007,7 @@
                                                         </div>/
                                                         <div class="col-md-3">
                                                             <select style="border-radius: 30px 30px 30px 30px;"
-                                                                id="BuildFY" class="form-control" name="BuildFY"
+                                                                id="BuildFY" class="form-control" formControlName="BuildFY"
                                                                 [(ngModel)]="credentials.BuildFY">
                                                                 <option>- ปี -</option>
                                                                 <option *ngFor="let year of years" value="{{year}}">
@@ -997,7 +1030,7 @@
                                                 <div class="col-md-4 ">
                                                     <div>
                                                         <select style="border-radius: 30px 30px 30px 30px;"
-                                                            id="Directions" class="form-control" name="Directions"
+                                                            id="Directions" class="form-control" formControlName="Directions"
                                                             [(ngModel)]="credentials.Directions">
                                                             <option>- ทิฺศ -</option>
                                                             <option value="ทิศเหนือ">ทิศเหนือ</option>
@@ -1036,68 +1069,68 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="airconditioner"
-                                                                        [(ngModel)]="credentials.airconditioner">เครื่องปรับอากาศ
+                                                                        [(ngModel)]="credentials.airconditioner"> เครื่องปรับอากาศ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="afan" [(ngModel)]="credentials.afan">
                                                                     พัดลม
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="AirPurifier"
-                                                                        [(ngModel)]="credentials.AirPurifier">เครื่องฟอกอากาศ
+                                                                        [(ngModel)]="credentials.AirPurifier"> เครื่องฟอกอากาศ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="Waterheater"
-                                                                        [(ngModel)]="credentials.Waterheater">เครื่องทำน้ำอุ่น
+                                                                        [(ngModel)]="credentials.Waterheater"> เครื่องทำน้ำอุ่น
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="WIFI" [(ngModel)]="credentials.WIFI">
                                                                     มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="TV"
-                                                                        [(ngModel)]="credentials.TV">เคเบิลทีวี
+                                                                        [(ngModel)]="credentials.TV"> เคเบิลทีวี
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="refrigerator"
-                                                                        [(ngModel)]="credentials.refrigerator">ตู้เย็น
+                                                                        [(ngModel)]="credentials.refrigerator"> ตู้เย็น
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="microwave"
-                                                                        [(ngModel)]="credentials.microwave">ไมโครเวฟ
+                                                                        [(ngModel)]="credentials.microwave"> ไมโครเวฟ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="gasstove"
-                                                                        [(ngModel)]="credentials.gasstove">เตาแก๊ส
+                                                                        [(ngModel)]="credentials.gasstove"> เตาแก๊ส
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="wardrobe"
-                                                                        [(ngModel)]="credentials.wardrobe">ตู้เสื้อผ้า
+                                                                        [(ngModel)]="credentials.wardrobe"> ตู้เสื้อผ้า
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="TCset"
-                                                                        [(ngModel)]="credentials.TCset">ชุดโต๊ะเก้าอี้
+                                                                        [(ngModel)]="credentials.TCset"> ชุดโต๊ะเก้าอี้
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
-                                                                        name="sofa" [(ngModel)]="credentials.sofa">โซฟา
+                                                                    <input type="checkbox" id="" value="Yes" 
+                                                                        name="sofa" [(ngModel)]="credentials.sofa"> โซฟา
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="shelves"
-                                                                        [(ngModel)]="credentials.shelves">ชั้นวาง
+                                                                        [(ngModel)]="credentials.shelves"> ชั้นวาง
                                                                 </div>
 
 
@@ -1108,56 +1141,56 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="Securityguard"
-                                                                        [(ngModel)]="credentials.Securityguard">เจ้าหน้าที่รักษาความปลอดภัย
+                                                                        [(ngModel)]="credentials.Securityguard"> เจ้าหน้าที่รักษาความปลอดภัย
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="pool" [(ngModel)]="credentials.pool">
                                                                     สระว่ายน้ำ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="Fitness"
                                                                         [(ngModel)]="credentials.Fitness"> ฟิตเนส
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Publicarea">พื้นที่ส่วนกลาง
+                                                                        [(ngModel)]="credentials.Publicarea"> พื้นที่ส่วนกลาง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="ShuttleBus"
                                                                         [(ngModel)]="credentials.ShuttleBus">
                                                                     รถรับส่ง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="ShuttleBus"
                                                                         [(ngModel)]="credentials.WVmachine">
                                                                     ตู้น้ำหยอดเหรียญ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.CWmachine">เครื่องซักผ้าหยอดเหรียญ
+                                                                        [(ngModel)]="credentials.CWmachine"> เครื่องซักผ้าหยอดเหรียญ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Elevator">ลิฟต์
+                                                                        [(ngModel)]="credentials.Elevator"> ลิฟต์
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Lobby">ล๊อบบี้
+                                                                        [(ngModel)]="credentials.Lobby"> ล๊อบบี้
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="CCTV"
-                                                                        [(ngModel)]="credentials.CCTV">กล้องวงจรปิด CCTV
+                                                                        [(ngModel)]="credentials.CCTV"> กล้องวงจรปิด CCTV
                                                                 </div>
                                                             </div>
 
@@ -1167,30 +1200,30 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="Kitchen"
-                                                                        [(ngModel)]="credentials.Kitchen">ห้องครัว
+                                                                        [(ngModel)]="credentials.Kitchen"> ห้องครัว
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="LivingR"
-                                                                        [(ngModel)]="credentials.LivingR">ห้องนั่งเล่น
+                                                                        [(ngModel)]="credentials.LivingR"> ห้องนั่งเล่น
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="EventR"
-                                                                        [(ngModel)]="credentials.EventR">ห้องจัดงาน
+                                                                        [(ngModel)]="credentials.EventR"> ห้องจัดงาน
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes" 
                                                                         name="MeetingR"
                                                                         [(ngModel)]="credentials.MeetingR">
                                                                     ห้องประชุม
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1" 
                                                                         name="Balcony"
-                                                                        [(ngModel)]="credentials.Balcony">ระเบียง
+                                                                        [(ngModel)]="credentials.Balcony"> ระเบียง
                                                                 </div>
                                                             </div>
                                                             <br>
@@ -1199,41 +1232,41 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1" 
                                                                         name="ATM"
-                                                                        [(ngModel)]="credentials.ATM">ตู้เอทีเอ็ม /
+                                                                        [(ngModel)]="credentials.ATM"> ตู้เอทีเอ็ม /
                                                                     ธนาคาร
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1"
                                                                         name="BeautySalon"
-                                                                        [(ngModel)]="credentials.BeautySalon">ร้านเสริมสวย
+                                                                        [(ngModel)]="credentials.BeautySalon"> ร้านเสริมสวย
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1"
                                                                         name="CStore"
-                                                                        [(ngModel)]="credentials.CStore">ร้านสะดวกซื้อ
+                                                                        [(ngModel)]="credentials.CStore"> ร้านสะดวกซื้อ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1"
                                                                         name="Hairsalon"
                                                                         [(ngModel)]="credentials.Hairsalon">
                                                                     ร้านทำผม
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1"
                                                                         name="Laundry"
-                                                                        [(ngModel)]="credentials.Laundry">ร้านซักรีด/ซักแห้ง
+                                                                        [(ngModel)]="credentials.Laundry"> ร้านซักรีด/ซักแห้ง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1" 
                                                                         name="Store"
-                                                                        [(ngModel)]="credentials.Store">ร้านค้า
+                                                                        [(ngModel)]="credentials.Store"> ร้านค้า
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="1" checked
+                                                                    <input type="checkbox" id="" value="1" 
                                                                         name="Supermarket"
-                                                                        [(ngModel)]="credentials.Supermarket">ซุปเปอร์มาร์เก็ต
+                                                                        [(ngModel)]="credentials.Supermarket"> ซุปเปอร์มาร์เก็ต
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1254,53 +1287,53 @@
                                                 <h4>ทำเล</h4>
                                                 <div class="col-sm-12">
                                                     <input type="checkbox" id="" value="yes" checked name="Blind"
-                                                        [(ngModel)]="credentials.Blind">ที่ตาบอด
+                                                        [(ngModel)]="credentials.Blind"> ที่ตาบอด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked
+                                                    <input type="checkbox" id="" value="yes" 
                                                         name="Neareducation"
-                                                        [(ngModel)]="credentials.Neareducation">ใกล้สถานศึกษา
+                                                        [(ngModel)]="credentials.Neareducation"> ใกล้สถานศึกษา
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Cenmarket"
-                                                        [(ngModel)]="credentials.Cenmarket">ใกล้ศูนย์การค้า
+                                                    <input type="checkbox" id="" value="yes" name="Cenmarket"
+                                                        [(ngModel)]="credentials.Cenmarket"> ใกล้ศูนย์การค้า
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Market"
-                                                        [(ngModel)]="credentials.Market">ใกล้ตลาด
+                                                    <input type="checkbox" id="" value="yes" name="Market"
+                                                        [(ngModel)]="credentials.Market"> ใกล้ตลาด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Market"
-                                                        [(ngModel)]="credentials.Market">ใกล้รถไฟฟ้า
+                                                    <input type="checkbox" id="" value="yes" name="Market"
+                                                        [(ngModel)]="credentials.Market"> ใกล้รถไฟฟ้า
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="River"
+                                                    <input type="checkbox" id="" value="yes" name="River"
                                                         [(ngModel)]="credentials.River">ติดแม่น้ำ
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Mainroad"
+                                                    <input type="checkbox" id="" value="yes" name="Mainroad"
                                                         [(ngModel)]="credentials.Mainroad">ติดถนน
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Insoi"
+                                                    <input type="checkbox" id="" value="yes" name="Insoi"
                                                         [(ngModel)]="credentials.Insoi">อยู่ในซอย
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id=" " value="yes" checked name="onther"
+                                                    <input type="checkbox" id=" " value="yes" name="onther"
                                                         [(ngModel)]="onther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="onther " class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="Letc" class="form-control" placeholder="โปรดระบุ"
-                                                        name="Letc" required [(ngModel)]="credentials.Letc">
+                                                        name="Letc" [(ngModel)]="credentials.Letc">
                                                 </div>
                                                 <h4>สถานะถนน</h4>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="โคลน" checked name="RoadType"
+                                                    <input type="radio" id="" value="โคลน" name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">โคลน
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="ยางมะตอย" checked name="RoadType"
+                                                    <input type="radio" id="" value="ยางมะตอย" name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">ยางมะตอย
                                                 </div>
                                                 <div class="col-sm-12">
@@ -1308,20 +1341,20 @@
                                                         [(ngModel)]="credentials.RoadType">คอนกรีต
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id=" " value="1" checked name="RoadType"
+                                                    <input type="radio" id=" " value="1" name="RoadType"
                                                         [(ngModel)]="Ronther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="Ronther " class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="RoadType" class="form-control" placeholder="โปรดระบุ"
-                                                        name="RoadType" required [(ngModel)]="credentials.RoadType">
+                                                        name="RoadType" [(ngModel)]="credentials.RoadType">
                                                 </div>
 
                                                 <div class="col-sm-12">
                                                     <br>
                                                     <label>ความกว้างถนน</label>
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide"
-                                                        class="form-control" name="RoadWide"
+                                                        class="form-control" formControlName="RoadWide"
                                                         [(ngModel)]="credentials.RoadWide">
                                                         <option>- ความกว้างถนน -</option>
                                                         <option value="ซอยแคบ">ซอยแคบ</option>
@@ -1350,73 +1383,73 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="airconditioner"
-                                                                        [(ngModel)]="credentials.airconditioner">เครื่องปรับอากาศ
+                                                                        [(ngModel)]="credentials.airconditioner"> เครื่องปรับอากาศ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="afan" [(ngModel)]="credentials.afan">
                                                                     พัดลม
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="AirPurifier"
-                                                                        [(ngModel)]="credentials.AirPurifier">เครื่องฟอกอากาศ
+                                                                        [(ngModel)]="credentials.AirPurifier"> เครื่องฟอกอากาศ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Waterheater"
                                                                         [(ngModel)]="credentials.Waterheater">เครื่องทำน้ำอุ่น
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="WIFI" [(ngModel)]="credentials.WIFI">
                                                                     มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="TV"
-                                                                        [(ngModel)]="credentials.TV">เคเบิลทีวี
+                                                                        [(ngModel)]="credentials.TV"> เคเบิลทีวี
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="refrigerator"
-                                                                        [(ngModel)]="credentials.refrigerator">ตู้เย็น
+                                                                        [(ngModel)]="credentials.refrigerator"> ตู้เย็น
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="microwave"
-                                                                        [(ngModel)]="credentials.microwave">ไมโครเวฟ
+                                                                        [(ngModel)]="credentials.microwave"> ไมโครเวฟ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="gasstove"
-                                                                        [(ngModel)]="credentials.gasstove">เตาแก๊ส
+                                                                        [(ngModel)]="credentials.gasstove"> เตาแก๊ส
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="wardrobe"
-                                                                        [(ngModel)]="credentials.wardrobe">ตู้เสื้อผ้า
+                                                                        [(ngModel)]="credentials.wardrobe"> ตู้เสื้อผ้า
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="TCset"
-                                                                        [(ngModel)]="credentials.TCset">ชุดโต๊ะเก้าอี้
+                                                                        [(ngModel)]="credentials.TCset"> ชุดโต๊ะเก้าอี้
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
-                                                                        name="sofa" [(ngModel)]="credentials.sofa">โซฟา
+                                                                    <input type="checkbox" id="" value="Yes"
+                                                                        name="sofa" [(ngModel)]="credentials.sofa"> โซฟา
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="shelves"
-                                                                        [(ngModel)]="credentials.shelves">ชั้นวาง
+                                                                        [(ngModel)]="credentials.shelves"> ชั้นวาง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="CCTV"
-                                                                        [(ngModel)]="credentials.CCTV">กล้องวงจรปิด CCTV
+                                                                        [(ngModel)]="credentials.CCTV"> กล้องวงจรปิด CCTV
                                                                 </div>
 
                                                             </div>
@@ -1428,51 +1461,51 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Securityguard"
-                                                                        [(ngModel)]="credentials.Securityguard">เจ้าหน้าที่รักษาความปลอดภัย
+                                                                        [(ngModel)]="credentials.Securityguard"> เจ้าหน้าที่รักษาความปลอดภัย
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Publicarea">พื้นที่ส่วนกลาง
+                                                                        [(ngModel)]="credentials.Publicarea"> พื้นที่ส่วนกลาง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Securityguard"
-                                                                        [(ngModel)]="credentials.ATM">ตู้เอทีเอ็ม /
+                                                                        [(ngModel)]="credentials.ATM"> ตู้เอทีเอ็ม /
                                                                     ธนาคาร
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="pool"
-                                                                        [(ngModel)]="credentials.BeautySalon">ร้านเสริมสวย
+                                                                        [(ngModel)]="credentials.BeautySalon"> ร้านเสริมสวย
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Publicarea">ร้านสะดวกซื้อ
+                                                                        [(ngModel)]="credentials.Publicarea"> ร้านสะดวกซื้อ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="ShuttleBus"
                                                                         [(ngModel)]="credentials.ShuttleBus">
                                                                     ร้านทำผม
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Publicarea">ร้านซักรีด/ซักแห้ง
+                                                                        [(ngModel)]="credentials.Publicarea"> ร้านซักรีด/ซักแห้ง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Publicarea">ร้านค้า
+                                                                        [(ngModel)]="credentials.Publicarea"> ร้านค้า
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Publicarea">ซุปเปอร์มาร์เก็ต
+                                                                        [(ngModel)]="credentials.Publicarea"> ซุปเปอร์มาร์เก็ต
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1492,71 +1525,71 @@
                                             <div class="col-md-12 ">
                                                 <h4>ทำเล</h4>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Blind"
+                                                    <input type="checkbox" id="" value="yes" name="Blind"
                                                         [(ngModel)]="credentials.Blind">ที่ตาบอด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked
+                                                    <input type="checkbox" id="" value="yes"
                                                         name="Neareducation"
                                                         [(ngModel)]="credentials.Neareducation">ใกล้สถานศึกษา
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Cenmarket"
+                                                    <input type="checkbox" id="" value="yes" name="Cenmarket"
                                                         [(ngModel)]="credentials.Cenmarket">ใกล้ศูนย์การค้า
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Market"
+                                                    <input type="checkbox" id="" value="yes" name="Market"
                                                         [(ngModel)]="credentials.Market">ใกล้ตลาด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="River"
+                                                    <input type="checkbox" id="" value="yes" name="River"
                                                         [(ngModel)]="credentials.River">ติดแม่น้ำ
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Mainroad"
+                                                    <input type="checkbox" id="" value="yes" name="Mainroad"
                                                         [(ngModel)]="credentials.Mainroad">ติดถนน
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Insoi"
+                                                    <input type="checkbox" id="" value="yes" name="Insoi"
                                                         [(ngModel)]="credentials.Insoi">อยู่ในซอย
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id=" " value="yes" checked name="onther"
+                                                    <input type="checkbox" id=" " value="yes" name="onther"
                                                         [(ngModel)]="onther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="onther " class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="Letc" class="form-control" placeholder="โปรดระบุ"
-                                                        name="Letc" required [(ngModel)]="credentials.Letc">
+                                                        name="Letc" [(ngModel)]="credentials.Letc">
                                                 </div>
                                                 <h4>สถานะถนน</h4>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="โคลน" checked name="RoadType"
+                                                    <input type="radio" id="" value="โคลน" name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">โคลน
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="ยางมะตอย" checked name="RoadType"
+                                                    <input type="radio" id="" value="ยางมะตอย" name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">ยางมะตอย
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="คอนกรีต" checked name="RoadType"
+                                                    <input type="radio" id="" value="คอนกรีต" name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">คอนกรีต
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id=" " value="1" checked name="RoadType"
+                                                    <input type="radio" id=" " value="1" name="RoadType"
                                                         [(ngModel)]="Ronther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="Ronther " class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="RoadType" class="form-control" placeholder="โปรดระบุ"
-                                                        name="RoadType" required [(ngModel)]="credentials.RoadType">
+                                                        name="RoadType" [(ngModel)]="credentials.RoadType">
                                                 </div>
 
                                                 <div class="col-sm-12">
                                                     <br>
                                                     <label>ความกว้างถนน</label>
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide"
-                                                        class="form-control" name="RoadWide"
+                                                        class="form-control" formControlName="RoadWide"
                                                         [(ngModel)]="credentials.RoadWide">
                                                         <option>- ความกว้างถนน -</option>
                                                         <option value="ซอยแคบ">ซอยแคบ</option>
@@ -1572,19 +1605,19 @@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <input type="radio" id="GroundLevel" value="สูงกว่าถนน"
-                                                                name="GroundLevelhigh"
-                                                                [(ngModel)]="credentials.GroundLevel">สูงกว่าถนน
+                                                                name="GroundLevel"
+                                                                [(ngModel)]="credentials.GroundLevel"> สูงกว่าถนน
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน"
-                                                                name="GroundLevellow"
-                                                                [(ngModel)]="credentials.GroundLevel">ต่ำกว่าถนน
+                                                                name="GroundLevel"
+                                                                [(ngModel)]="credentials.GroundLevel"> ต่ำกว่าถนน
                                                         </div>
 
                                                     </div>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="GroundValue" class="form-control"
-                                                        placeholder="ระดับพื้นดินจากถนน (เมตร)" name="GroundValue"
+                                                        placeholder="ระดับพื้นดินจากถนน (เมตร)" formControlName="GroundValue"
                                                         required>
 
                                                 </div>
@@ -1609,73 +1642,73 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="airconditioner"
-                                                                        [(ngModel)]="credentials.airconditioner">เครื่องปรับอากาศ
+                                                                        [(ngModel)]="credentials.airconditioner"> เครื่องปรับอากาศ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="afan" [(ngModel)]="credentials.afan">
                                                                     พัดลม
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="AirPurifier"
-                                                                        [(ngModel)]="credentials.AirPurifier">เครื่องฟอกอากาศ
+                                                                        [(ngModel)]="credentials.AirPurifier"> เครื่องฟอกอากาศ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Waterheater"
-                                                                        [(ngModel)]="credentials.Waterheater">เครื่องทำน้ำอุ่น
+                                                                        [(ngModel)]="credentials.Waterheater"> เครื่องทำน้ำอุ่น
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="WIFI" [(ngModel)]="credentials.WIFI">
                                                                     มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="TV"
-                                                                        [(ngModel)]="credentials.TV">เคเบิลทีวี
+                                                                        [(ngModel)]="credentials.TV"> เคเบิลทีวี
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="refrigerator"
-                                                                        [(ngModel)]="credentials.refrigerator">ตู้เย็น
+                                                                        [(ngModel)]="credentials.refrigerator"> ตู้เย็น
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="microwave"
-                                                                        [(ngModel)]="credentials.microwave">ไมโครเวฟ
+                                                                        [(ngModel)]="credentials.microwave"> ไมโครเวฟ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="gasstove"
-                                                                        [(ngModel)]="credentials.gasstove">เตาแก๊ส
+                                                                        [(ngModel)]="credentials.gasstove"> เตาแก๊ส
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="wardrobe"
-                                                                        [(ngModel)]="credentials.wardrobe">ตู้เสื้อผ้า
+                                                                        [(ngModel)]="credentials.wardrobe"> ตู้เสื้อผ้า
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="TCset"
-                                                                        [(ngModel)]="credentials.TCset">ชุดโต๊ะเก้าอี้
+                                                                        [(ngModel)]="credentials.TCset"> ชุดโต๊ะเก้าอี้
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="sofa" [(ngModel)]="credentials.sofa">โซฟา
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="shelves"
-                                                                        [(ngModel)]="credentials.shelves">ชั้นวาง
+                                                                        [(ngModel)]="credentials.shelves"> ชั้นวาง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="CCTV"
-                                                                        [(ngModel)]="credentials.CCTV">กล้องวงจรปิด CCTV
+                                                                        [(ngModel)]="credentials.CCTV"> กล้องวงจรปิด CCTV
                                                                 </div>
 
                                                             </div>
@@ -1687,27 +1720,27 @@
                                                             <div>
 
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Securityguard"
-                                                                        [(ngModel)]="credentials.Securityguard">เจ้าหน้าที่รักษาความปลอดภัย
+                                                                        [(ngModel)]="credentials.Securityguard"> เจ้าหน้าที่รักษาความปลอดภัย
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="pool" [(ngModel)]="credentials.pool">
                                                                     สระว่ายน้ำ
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Fitness"
                                                                         [(ngModel)]="credentials.Fitness"> ฟิตเนส
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="Publicarea"
-                                                                        [(ngModel)]="credentials.Publicarea">พื้นที่ส่วนกลาง
+                                                                        [(ngModel)]="credentials.Publicarea"> พื้นที่ส่วนกลาง
                                                                 </div>
                                                                 <div class="col-sm-12">
-                                                                    <input type="checkbox" id="" value="Yes" checked
+                                                                    <input type="checkbox" id="" value="Yes"
                                                                         name="ShuttleBus"
                                                                         [(ngModel)]="credentials.ShuttleBus">
                                                                     รถรับส่ง
@@ -1730,42 +1763,42 @@
                                             <div class="col-md-12 ">
                                                 <h4>ทำเล</h4>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Blind"
+                                                    <input type="checkbox" id="" value="yes" name="Blind"
                                                         [(ngModel)]="credentials.Blind">ที่ตาบอด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked
+                                                    <input type="checkbox" id="" value="yes"
                                                         name="Neareducation"
                                                         [(ngModel)]="credentials.Neareducation">ใกล้สถานศึกษา
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Cenmarket"
+                                                    <input type="checkbox" id="" value="yes" name="Cenmarket"
                                                         [(ngModel)]="credentials.Cenmarket">ใกล้ศูนย์การค้า
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Market"
+                                                    <input type="checkbox" id="" value="yes" name="Market"
                                                         [(ngModel)]="credentials.Market">ใกล้ตลาด
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="River"
+                                                    <input type="checkbox" id="" value="yes" name="River"
                                                         [(ngModel)]="credentials.River">ติดแม่น้ำ
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Mainroad"
+                                                    <input type="checkbox" id="" value="yes" name="Mainroad"
                                                         [(ngModel)]="credentials.Mainroad">ติดถนน
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id="" value="yes" checked name="Insoi"
+                                                    <input type="checkbox" id="" value="yes" name="Insoi"
                                                         [(ngModel)]="credentials.Insoi">อยู่ในซอย
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="checkbox" id=" " value="yes" checked name="onther"
+                                                    <input type="checkbox" id=" " value="yes" name="onther"
                                                         [(ngModel)]="onther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="onther " class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="Letc" class="form-control" placeholder="โปรดระบุ"
-                                                        name="Letc" required [(ngModel)]="credentials.Letc">
+                                                        name="Letc" [(ngModel)]="credentials.Letc">
                                                 </div>
                                                 <h4>สถานะถนน</h4>
                                                 <div class="col-sm-12">
@@ -1773,28 +1806,28 @@
                                                         [(ngModel)]="credentials.RoadType">โคลน
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="ยางมะตอย" checked name="RoadType"
+                                                    <input type="radio" id="" value="ยางมะตอย" name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">ยางมะตอย
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id="" value="คอนกรีต" checked name="RoadType"
+                                                    <input type="radio" id="" value="คอนกรีต" name="RoadType"
                                                         [(ngModel)]="credentials.RoadType">คอนกรีต
                                                 </div>
                                                 <div class="col-sm-12">
-                                                    <input type="radio" id=" " value="1" checked name="RoadType"
+                                                    <input type="radio" id=" " value="1" name="RoadType"
                                                         [(ngModel)]="Ronther">อื่นๆ
                                                 </div>
                                                 <div *ngIf="Ronther " class="col-sm-12">
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="RoadType" class="form-control" placeholder="โปรดระบุ"
-                                                        name="RoadType" required [(ngModel)]="credentials.RoadType">
+                                                        name="RoadType" [(ngModel)]="credentials.RoadType">
                                                 </div>
 
                                                 <div class="col-sm-12">
                                                     <br>
                                                     <label>ความกว้างถนน</label>
                                                     <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide"
-                                                        class="form-control" name="RoadWide"
+                                                        class="form-control" formControlName="RoadWide"
                                                         [(ngModel)]="credentials.RoadWide">
                                                         <option>- ความกว้างถนน -</option>
                                                         <option value="ซอยแคบ">ซอยแคบ</option>
@@ -1810,19 +1843,19 @@
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <input type="radio" id="GroundLevel" value="สูงกว่าถนน"
-                                                                name="GroundLevelhigh"
-                                                                [(ngModel)]="credentials.GroundLevel">สูงกว่าถนน
+                                                                name="GroundLevel"
+                                                                [(ngModel)]="credentials.GroundLevel"> สูงกว่าถนน
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน"
-                                                                name="GroundLevellow"
-                                                                [(ngModel)]="credentials.GroundLevel">ต่ำกว่าถนน
+                                                                name="GroundLevel"
+                                                                [(ngModel)]="credentials.GroundLevel"> ต่ำกว่าถนน
                                                         </div>
 
                                                     </div>
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="GroundValue" class="form-control"
-                                                        placeholder="ระดับพื้นดินจากถนน (เมตร)" name="GroundValue"
+                                                        placeholder="ระดับพื้นดินจากถนน (เมตร)" formControlName="GroundValue"
                                                         required>
 
                                                 </div>
@@ -1898,7 +1931,7 @@
                                                             <input style="border-radius: 30px 30px 30px 30px;"
                                                                 type="text" id="ObservationPoint"
                                                                 class="form-control search-input"
-                                                                name="ObservationPoint" placeholder="สถานที่ใกล้เคียง"
+                                                                formControlName="ObservationPoint" placeholder="สถานที่ใกล้เคียง"
                                                                 required [(ngModel)]="credentials.ObservationPoint">
                                                         </div>
                                                     </div>
@@ -1916,7 +1949,7 @@
                                                                 <div>
                                                                     <input style="border-radius: 30px 30px 30px 30px;"
                                                                         type="text" id="Location" class="form-control"
-                                                                        name="Location" placeholder="ที่อยู่" required
+                                                                        formControlName="Location" placeholder="ที่อยู่" required
                                                                         [(ngModel)]="credentials.Location">
                                                                 </div>
                                                             </div>
@@ -1933,7 +1966,7 @@
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             id="LProvince" class="form-control"
-                                                                            name="LProvince" required
+                                                                            formControlName="LProvince" required
                                                                             [(ngModel)]="credentials.LProvince "
                                                                             (change)="selectprovince($event.target.value)">
                                                                             <option>- จังหวัด -</option>
@@ -1955,7 +1988,7 @@
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             id="LAmphur" class="form-control"
-                                                                            name="LAmphur" required
+                                                                            formControlName="LAmphur" required
                                                                             [(ngModel)]="credentials.LAmphur"
                                                                             (change)="selectamphur($event.target.value)">
                                                                             <option>- อำเภอ -</option>
@@ -1978,7 +2011,7 @@
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             id="LDistrict" class="form-control"
-                                                                            name="LDistrict" required
+                                                                            formControlName="LDistrict" required
                                                                             [(ngModel)]="credentials.LDistrict"
                                                                             (change)="selectdistrict($event.target.value)">
                                                                             <option >- ตำบล -</option>
@@ -2205,7 +2238,6 @@
                                                                 <label for="inputEmail4">รายชื่อผู้ติดต่อ</label>
                                                                 <select style="border-radius: 30px 30px 30px 30px;"
                                                                     class="form-control" name="ContactUt"
-                                                                    required
                                                                     (change)="onGetContact2($event.target.value)"
                                                                     [(ngModel)]="credentials.ContactUt">
                                                                     <option value="0">เลือกผู้ติดต่อ</option>
@@ -2372,7 +2404,7 @@
                                                                 <label for="inputEmail4">รายชื่อผู้ติดต่อ</label>
                                                                 <select style="border-radius: 30px 30px 30px 30px;"
                                                                     id="ContactUt" class="form-control" name="ContactUo"
-                                                                    required
+                                                                    
                                                                     (change)="onGetContact3($event.target.value)"
                                                                     [(ngModel)]="credentials.ContactUo">
                                                                     <option value="0">เลือกผู้ติดต่อ</option>
@@ -2540,14 +2572,25 @@
                     <div class="col-md-12 ">
                         <div class="row ">
                             <div class="col-8 ">
-                                <button class="btn btn-primary float-right" type="submit" (click)="onFirststep()"
-                                    awNextStep>
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ถัดไป
+                                <button class="btn btn-primary float-right" type="submit" (click)="onFirststep()" *ngIf="nextstep == 'false'"
+                                    >
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึก
                                 </button>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12 ">
+                            <div class="row ">
+                                <div class="col-8 ">
+                                    <button class="btn btn-primary float-right" type="button" *ngIf="nextstep == 'true'"
+                                        awNextStep>
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ถัดไป
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                 </div>
+            </form>
             </aw-wizard-step>
             <aw-wizard-step [stepTitle]="'รูปภาพ'">
                 <ng-template awWizardStepSymbol><i class="far fa-images"></i></ng-template>

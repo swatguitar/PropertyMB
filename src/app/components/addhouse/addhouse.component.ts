@@ -3,6 +3,7 @@ import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { } from 'googlemaps';
 import { AuthenticationService, TokenPayload, locationsDetails } from '../../authentication.service'
 import { Router } from '@angular/router';
+import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 
 
 
@@ -16,8 +17,46 @@ import { Router } from '@angular/router';
 })
 
 export class AddhouseComponent implements OnInit {
-  constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) { }
+  addhouseForm: FormGroup;
+  formSubmitted = false;
+  constructor(private formBuilder: FormBuilder, private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone) {}
+      buildForm() {
+        this.addhouseForm = new FormGroup ({
+          PropertyType: new FormControl (''),
+        AnnounceTH: new FormControl ('', Validators.required),
+        SellPrice: new FormControl ('', Validators.required),
+        CodeDeed: new FormControl ('', Validators.required),
+        Costestimate: new FormControl ('', Validators.required),
+        MarketPrice: new FormControl ('', Validators.required),
+        HouseArea: new FormControl ('', Validators.required),
+        BathRoom: new FormControl ('', Validators.required),
+        BedRoom: new FormControl ('', Validators.required),
+        CarPark: new FormControl ('', Validators.required),
+        GroundValue: new FormControl ('', Validators.required),
+        Floor: new FormControl ('', Validators.required),
+        MFee: new FormControl ('', Validators.required),
+        newhouse: new FormControl (''),
+        oldhouse: new FormControl (''),
+        AsseStatus: new FormControl (''),
+        BuildingAge: new FormControl ('', Validators.required),
+        BuildFD: new FormControl (''),
+        BuildFM: new FormControl (''),
+        BuildFY: new FormControl (''),
+        ObservationPoint: new FormControl ('', Validators.required),
+        Directions: new FormControl (''),
+        LandR: new FormControl ('', Validators.required),
+        LandG: new FormControl ('', Validators.required),
+        LandWA: new FormControl ('', Validators.required),
+        LandAge: new FormControl ('', Validators.required),
+        Location: new FormControl ('', Validators.required),
+        LProvince: new FormControl ('', Validators.required),
+        LAmphur: new FormControl ('', Validators.required),
+        LDistrict: new FormControl ('', Validators.required),
+        RoadWide: new FormControl (''),
+        });
+      }
+  
   latitude: number;
   longitude: number;
   zoom: number;
@@ -167,6 +206,7 @@ export class AddhouseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buildForm();
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -218,7 +258,7 @@ export class AddhouseComponent implements OnInit {
     )
     this.onResiveContact()
   }
-
+  get f() { return this.addhouseForm.controls; }
   // Get Current Location Coordinates
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
@@ -368,7 +408,17 @@ export class AddhouseComponent implements OnInit {
     });
   }
 
-  onFirststep() {
+  nextstep:string ='false'
+  onFirststep(event) {
+    event.preventDefault();
+    this.formSubmitted = true
+
+    if (this.addhouseForm.valid) {
+      console.log(this.addhouseForm.value); // Process your form
+    }else{
+      this.nextstep = 'true'
+    }
+   
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     if (this.credentials.PropertyType == "อาคารพานิชย์") {

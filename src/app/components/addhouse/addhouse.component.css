@@ -1,6 +1,7 @@
 input.ng-invalid.ng-touched {
-  border: solid 1px red;
+  border: solid 1px rgb(238, 74, 74);
 }
+
 
 .page-content img {
   max-width: 100%;
