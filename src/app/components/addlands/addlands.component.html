@@ -570,8 +570,8 @@
                                                                 <div class="col-sm-4">
                                                                     <select style="border-radius: 30px 30px 30px 30px;"
                                                                         id="province" class="form-control"
-                                                                        name="province" required
-                                                                        [(ngModel)]="province"
+                                                                        name="Lprovince" required
+                                                                        [(ngModel)]="Lprovince"
                                                                         (ngModelChange)="selectprovince($event)">
                                                                         <option>- จังหวัด -</option>
                                                                         <option *ngFor="let p of province"
@@ -591,8 +591,8 @@
                                                                 </div>
                                                                 <div class="col-sm-8">
                                                                     <select style="border-radius: 30px 30px 30px 30px;"
-                                                                        id="amphur" class="form-control" name="amphur"
-                                                                        required [(ngModel)]="amphur"
+                                                                        id="Lamphur" class="form-control" name="lamphur"
+                                                                        required [(ngModel)]="Lamphur"
                                                                         (ngModelChange)="selectamphur($event)">
                                                                         <option>- อำเภอ -</option>
                                                                         <option *ngFor="let a of amphur" [ngValue]="a">
@@ -612,8 +612,8 @@
                                                                 <div class="col-sm-4">
                                                                     <select style="border-radius: 30px 30px 30px 30px;"
                                                                         id="district" class="form-control"
-                                                                        name="district" required
-                                                                        [(ngModel)]="district"
+                                                                        name="Ldistrict" required
+                                                                        [(ngModel)]="Ldistrict"
                                                                         (ngModelChange)="selectdistrict($event)">
                                                                         <option>- ตำบล -</option>
                                                                         <option *ngFor="let d of district"
