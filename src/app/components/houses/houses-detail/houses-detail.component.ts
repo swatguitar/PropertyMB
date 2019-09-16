@@ -64,7 +64,7 @@ export class HousesDetailComponent implements OnInit {
      
     })
    
-    this.getMap()
+    
     this.zoom = 15;
     this.auth.getimghouse().subscribe((img) => {
       this.imgbox = img
@@ -113,13 +113,13 @@ export class HousesDetailComponent implements OnInit {
   
         });
       }
+    
     })
+      this.results.forEach((element, index) => {
+        this.lat = element.Latitude
+        this.lng = element.Latitude
+        
+      });
   }
-  getMap() {
-    this.results.forEach((element, index) => {
-      this.lat = element.Latitude
-      this.lng = element.Latitude
-      alert(JSON.stringify(this.lng+ " " + this.lat ))
-    });
-  }
+  
 }
