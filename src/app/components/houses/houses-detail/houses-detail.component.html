@@ -234,17 +234,10 @@
                 {{ house.LAmphur }}, {{ house.LProvince }}, ประเทศไทย, {{house.LZipCode}}</h5>
               <div class="row">
                 <div class="col-md-12 jumbotron">
-                  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
+                  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
                     <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
                   </agm-map>
                 </div>
-                <div class="row">
-                  <div class="col-sm-3">ละติจูต: <input class="form-control" disabled type="text" id="latitude"
-                      value='{{lat}}' name="latitude"> </div>
-                  <div class="col-sm-3">ลองจิจูต: <input class="form-control" disabled type="text" id="longitude"
-                      value='{{lng}}' name="longitude"> </div>
-                </div>
-
               </div>
               <div class="row">
                 <div class="col-xs-12 jumbotron">

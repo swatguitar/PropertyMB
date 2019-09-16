@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,NgZone, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
@@ -20,6 +20,8 @@ export class HousesDetailComponent implements OnInit {
   public activePage: number;
   public results: PropertyDetails[];
   zoom: number;
+  latitude: number;
+  longitude: number;
   lat: number;
   lng: number;
   imageIndex = 1;
@@ -28,12 +30,13 @@ export class HousesDetailComponent implements OnInit {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   a: any
-  constructor(private auth: AuthenticationService, private route: ActivatedRoute,
+  constructor(private auth: AuthenticationService, private route: ActivatedRoute, private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone,
     private router: Router) { }
 
   ngOnInit() {
       
-
+    this.setCurrentLocation() 
     this.galleryOptions = [
       { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
       { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
@@ -73,7 +76,7 @@ export class HousesDetailComponent implements OnInit {
       this.results.forEach((element, index) => {
         this.lat = element.Latitude
         this.lng = element.Longitude
-        this.zoom = 15;
+        this.zoom = 7;
       });
       
       this.imagenew = this.imgbox.filter(article => {
@@ -123,6 +126,15 @@ export class HousesDetailComponent implements OnInit {
     
     })
      
+  }
+  private setCurrentLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.zoom = 7;
+      });
+    }
   }
   
 }
