@@ -103,7 +103,7 @@
                                             <div class="col-md-8 ">
                                                 <div class="row">
                                                     <div class="col-sm-4">
-                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="number"
                                                             id="SellPrice" class="form-control"
                                                             placeholder="ราคาขาย (ที่คนขายกำหนด)" formControlName="SellPrice" 
                                                             required [(ngModel)]="credentials.SellPrice" [ngClass]="{ 'is-invalid': submitted && f.SellPrice.errors }">
@@ -112,7 +112,7 @@
                                                               </div>
                                                     </div>|
                                                     <div class="col-sm-4">
-                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="number"
                                                             id="Costestimate" class="form-control"
                                                             placeholder="ราคาประเมิน(ธนาคารประเมิน)" formControlName="Costestimate"
                                                             required [(ngModel)]="credentials.Costestimate" [ngClass]="{ 'is-invalid': submitted && f.Costestimate.errors }">
@@ -121,7 +121,7 @@
                                                               </div>
                                                     </div>|
                                                     <div class="col-sm-3">
-                                                        <input style="border-radius: 30px 30px 30px 30px;" type="text"
+                                                        <input style="border-radius: 30px 30px 30px 30px;" type="number"
                                                             id="MarketPrice" class="form-control" placeholder="ราคาตลาด"
                                                             formControlName="MarketPrice" required
                                                             [(ngModel)]="credentials.MarketPrice" [ngClass]="{ 'is-invalid': submitted && f.MarketPrice.errors }">
@@ -2001,10 +2001,9 @@
                                                                     <div class="col-sm-4">
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
-                                                                            id="LProvince" class="form-control"
-                                                                            formControlName="LProvince" required
-                                                                            [(ngModel)]="credentials.LProvince "
-                                                                            (change)="selectprovince($event.target.value)">
+                                                                            id="province" class="form-control"
+                                                                            name="province" required [(ngModel)]="province"
+                                                                            (ngModelChange)="selectprovince($event)">
                                                                             <option>- จังหวัด -</option>
                                                                             <option *ngFor="let p of province"
                                                                             [ngValue]="p">
@@ -2025,10 +2024,10 @@
                                                                     <div class="col-sm-8">
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
-                                                                            id="LAmphur" class="form-control"
-                                                                            formControlName="LAmphur" required
-                                                                            [(ngModel)]="credentials.LAmphur"
-                                                                            (change)="selectamphur($event.target.value)">
+                                                                            id="amphur" class="form-control"
+                                                                            name="amphur" required
+                                                                            [(ngModel)]="amphur"
+                                                                            (ngModelChange)="selectamphur($event)">
                                                                             <option>- อำเภอ -</option>
                                                                             <option *ngFor="let a of amphur"
                                                                             [ngValue]="a">
@@ -2048,10 +2047,10 @@
                                                                     <div class="col-sm-4">
                                                                         <select
                                                                             style="border-radius: 30px 30px 30px 30px;"
-                                                                            id="LDistrict" class="form-control"
-                                                                            formControlName="LDistrict" required
-                                                                            [(ngModel)]="credentials.LDistrict"
-                                                                            (change)="selectdistrict($event.target.value)">
+                                                                            id="district" class="form-control"
+                                                                            name="district" required
+                                                                            [(ngModel)]="district"
+                                                                            (ngModelChange)="selectdistrict($event)">
                                                                             <option >- ตำบล -</option>
                                                                             <option *ngFor="let d of district"
                                                                             [ngValue]="d">

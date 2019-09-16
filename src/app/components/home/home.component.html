@@ -84,7 +84,7 @@
       </div>
 
       <div class="list-table">
-        <ul *ngIf="emptyP" class="d-flex nav product-list">
+        <ul *ngIf="emptyP == 'true'" class="d-flex nav product-list">
           <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
             class="col-sm-4 col-6 d-flex justify-content-center">
             <a [routerLink]="['/addhouse']">
@@ -133,7 +133,7 @@
         </header>
       </div>
       <div class="list-table">
-        <ul *ngIf="emptyL" class="d-flex nav product-list">
+        <ul *ngIf="emptyL == 'true'" class="d-flex nav product-list">
           <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
             class="col-sm-4 col-6 d-flex justify-content-center">
             <a [routerLink]="['/addlands']">
