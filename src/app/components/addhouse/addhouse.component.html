@@ -318,7 +318,10 @@
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="number"
                                                         min="0" max="200" step="1" id="BuildingAge" class="form-control"
                                                         placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge" required
-                                                        [(ngModel)]="credentials.BuildingAge">
+                                                        [(ngModel)]="credentials.BuildingAge" [ngClass]="{ 'is-invalid': submitted && f.BuildingAge.errors }">
+                                                        <div *ngIf="submitted && f.BuildingAge.errors" class="invalid-feedback">
+                                                                <div *ngIf="f.BuildingAge.errors.required">กรุณากรอกข้อมูล</div>
+                                                          </div>
 
                                                 </div>
                                             </div>
@@ -455,7 +458,10 @@
                                                                             class="form-control"
                                                                             placeholder="พื้นที่ใช้สอย (ตร.ม.)" 
                                                                             formControlName="HouseArea" required
-                                                                            [(ngModel)]="credentials.HouseArea">
+                                                                            [(ngModel)]="credentials.HouseArea" [ngClass]="{ 'is-invalid': submitted && f.HouseArea.errors }">
+                                                                            <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.HouseArea.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -471,7 +477,10 @@
                                                                             type="number" min="0" max="200" step="1"
                                                                             id="BathRoom" class="form-control"
                                                                             placeholder="จำนวนห้องน้ำ" formControlName="BathRoom"
-                                                                            required [(ngModel)]="credentials.BathRoom">
+                                                                            required [(ngModel)]="credentials.BathRoom" [ngClass]="{ 'is-invalid': submitted && f.BathRoom.errors }">
+                                                                            <div *ngIf="submitted && f.BathRoom.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.BathRoom.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -487,7 +496,10 @@
                                                                             type="number" min="0" max="200" step="1"
                                                                             id="BedRoom" class="form-control"
                                                                             placeholder="จำนวนห้องนอน" formControlName="BedRoom"
-                                                                            required [(ngModel)]="credentials.BedRoom">
+                                                                            required [(ngModel)]="credentials.BedRoom" [ngClass]="{ 'is-invalid': submitted && f.BedRoom.errors }">
+                                                                            <div *ngIf="submitted && f.BedRoom.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.BedRoom.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -503,7 +515,10 @@
                                                                             type="number" min="0" max="200" step="1"
                                                                             id="CarPark" class="form-control"
                                                                             placeholder="จำนวนที่จอดรถ" formControlName="CarPark" 
-                                                                            required [(ngModel)]="credentials.CarPark">
+                                                                            required [(ngModel)]="credentials.CarPark" [ngClass]="{ 'is-invalid': submitted && f.CarPark.errors }">
+                                                                            <div *ngIf="submitted && f.CarPark.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.CarPark.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -520,7 +535,10 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="Floor" class="form-control"
                                                                             placeholder="ชั้นที่อยู่" formControlName="Floor" 
-                                                                            required [(ngModel)]="credentials.Floor">
+                                                                            required [(ngModel)]="credentials.Floor" [ngClass]="{ 'is-invalid': submitted && f.Floor.errors }">
+                                                                            <div *ngIf="submitted && f.Floor.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.Floor.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -535,7 +553,10 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="MFee" class="form-control"
                                                                             placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee" 
-                                                                            required [(ngModel)]="credentials.MFee">
+                                                                            required [(ngModel)]="credentials.MFee" [ngClass]="{ 'is-invalid': submitted && f.MFee.errors }">
+                                                                            <div *ngIf="submitted && f.MFee.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.MFee.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -601,7 +622,10 @@
                                                     <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                         id="BuildingAge" class="form-control"
                                                         placeholder="อายุคอนโด(ปี)" formControlName="BuildingAge" required
-                                                        [(ngModel)]="credentials.BuildingAge">
+                                                        [(ngModel)]="credentials.BuildingAge" [ngClass]="{ 'is-invalid': submitted && f.BuildingAge.errors }">
+                                                        <div *ngIf="submitted && f.BuildingAge.errors" class="invalid-feedback">
+                                                                <div *ngIf="f.BuildingAge.errors.required">กรุณากรอกข้อมูล</div>
+                                                          </div>
 
                                                 </div>
                                             </div>
@@ -737,7 +761,10 @@
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="BathRoom" class="form-control"
                                                                             placeholder="จำนวนห้องน้ำ" formControlName="BathRoom"
-                                                                            required [(ngModel)]="credentials.BathRoom">
+                                                                            required [(ngModel)]="credentials.BathRoom" [ngClass]="{ 'is-invalid': submitted && f.BathRoom.errors }">
+                                                                            <div *ngIf="submitted && f.BathRoom.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.BathRoom.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -753,7 +780,10 @@
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="BedRoom" class="form-control"
                                                                             placeholder="จำนวนห้องนอน" formControlName="BedRoom"
-                                                                            required [(ngModel)]="credentials.BedRoom">
+                                                                            required [(ngModel)]="credentials.BedRoom" [ngClass]="{ 'is-invalid': submitted && f.BedRoom.errors }">
+                                                                            <div *ngIf="submitted && f.BedRoom.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.BedRoom.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -769,7 +799,10 @@
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="CarPark" class="form-control"
                                                                             placeholder="จำนวนที่จอดรถ" formControlName="CarPark"
-                                                                            required [(ngModel)]="credentials.CarPark">
+                                                                            required [(ngModel)]="credentials.CarPark" [ngClass]="{ 'is-invalid': submitted && f.CarPark.errors }">
+                                                                            <div *ngIf="submitted && f.CarPark.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.CarPark.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -786,7 +819,10 @@
                                                                             class="form-control"
                                                                             placeholder="พื้นที่ตัวบ้าน (ตร.ว.)"
                                                                             formControlName="HouseArea" required
-                                                                            [(ngModel)]="credentials.HouseArea">
+                                                                            [(ngModel)]="credentials.HouseArea" [ngClass]="{ 'is-invalid': submitted && f.HouseArea.errors }">
+                                                                            <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.HouseArea.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -803,7 +839,10 @@
                                                                             type="number" min="0" max="100" step="1"
                                                                             id="Floor" class="form-control"
                                                                             placeholder="จำนวนชั้นของบ้าน" formControlName="Floor"
-                                                                            required [(ngModel)]="credentials.Floor">
+                                                                            required [(ngModel)]="credentials.Floor" [ngClass]="{ 'is-invalid': submitted && f.HouseArea.errors }">
+                                                                            <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.HouseArea.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -824,7 +863,10 @@
                                                                             style="border-radius: 30px 30px 30px 30px;" 
                                                                             type="text" id="LandR" class="form-control"
                                                                             placeholder="จำนวนไร" formControlName="LandR" required
-                                                                            [(ngModel)]="credentials.LandR">
+                                                                            [(ngModel)]="credentials.LandR" [ngClass]="{ 'is-invalid': submitted && f.LandR.errors }">
+                                                                            <div *ngIf="submitted && f.LandR.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.LandR.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -839,7 +881,10 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="LandG" class="form-control"
                                                                             placeholder="จำนวนงาน" formControlName="LandG" required
-                                                                            [(ngModel)]="credentials.LandG">
+                                                                            [(ngModel)]="credentials.LandG" [ngClass]="{ 'is-invalid': submitted && f.LandG.errors }">
+                                                                            <div *ngIf="submitted && f.LandG.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.LandG.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -854,7 +899,10 @@
                                                                             style="border-radius: 30px 30px 30px 30px;"
                                                                             type="text" id="LandWA" class="form-control"
                                                                             placeholder="จำนวนตารางวา" formControlName="LandWA"
-                                                                            required [(ngModel)]="credentials.LandWA">
+                                                                            required [(ngModel)]="credentials.LandWA" [ngClass]="{ 'is-invalid': submitted && f.LandWA.errors }">
+                                                                            <div *ngIf="submitted && f.LandWA.errors" class="invalid-feedback">
+                                                                                    <div *ngIf="f.LandWA.errors.required">กรุณากรอกข้อมูล</div>
+                                                                              </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1932,7 +1980,10 @@
                                                                 type="text" id="ObservationPoint"
                                                                 class="form-control search-input"
                                                                 formControlName="ObservationPoint" placeholder="สถานที่ใกล้เคียง"
-                                                                required [(ngModel)]="credentials.ObservationPoint">
+                                                                required [(ngModel)]="credentials.ObservationPoint" [ngClass]="{ 'is-invalid': submitted && f.ObservationPoint.errors }">
+                                                                <div *ngIf="submitted && f.ObservationPoint.errors" class="invalid-feedback">
+                                                                        <div *ngIf="f.ObservationPoint.errors.required">กรุณากรอกข้อมูล</div>
+                                                                  </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1950,7 +2001,10 @@
                                                                     <input style="border-radius: 30px 30px 30px 30px;"
                                                                         type="text" id="Location" class="form-control"
                                                                         formControlName="Location" placeholder="ที่อยู่" required
-                                                                        [(ngModel)]="credentials.Location">
+                                                                        [(ngModel)]="credentials.Location" [ngClass]="{ 'is-invalid': submitted && f.Location.errors }">
+                                                                        <div *ngIf="submitted && f.Location.errors" class="invalid-feedback">
+                                                                                <div *ngIf="f.Location.errors.required">กรุณากรอกข้อมูล</div>
+                                                                          </div>
                                                                 </div>
                                                             </div>
 
@@ -1971,11 +2025,13 @@
                                                                             (change)="selectprovince($event.target.value)">
                                                                             <option>- จังหวัด -</option>
                                                                             <option *ngFor="let p of province"
-                                                                                value="{{p.PROVINCE_ID}}">
+                                                                            [ngValue]="p">
                                                                                 {{p.PROVINCE_NAME}}
                                                                             </option>
 
                                                                         </select>
+
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1992,9 +2048,9 @@
                                                                             [(ngModel)]="credentials.LAmphur"
                                                                             (change)="selectamphur($event.target.value)">
                                                                             <option>- อำเภอ -</option>
-                                                                            <option *ngFor="let p of amphur"
-                                                                                value="{{p.AMPHUR_ID}}">
-                                                                                {{p.AMPHUR_NAME}}</option>
+                                                                            <option *ngFor="let a of amphur"
+                                                                            [ngValue]="a">
+                                                                                {{a.AMPHUR_NAME}}</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -2015,9 +2071,9 @@
                                                                             [(ngModel)]="credentials.LDistrict"
                                                                             (change)="selectdistrict($event.target.value)">
                                                                             <option >- ตำบล -</option>
-                                                                            <option *ngFor="let p of district"
-                                                                                value="{{p.DISTRICT_ID}}">
-                                                                                {{p.DISTRICT_NAME}}
+                                                                            <option *ngFor="let d of district"
+                                                                            [ngValue]="d">
+                                                                                {{d.DISTRICT_NAME}}
                                                                             </option>
                                                                         </select>
                                                                     </div>
@@ -2029,7 +2085,7 @@
                                                                         รหัสไปรษณี:
                                                                     </div>
                                                                     <div class="col-sm-8" *ngFor="let pp of zipcode">
-                                                                        <label for="">{{pp.ZIPCODE}}</label>
+                                                                              <input class="form-control" type="text" style="border-radius: 30px 30px 30px 30px;"  value="{{pp.ZIPCODE}}" readonly> 
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -2511,7 +2567,7 @@
                                                                 <div class="form-group col-md-4">
                                                                     <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
                                                                     <input type="name" class="form-control"
-                                                                        placeholder="ชื่อผู้ติดต่อ" readonly
+                                                                        placeholder="ชื่อผู้ติดต่อ" value="{{item.Name}}" readonly
                                                                         style="border-radius: 30px 30px 30px 30px;">
                                                                 </div>
                                                                 <div class="form-group col-md-4">
@@ -2572,9 +2628,19 @@
                     <div class="col-md-12 ">
                         <div class="row ">
                             <div class="col-8 ">
-                                <button class="btn btn-primary float-right" type="submit" (click)="onFirststep()" *ngIf="nextstep == 'false'"
+                                <button class="btn btn-primary float-right" type="submit" (click)="onFirststep()" 
                                     >
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึก
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 ">
+                        <div class="row ">
+                            <div class="col-8 ">
+                                <button class="btn btn-primary float-right" type="button" 
+                                    awNextStep>
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ถัดไป
                                 </button>
                             </div>
                         </div>
