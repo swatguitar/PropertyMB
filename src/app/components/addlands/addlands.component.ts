@@ -23,6 +23,9 @@ export class AddlandsComponent {
   PA: locationsDetails;
   district: any[];
   zipcode: any[];
+  Lprovince: any[];
+  Ldistrict: any[];
+  Lamphur: any[];
   private geoCoder;
   public details: any;
   createID: string
@@ -403,15 +406,19 @@ this.credentials.PriceWA = this.cal.toString()
       return article.ID_Contact == value;
     });
   }
+  onGo(){
+    this.formSubmited = true;
+   
+    // stop here if form is invalid
+    if (this.addlandForm.invalid) {
+        return;
+    }
+
+  }
   propType: string;
   IDprop: string;
   onFirststep() {
-    this.formSubmited = true;
-   
-  // stop here if form is invalid
-  if (this.addlandForm.invalid) {
-      return;
-  }
+ 
 
     this.getZipCode()
     this.credentials.Latitude = this.latitude

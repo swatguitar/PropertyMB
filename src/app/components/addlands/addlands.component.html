@@ -29,7 +29,7 @@
         <aw-wizard #wizard [navBarLayout]="'large-empty-symbols'">
             <aw-wizard-step [stepTitle]="'ข้อมูลทั่วไป'">
                 <ng-template awWizardStepSymbol><i class="far fa-file-alt"></i></ng-template>
-                <form [formGroup]="addlandForm" (ngSubmit)="onFirststep($event)">
+                <form [formGroup]="addlandForm" (ngSubmit)="onFirststep()">
                 <div class="centered-content">
                     <div class="row">
                         <div class="col-md-12 ">
@@ -105,8 +105,8 @@
                                                 <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                     id="AnnounceTH" class="form-control" formControlName="AnnounceTH"
                                                     placeholder="หัวข้อประกาศ" required
-                                                    [(ngModel)]="credentials.AnnounceTH" [ngClass]="{ 'is-invalid': submitted && f.AnnounceTH.errors }" >
-                                                    <div *ngIf="submitted && f.AnnounceTH.errors" class="invalid-feedback">
+                                                    [(ngModel)]="credentials.AnnounceTH" [ngClass]="{ 'is-invalid': formSubmited && f.AnnounceTH.errors }" >
+                                                    <div *ngIf="formSubmited && f.AnnounceTH.errors" class="invalid-feedback">
                                                         <div *ngIf="f.AnnounceTH.errors.required">กรุณากรอกข้อมูล</div>
                                                   </div>
                                             </div>
@@ -129,8 +129,8 @@
                                                                 type="number" id="SellPrice" class="form-control"
                                                                 (change)="selectprovince($event.target.value)"
                                                                 placeholder="ราคาขาย (ที่คนขายกำหนด)" formControlName="SellPrice"
-                                                                required [(ngModel)]="credentials.SellPrice" [ngClass]="{ 'is-invalid': submitted && f.SellPrice.errors }" >
-                                                                <div *ngIf="submitted && f.SellPrice.errors" class="invalid-feedback">
+                                                                required [(ngModel)]="credentials.SellPrice" [ngClass]="{ 'is-invalid': formSubmited && f.SellPrice.errors }" >
+                                                                <div *ngIf="formSubmited && f.SellPrice.errors" class="invalid-feedback">
                                                                     <div *ngIf="f.SellPrice.errors.required">กรุณากรอกข้อมูล</div>
                                                               </div>
                                                         </div>
@@ -176,8 +176,8 @@
                                                             <input style="border-radius: 30px 30px 30px 30px;"
                                                                 type="text" id="MarketPrice" class="form-control"
                                                                 placeholder="ราคาตลาด" formControlName="MarketPrice" required
-                                                                [(ngModel)]="credentials.MarketPrice" [ngClass]="{ 'is-invalid': submitted && f.MarketPrice.errors }" >
-                                                                <div *ngIf="submitted && f.MarketPrice.errors" class="invalid-feedback">
+                                                                [(ngModel)]="credentials.MarketPrice" [ngClass]="{ 'is-invalid': formSubmited && f.MarketPrice.errors }" >
+                                                                <div *ngIf="formSubmited && f.MarketPrice.errors" class="invalid-feedback">
                                                                     <div *ngIf="f.MarketPrice.errors.required">กรุณากรอกข้อมูล</div>
                                                               </div>
                                                         </div>

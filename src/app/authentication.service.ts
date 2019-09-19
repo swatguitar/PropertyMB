@@ -300,7 +300,7 @@ export interface TokenPayload {
 
 @Injectable()
 export class AuthenticationService {
-  ROOT_URL = "https://thinking-armor-245907.appspot.com";
+  ROOT_URL = "http://localhost:3001";
   private token: string
 
   constructor(private http: HttpClient, private router: Router) { }

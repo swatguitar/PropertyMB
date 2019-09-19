@@ -1,8 +1,9 @@
 input.ng-invalid.ng-touched {
   border: solid 1px rgb(238, 74, 74);
 }
-
-
+.reqiureinput{
+  color: red
+}
 .page-content img {
   max-width: 100%;
   height: auto!important;

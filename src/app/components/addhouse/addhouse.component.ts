@@ -39,13 +39,20 @@ export class AddhouseComponent implements OnInit {
         GroundValue: new FormControl ('', Validators.required),
         Floor: new FormControl ('', Validators.required),
         MFee: new FormControl ('', Validators.required),
-        newhouse: new FormControl (''),
-        oldhouse: new FormControl (''),
+        HomeCondition: new FormControl (''),
+        RoadWide: new FormControl (''),
+        RoadType: new FormControl (''),
+        Letc: new FormControl (''),
+        BuildFD: new FormControl (''),
+        BuildFM: new FormControl (''),
+        BuildFY: new FormControl ('', Validators.required),
+        RoadWide3: new FormControl (''),
+        RoadWide4: new FormControl (''),
         AsseStatus: new FormControl ('', Validators.required),
         BuildingAge: new FormControl ('', Validators.required),
-        BuildFD: new FormControl (''),
+        comfort: new FormControl (''),
         ObservationPoint: new FormControl (''),
-        BuildFY: new FormControl ('', Validators.required),
+        
         Directions: new FormControl ('', Validators.required),
         LandR: new FormControl ('', Validators.required),
         LandG: new FormControl ('', Validators.required),
@@ -60,6 +67,9 @@ export class AddhouseComponent implements OnInit {
   zoom: number;
   address: string;
   province: locationsDetails;
+  Lprovince: any[];
+  Ldistrict: any[];
+  Lamphur: any[];
   amphur: any[];
   PA: locationsDetails;
   district: locationsDetails;
@@ -250,7 +260,19 @@ export class AddhouseComponent implements OnInit {
     this.onResiveContact()
   }
   get f() { return this.addhouseForm.controls; }
-
+  onGo(){
+    this.submitted = true;
+   
+    // stop here if form is invalid
+    if (this.addhouseForm.invalid) {
+        return;
+    }
+    alert(JSON.stringify("บันทึกสำเร็จ"))
+  }
+  onPIPE(value){
+    this.credentials.SellPrice == value
+ 
+  }
 
   // Get Current Location Coordinates
   private setCurrentLocation() {
@@ -400,16 +422,12 @@ export class AddhouseComponent implements OnInit {
       return article.ID_Contact == value;
     });
   }
+  
 
   propType: string;
   IDprop: string;
   onFirststep() {
-    this.submitted = true;
-   
-  // stop here if form is invalid
-  if (this.addhouseForm.invalid) {
-      return;
-  }
+  
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     if (this.credentials.PropertyType == "อาคารพานิชย์") {
