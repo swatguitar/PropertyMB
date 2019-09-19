@@ -36,30 +36,18 @@ export class AddhouseComponent implements OnInit {
         BathRoom: new FormControl ('', Validators.required),
         BedRoom: new FormControl ('', Validators.required),
         CarPark: new FormControl ('', Validators.required),
-        GroundValue: new FormControl ('', Validators.required),
         Floor: new FormControl ('', Validators.required),
-        MFee: new FormControl ('', Validators.required),
+        MFee: new FormControl (''),
         HomeCondition: new FormControl (''),
-        RoadWide: new FormControl (''),
-        RoadType: new FormControl (''),
-        Letc: new FormControl (''),
         BuildFD: new FormControl (''),
         BuildFM: new FormControl (''),
         BuildFY: new FormControl ('', Validators.required),
-        RoadWide3: new FormControl (''),
-        RoadWide4: new FormControl (''),
         AsseStatus: new FormControl ('', Validators.required),
-        BuildingAge: new FormControl ('', Validators.required),
-        comfort: new FormControl (''),
-        ObservationPoint: new FormControl (''),
-        
+        BuildingAge: new FormControl (''),
         Directions: new FormControl ('', Validators.required),
-        LandR: new FormControl ('', Validators.required),
-        LandG: new FormControl ('', Validators.required),
-        LandWA: new FormControl ('', Validators.required),
-        LandAge: new FormControl ('', Validators.required),
-        Location: new FormControl ('', Validators.required),
-        ContactU: new FormControl ('', Validators.required),
+        LandR: new FormControl ('' ),
+        LandG: new FormControl (''),
+        LandWA: new FormControl (''),
       });
     }
   latitude: number;
@@ -265,6 +253,7 @@ export class AddhouseComponent implements OnInit {
    
     // stop here if form is invalid
     if (this.addhouseForm.invalid) {
+      console.log(this.addhouseForm)
         return;
     }
     alert(JSON.stringify("บันทึกสำเร็จ"))
@@ -273,7 +262,13 @@ export class AddhouseComponent implements OnInit {
     this.credentials.SellPrice == value
  
   }
-
+  buildage : number
+  onGetbuildage(year){
+    var yearEN = new Date().getFullYear();
+    this.buildage = ((yearEN+543)-year);
+    this.credentials.BuildingAge = this.buildage.toString()
+ 
+  }
   // Get Current Location Coordinates
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
