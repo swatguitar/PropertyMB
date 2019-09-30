@@ -4,7 +4,7 @@ import { } from 'googlemaps';
 import { AuthenticationService, TokenPayload, locationsDetails } from '../../authentication.service'
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-
+import * as $ from "jquery";
 
 
 
@@ -18,41 +18,78 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 export class AddhouseComponent implements OnInit {
   addhouseForm: FormGroup;
+  EditContactForm: FormGroup;
+  EditContact2Form: FormGroup;
+  EditContact3Form: FormGroup;
+  CreateContactForm: FormGroup;
   submitted = false;
-  contactUser: any[];
+  back: string = "false"
+  contactUser: any[] = [];
   selectContact3: any[];
   selectContact: any[];
   selectContact2: any[];
+  selectedItem: any = '';
+  inputChanged: any = '';
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) { 
-      this.addhouseForm = new FormGroup ({
-        PropertyType: new FormControl ('', Validators.required),
-        AnnounceTH: new FormControl ('', Validators.required),
-        SellPrice: new FormControl ('', Validators.required),
-        CodeDeed: new FormControl ('', Validators.required),
-        Costestimate: new FormControl (''),
-        MarketPrice: new FormControl (''),
-        HouseArea: new FormControl ('', Validators.required),
-        BathRoom: new FormControl ('', Validators.required),
-        BedRoom: new FormControl ('', Validators.required),
-        CarPark: new FormControl ('', Validators.required),
-        Floor: new FormControl ('', Validators.required),
-        MFee: new FormControl (''),
-        HomeCondition: new FormControl (''),
-        BuildFD: new FormControl (''),
-        BuildFM: new FormControl (''),
-        BuildFY: new FormControl ('', Validators.required),
-        AsseStatus: new FormControl ('', Validators.required),
-        BuildingAge: new FormControl (''),
-        Directions: new FormControl ('', Validators.required),
-        LandR: new FormControl ('' ),
-        LandG: new FormControl (''),
-        LandWA: new FormControl (''),
-      });
-    }
+    private ngZone: NgZone) {
+    this.addhouseForm = new FormGroup({
+      PropertyType: new FormControl('', Validators.required),
+      AnnounceTH: new FormControl('', Validators.required),
+      SellPrice: new FormControl('', Validators.required),
+      CodeDeed: new FormControl(''),
+      Costestimate: new FormControl(''),
+      MarketPrice: new FormControl(''),
+      HouseArea: new FormControl('', Validators.required),
+      BathRoom: new FormControl('', Validators.required),
+      BedRoom: new FormControl('', Validators.required),
+      CarPark: new FormControl('', Validators.required),
+      Floor: new FormControl('', Validators.required),
+      MFee: new FormControl(''),
+      HomeCondition: new FormControl(''),
+      BuildFD: new FormControl(''),
+      BuildFM: new FormControl(''),
+      BuildFY: new FormControl('', Validators.required),
+      AsseStatus: new FormControl('', Validators.required),
+      BuildingAge: new FormControl(''),
+      Directions: new FormControl('', Validators.required),
+      LandR: new FormControl(''),
+      LandG: new FormControl(''),
+      LandWA: new FormControl(''),
+    });
+    this.EditContactForm = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+      allowedit: new FormControl(''),
+      ContactS: new FormControl('', Validators.required),
+    });
+    this.EditContact2Form = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+      allowedit2: new FormControl(''),
+      ContactSt: new FormControl('', Validators.required),
+    });
+    this.EditContact3Form = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+      allowedit3: new FormControl(''),
+      ContactSo: new FormControl('', Validators.required),
+    });
+    this.CreateContactForm = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+    });
+  }
   latitude: number;
   longitude: number;
-  zoom: number;
+  zoom: number = 15;
   address: string;
   province: locationsDetails;
   Lprovince: any[];
@@ -187,15 +224,29 @@ export class AddhouseComponent implements OnInit {
     imgProperty: null,
     //------ contact ------
     ID_Contact: 0,
-    ContactName: " ",
-    ContactEmail: " ",
-    ContactLine: " ",
-    ContactPhone: " ",
-  
+    ContactName: '',
+    ContactEmail: '',
+    ContactLine: '',
+    ContactPhone: '',
+
 
   }
 
   ngOnInit() {
+    this.setCurrentLocation();
+    $('input.number').keyup(function(event) {
+
+      // skip for arrow keys
+      if(event.which >= 37 && event.which <= 40) return;
+    
+      // format number
+      $(this).val(function(index, value) {
+        return value
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        ;
+      });
+    });
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -244,30 +295,55 @@ export class AddhouseComponent implements OnInit {
         console.error(err)
 
       }
-    ) 
+    )
     this.onResiveContact()
   }
   get f() { return this.addhouseForm.controls; }
-  onGo(){
+
+  onGo() {
     this.submitted = true;
-   
+
     // stop here if form is invalid
     if (this.addhouseForm.invalid) {
-      console.log(this.addhouseForm)
-        return;
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
     }
-    alert(JSON.stringify("บันทึกสำเร็จ"))
+    this.onFirststep()
+    alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
   }
-  onPIPE(value){
-    this.credentials.SellPrice == value
- 
+  onUpdate() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.addhouseForm.invalid) {
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
+    }
+    this.getZipCode()
+    this.credentials.Latitude = this.latitude
+    this.credentials.Longitude = this.longitude
+    this.auth.EditHouse(this.credentials).subscribe(
+      () => {
+        
+      },
+      err => {
+        alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
+        console.error(err)
+
+      }
+
+    )
   }
-  buildage : number
-  onGetbuildage(year){
+  onBack() {
+    this.back = "true"
+
+  }
+  buildage: number
+  onGetbuildage(year) {
     var yearEN = new Date().getFullYear();
-    this.buildage = ((yearEN+543)-year);
+    this.buildage = ((yearEN + 543) - year);
     this.credentials.BuildingAge = this.buildage.toString()
- 
+
   }
   // Get Current Location Coordinates
   private setCurrentLocation() {
@@ -375,9 +451,20 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
+  get E() { return this.EditContactForm.controls; }
+  get Et() { return this.EditContact2Form.controls; }
+  get Eo() { return this.EditContact3Form.controls; }
+  get C() { return this.CreateContactForm.controls; }
+  Save: string = 'true'
   onCreateContact() {
+    this.submitted = true;
+    if (this.CreateContactForm.invalid) {
+      return;
+    }
+
     this.auth.addcontact(this.credentials).subscribe(() => {
       this.onResiveContact()
+      this.Save = 'false'
       alert(JSON.stringify("บันทึกสำเร็จ"))
     },
       err => {
@@ -385,14 +472,41 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
-
   onEditContact() {
+    this.submitted = true;
+    if (this.EditContactForm.invalid) {
+      return;
+    }
+    if (this.EditContact2Form.invalid) {
+      return;
+    }
+    if (this.EditContact3Form.invalid) {
+      return;
+    }
     this.auth.EditContact(this.credentials).subscribe(() => {
     },
       err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.onResiveContact()
         console.error(err)
       }
     )
+  }
+
+  onEditContactID(value) {
+    this.credentials.ID_Contact = value
+  }
+  onEditContactName(value) {
+    this.credentials.ContactName = value
+  }
+  onEditContactLine(value) {
+    this.credentials.ContactLine = value
+  }
+  onEditContactPhone(value) {
+    this.credentials.ContactPhone = value
+  }
+  onEditContactEmail(value) {
+    this.credentials.ContactEmail = value
   }
 
   onGetContact(value) {
@@ -406,7 +520,7 @@ export class AddhouseComponent implements OnInit {
   onGetContact2(value) {
     this.credentials.ID_Contact = value
     this.credentials.ContactUo = value
-  
+
     this.selectContact2 = this.contactUser.filter(article => {
       return article.ID_Contact == value;
     });
@@ -417,12 +531,12 @@ export class AddhouseComponent implements OnInit {
       return article.ID_Contact == value;
     });
   }
-  
+
 
   propType: string;
   IDprop: string;
   onFirststep() {
-  
+    this.getZipCode()
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     if (this.credentials.PropertyType == "อาคารพานิชย์") {
@@ -445,7 +559,12 @@ export class AddhouseComponent implements OnInit {
         this.onCheckTwo()
       });
       console.log("..........." + this.credentials.ID_Property + " END")
-
+      this.auth.addcontact(this.credentials).subscribe(() => {
+      },
+        err => {
+          console.error(err)
+        }
+      )
       this.auth.addhouse(this.credentials).subscribe(
         () => {
 

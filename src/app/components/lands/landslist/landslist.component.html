@@ -30,6 +30,70 @@
                 <hr class="specification-dash-line">
                 <div id="search-body" class="d-flex">
                   <div id="search-filter-box">
+                      <div class="filter-box">
+                          <div data-toggle="collapse" data-target="#filter-type" aria-expanded="false"
+                            aria-controls="filter-type" class="header collapsed">
+                            ประเภทอสังหาริมทรัพย์
+                          </div>
+                          <ul id="filter-type" class="filter-item collapse" aria-expanded="false" style="height: 0px;">
+                            <li>
+                              <hr>
+                            </li>
+                            
+                            <div id="more-filter-type" class="">
+                                <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.yellow" (change)="filterChange()" >
+                                      พื้นที่สีเหลือง
+                                      <!----></label></a></li>
+                                <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.orange" (change)="filterChange()" >
+                                      พื้นที่สีส้ม
+                                      <!----></label></a></li>
+                                <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.brown" (change)="filterChange()">
+                                      พื้นที่สีน้ำตาล
+                                      <!----></label></a></li>
+                                <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.red" (change)="filterChange()">
+                                        พื้นที่สีแดง
+                                        <!----></label></a></li>
+                                <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.purple" (change)="filterChange()">
+                                        พื้นที่สีม่วง
+                                        <!----></label></a></li>
+                                <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.plum" (change)="filterChange()">
+                                        พื้นที่สีเม็ดมะปราง
+                                        <!----></label></a></li>
+                                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.green" (change)="filterChange()">
+                                        พื้นที่สีเขียว
+                                          <!----></label></a></li>
+                                <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.whitegreen" (change)="filterChange()">
+                                  พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว
+                                          <!----></label></a></li>
+                                <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.brownweak" (change)="filterChange()">
+                                  พื้นที่สีน้ำตาลอ่อน
+                                          <!----></label></a></li>
+                                <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.blue" (change)="filterChange()">
+                                  พื้นที่สีน้ำเงิน
+                                            <!----></label></a></li>
+                            </div>
+                            <!---->
+                          </ul>
+                        </div>
+                        <div class="filter-box">
+                            <div data-toggle="collapse" data-target="#filter-deed" aria-expanded="false"
+                              aria-controls="filter-deed" class="header collapsed">
+                              ชนิดของโฉนด
+                            </div>
+                            <ul id="filter-deed" class="filter-item collapse" aria-expanded="false" style="height: 0px;">
+                              <li>
+                                <hr>
+                              </li>
+                              
+                              <div id="more-filter-type" class="">
+                                  <li><a href="#"><label><input type="checkbox"  >
+                                        พื้นที่สีเหลือง
+                                        <!----></label></a></li>
+                                  
+                              </div>
+                              <!---->
+                            </ul>
+                          </div>
                     <div class="filter-box">
                       <div data-toggle="collapse" data-target="#filter-price" aria-expanded="false"
                         aria-controls="filter-price" class="header collapsed">
@@ -103,35 +167,45 @@
                       </ul>
                     </div>
                     <div class="filter-box">
-                      <div data-toggle="collapse" data-target="#filter-brand" aria-controls="filter-brand" class="header">
-                        จังหวัด
-                      </div>
-                      <ul id="filter-brand" class="filter-item collapse">
-                        <li>
-                          <hr>
-                        </li>
-                        <li class="filter-search"><button><i class="fa fa-search"></i></button><input type="text"
-                          placeholder="ค้นหา" ></li>
-                        <!---->
-                        <div id="more-filter-brand" class="">
-                          
+                        <div data-toggle="collapse" data-target="#filter-brand" aria-controls="filter-brand" class="header" >
+                          ที่อยู่
                         </div>
-                        <!---->
-                      </ul>
-                    </div>
-                    <div class="filter-box">
-                      <div data-toggle="collapse" data-target="#filter-cpu" aria-controls="filter-cpu" class="header">
-                        อำเภอ
+                        <ul id="filter-brand" class="filter-item collapse">
+                          <li>
+                            <hr>
+                          </li>
+                          <p>จังหวัด</p>
+                          <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                            placeholder="ค้นหา" class="form-control" [(ngModel)]="searchPro1" (ngModelChange)="selectprovince($event)">
+                            <option>- จังหวัด -</option>
+                                  <option *ngFor="let p of province"
+                                  [ngValue]="p">
+                                  {{p.PROVINCE_NAME}}
+                                  </option>
+                          </select></li>
+                          <p>อำเภอ</p>
+                          <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                            placeholder="ค้นหา" class="form-control" [(ngModel)]="searchAmphur1" (ngModelChange)="selectamphur($event)">
+                            <option>- อำเภอ -</option>
+                            <option *ngFor="let a of amphur"
+                                [ngValue]="a">
+                                {{a.AMPHUR_NAME}}</option>
+                          </select></li>
+                          <p>ตำบล</p>
+                          <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                            placeholder="ค้นหา" class="form-control" [(ngModel)]="searchDis1" (ngModelChange)="selectdistrict($event)">
+                            <option>- ตำบล -</option>
+                            <option *ngFor="let d of district"
+                                [ngValue]="d">
+                                {{d.DISTRICT_NAME}}</option>
+                          </select></li>
+                          <!---->
+                          <div id="more-filter-brand" class="">
+                            
+                          </div>
+                          <!---->
+                        </ul>
                       </div>
-                      <ul id="filter-cpu" class="filter-item collapse">
-                        <li>
-                          <hr>
-                        </li>
-                        <li class="filter-search"><button><i class="fa fa-search"></i></button><input type="text"
-                            placeholder="ค้นหา"></li>
-                        <div id="more-filter-cpu" class=""></div>
-                      </ul>
-                    </div>
                     <div class="filter-box">
                       <div data-toggle="collapse" data-target="#filter-ram" aria-controls="filter-ram" class="header">
                         ทำเลที่ตั้ง
@@ -166,7 +240,7 @@
                       <div class="search-box">
                         <div class="search-form">
                           <div class="input-group mb-3">
-                            <input style="border-radius: 30px 30px 30px 30px;"  type="text"
+                            <input style="border-radius: 30px 30px 30px 30px;" [(ngModel)]="searchTerm"  type="text"
                               class="form-control" placeholder="ค้นหาที่ดินที่คุณต้องการ">
                             <div class="input-group-append">
                               <button class="btn btn-circle"><i class="fa fa-search"></i></button>
@@ -186,7 +260,7 @@
                     </div>
                     <div class="search-grid row col-eq">
                       <div
-                        *ngFor="let lands of details | slice:pointStart:pointEnd  "
+                        *ngFor="let lands of details | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
                         class="col-xs-12 col-sm-6 col-lg-4 item">
                         <div class="box jumbotron ">
                           <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"

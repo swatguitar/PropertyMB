@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, UserDetails, PropertyDetails, locationsDetails } from '../../../authentication.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 @Component({
   selector: 'app-landslist',
@@ -9,7 +9,11 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 export class LandslistComponent implements OnInit {
   details: PropertyDetails[];
   public highlightId:number; // สำหรับเก็บ id ที่เพิ่งเข้าดู
-  
+  // filter ประเภทบ้าน
+  filter = { yellow: false, orange: false, brown: false, red: false, purple: false, plum: false, green: false, whitegreen: false, brownweak: false, blue: false };
+  properties: PropertyDetails[] = []; // สร้าง array เปล่ารอรับค่าจาก checkbox
+  filterProperty: PropertyDetails[] = [];
+  searchTerm: string;
   // ส่วนจัดการเกี่ยวกับการแบ่งหน้า variable
   public iPage:number[] = [];
   public iPageStart:number = 1;
@@ -24,7 +28,24 @@ export class LandslistComponent implements OnInit {
   public pointStart:number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointEnd:number; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
 
-
+  address: string;
+  province: locationsDetails;
+  Lprovince: any[];
+  Ldistrict: any[];
+  Lamphur: any[];
+  amphur: any[];
+  PA: locationsDetails;
+  district: locationsDetails;
+  zipcode: any[];
+  createID: string
+  years: any[];
+  searchDis: string;
+  searchDis1: any[];
+  searchAmphur: string;
+  searchAmphur1: any[];
+  searchPro: string;
+  searchPro1: any[];
+  
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
     private router:Router) {}
 
@@ -105,8 +126,76 @@ export class LandslistComponent implements OnInit {
       // เก็บ id รายการที่เพิ่งเข้าไปดู ใส่เครื่องหมาย + ด้านหน้าเพื่อทำให็ 
       // string แปลงเป็นตัวแปร number
       this.highlightId = +params.get('id');
-    }    
+    }   
+    
+    //------------getlocation-------
+    this.auth.getProvine().subscribe((province) => {
+      this.province = province;
+    },
+      err => {
+        console.error(err)
 
+      }
+    ) 
+
+  }
+  selectprovince(data) {
+    this.searchPro = data.PROVINCE_NAME
+    this.auth.getAmphur().subscribe((amphur) => {
+      // กรณี resuponse success
+      this.amphur = amphur.filter(article => {
+        return article.PROVINCE_ID == data.PROVINCE_ID;
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  selectamphur(data) {
+    this.searchAmphur = data.AMPHUR_NAME
+    this.auth.getDistrict().subscribe((district) => {
+      // กรณี resuponse success
+      this.district = district.filter(article => {
+        return article.AMPHUR_ID == data.AMPHUR_ID;
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  selectdistrict(data) {
+    this.searchDis = data.DISTRICT_NAME
+    this.auth.getZipcode().subscribe((zipcode) => {
+      // กรณี resuponse success
+      this.zipcode = zipcode.filter(article => {
+        return article.DISTRICT_ID == data.DISTRICT_ID;
+      });
+
+    },
+      err => {
+        console.error(err)
+      }
+    )
+
+  }
+
+  filterChange() {
+    this.filterProperty = this.properties.filter(
+      x =>
+        (x.ColorType === "พื้นที่สีเหลือง - ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย" && this.filter.yellow) ||
+        (x.ColorType === "พื้นที่สีส้ม - ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง" && this.filter.orange) ||
+        (x.ColorType === "พื้นที่สีน้ำตาล - ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก" && this.filter.brown) ||
+        (x.ColorType === "พื้นที่สีแดง - ที่ดินประเภทภาณิชยกรรม" && this.filter.red) ||
+        (x.ColorType === "พื้นที่สีม่วง - ที่ดินประเภทอุตสาหกรรมและคลังสินค้า" && this.filter.purple) ||
+        (x.ColorType === "พื้นที่สีเม็ดมะปราง - ที่ดินประเภทคลังสินค้า" && this.filter.plum) ||
+        (x.ColorType === "พื้นที่สีเขียว - ที่ดินประเภทชนบทและเกษตรกรรม" && this.filter.green) ||
+        (x.ColorType === "พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว - ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม" && this.filter.whitegreen) ||
+        (x.ColorType === "พื้นที่สีน้ำตาลอ่อน - ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย" && this.filter.brownweak) ||
+        (x.ColorType === "พื้นที่สีน้ำเงิน - ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ" && this.filter.blue) 
+    );
   }
 
 }

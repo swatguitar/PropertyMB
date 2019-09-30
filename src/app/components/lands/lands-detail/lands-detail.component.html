@@ -1,360 +1,450 @@
 <img src="https://www.234.in.th/images/2019/05/03/derek-torsani-22x.png" class="img-fluid" alt="Responsive image"
-    style="width:100%;">
+  style="width:100%;">
 <section *ngFor="let lands of results" class="container">
-    <div id="web-body">
-              <div id="page-content">
-            <!------------------------------------------------------------------------>
+  <div id="web-body">
+    <div id="page-content">
+      <!------------------------------------------------------------------------>
 
-            <div class="container">
-                <div id="product-container">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <ul id="breadcrumb-nav" typeof="BreadcrumbList">
-                                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]"
-                                        property="item" typeof="WebPage"><span property="name">หน้าแรก</span></a>
-                                    <meta property="position" content="1">
-                                </li>
-                                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/lands' ]"
-                                        property="item" typeof="WebPage"><span property="name">ที่ดิน</span></a>
-                                    <meta property="position" content="2">
-                                </li>
-                                <li property="itemListElement" typeof="ListItem"><a property="item"
-                                        typeof="WebPage"><span property="name">{{ lands.announceTH }}</span></a>
-                                    <meta property="position" content="2">
-                                </li>
-                            </ul>
+      <div class="container">
+        <div id="product-container">
+          <div class="row">
+            <div class="col-md-7">
+              <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+                    typeof="WebPage"><span property="name">หน้าแรก</span></a>
+                  <meta property="position" content="1">
+                </li>
+                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/lands' ]" property="item"
+                    typeof="WebPage"><span property="name">ที่ดิน</span></a>
+                  <meta property="position" content="2">
+                </li>
+                <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+                      property="name">{{ lands.AnnounceTH }}</span></a>
+                  <meta property="position" content="2">
+                </li>
+              </ul>
 
-                            <h1>{{ lands.announceTH }}</h1>
-                        </div>
-                        <div class="col-md-5 ">
-                            <div class="logo-distributed ">
-                                <h3>Property<span>Management</span></h3>
-                                <button kendo-button (click)="pdf.saveAs('invoice.pdf')">
-                                    บันทึกเป็น PDF
-                                  </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div style="position: absolute; left: -1000px; top: 0;">
-                    <kendo-pdf-export #pdf paperSize="A4" margin="1cm">
-                      <div style="width: 500px;">
-          
-          
-                      </div>
-                    </kendo-pdf-export>
-                  </div>
-                  <div class="">
-                    <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-                  </div>
-                <hr>
-                <div id="product-specificate">
-
-                    <!-- Tab panes -->
-                    <div class="">
-                      <div role="tabpanel" class="tab-pane active" id="specificate">
-          
-                        <div class="row">
-                          <div class="col-xs-12">
-                            <h3>ข้อมูลทั่วไป</h3>
-                            <div class="row">
-                              <div class="col-md-12 jumbotron">
-                                <div class="col-sm-6">
-                                  <div class="header-blog">ข้อมูลอสังหา</div>
-                                  <div class="specificate-panel">
-                                    <div class="specificate-list">
-                                      <div class="specificate-title">ประเภทบ้าน</div>
-                                      <div class="specificate-info">{{ lands.PropertyType }}</div>
-                                    </div>
-                                    <div class="specificate-list">
-                                      <div class="specificate-title">หัวข้อประกาศ</div>
-                                      <div class="specificate-info">{{ lands.AnnounceTH }}</div>
-                                    </div>
-                                    <div class="specificate-list">
-                                      <div class="specificate-title">รหัสอสังหา</div>
-                                      <div class="specificate-info">{{ lands.CodeDeed }}</div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="col-sm-6 ">
-                                  <div class="header-blog">ราคา</div>
-                                  <div class="specificate-panel">
-                                    <div class="specificate-list">
-                                      <div class="specificate-title">ราคาขาย</div>
-                                      <div class="specificate-info">{{ lands.SellPrice | number}} บาท</div>
-                                    </div>
-                                    <div class="specificate-list">
-                                      <div class="specificate-title">ราคาประเมิน</div>
-                                      <div class="specificate-info">{{ lands.Costestimate | number }} บาท</div>
-                                    </div>
-                                    <div class="specificate-list">
-                                      <div class="specificate-title">ราคาตลาด</div>
-                                      <div class="specificate-info">{{ lands.MarketPrice | number}} บาท</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-          
-                            <div>
-                              <div class="row">
-                                <div class="col-md-8">
-                                  <div class="jumbotron">
-                                    <div class="row">
-                                      <div class="col-sm-6">
-                                        <div class="header-blog">รายละเอียดบ้าน</div>
-                                        <ul>
-                                          <li>
-                                            <div><i class="fas fa-bath"></i> </div>
-          
-                                          </li>
-                                          <li>
-                                            <div><i class="fas fa-bed"></i> </div>
-          
-                                          </li>
-                                          <li>
-                                            <div><i class="fas fa-car"></i> </div>
-          
-                                          </li>
-          
-                                          <li>
-                                            <div><i class="fas fa-ruler"></i> </div>
-          
-                                          </li>
-                                        </ul>
-                                      </div>
-                                      <div class="col-sm-6">
-                                        <div class="header-blog">รายละเอียดที่ดิน</div>
-                                        <ul>
-                                          <li>
-                                            <div><i class="fas fa-ruler"></i> {{lands.LandR}} ไร่ </div>
-          
-                                          </li>
-                                          <li>
-                                            <div><i class="fas fa-ruler"></i> {{lands.LandG}} งาน </div>
-          
-                                          </li>
-                                          <li>
-                                            <div><i class="fas fa-ruler"></i> {{lands.LandWA}} ตารางวา</div>
-          
-                                          </li>
-          
-                                          <li>
-                                            <div><i class="fas fa-ruler"></i> พื้นที่ใช้สอย {{lands.Land}} ตารางวา</div>
-          
-                                          </li>
-                                        </ul>
-                                      </div>
-          
-                                    </div>
-                                  </div>
-                                </div>
-          
-                                <div class="col-md-4">
-                                  <div class="jumbotron">
-                                    <div class="header-blog">รายละเอียดเพิ่มเติม</div>
-                                    <textarea class="form-control" id="FormControlTextarea" rows="5" value="{{lands.MoreDetails}}"
-                                      readonly></textarea>
-                                  </div>
-                                </div>
-                              </div>
-          
-                            </div>
-                          </div>
-                        </div>
-          
-                        <div class="row">
-                          <div class="col-xs-12">
-                            <h3>ข้อมูลติดต่อ</h3>
-                            <div class="jumbotron">
-                              <div class="col-md-4">
-                                <div class="specificate-panel">
-                                  <div class="specificate-list">
-                                    <div class="specificate-title">ขื่อผู้ดูแล</div>
-                                    <div class="specificate-info">คุณ 
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="product-ranking">
-                                <div class="now-rank">
-                                  <div class="frame">
-                                    <div class="header">สถานะทรัพย์สิน</div>
-                                    <div class="rank">{{lands.AsseStatus}}</div>
-                                  </div>
-                                </div>
-          
-                                <div class="list-rank">
-                                  <ul>
-                                    <li>
-                                      <div class="title"><i class="fas fa-phone-square-alt"></i> เบอร์โทร: 
-                                      </div>
-                                      <div class="percentage increase"></div>
-                                    </li>
-                                    <li>
-                                      <div class="title"><i class="far fa-envelope"></i> อีเมล:  </div>
-                                      <div class="percentage increase"></div>
-                                    </li>
-                                    <li class="active">
-                                      <div class="title"><i class="fab fa-line"></i> Line: </div>
-                                      <div class="percentage"></div>
-                                    </li>
-                                  </ul>
-                                </div>
-          
-                                <div class="icon-rank">
-                                  <ul>
-                                    <li>
-          
-          
-                                    </li>
-                                    <li>
-          
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <h3>ข้อมูลสถานที่</h3>
-                        <h5><i class="fas fa-map-marker-alt"></i> {{ lands.Location }}, {{ lands.LDistrict }},
-                          {{ lands.LAmphur }}, {{ lands.LProvince }}, ประเทศไทย, {{lands.LZipCode}}</h5>
-                        <div class="row">
-                          <div class="col-md-12 jumbotron">
-                            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom">
-                              <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-                            </agm-map>
-                          </div>
-                          <div class="row">
-                            <div class="col-sm-3">ละติจูต: <input class="form-control" disabled
-                                    type="text" id="latitude" 
-                                    value='{{lands.Latitude}}' name="latitude"> </div>
-                            <div class="col-sm-3">ลองจิจูต: <input class="form-control" disabled
-                                    type="text" id="longitude"
-                                   value='{{lands.Longitude}}'
-                                    name="longitude"> </div>
-                        </div>
-          
-                        </div>
-                        <div class="row">
-                          <div class="col-xs-12 jumbotron">
-                            <div class="header-blog">รายละเอียดอสังหา</div>
-                            <div class="specificate-panel">
-                              <div class="specificate-list">
-                                <div class="specificate-title">สภาพบ้าน</div>
-                                <div class="specificate-info"></div>
-                              </div>
-                              <div class="specificate-list">
-                                <div class="specificate-title">อายุบ้าน</div>
-                                <div class="specificate-info"> ปี</div>
-                              </div>
-                              <div class="specificate-list">
-                                <div class="specificate-title">ปีที่ก่อสร้างเสร็จ</div>
-                                <div class="specificate-info"> /  / 
-                                </div>
-                              </div>
-                              <div class="specificate-list">
-                                <div class="specificate-title">ทิฺศของประตูบ้าน</div>
-                                <div class="specificate-info"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="jumbotron">
-          
-                              <div class="header-blog">ทำเล</div>
-                              <div class="specificate-panel">
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ที่ตาบอด</div>
-                                  <div class="specificate-info">{{ lands.Blind }}</div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ใกล้สถานศึกษา</div>
-                                  <div class="specificate-info">{{ lands.Neareducation }}</div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ใกล้ศูนย์การค้า</div>
-                                  <div class="specificate-info">{{ lands.Cenmarket }}</div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ใกล้ตลาด</div>
-                                  <div class="specificate-info">{{ lands.Market }}</div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ติดแม่น้ำ</div>
-                                  <div class="specificate-info">{{ lands.River }}</div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ติดถนน</div>
-                                  <div class="specificate-info">{{ lands.Mainroad }} </div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">อยู่ในซอย</div>
-                                  <div class="specificate-info">{{ lands.Insoi }} </div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">อื่นๆ</div>
-                                  <div class="specificate-info">{{ lands.Letc }} </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="jumbotron">
-                              <div class="header-blog">ถนน</div>
-                              <div class="specificate-panel">
-                                <div class="specificate-list">
-                                  <div class="specificate-title">สถานะถนน</div>
-                                  <div class="specificate-info">{{ lands.RoadType }}</div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ความกว้างถนน</div>
-                                  <div class="specificate-info">{{ lands.RoadWide }}</div>
-                                </div>
-                                <div class="specificate-list">
-                                  <div class="specificate-title">ระดับพื้นดิน</div>
-                                  <div class="specificate-info">{{ lands.GroundLevel }} | {{ lands.GroundValue }} เมตร</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-xs-12 ">
-                          <h3>สิ่งอำนวยความสดวก</h3>
-                          <div class="row">
-                            <div class="col-md-12 jumbotron">
-                              <div class=" col-sm-6">
-                                <div class="header-blog">ภายในบ้าน</div>
-                                <div class="specificate-panel">
-                                  <div class="specificate-list">
-                                    <div class="specificate-title">เครื่องปรับอากาศ</div>
-                                    <div class="specificate-info"></div>
-                                  </div>
-                                </div>
-                              </div>
-          
-                              <div class="col-sm-6">
-                                <div class="header-blog">บริเวณบ้าน</div>
-                                <div class="specificate-panel">
-                                  <div class="specificate-list">
-                                    <div class="specificate-title">เจ้าหน้าที่รักษาความปลอดภัย</div>
-                                    <div class="specificate-info"></div>
-                                  </div>
-                                 
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-          
+              <h1>{{ lands.AnnounceTH }}</h1>
+              <h5><i class="fas fa-map-marker-alt"></i> {{ lands.Location }}, {{ lands.LDistrict }},
+                {{ lands.LAmphur }}, {{ lands.LProvince }}, ประเทศไทย, {{lands.LZipCode}}</h5>
+              <hr>
             </div>
+            <div class="col-md-5 ">
+              <div class="logo-distributed ">
+                <h3>Property<span>Management</span></h3>
+                <br>
+                <button kendo-button class="btn btn-success" (click)="pdf.saveAs('invoice.pdf')">
+                  บันทึกเป็น PDF
+                </button>
+              </div>
+
+            </div>
+          </div>
         </div>
+        <div style="position: absolute; left: -1000px; top: 0;">
+          <kendo-pdf-export #pdf paperSize="A4" margin="1cm">
+            <div style="width: 500px;">
+
+
+            </div>
+          </kendo-pdf-export>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+          </div>
+          <div class="col-md-4">
+            <div class="jumbotron">
+              <div class="header-blog">สถานะการซื้อขาย</div>
+              <label>{{lands.PPStatus}}</label>
+            </div>
+            <div class="jumbotron">
+              <div class="header-blog">สถานะทรัพย์สิน</div>
+              <label>{{lands.AsseStatus}}</label>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div id="product-specificate">
+
+          <!-- Tab panes -->
+          <div class="">
+            <div role="tabpanel" class="tab-pane active" id="specificate">
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3>ข้อมูลทั่วไป</h3>
+                  <div class="row">
+                    <div class="col-md-12 ">
+                      <div class="col-sm-6">
+                        <div class="header-blog">ข้อมูลอสังหา</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">ประเภทที่ดิน</div>
+                            <div class="specificate-info">{{ lands.ColorType }}</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">หัวข้อประกาศ</div>
+                            <div class="specificate-info">{{ lands.AnnounceTH }}</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">รหัสอสังหา</div>
+                            <div class="specificate-info">{{ lands.CodeProperty}}</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ประเภทโฉนด</div>
+                            <div class="specificate-info">{{ lands.Deed }}</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เลขโฉนด</div>
+                            <div class="specificate-info">{{ lands.CodeDeed }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 ">
+                        <div class="header-blog">ราคา</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">ราคาขาย</div>
+                            <div class="specificate-info">{{ lands.SellPrice}} บาท</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ธนาคารประเมิน</div>
+                            <div class="specificate-info">{{ lands.CostestimateB }} บาท</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">กรมที่ดินประเมิน</div>
+                            <div class="specificate-info">{{ lands.Costestimate}} บาท</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ราคาตลาด</div>
+                            <div class="specificate-info">{{ lands.MarketPrice}} บาท</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ราคาต่อตารางวา</div>
+                            <div class="specificate-info">{{ lands.PriceWA | number}} บาท</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="header-blog">รายละเอียดที่ดิน</div>
+                        <ul>
+                          <li>
+                            <div><i class="fas fa-ruler"></i> {{lands.LandR}} ไร่ </div>
+
+                          </li>
+                          <li>
+                            <div><i class="fas fa-ruler"></i> {{lands.LandG}} งาน </div>
+
+                          </li>
+                          <li>
+                            <div><i class="fas fa-ruler"></i> {{lands.LandWA}} ตารางวา</div>
+
+                          </li>
+
+                          <li>
+                            <div><i class="fas fa-ruler"></i> พื้นที่ (กว้าง*ลึก) {{lands.Land}} เมตร</div>
+
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="header-blog">รายละเอียดเพิ่มเติม</div>
+                        <p>{{lands.MoreDetails}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-xs-12">
+                  <h3>ข้อมูลติดต่อ</h3>
+                  <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                        role="tab" aria-controls="nav-home" aria-selected="true">ผู้ติดต่อบุคคลที่ 1</a>
+                      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                        aria-controls="nav-profile" aria-selected="false">ผู้ติดต่อบุคคลที่ 2</a>
+                      <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                        aria-controls="nav-contact" aria-selected="false">ผู้ติดต่อบุคคลที่ 3</a>
+                    </div>
+                  </nav>
+                  <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                      <div class="container ">
+                        <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 1</h4>
+                        <div class="container">
+                          <div *ngFor="let item of selectContact">
+                            <form>
+                              <div class="form-row">
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">คุณ</div>
+                                      <div class="specificate-info">{{item.Name}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">สถานะ</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">สถานะ</div>
+                                      <div class="specificate-info">{{lands.CountactS}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">อีเมล</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">อีเมล</div>
+                                      <div class="specificate-info">{{item.Email}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">เบอร์โทร</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">เบอร์โทร</div>
+                                      <div class="specificate-info">{{item.Phone}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">ไลน์</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">ไลน์</div>
+                                      <div class="specificate-info">{{item.Line}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                      <div class="container">
+                        <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 2</h4>
+                        <div class="container">
+                          <div *ngFor="let item of selectContact2">
+                            <form>
+                              <div class="form-row">
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">คุณ</div>
+                                      <div class="specificate-info">{{item.Name}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">สถานะ</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">สถานะ</div>
+                                      <div class="specificate-info">{{lands.CountactS}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">อีเมล</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">อีเมล</div>
+                                      <div class="specificate-info">{{item.Email}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">เบอร์โทร</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">เบอร์โทร</div>
+                                      <div class="specificate-info">{{item.Phone}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">ไลน์</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">ไลน์</div>
+                                      <div class="specificate-info">{{item.Line}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                      <div class="container">
+                        <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
+                        <div class="container">
+                          <div *ngFor="let item of selectContact3">
+                            <form>
+                              <div class="form-row">
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">คุณ</div>
+                                      <div class="specificate-info">{{item.Name}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">สถานะ</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">สถานะ</div>
+                                      <div class="specificate-info">{{lands.CountactS}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">อีเมล</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">อีเมล</div>
+                                      <div class="specificate-info">{{item.Email}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">เบอร์โทร</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">เบอร์โทร</div>
+                                      <div class="specificate-info">{{item.Phone}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label for="inputEmail4">ไลน์</label>
+                                  <div class="specificate-panel">
+                                    <div class="specificate-list">
+                                      <div class="specificate-title">ไลน์</div>
+                                      <div class="specificate-info">{{item.Line}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <h3>ข้อมูลสถานที่</h3>
+              <h5><i class="fas fa-map-marker-alt"></i> {{ lands.Location }}, {{ lands.LDistrict }},
+                {{ lands.LAmphur }}, {{ lands.LProvince }}, ประเทศไทย, {{lands.LZipCode}}</h5>
+              <div class="row">
+                <div class="col-md-12">
+                  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                  </agm-map>
+                </div>
+              </div>
+              <hr>
+              <h3>รายละเอียด</h3>
+              <div class="container">
+                <div class="row">
+                  <div class="col-xs-12 ">
+                    <div class="header-blog">รายละเอียดอสังหา</div>
+                    <div class="specificate-panel">
+                      <div class="specificate-list">
+                        <div class="specificate-title">อายุการถือครองที่ดิน</div>
+                        <div class="specificate-info">{{lands.LandAge}} ปี</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="header-blog">ทำเล</div>
+                    <div class="specificate-panel">
+                      <div class="specificate-list">
+                        <div class="specificate-title">ที่ตาบอด</div>
+                        <div class="specificate-info">{{ lands.Blind }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้สถานศึกษา</div>
+                        <div class="specificate-info">{{ lands.Neareducation }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้ศูนย์การค้า</div>
+                        <div class="specificate-info">{{ lands.Cenmarket }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้ตลาด</div>
+                        <div class="specificate-info">{{ lands.Market }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ติดแม่น้ำ</div>
+                        <div class="specificate-info">{{ lands.River }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ติดถนน</div>
+                        <div class="specificate-info">{{ lands.Mainroad }} </div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">อยู่ในซอย</div>
+                        <div class="specificate-info">{{ lands.Insoi }} </div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">อื่นๆ</div>
+                        <div class="specificate-info">{{ lands.Letc }} </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="header-blog">ถนน</div>
+                    <div class="specificate-panel">
+                      <div class="specificate-list">
+                        <div class="specificate-title">สถานะถนน</div>
+                        <div class="specificate-info">{{ lands.RoadType }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ความกว้างถนน</div>
+                        <div class="specificate-info">{{ lands.RoadWide }}</div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ระดับพื้นดิน</div>
+                        <div class="specificate-info">{{ lands.GroundLevel }} | {{ lands.GroundValue }} เมตร</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>

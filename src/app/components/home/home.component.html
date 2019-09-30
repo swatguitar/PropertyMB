@@ -10,7 +10,7 @@
     <div class="col-12 col-md-8 content-box ">
       <div class="d-flex">
         <header>
-          <a href="groups" alt="ShareGroup" title="House">กลุ่ม แชร์สำหรับฉัน<i class="fa fa-angle-right"
+          <a [routerLink]="[ '/groups']" alt="ShareGroup" title="House">กลุ่ม แชร์สำหรับฉัน<i class="fa fa-angle-right"
               aria-hidden="true"></i></a>
           <div>กลุ่มของคุณ</div>
           <button type="button" class="btn btn-default btn-circle"><i class="fa fa-check"></i></button>
@@ -108,11 +108,11 @@
 
             <a [routerLink]="['/houses',house.ID_Property]">
               <div class="item">
-                <img src="https://sf.pruksa.com/cache/subdomain/passorn/images/PS79_363x227__363x227.jpg" width="180"
+                <img src="http://www.landvist.xyz/images/{{house.ImageEX}}" width="180"
                   class="img-fluid ">
                 <div class="info">
                   <header>{{house.AnnounceTH}}</header>
-                  <div class="price">ราคา <span>{{house.SellPrice | number}}</span> บาท</div>
+                  <div class="price">ราคา <span>{{house.SellPrice}}</span> บาท</div>
                   <div class="stat"> อัพเดทล่าสุด<span> {{house.Created| timeAgoThai}}</span></div>
                 </div>
               </div>
@@ -165,11 +165,11 @@
             <a [routerLink]="['/lands',lands.ID_Lands]" [queryParams]="{page: activePage}">
               <div class="item">
                 <img
-                  src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg"
+                  src="http://www.landvist.xyz/images/{{lands.ImageEX}}"
                   width="180" class="img-fluid ">
                 <div class="info">
                   <header>{{lands.AnnounceTH}}</header>
-                  <div class="price">ราคา <span>{{lands.SellPrice | number}}</span> บาท</div>
+                  <div class="price">ราคา <span>{{lands.SellPrice}}</span> บาท</div>
                   <div class="stat"> อัพเดทล่าสุด<span> {{lands.Created| timeAgoThai}}</span></div>
                 </div>
               </div>

@@ -39,6 +39,8 @@ a{
 
 
 }
+
+
   
   
   /*-------------------------------------------- menu */
@@ -58,6 +60,7 @@ a{
     display: flex;
   }
   #top-menu .nav-item > .nav-link{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 13px;
     color: #FFF !important;
     background-color: #ff5200;
@@ -82,6 +85,7 @@ a{
     color:#ff5200;
   }
   #top-menu .social-link .c-fa-line{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 15px;
   }
 
@@ -104,6 +108,7 @@ a{
     margin: 0 auto;
   }
   .intro_link{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     width:100%;
     max-width: 330px;
     color: #232a40 !important;
@@ -127,6 +132,7 @@ a{
   
   /*button circle*/
   .btn-circle.btn-xl {
+    font-family: 'Poppins', 'Prompt', sans-serif;
     width: 70px;
     height: 70px;
     padding: 10px 16px;
@@ -147,6 +153,7 @@ a{
 
   /*-------------------------------------------- Content */
   .content-box  header{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 24px;
     font-weight: bold;
     color: #75A2AA;
@@ -160,6 +167,7 @@ a{
     margin-left: 10px;
   }
   .content-box  header > div{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 13px;
     font-weight: normal;
     color: #666666;
@@ -201,23 +209,28 @@ a{
     margin-bottom: 20px;
   }
   .content-box > .list-table > .product-list .item > .info header{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 13px;
     font-weight: bold;
     color: #000;
   }
   .content-box > .list-table > .product-list .item > .info > .sub-title{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 11px;
     color: #000;
   }
   .content-box > .list-table > .product-list .item > .info > .price{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 13px;
     color: #000;
   }
   .content-box > .list-table > .product-list .item > .info > .price > span{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-weight: 600;
     color: #ff5a00;
   }
   .content-box > .list-table > .product-list .item > .info > .stat{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 11px;
     color: #999999;
   }
@@ -241,11 +254,13 @@ a{
     margin-top: 0px;
   }
   .content-box > .latest-video .item > .title{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 14px;
     color: #111;
     margin-top: 10px;
   }
   .content-box > .latest-video .item > .title > .info{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 13px;
     color: #707070;
     margin-top: 10px;
@@ -276,6 +291,7 @@ a{
     margin-bottom: 15px;
   }
   .content-box > .latest-review .hightlight-item > .info > .title{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 16px;
     font-weight: bold;
     color: #000;
@@ -296,6 +312,7 @@ a{
     flex-basis: auto;
   }
   .content-box > .latest-review .hightlight-item > .info > * > .stat > ul > li{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 11px;
     color: #999999;
     padding: 0px;
@@ -306,6 +323,7 @@ a{
     margin-right: 5px;
   }
   .content-box > .latest-review .hightlight-item > .info > .summary{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 12px;
     color: #999999;
     margin-top: 10px;
@@ -347,6 +365,7 @@ a{
     flex-basis: auto;
   }
   .content-box > .latest-review .latest-content-list li .info > * > .stat > ul > li{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 11px;
     color: #999999;
     padding: 0px;
@@ -363,6 +382,7 @@ a{
   
   
   .recommend-spec .linkto-ranking{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 14px;
     color: #000;
     display: block;
@@ -432,6 +452,7 @@ a{
     margin: 0px 10px 25px;
   }
   #footer-box .nav-link{
+    font-family: 'Poppins', 'Prompt', sans-serif;
     font-size: 14px;
     font-weight: bold;
     color: #aaaaaa;

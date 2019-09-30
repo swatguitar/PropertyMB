@@ -4,7 +4,7 @@ import { } from 'googlemaps';
 import { AuthenticationService, TokenPayload, locationsDetails } from '../../authentication.service'
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-
+import * as $ from "jquery";
 @Component({
   selector: 'app-addlands',
   templateUrl: './addlands.component.html',
@@ -33,6 +33,7 @@ export class AddlandsComponent {
   onther: any
   Ronther: any
   cal: number
+  back: string = "false"
   contactUser: any[];
   selectContact: any[];
   selectContact2: any[];
@@ -43,30 +44,66 @@ export class AddlandsComponent {
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
       this.addlandForm = new FormGroup ({
-        ColorType: new FormControl (''),
+        ColorType: new FormControl ('', Validators.required),
         AnnounceTH: new FormControl ('', Validators.required),
         SellPrice: new FormControl ('', Validators.required),
-        CodeDeed: new FormControl ('', Validators.required),
+        CodeDeed: new FormControl (''),
         Costestimate: new FormControl (''),
         CostestimateB: new FormControl (''),
         MarketPrice: new FormControl (''),
-        CodeProperty: new FormControl ('', Validators.required),
-        GroundValue: new FormControl ('', Validators.required),
-        MFee: new FormControl ('', Validators.required),
-        newhouse: new FormControl (''),
-        oldhouse: new FormControl (''),
+        CodeProperty: new FormControl (''),
+        GroundValue: new FormControl (''),
+        PriceWA: new FormControl (''),
+        Land: new FormControl (''),
+        Deed: new FormControl ('', Validators.required),
+        LandAge: new FormControl (''),
+        Blind: new FormControl (''),
+        Neareducation: new FormControl (''),
+        Cenmarket: new FormControl (''),
+        Market: new FormControl (''),
+        River: new FormControl (''),
+        Mainroad: new FormControl (''),
+        Insoi: new FormControl (''),
+        onther: new FormControl (''),
+        Ronther: new FormControl (''),
+        Letc: new FormControl (''),
+        RoadWide: new FormControl (''),
+        RoadType: new FormControl (''),
+        GroundLevel: new FormControl (''),
         AsseStatus: new FormControl ('', Validators.required),
-        BuildingAge: new FormControl ('', Validators.required),
-        BuildFD: new FormControl (''),
-        ObservationPoint: new FormControl (''),
-        BuildFY: new FormControl ('', Validators.required),
-        Directions: new FormControl ('', Validators.required),
         LandR: new FormControl ('', Validators.required),
         LandG: new FormControl ('', Validators.required),
         LandWA: new FormControl ('', Validators.required),
-        LandAge: new FormControl (''),
-        Location: new FormControl ('', Validators.required),
-        ContactU: new FormControl ('', Validators.required),
+      });
+      this.EditContactForm = new FormGroup({
+        ContactName: new FormControl('', Validators.required),
+        ContactLine: new FormControl(''),
+        ContactEmail: new FormControl(''),
+        ContactPhone: new FormControl(''),
+        allowedit: new FormControl(''),
+        ContactS: new FormControl('', Validators.required),
+      });
+      this.EditContact2Form = new FormGroup({
+        ContactName: new FormControl('', Validators.required),
+        ContactLine: new FormControl(''),
+        ContactEmail: new FormControl(''),
+        ContactPhone: new FormControl(''),
+        allowedit2: new FormControl(''),
+        ContactSt: new FormControl('', Validators.required),
+      });
+      this.EditContact3Form = new FormGroup({
+        ContactName: new FormControl('', Validators.required),
+        ContactLine: new FormControl(''),
+        ContactEmail: new FormControl(''),
+        ContactPhone: new FormControl(''),
+        allowedit3: new FormControl(''),
+        ContactSo: new FormControl('', Validators.required),
+      });
+      this.CreateContactForm = new FormGroup({
+        ContactName: new FormControl('', Validators.required),
+        ContactLine: new FormControl(''),
+        ContactEmail: new FormControl(''),
+        ContactPhone: new FormControl(''),
       });
      }
 
@@ -194,11 +231,29 @@ export class AddlandsComponent {
     ContactPhone: " ",
   }
   addlandForm: FormGroup;
-  formSubmited = false;
+  EditContactForm: FormGroup;
+  EditContact2Form: FormGroup;
+  EditContact3Form: FormGroup;
+  CreateContactForm: FormGroup;
+  submitted = false;
 
   
 
   ngOnInit() {
+    this.setCurrentLocation();
+    $('input.number').keyup(function(event) {
+
+      // skip for arrow keys
+      if(event.which >= 37 && event.which <= 40) return;
+    
+      // format number
+      $(this).val(function(index, value) {
+        return value
+        .replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        ;
+      });
+    });
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -354,6 +409,10 @@ this.credentials.PriceWA = this.cal.toString()
     )
 
   }
+  get E() { return this.EditContactForm.controls; }
+  get Et() { return this.EditContact2Form.controls; }
+  get Eo() { return this.EditContact3Form.controls; }
+  get C() { return this.CreateContactForm.controls; }
   onResiveContact() {
     //-------- get contact ----
     this.auth.getContact().subscribe((contactUser) => {
@@ -364,9 +423,17 @@ this.credentials.PriceWA = this.cal.toString()
       }
     )
   }
+  Save:string = 'true'
   onCreateContact() {
+    this.submitted = true;
+    if (this.CreateContactForm.invalid) {
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;     
+    }
+  
     this.auth.addcontact(this.credentials).subscribe(() => {
       this.onResiveContact()
+      this.Save = 'false'
       alert(JSON.stringify("บันทึกสำเร็จ"))
     },
       err => {
@@ -376,12 +443,34 @@ this.credentials.PriceWA = this.cal.toString()
   }
 
   onEditContact() {
+    this.submitted = true;
+    if (this.EditContactForm.invalid) {
+      return;
+    }
+   
     this.auth.EditContact(this.credentials).subscribe(() => {
     },
       err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.onResiveContact()
         console.error(err)
       }
     )
+  }
+  onEditContactID(value) {
+    this.credentials.ID_Contact = value
+  }
+  onEditContactName(value) {
+    this.credentials.ContactName = value
+  }
+  onEditContactLine(value) {
+    this.credentials.ContactLine = value
+  }
+  onEditContactPhone(value) {
+    this.credentials.ContactPhone = value
+  }
+  onEditContactEmail(value) {
+    this.credentials.ContactEmail = value
   }
 
   onGetContact(value) {
@@ -406,20 +495,49 @@ this.credentials.PriceWA = this.cal.toString()
       return article.ID_Contact == value;
     });
   }
-  onGo(){
-    this.formSubmited = true;
-   
+
+  onGo() {
+    this.submitted = true;
+
     // stop here if form is invalid
     if (this.addlandForm.invalid) {
-        return;
+      console.log(this.addlandForm)
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
     }
+    this.onFirststep()
+    alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+  }
+  onUpdate() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.addlandForm.invalid) {
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
+    }
+    this.getZipCode()
+    this.credentials.Latitude = this.latitude
+    this.credentials.Longitude = this.longitude
+    this.auth.EditLand(this.credentials).subscribe(
+      () => {
+        
+      },
+      err => {
+        alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
+        console.error(err)
+
+      }
+
+    )
+  }
+  onBack() {
+    this.back = "true"
 
   }
   propType: string;
   IDprop: string;
   onFirststep() {
- 
-
     this.getZipCode()
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude

@@ -15,6 +15,7 @@ import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import {FileUploadModule} from 'ng2-file-upload';
 import { ArchwizardModule } from 'angular-archwizard';
 import { NgxGalleryModule } from 'ngx-gallery';
+import { AutocompleteModule } from 'ng2-input-autocomplete';
 
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -50,6 +51,10 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UploadimglandComponent } from './components/addlands/uploadimgland/uploadimgland.component';
 import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
+import { ProvinceFilterPipe } from './lib/Pipe/province.filter.pipe';
+import { PriceFilterPipe } from './lib/Pipe/price-filter.pipe';
+import { AmphurFilterPipe } from './lib/Pipe/Amphur-filter.pipe';
+import { DistrictFilterPipe } from './lib/Pipe/dis-filter.pipe';
 
 
 
@@ -91,7 +96,10 @@ import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
     UploadimgComponent,
     UploadimglandComponent,
     CommingsoonComponent,
-
+    ProvinceFilterPipe,
+    PriceFilterPipe,
+    AmphurFilterPipe,
+    DistrictFilterPipe,
 
   ],
   imports: [
@@ -107,6 +115,7 @@ import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
     FileUploadModule,
     ArchwizardModule,
     NgxGalleryModule,
+    AutocompleteModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCnxeJ2GRXPxGJh4ooPuvbLVQ7g37F1QSY',
       libraries: ['places']

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'http://localhost:3001"/users/upload';
+const uri = 'https://thinking-armor-245907.appspot.com/users/upload';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../../authentication.service';
 
 @Component({

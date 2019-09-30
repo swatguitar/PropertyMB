@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, UserDetails, PropertyDetails, locationsDetails, TokenPayload } from '../../../authentication.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 @Component({
   selector: 'app-propertylist',
   templateUrl: './propertylist.component.html',
   styleUrls: ['./propertylist.component.css']
 })
 export class PropertylistComponent implements OnInit {
+ 
+  
   details: PropertyDetails[];
   public highlightId:number; // สำหรับเก็บ id ที่เพิ่งเข้าดู
   public results:any;
@@ -23,10 +26,158 @@ export class PropertylistComponent implements OnInit {
   public useShowPage:number = 5; // จำนวนปุ่มที่แสดง ใช้แค่ 5 ปุ่มตัวเลข
   public pointStart:number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointEnd:number; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
+  filter = { houses: false, condo: false, property: false, newhouse: false, oldhouse: false, yellow: false, orange: false, brown: false, red: false, purple: false, plum: false, green: false, whitegreen: false, brownweak: false, blue: false};
+  properties: PropertyDetails[] = []; // สร้าง array เปล่ารอรับค่าจาก checkbox
+  filterProperty: PropertyDetails[] = [];
+  // search filter
+  searchTerm: string;
+  filterPrice: string;
+  searchPro: string;
+  searchPro1: any[];
+  searchAmphur: string;
+  searchAmphur1: any[];
+  searchDis: string;
+  searchDis1: any[];
 
+  address: string;
+  province: locationsDetails;
+  Lprovince: any[];
+  Ldistrict: any[];
+  Lamphur: any[];
+  amphur: any[];
+  PA: locationsDetails;
+  district: locationsDetails;
+  zipcode: any[];
+  createID: string
+  years: any[];
 
-  constructor(private auth: AuthenticationService, private route: ActivatedRoute,
-    private router:Router) {}
+  constructor(private auth: AuthenticationService, private route: ActivatedRoute, private router:Router) {}
+
+  credentials: TokenPayload = {
+    ID_User: 0,
+    Firstname: '',
+    Lastname: '',
+    Email: '',
+    Password: '',
+    Birthday: '',
+    CodeProperty: '',
+    LocationU: '',
+    Phone: '',
+    ProfileImg: '',
+    Age: '',
+    Gender: '',
+    ID_Property: '',
+    PropertyType: '',
+    AnnounceTH: '',
+    CodeDeed: '',
+    SellPrice: '',
+    Costestimate: '',
+    CostestimateB: '',
+    MarketPrice: '',
+    BathRoom: '',
+    BedRoom: '',
+    CarPark: '',
+    HouseArea: '',
+    Floor: '',
+    LandR: '',
+    LandG: '',
+    LandWA: '',
+    LandU: '',
+    HomeCondition: '',
+    BuildingAge: '',
+    BuildFD: '',
+    BuildFM: '',
+    BuildFY: '',
+    Directions: '',
+    RoadType: '',
+    RoadWide: '',
+    GroundLevel: '',
+    GroundValue: '',
+    MoreDetails: '',
+    Latitude: 0,
+    Longitude: 0,
+    AsseStatus: '',
+    ObservationPoint: '',
+    Location: '',
+    LProvince: '',
+    LAmphur: '',
+    LDistrict: '',
+    LZipCode: '',
+    ContactU: 0,
+    ContactS: '',
+    ContactUo: 0,
+    ContactSo: '',
+    ContactUt: 0,
+    ContactSt: '',
+    LandAge: '',
+    PPStatus: '',
+    ImageEX: '',
+    TypeCode: '',
+    PriceWA: '',
+    WxD: '',
+    Owner: '',
+    //------ forniture-----
+    ShuttleBus: 0,
+    Publicarea: 0,
+    Fitness: 0,
+    pool: 0,
+    Securityguard: 0,
+    CCTV: 0,
+    shelves: 0,
+    sofa: 0,
+    TCset: 0,
+    wardrobe: 0,
+    gasstove: 0,
+    microwave: 0,
+    refrigerator: 0,
+    TV: 0,
+    WIFI: 0,
+    Waterheater: 0,
+    AirPurifier: 0,
+    afan: 0,
+    airconditioner: 0,
+
+    //-------locate--
+    Blind: 0,
+    Neareducation: 0,
+    Cenmarket: 0,
+    Market: 0,
+    River: 0,
+    Mainroad: 0,
+    Insoi: 0,
+    Letc: '',
+    WVmachine: 0,
+    CWmachine: 0,
+    Elevator: 0,
+    Lobby: 0,
+    ATM: 0,
+    BeautySalon: 0,
+    Hairsalon: 0,
+    Laundry: 0,
+    Store: 0,
+    Balcony: 0,
+    MeetingR: 0,
+    EventR: 0,
+    LivingR: 0,
+    Supermarket: 0,
+    CStore: 0,
+    MFee: '',
+    ID_Lands: '',
+    ColorType: '',
+    PricePM: '',
+    Land: '',
+    Deed: '',
+    Place: '',
+    imgProperty: null,
+    //------ contact ------
+    ID_Contact: 0,
+    ContactName: " ",
+    ContactEmail: " ",
+    ContactLine: " ",
+    ContactPhone: " ",
+  
+
+  }
 
     // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
   changePage(page:number){
@@ -92,18 +243,17 @@ export class PropertylistComponent implements OnInit {
  // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
 
  // ส่วนของการดึงข้อมูล
- this.auth.gethouse().subscribe((house) =>
-    {
-
-      this.details = house;
-
-   
-    })
+ this.auth.gethouse().subscribe(house => {
+  this.properties = house;
+  this.totalItem =this.properties.length
+});
 this.auth.getland().subscribe((land) =>
     {
-      this.results = land;
+
+      this.totalItem = land.length;
+      this.details = land;
       
-    }) 
+    })
     
 // ส่วนของการรับค่า paramMap ที่ส่งกลับมาจากหน้า รายละเอียด
     let params = this.route.snapshot.paramMap;
@@ -113,6 +263,80 @@ this.auth.getland().subscribe((land) =>
       this.highlightId = +params.get('id');
     }    
 
+    //------------getlocation-------
+    this.auth.getProvine().subscribe((province) => {
+      this.province = province;
+    },
+      err => {
+        console.error(err)
+
+      }
+    ) 
+  }
+
+  selectprovince(data) {
+    this.searchPro = data.PROVINCE_NAME
+    this.auth.getAmphur().subscribe((amphur) => {
+      // กรณี resuponse success
+      this.amphur = amphur.filter(article => {
+        return article.PROVINCE_ID == data.PROVINCE_ID;
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  selectamphur(data) {
+    this.searchAmphur = data.AMPHUR_NAME
+    this.auth.getDistrict().subscribe((district) => {
+      // กรณี resuponse success
+      this.district = district.filter(article => {
+        return article.AMPHUR_ID == data.AMPHUR_ID;
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  selectdistrict(data) {
+    this.searchDis = data.DISTRICT_NAME
+    this.auth.getZipcode().subscribe((zipcode) => {
+      // กรณี resuponse success
+      this.zipcode = zipcode.filter(article => {
+        return article.DISTRICT_ID == data.DISTRICT_ID;
+      });
+
+    },
+      err => {
+        console.error(err)
+      }
+    )
+
+  }
+
+  filterChange() {
+    this.filterProperty = this.properties.filter(
+      x =>
+        (x.PropertyType === "บ้าน" && this.filter.houses) ||
+        (x.PropertyType === "คอนโด" && this.filter.condo) ||
+        (x.PropertyType === "อาคารพานิชย์" && this.filter.property) ||
+        (x.HomeCondition === "บ้านใหม่" && this.filter.newhouse) ||
+        (x.HomeCondition === "บ้านเก่า" && this.filter.oldhouse) ||
+        (x.ColorType === "พื้นที่สีเหลือง - ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย" && this.filter.yellow) ||
+        (x.ColorType === "พื้นที่สีส้ม - ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง" && this.filter.orange) ||
+        (x.ColorType === "พื้นที่สีน้ำตาล - ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก" && this.filter.brown) ||
+        (x.ColorType === "พื้นที่สีแดง - ที่ดินประเภทภาณิชยกรรม" && this.filter.red) ||
+        (x.ColorType === "พื้นที่สีม่วง - ที่ดินประเภทอุตสาหกรรมและคลังสินค้า" && this.filter.purple) ||
+        (x.ColorType === "พื้นที่สีเม็ดมะปราง - ที่ดินประเภทคลังสินค้า" && this.filter.plum) ||
+        (x.ColorType === "พื้นที่สีเขียว - ที่ดินประเภทชนบทและเกษตรกรรม" && this.filter.green) ||
+        (x.ColorType === "พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว - ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม" && this.filter.whitegreen) ||
+        (x.ColorType === "พื้นที่สีน้ำตาลอ่อน - ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย" && this.filter.brownweak) ||
+        (x.ColorType === "พื้นที่สีน้ำเงิน - ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ" && this.filter.blue) 
+    );
+    this.totalItem =this.filterProperty.length;
   }
 
 }

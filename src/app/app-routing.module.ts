@@ -32,6 +32,7 @@ import { RecdetailsComponent } from './components/recommend/recdetails/recdetail
 import { UploadimgComponent } from './components/addhouse/uploadimg/uploadimg.component';
 import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
 
+
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
   {

@@ -300,7 +300,7 @@ export interface TokenPayload {
 
 @Injectable()
 export class AuthenticationService {
-  ROOT_URL = "http://localhost:3001";
+  ROOT_URL = "https://thinking-armor-245907.appspot.com";
   private token: string
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -354,7 +354,7 @@ export class AuthenticationService {
     })
   }
   public EditContact(contact: TokenPayload): Observable<any> {
-    return this.http.post(this.ROOT_URL + `/users/EditContact`, contact, {
+    return this.http.put(this.ROOT_URL + `/users/EditContact`, contact, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -365,6 +365,16 @@ export class AuthenticationService {
   }
   public addhouse(house: TokenPayload): Observable<any> {
     return this.http.post(this.ROOT_URL + `/users/addhouse`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public EditHouse(house: TokenPayload): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/EditHouse`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public EditLand(land: TokenPayload): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/EditLand`, land, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }

@@ -51,7 +51,7 @@
                 <a class="nav-link" routerLink="/profile">{{ auth.getUserDetails()?.Email }}</a>
               </li>
               <li *ngIf="auth.isLoggedIn()" class="nav-item">
-                <a class="nav-link" routerLink="" (click)="auth.logout()">ลงชื่อออก</a>
+                <a class="nav-link" routerLink="" (click)="auth.logout()">ออกจากระบบ</a>
               </li>
                 <li *ngIf="!auth.isLoggedIn()" class="nav-item">
                 <a class="nav-link" routerLink="/login">ลงชื่อเข้าใช้งาน</a>
