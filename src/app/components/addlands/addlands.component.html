@@ -212,8 +212,8 @@
                                                             </div>
                                                             <div class="col-sm-12">
                                                                 <input style="border-radius: 30px 30px 30px 30px;"
-                                                                    type="text" id="PriceWA" class="form-control"
-                                                                    value="{{cal}}"
+                                                                    type="text" id="PriceWA" class="form-control "
+                                                                    value="{{cal | number}}"
                                                                     placeholder="ราคาต่อตารางวา"
                                                                     formControlName="PriceWA" readonly>
                                                             </div>
@@ -1680,7 +1680,7 @@
                                                 </div>
                                                 <div class="specificate-list">
                                                     <div class="specificate-title">ราคาต่อตารางวา</div>
-                                                    <div class="specificate-info">{{ credentials.PriceWA}} บาท</div>
+                                                    <div class="specificate-info">{{ credentials.PriceWA | number}} บาท</div>
                                                 </div>
                                             </div>
                                         </div>

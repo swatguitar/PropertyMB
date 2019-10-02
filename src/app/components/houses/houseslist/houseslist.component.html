@@ -20,7 +20,7 @@
 
               <h1><i class="fa fa-tree" aria-hidden="true"></i>อสังหาของคุณ</h1>
             </div>
-          
+
           </div>
         </div>
 
@@ -40,13 +40,16 @@
                         <hr>
                       </li>
                       <div id="more-filter-type" class="">
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.houses" (change)="filterChange()" >
+                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.houses"
+                                (change)="filterChange()">
                               บ้าน
                               <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.condo" (change)="filterChange()">
+                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.condo"
+                                (change)="filterChange()">
                               คอนโด
                               <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.property" (change)="filterChange()">
+                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.property"
+                                (change)="filterChange()">
                               อาคารพาณิชย์
                               <!----></label></a></li>
                       </div>
@@ -66,60 +69,58 @@
                       <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
                               type="checkbox" value="0-20000">
                             500,000 - 1,000,000 บาท
-                            </label></a></li>
-                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
-                              1,100,000 - 5,000,000 บาท
-                            </label></a></li>
+                          </label></a></li>
                       <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
                               type="checkbox" value="30000-40000">
-                              5,100,000 - 10,000,000 บาท
-                            </label></a></li>
+                            1,100,000 - 5,000,000 บาท
+                          </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                            5,100,000 - 10,000,000 บาท
+                          </label></a></li>
                       <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
                               type="checkbox" value="&gt;50000">
                             มากกว่า 10,000,000 บาท
-                            </label></a></li>
-                             - ราคาประเมิน
-                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
+                          </label></a></li>
+                      - ราคาประเมิน
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
                               type="checkbox" value="0-20000">
                             500,000 - 1,000,000 บาท
-                            </label></a></li>
-                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
-                              1,100,000 - 5,000,000 บาท
-                           </label></a></li>
+                          </label></a></li>
                       <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
                               type="checkbox" value="30000-40000">
-                              5,100,000 - 10,000,000 บาท
-                            </label></a></li>
+                            1,100,000 - 5,000,000 บาท
+                          </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                            5,100,000 - 10,000,000 บาท
+                          </label></a></li>
                       <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
                               type="checkbox" value="&gt;50000">
                             มากกว่า 10,000,000 บาท
-                            </label></a></li>
-                            - ราคาตลาด
-                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
+                          </label></a></li>
+                      - ราคาตลาด
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
                               type="checkbox" value="0-20000">
                             500,000 - 1,000,000 บาท
-                            </label></a></li>
-                            <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
-                              1,100,000 - 5,000,000 บาท
-                            </label></a></li>
+                          </label></a></li>
                       <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
                               type="checkbox" value="30000-40000">
-                              5,100,000 - 10,000,000 บาท
-                            </label></a></li>
+                            1,100,000 - 5,000,000 บาท
+                          </label></a></li>
+                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
+                              type="checkbox" value="30000-40000">
+                            5,100,000 - 10,000,000 บาท
+                          </label></a></li>
                       <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
                               type="checkbox" value="&gt;50000">
                             มากกว่า 10,000,000 บาท
-                            </label></a></li>
+                          </label></a></li>
                       <li class="filter-range">
                         <div class="d-flex">
-                          <input type="number" placeholder="ต่ำสุด"
-                            class="positive-integer">
+                          <input type="number" placeholder="ต่ำสุด" class="positive-integer">
                           <div class="divider">-</div>
-                          <input type="number" placeholder="สูงสุด" 
-                            class="positive-integer">
+                          <input type="number" placeholder="สูงสุด" class="positive-integer">
                           <div class="divider"></div><button>
                             ค้นหา
                           </button>
@@ -128,45 +129,45 @@
                     </ul>
                   </div>
                   <div class="filter-box">
-                      <div data-toggle="collapse" data-target="#filter-brand" aria-controls="filter-brand" class="header" >
-                        ที่อยู่
-                      </div>
-                      <ul id="filter-brand" class="filter-item collapse">
-                        <li>
-                          <hr>
-                        </li>
-                        <p>จังหวัด</p>
-                        <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchPro1" (ngModelChange)="selectprovince($event)">
-                          <option>- จังหวัด -</option>
-                                <option *ngFor="let p of province"
-                                [ngValue]="p">
-                                {{p.PROVINCE_NAME}}
-                                </option>
-                        </select></li>
-                        <p>อำเภอ</p>
-                        <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchAmphur1" (ngModelChange)="selectamphur($event)">
-                          <option>- อำเภอ -</option>
-                          <option *ngFor="let a of amphur"
-                              [ngValue]="a">
-                              {{a.AMPHUR_NAME}}</option>
-                        </select></li>
-                        <p>ตำบล</p>
-                        <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchDis1" (ngModelChange)="selectdistrict($event)">
-                          <option>- ตำบล -</option>
-                          <option *ngFor="let d of district"
-                              [ngValue]="d">
-                              {{d.DISTRICT_NAME}}</option>
-                        </select></li>
-                        <!---->
-                        <div id="more-filter-brand" class="">
-                          
-                        </div>
-                        <!---->
-                      </ul>
+                    <div data-toggle="collapse" data-target="#filter-brand" aria-controls="filter-brand" class="header">
+                      ที่อยู่
                     </div>
+                    <ul id="filter-brand" class="filter-item collapse">
+                      <li>
+                        <hr>
+                      </li>
+                      <p>จังหวัด</p>
+                      <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchPro1"
+                          (ngModelChange)="selectprovince($event)">
+                          <option>- จังหวัด -</option>
+                          <option *ngFor="let p of province" [ngValue]="p">
+                            {{p.PROVINCE_NAME}}
+                          </option>
+                        </select></li>
+                      <p>อำเภอ</p>
+                      <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchAmphur1"
+                          (ngModelChange)="selectamphur($event)">
+                          <option>- อำเภอ -</option>
+                          <option *ngFor="let a of amphur" [ngValue]="a">
+                            {{a.AMPHUR_NAME}}</option>
+                        </select></li>
+                      <p>ตำบล</p>
+                      <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchDis1"
+                          (ngModelChange)="selectdistrict($event)">
+                          <option>- ตำบล -</option>
+                          <option *ngFor="let d of district" [ngValue]="d">
+                            {{d.DISTRICT_NAME}}</option>
+                        </select></li>
+                      <!---->
+                      <div id="more-filter-brand" class="">
+
+                      </div>
+                      <!---->
+                    </ul>
+                  </div>
                   <div class="filter-box">
                     <div data-toggle="collapse" data-target="#filter-vga" aria-controls="filter-vga" class="header">
                       สภาพโครงสร้าง
@@ -174,20 +175,22 @@
                     <ul id="filter-vga" class="filter-item collapse">
                       <li>
                         <hr>
-                      </li>                
+                      </li>
                       <div id="more-filter-vga" class="">
                         <li><a href="https://notebookspec.com/notebook/searchV4/?vga=NVIDIA+GeForce+MX150"><label><input
-                                type="checkbox" value="NVIDIA GeForce MX150" [(ngModel)]="filter.newhouse" (change)="filterChange()">
-                                ใหม่
-                              </label></a></li>
+                                type="checkbox" value="NVIDIA GeForce MX150" [(ngModel)]="filter.newhouse"
+                                (change)="filterChange()">
+                              ใหม่
+                            </label></a></li>
                         <li><a href="https://notebookspec.com/notebook/searchV4/?vga=Intel+UHD+Graphics+620"><label><input
-                                type="checkbox" value="Intel UHD Graphics 620" [(ngModel)]="filter.oldhouse" (change)="filterChange()">
-                                มือสอง
-                              </label></a></li>                                   
+                                type="checkbox" value="Intel UHD Graphics 620" [(ngModel)]="filter.oldhouse"
+                                (change)="filterChange()">
+                              มือสอง
+                            </label></a></li>
                       </div>
                     </ul>
                   </div>
-                  
+
                 </div>
                 <div id="modal-bg"></div>
                 <div id="search-result">
@@ -215,98 +218,98 @@
                     <ul class="filter-list"></ul>
                   </div>
                   <div class="search-grid row col-eq">
-                   
+
                     <ng-container *ngIf="!filterProperty.length; else elseTemplate">
                       <div
-                    *ngFor="let houses of properties | slice:pointStart:pointEnd | propertyFilter : searchTerm  | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
-                    class="col-xs-12 col-sm-6 col-lg-4 item">
-                    <div class="box jumbotron ">
-                      <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
-                            class="fa fa-plus"></i>
-                          Add to group
-                        </button><a [routerLink]="['/houses',houses.ID_Property]" [queryParams]="{page: activePage}"
-                          target="_blank">
-                          <div class="title">
-                            {{houses.AnnounceTH}} <br>
+                        *ngFor="let houses of properties | slice:pointStart:pointEnd | propertyFilter : searchTerm  | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
+                        class="col-xs-12 col-sm-6 col-lg-4 item">
+                        <div class="box jumbotron ">
+                          <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
+                                class="fa fa-plus"></i>
+                              Add to group
+                            </button><a [routerLink]="['/houses',houses.ID_Property]" [queryParams]="{page: activePage}"
+                              target="_blank">
+                              <div class="title">
+                                {{houses.AnnounceTH}} <br>
+                              </div>
+                            </a>
+                            <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
+                                [queryParams]="{page: activePage}"><img
+                                  src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                                  class="img-responsive notebook-img rounded"></a>
+                              <!---->
+                              <hr>
+                              <ul class="specification">
+                                <li></li>
+                                <li>{{houses.PropertyType}}</li>
+                                <li>{{houses.LandR}} / {{houses.LandG}} / {{houses.LandWA}}</li>
+                                <li>{{houses.Location}}</li>
+                                <li>{{houses.ObservationPoint}}</li>
+                              </ul>
+                            </div>
+                            <!---->
+                            <div class="info">
+                              <div class="price">
+                                ราคา
+                                <span>{{houses.SellPrice}}</span>
+                                บาท
+                              </div>
+                              <ul>
+                                <li>อัพเดทล่าสุด {{houses.Created| timeAgoThai}}</li>
+                              </ul>
+                            </div>
                           </div>
-                        </a>
-                        <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
-                            [queryParams]="{page: activePage}"><img
-                              src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
-                              class="img-responsive notebook-img rounded"></a>
                           <!---->
-                          <hr>
-                          <ul class="specification">
-                            <li></li>
-                            <li>{{houses.PropertyType}}</li>
-                            <li>{{houses.LandR}} / {{houses.LandG}} / {{houses.LandWA}}</li>
-                            <li>{{houses.Location}}</li>
-                            <li>{{houses.ObservationPoint}}</li>
-                          </ul>
-                        </div>
-                        <!---->
-                        <div class="info">
-                          <div class="price">
-                            ราคา
-                            <span>{{houses.SellPrice | number}}</span>
-                            บาท
-                          </div>
-                          <ul>
-                            <li>อัพเดทล่าสุด {{houses.Created| timeAgoThai}}</li>
-                          </ul>
                         </div>
                       </div>
-                      <!---->
-                    </div>
-                  </div>
                     </ng-container>
                     <ng-template #elseTemplate>
                       <div
-                      *ngFor="let houses of filterProperty | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis"
-                      class="col-xs-12 col-sm-6 col-lg-4 item">
-                      <div class="box jumbotron ">
-                        <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
-                              class="fa fa-plus"></i>
-                            Add to group
-                          </button><a [routerLink]="['/houses',houses.ID_Property]" [queryParams]="{page: activePage}"
-                            target="_blank">
-                            <div class="title">
-                              {{houses.AnnounceTH}} <br>
+                        *ngFor="let houses of filterProperty | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis"
+                        class="col-xs-12 col-sm-6 col-lg-4 item">
+                        <div class="box jumbotron ">
+                          <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
+                                class="fa fa-plus"></i>
+                              Add to group
+                            </button><a [routerLink]="['/houses',houses.ID_Property]" [queryParams]="{page: activePage}"
+                              target="_blank">
+                              <div class="title">
+                                {{houses.AnnounceTH}} <br>
+                              </div>
+                            </a>
+                            <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
+                                [queryParams]="{page: activePage}"><img style="height: 150px; width:180px"
+                                  src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                                  class="img-responsive notebook-img rounded"></a>
+                              <!---->
+                              <hr>
+                              <ul class="specification">
+                                <li></li>
+                                <li>{{houses.PropertyType}}</li>
+                                <li>{{houses.LandR}} / {{houses.LandG}} / {{houses.LandWA}}</li>
+                                <li>{{houses.Location}}</li>
+                                <li>{{houses.ObservationPoint}}</li>
+                              </ul>
                             </div>
-                          </a>
-                          <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
-                              [queryParams]="{page: activePage}"><img
-                                src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
-                                class="img-responsive notebook-img rounded"></a>
                             <!---->
-                            <hr>
-                            <ul class="specification">
-                              <li></li>
-                              <li>{{houses.PropertyType}}</li>
-                              <li>{{houses.LandR}} / {{houses.LandG}} / {{houses.LandWA}}</li>
-                              <li>{{houses.Location}}</li>
-                              <li>{{houses.ObservationPoint}}</li>
-                            </ul>
+                            <div class="info">
+                              <div class="price">
+                                ราคา
+                                <span>{{houses.SellPrice}}</span>
+                                บาท
+                              </div>
+                              <ul>
+                                <li>อัพเดทล่าสุด {{houses.Created| timeAgoThai}}</li>
+                              </ul>
+                            </div>
                           </div>
                           <!---->
-                          <div class="info">
-                            <div class="price">
-                              ราคา
-                              <span>{{houses.SellPrice | number}}</span>
-                              บาท
-                            </div>
-                            <ul>
-                              <li>อัพเดทล่าสุด {{houses.Created| timeAgoThai}}</li>
-                            </ul>
-                          </div>
                         </div>
-                        <!---->
                       </div>
-                    </div>
                     </ng-template>
-                    
-                    
-               
+
+
+
 
                   </div>
 

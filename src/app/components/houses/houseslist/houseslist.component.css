@@ -2873,8 +2873,8 @@ ul.dropdown-pc li a:hover{
   }
 
   img.notebook-img{
-      width: 155px;
-      height: auto;
+      width: 180px;
+      height: 150px;
   }
 
   .search-grid .item .box{
@@ -5232,7 +5232,7 @@ html {
   .carousel-inner > .item > a > img {
     display: block;
     max-width: 100%;
-    height: auto;
+    height: 150px;
   }
   .img-rounded {
     border-radius: 6px;

@@ -43,69 +43,69 @@ export class AddlandsComponent {
 
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
-      this.addlandForm = new FormGroup ({
-        ColorType: new FormControl ('', Validators.required),
-        AnnounceTH: new FormControl ('', Validators.required),
-        SellPrice: new FormControl ('', Validators.required),
-        CodeDeed: new FormControl (''),
-        Costestimate: new FormControl (''),
-        CostestimateB: new FormControl (''),
-        MarketPrice: new FormControl (''),
-        CodeProperty: new FormControl (''),
-        GroundValue: new FormControl (''),
-        PriceWA: new FormControl (''),
-        Land: new FormControl (''),
-        Deed: new FormControl ('', Validators.required),
-        LandAge: new FormControl (''),
-        Blind: new FormControl (''),
-        Neareducation: new FormControl (''),
-        Cenmarket: new FormControl (''),
-        Market: new FormControl (''),
-        River: new FormControl (''),
-        Mainroad: new FormControl (''),
-        Insoi: new FormControl (''),
-        onther: new FormControl (''),
-        Ronther: new FormControl (''),
-        Letc: new FormControl (''),
-        RoadWide: new FormControl (''),
-        RoadType: new FormControl (''),
-        GroundLevel: new FormControl (''),
-        AsseStatus: new FormControl ('', Validators.required),
-        LandR: new FormControl ('', Validators.required),
-        LandG: new FormControl ('', Validators.required),
-        LandWA: new FormControl ('', Validators.required),
-      });
-      this.EditContactForm = new FormGroup({
-        ContactName: new FormControl('', Validators.required),
-        ContactLine: new FormControl(''),
-        ContactEmail: new FormControl(''),
-        ContactPhone: new FormControl(''),
-        allowedit: new FormControl(''),
-        ContactS: new FormControl('', Validators.required),
-      });
-      this.EditContact2Form = new FormGroup({
-        ContactName: new FormControl('', Validators.required),
-        ContactLine: new FormControl(''),
-        ContactEmail: new FormControl(''),
-        ContactPhone: new FormControl(''),
-        allowedit2: new FormControl(''),
-        ContactSt: new FormControl('', Validators.required),
-      });
-      this.EditContact3Form = new FormGroup({
-        ContactName: new FormControl('', Validators.required),
-        ContactLine: new FormControl(''),
-        ContactEmail: new FormControl(''),
-        ContactPhone: new FormControl(''),
-        allowedit3: new FormControl(''),
-        ContactSo: new FormControl('', Validators.required),
-      });
-      this.CreateContactForm = new FormGroup({
-        ContactName: new FormControl('', Validators.required),
-        ContactLine: new FormControl(''),
-        ContactEmail: new FormControl(''),
-        ContactPhone: new FormControl(''),
-      });
-     }
+    this.addlandForm = new FormGroup({
+      ColorType: new FormControl('', Validators.required),
+      AnnounceTH: new FormControl('', Validators.required),
+      SellPrice: new FormControl('', Validators.required),
+      CodeDeed: new FormControl(''),
+      Costestimate: new FormControl(''),
+      CostestimateB: new FormControl(''),
+      MarketPrice: new FormControl(''),
+      CodeProperty: new FormControl(''),
+      GroundValue: new FormControl(''),
+      PriceWA: new FormControl(''),
+      Land: new FormControl(''),
+      Deed: new FormControl('', Validators.required),
+      LandAge: new FormControl(''),
+      Blind: new FormControl(''),
+      Neareducation: new FormControl(''),
+      Cenmarket: new FormControl(''),
+      Market: new FormControl(''),
+      River: new FormControl(''),
+      Mainroad: new FormControl(''),
+      Insoi: new FormControl(''),
+      onther: new FormControl(''),
+      Ronther: new FormControl(''),
+      Letc: new FormControl(''),
+      RoadWide: new FormControl(''),
+      RoadType: new FormControl(''),
+      GroundLevel: new FormControl(''),
+      AsseStatus: new FormControl('', Validators.required),
+      LandR: new FormControl('', Validators.required),
+      LandG: new FormControl('', Validators.required),
+      LandWA: new FormControl('', Validators.required),
+    });
+    this.EditContactForm = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+      allowedit: new FormControl(''),
+      ContactS: new FormControl('', Validators.required),
+    });
+    this.EditContact2Form = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+      allowedit2: new FormControl(''),
+      ContactSt: new FormControl('', Validators.required),
+    });
+    this.EditContact3Form = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+      allowedit3: new FormControl(''),
+      ContactSo: new FormControl('', Validators.required),
+    });
+    this.CreateContactForm = new FormGroup({
+      ContactName: new FormControl('', Validators.required),
+      ContactLine: new FormControl(''),
+      ContactEmail: new FormControl(''),
+      ContactPhone: new FormControl(''),
+    });
+  }
 
   credentials: TokenPayload = {
     ID_User: 0,
@@ -236,22 +236,22 @@ export class AddlandsComponent {
   EditContact3Form: FormGroup;
   CreateContactForm: FormGroup;
   submitted = false;
+  SellP: string
 
-  
 
   ngOnInit() {
     this.setCurrentLocation();
-    $('input.number').keyup(function(event) {
+    $('input.number').keyup(function (event) {
 
       // skip for arrow keys
-      if(event.which >= 37 && event.which <= 40) return;
-    
+      if (event.which >= 37 && event.which <= 40) return;
+
       // format number
-      $(this).val(function(index, value) {
+      $(this).val(function (index, value) {
         return value
-        .replace(/\D/g, "")
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        ;
+          .replace(/\D/g, "")
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          ;
       });
     });
 
@@ -280,7 +280,7 @@ export class AddlandsComponent {
         });
       });
     });
-    
+
     //-------------------------------------------------
     var year = new Date().getFullYear();
     var yearth = year + 543
@@ -307,11 +307,12 @@ export class AddlandsComponent {
   }
   get f() { return this.addlandForm.controls; }
 
-  calPWA(){
-//---------------calulate p/wa-----
-
-this.cal = parseInt(this.credentials.SellPrice) / parseInt(this.credentials.LandWA);
-this.credentials.PriceWA = this.cal.toString()
+  calPWA() {
+    //---------------calulate p/wa-----
+    this.SellP = this.credentials.SellPrice.replace(/,/g, "");
+    console.log(this.SellP)
+    this.cal = parseInt(this.SellP) / parseInt(this.credentials.LandWA);
+    this.credentials.PriceWA = this.cal.toString()
   }
   // Get Current Location Coordinates
   private setCurrentLocation() {
@@ -423,14 +424,14 @@ this.credentials.PriceWA = this.cal.toString()
       }
     )
   }
-  Save:string = 'true'
+  Save: string = 'true'
   onCreateContact() {
     this.submitted = true;
     if (this.CreateContactForm.invalid) {
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
-      return;     
+      return;
     }
-  
+
     this.auth.addcontact(this.credentials).subscribe(() => {
       this.onResiveContact()
       this.Save = 'false'
@@ -447,7 +448,7 @@ this.credentials.PriceWA = this.cal.toString()
     if (this.EditContactForm.invalid) {
       return;
     }
-   
+
     this.auth.EditContact(this.credentials).subscribe(() => {
     },
       err => {
@@ -484,7 +485,7 @@ this.credentials.PriceWA = this.cal.toString()
   onGetContact2(value) {
     this.credentials.ID_Contact = value
     this.credentials.ContactUo = value
-  
+
     this.selectContact2 = this.contactUser.filter(article => {
       return article.ID_Contact == value;
     });
@@ -521,7 +522,7 @@ this.credentials.PriceWA = this.cal.toString()
     this.credentials.Longitude = this.longitude
     this.auth.EditLand(this.credentials).subscribe(
       () => {
-        
+
       },
       err => {
         alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
@@ -538,6 +539,7 @@ this.credentials.PriceWA = this.cal.toString()
   propType: string;
   IDprop: string;
   onFirststep() {
+    this.back = "true"
     this.getZipCode()
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude

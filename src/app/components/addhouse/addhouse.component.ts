@@ -17,6 +17,7 @@ import * as $ from "jquery";
 })
 
 export class AddhouseComponent implements OnInit {
+
   addhouseForm: FormGroup;
   EditContactForm: FormGroup;
   EditContact2Form: FormGroup;
@@ -24,6 +25,7 @@ export class AddhouseComponent implements OnInit {
   CreateContactForm: FormGroup;
   submitted = false;
   back: string = "false"
+  keyword = 'Name';
   contactUser: any[] = [];
   selectContact3: any[];
   selectContact: any[];
@@ -232,6 +234,7 @@ export class AddhouseComponent implements OnInit {
 
   }
 
+ 
   ngOnInit() {
     this.setCurrentLocation();
     $('input.number').keyup(function(event) {
@@ -336,7 +339,6 @@ export class AddhouseComponent implements OnInit {
   }
   onBack() {
     this.back = "true"
-
   }
   buildage: number
   onGetbuildage(year) {
@@ -492,7 +494,35 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
-
+  conName1:string
+  conName2:string
+  conName3:string
+  conEmail1:string
+  conEmail2:string
+  conEmail3:string
+  conPhone1:string
+  conLine1:string
+  conPhone2:string
+  selectEvent(item) {
+    console.log(item)
+    this.conName1 = item.Name
+    this.conEmail1 = item.Email
+    this.conPhone1 = item.Phone
+    this.conLine1 = item.Line
+    this.credentials.ID_Contact = item.ID_Contact
+    this.credentials.ContactUt = item.ID_Contact
+    this.credentials.ContactUo = item.ID_Contact
+   }
+  
+   onChangeSearch(val: string) {
+     // fetch remote data from here
+     // And reassign the 'data' which is binded to 'data' property.
+   }
+   
+   onFocused(e){
+     // do something when input is focused
+     console.log(e)
+   }
   onEditContactID(value) {
     this.credentials.ID_Contact = value
   }
@@ -536,6 +566,7 @@ export class AddhouseComponent implements OnInit {
   propType: string;
   IDprop: string;
   onFirststep() {
+    this.back = "true"
     this.getZipCode()
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude

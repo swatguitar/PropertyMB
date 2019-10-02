@@ -22,7 +22,7 @@ export class HouseslistComponent implements OnInit {
   public nextPage: number;
   public activePage: number;
   public totalItem: number = 100; // สมมติจำนวนรายการทั้งหมดเริ่มต้น หรือเป็น 0 ก็ได้
-  public perPage: number = 10; // จำนวนรายการที่แสดงต่อหน้า
+  public perPage: number = 9; // จำนวนรายการที่แสดงต่อหน้า
   public totalPage: number;
   public maxShowPage: number;
   public useShowPage: number = 5; // จำนวนปุ่มที่แสดง ใช้แค่ 5 ปุ่มตัวเลข

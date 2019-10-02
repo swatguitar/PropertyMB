@@ -20,8 +20,8 @@ export class HousesDetailComponent implements OnInit {
   public activePage: number;
   public results: PropertyDetails[];
   zoom: number = 5;
-  latitude: number;
-  longitude: number ;
+  latitude: number = 13.7348534;;
+  longitude: number = 100.4997134999999;
   lat: number;
   lng: number;
   imageIndex = 1;

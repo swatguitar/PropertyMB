@@ -16,8 +16,8 @@ export class LandsDetailComponent implements OnInit {
   imgbox: any[];
   imagenew: any[];
   zoom: number = 5;
-  latitude: number;
-  longitude: number;
+  latitude: number = 13.7348534;;
+  longitude: number = 100.4997134999999;
   lat: number;
   lng: number;
   public postID: string;
@@ -135,8 +135,6 @@ export class LandsDetailComponent implements OnInit {
   }
 
   recenter() {
-    this.latitude = 13.7348534;
-    this.longitude = 100.4997134999999;
     setTimeout(() => {
 
       this.latitude = Number(this.latnew)

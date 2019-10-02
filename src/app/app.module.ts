@@ -55,7 +55,7 @@ import { ProvinceFilterPipe } from './lib/Pipe/province.filter.pipe';
 import { PriceFilterPipe } from './lib/Pipe/price-filter.pipe';
 import { AmphurFilterPipe } from './lib/Pipe/Amphur-filter.pipe';
 import { DistrictFilterPipe } from './lib/Pipe/dis-filter.pipe';
-
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 
 
@@ -100,7 +100,7 @@ import { DistrictFilterPipe } from './lib/Pipe/dis-filter.pipe';
     PriceFilterPipe,
     AmphurFilterPipe,
     DistrictFilterPipe,
-
+    
   ],
   imports: [
     BrowserModule,
@@ -115,9 +115,10 @@ import { DistrictFilterPipe } from './lib/Pipe/dis-filter.pipe';
     FileUploadModule,
     ArchwizardModule,
     NgxGalleryModule,
+    AutocompleteLibModule,
     AutocompleteModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCnxeJ2GRXPxGJh4ooPuvbLVQ7g37F1QSY',
+      apiKey: 'AIzaSyCtCFBEpYh6djKBD2DUzj1yxM-t-teyir8',
       libraries: ['places']
     }),
     PDFExportModule,

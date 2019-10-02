@@ -207,6 +207,7 @@ a{
   }
   .content-box > .list-table > .product-list .item > img{
     margin-bottom: 20px;
+    height: 150px;
   }
   .content-box > .list-table > .product-list .item > .info header{
     font-family: 'Poppins', 'Prompt', sans-serif;
