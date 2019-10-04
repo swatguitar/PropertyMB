@@ -38,6 +38,26 @@ export class AddlandsComponent {
   selectContact: any[];
   selectContact2: any[];
   selectContact3: any[];
+  conID1: string
+  conID2: string
+  conID3: string
+  conName1: string = ''
+  conName2: string = ''
+  conName3: string = ''
+  conEmail1: string
+  conEmail2: string
+  conEmail3: string
+  conPhone1: string
+  conPhone2: string
+  conPhone3: string
+  conLine1: string
+  conLine2: string
+  conLine3: string
+  con1selected: string = "false"
+  con2selected: string = "false"
+  con3selected: string = "false"
+  IDcon: any;
+  ContactID: string;
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
 
@@ -74,6 +94,11 @@ export class AddlandsComponent {
       LandR: new FormControl('', Validators.required),
       LandG: new FormControl('', Validators.required),
       LandWA: new FormControl('', Validators.required),
+      Location: new FormControl(''),
+      Lprovince: new FormControl('', Validators.required),
+      Lamphur: new FormControl('', Validators.required),
+      Ldistrict: new FormControl('', Validators.required),
+      ZIPCODE: new FormControl(''),
     });
     this.EditContactForm = new FormGroup({
       ContactName: new FormControl('', Validators.required),
@@ -89,7 +114,7 @@ export class AddlandsComponent {
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
       allowedit2: new FormControl(''),
-      ContactSt: new FormControl('', Validators.required),
+      ContactSt: new FormControl(''),
     });
     this.EditContact3Form = new FormGroup({
       ContactName: new FormControl('', Validators.required),
@@ -97,7 +122,7 @@ export class AddlandsComponent {
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
       allowedit3: new FormControl(''),
-      ContactSo: new FormControl('', Validators.required),
+      ContactSo: new FormControl(''),
     });
     this.CreateContactForm = new FormGroup({
       ContactName: new FormControl('', Validators.required),
@@ -157,11 +182,11 @@ export class AddlandsComponent {
     LAmphur: '',
     LDistrict: '',
     LZipCode: '',
-    ContactU: 0,
+    ContactU: '',
     ContactS: '',
-    ContactUo: 0,
+    ContactUo: '',
     ContactSo: '',
-    ContactUt: 0,
+    ContactUt: '',
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
@@ -179,6 +204,7 @@ export class AddlandsComponent {
     CCTV: 0,
     shelves: 0,
     sofa: 0,
+    bed: 0,
     TCset: 0,
     wardrobe: 0,
     gasstove: 0,
@@ -224,12 +250,13 @@ export class AddlandsComponent {
     Place: '',
     imgProperty: null,
     //------ contact ------
-    ID_Contact: 0,
+    ID_Contact: '',
     ContactName: " ",
     ContactEmail: " ",
     ContactLine: " ",
     ContactPhone: " ",
   }
+  ID_user: string = (this.auth.getUserDetails().ID_User).toString()
   addlandForm: FormGroup;
   EditContactForm: FormGroup;
   EditContact2Form: FormGroup;
@@ -474,40 +501,224 @@ export class AddlandsComponent {
     this.credentials.ContactEmail = value
   }
 
-  onGetContact(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactUt = value
-    this.credentials.ContactUo = value
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
+  onGetContact(item) {
+    this.con1selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conName1 = item.Name
+    this.conEmail1 = item.Email
+    this.conPhone1 = item.Phone
+    this.conLine1 = item.Line
+    this.credentials.ContactU = item.ID_Contact
+    this.credentials.ContactUt = item.ID_Contact
+    this.credentials.ContactUo = item.ID_Contact
   }
-  onGetContact2(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactUo = value
+  onGetContact2(item) {
+    this.con2selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conName2 = item.Name
+    this.conEmail2 = item.Email
+    this.conPhone2 = item.Phone
+    this.conLine2 = item.Line
+    this.credentials.ContactUt = item.ID_Contact
+    this.credentials.ContactUo = item.ID_Contact
 
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
   }
-  onGetContact3(value) {
+  onGetContact3(item) {
+    this.con3selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conName3 = item.Name
+    this.conEmail3 = item.Email
+    this.conPhone3 = item.Phone
+    this.conLine3 = item.Line
+    this.credentials.ContactUt = item.ID_Contact
+    this.credentials.ContactUo = item.ID_Contact
+  }
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  onFocused(e) {
+    // do something when input is focused
+  }
+  onEditContactID1(value) {
     this.credentials.ID_Contact = value
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
   }
+  onEditContactName1(value) {
+    this.conName1 = value
+    console.log(this.conName1)
+  }
+  onEditContactLine1(value) {
+    this.conLine1 = value
+    console.log(this.conLine1)
+  }
+  onEditContactPhone1(value) {
+    this.conPhone1 = value
+    console.log(this.conPhone1)
+  }
+  onEditContactEmail1(value) {
+    this.conEmail1 = value
+    console.log(this.conEmail1)
+  }
+
+  onEditContactID2(value) {
+    this.credentials.ID_Contact = value
+  }
+  onEditContactName2(value) {
+    this.conName2 = value
+  }
+  onEditContactLine2(value) {
+    this.conLine2 = value
+  }
+  onEditContactPhone2(value) {
+    this.conPhone2 = value
+  }
+  onEditContactEmail2(value) {
+    this.conEmail2 = value
+  }
+
+
+  onEditContactID3(value) {
+    this.credentials.ID_Contact = value
+  }
+  onEditContactName3(value) {
+    this.conName3 = value
+  }
+  onEditContactLine3(value) {
+    this.conLine3 = value
+  }
+  onEditContactPhone3(value) {
+    this.conPhone3 = value
+  }
+  onEditContactEmail3(value) {
+    this.conEmail3 = value
+  }
+
 
   onGo() {
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.addlandForm.invalid) {
       console.log(this.addlandForm)
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
-    this.onFirststep()
-    alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+    if (this.con1selected == 'false') {
+      this.submitted = true;
+      if (this.EditContactForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
+        return;
+      }
+      this.credentials.ContactName = this.conName1
+      this.credentials.ContactPhone = this.conPhone1
+      this.credentials.ContactEmail = this.conEmail1
+      this.credentials.ContactLine = this.conLine1
+      this.onRandomcontact()
+      this.auth.getContact().subscribe((con) => {
+        this.contactUser = con
+        this.contactUser.filter(article => {
+          this.IDcon = article.ID_Contact
+          this.onCheckContact()
+        });
+        this.credentials.ContactU = this.credentials.ID_Contact
+        this.auth.addcontact(this.credentials).subscribe(
+          () => {
+
+          },
+          err => {
+            console.error(err)
+          }
+        )
+        if (this.con2selected == 'false' && this.conName2 != '') {
+          this.credentials.ContactName = this.conName2
+          this.credentials.ContactPhone = this.conPhone2
+          this.credentials.ContactEmail = this.conEmail2
+          this.credentials.ContactLine = this.conLine2
+          this.onRandomcontact()
+          this.auth.getContact().subscribe((con) => {
+            this.contactUser = con
+            this.contactUser.filter(article => {
+              this.IDcon = article.ID_Contact
+            });
+            this.credentials.ContactUt = this.credentials.ID_Contact
+            this.auth.addcontact(this.credentials).subscribe(
+              () => {
+              },
+              err => {
+                console.error(err)
+              }
+            )
+            if (this.con3selected == 'false' && this.conName3 != '') {
+              this.credentials.ContactName = this.conName3
+              this.credentials.ContactPhone = this.conPhone3
+              this.credentials.ContactEmail = this.conEmail3
+              this.credentials.ContactLine = this.conLine3
+              this.onRandomcontact()
+              this.auth.getContact().subscribe((con) => {
+                this.contactUser = con
+                this.contactUser.filter(article => {
+                  this.IDcon = article.ID_Contact
+                  this.onCheckContact()
+                });
+                this.credentials.ContactUo = this.credentials.ID_Contact
+
+                this.auth.addcontact(this.credentials).subscribe(
+                  () => {
+                    this.onFirststep()
+                    alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+                  },
+                  err => {
+                    console.error(err)
+                  }
+                )
+              },
+                err => {
+                  console.error(err)
+                }
+              )
+
+            } else {
+              // stop here if form is invalid
+              if (this.addlandForm.invalid) {
+                alert(JSON.stringify("กรุณากรอกข้อมูล"))
+                return;
+              }
+              this.onFirststep()
+              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+            }
+          },
+            err => {
+              console.error(err)
+            }
+          )
+
+
+        } else {
+          // stop here if form is invalid
+          if (this.addlandForm.invalid) {
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
+          this.onFirststep()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        }
+      },
+        err => {
+          console.error(err)
+        }
+      )
+
+
+    } else {
+      // stop here if form is invalid
+      if (this.addlandForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูล"))
+        return;
+      }
+      this.onFirststep()
+      alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+    }
+
   }
   onUpdate() {
     this.submitted = true;
@@ -580,6 +791,43 @@ export class AddlandsComponent {
 
     this.router.navigateByUrl('/home')
   }
+   //*****chack ID Contact */
+   onRandomcontact() {
+    var max = 9;
+    var min = 0;
+    var r = Math.floor(Math.random() * (max - min + 1) + min);
+    var x = Math.floor(Math.random() * (max - min + 1) + min);
+    var y = Math.floor(Math.random() * (max - min + 1) + min);
+    var z = Math.floor(Math.random() * (max - min + 1) + min);
+    this.ContactID = this.ID_user + r + x + y + z;
+
+  }
+
+  loopChackcontact() {
+    this.onRandomcontact()
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+
+      this.contactUser.filter(article => {
+        this.IDcon = article.ID_Contact
+        console.log(this.IDcon + "-------Contact222 ")
+        this.onCheckTwo()
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  onCheckContact() {
+    console.log(this.ContactID + "FIrst ")
+    while (this.IDcon == this.ContactID) {
+      this.loopChack()
+    }
+    this.credentials.ID_Contact = this.ContactID
+    console.log(this.credentials.ID_Contact)
+  }
+  //*****chack ID property */
   onRandom() {
     var max = 9;
     var min = 0;

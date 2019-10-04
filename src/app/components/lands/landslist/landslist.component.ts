@@ -45,6 +45,7 @@ export class LandslistComponent implements OnInit {
   searchAmphur1: any[];
   searchPro: string;
   searchPro1: any[];
+  propertiesclone: any[];
   
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
     private router:Router) {}
@@ -117,8 +118,8 @@ export class LandslistComponent implements OnInit {
     {
 
       this.totalItem = land.length;
-      this.details = land;
-      
+      this.properties = land;
+      this.propertiesclone = land;
     })
 // ส่วนของการรับค่า paramMap ที่ส่งกลับมาจากหน้า รายละเอียด
     let params = this.route.snapshot.paramMap;
@@ -183,6 +184,7 @@ export class LandslistComponent implements OnInit {
   }
 
   filterChange() {
+    
     this.filterProperty = this.properties.filter(
       x =>
         (x.ColorType === "พื้นที่สีเหลือง - ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย" && this.filter.yellow) ||
@@ -196,6 +198,19 @@ export class LandslistComponent implements OnInit {
         (x.ColorType === "พื้นที่สีน้ำตาลอ่อน - ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย" && this.filter.brownweak) ||
         (x.ColorType === "พื้นที่สีน้ำเงิน - ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ" && this.filter.blue) 
     );
+    if((this.filterProperty.length == 0 && this.filter.yellow)||(this.filterProperty.length == 0 && this.filter.orange)||(this.filterProperty.length == 0 && this.filter.brown)||
+    (this.filterProperty.length == 0 && this.filter.red)||(this.filterProperty.length == 0 && this.filter.purple)||(this.filterProperty.length == 0 && this.filter.plum)){
+      this.propertiesclone.length=0
+    } else if((this.filterProperty.length == 0 && this.filter.yellow ==false)||(this.filterProperty.length == 0 && this.filter.orange ==false)||(this.filterProperty.length == 0 && this.filter.brown ==false)||
+    (this.filterProperty.length == 0 && this.filter.red ==false)||(this.filterProperty.length == 0 && this.filter.purple ==false)||(this.filterProperty.length == 0 && this.filter.plum ==false)){
+      this.auth.getland().subscribe((land) =>
+    {
+
+      this.totalItem = land.length;
+      this.propertiesclone = land;
+    })
+    }
+    
   }
 
 }

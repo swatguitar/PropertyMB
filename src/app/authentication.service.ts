@@ -94,11 +94,11 @@ export interface PropertyDetails {
   LAmphur: string
   LDistrict: string
   LZipCode: string
-  ContactU: number
+  ContactU: string
   ContactS: string
-  ContactUo: number
+  ContactUo: string
   ContactSo: string
-  ContactUt: number
+  ContactUt: string
   ContactSt: string
   LandAge: string
   PPStatus: string
@@ -114,6 +114,7 @@ export interface PropertyDetails {
   CCTV: number
   shelves: number
   sofa: number
+  bed: number
   TCset: number
   wardrobe: number
   gasstove: number
@@ -153,7 +154,7 @@ export interface PropertyDetails {
   Insoi: number
   Letc: string
   //------ contact ------
-  ID_Contact: number
+  ID_Contact: string
   ContactName: string
   ContactEmail: string
   ContactLine: string
@@ -229,11 +230,11 @@ export interface TokenPayload {
   LAmphur: string
   LDistrict: string
   LZipCode: string
-  ContactU: number
+  ContactU: string
   ContactS: string
-  ContactUo: number
+  ContactUo: string
   ContactSo: string
-  ContactUt: number
+  ContactUt: string
   ContactSt: string
   LandAge: string
   PPStatus: string
@@ -249,6 +250,7 @@ export interface TokenPayload {
   CCTV: number
   shelves: number
   sofa: number
+  bed: number
   TCset: number
   wardrobe: number
   gasstove: number
@@ -289,18 +291,19 @@ export interface TokenPayload {
   Letc: string
   imgProperty: File
   //------ contact ------
-  ID_Contact: number
+  ID_Contact: string
   ContactName: string
   ContactEmail: string
   ContactLine: string
   ContactPhone: string
+  
 
  
 }
 
 @Injectable()
 export class AuthenticationService {
-  ROOT_URL = "https://thinking-armor-245907.appspot.com";
+  ROOT_URL = "http://localhost:3001";
   private token: string
 
   constructor(private http: HttpClient, private router: Router) { }

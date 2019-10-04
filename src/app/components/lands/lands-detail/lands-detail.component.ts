@@ -30,9 +30,9 @@ export class LandsDetailComponent implements OnInit {
   selectContact2: any[];
   selectContact3: any[];
   contactUser: any[];
-  IDcontact1: number
-  IDcontact2: number
-  IDcontact3: number
+  IDcontact1: string
+  IDcontact2: string
+  IDcontact3: string
   lonnew: number;
   latnew: number;
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,

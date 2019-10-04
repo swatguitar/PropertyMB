@@ -218,10 +218,9 @@
                     <ul class="filter-list"></ul>
                   </div>
                   <div class="search-grid row col-eq">
-
                     <ng-container *ngIf="!filterProperty.length; else elseTemplate">
                       <div
-                        *ngFor="let houses of properties | slice:pointStart:pointEnd | propertyFilter : searchTerm  | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
+                        *ngFor="let houses of propertiesclone | slice:pointStart:pointEnd | propertyFilter : searchTerm  | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
                         class="col-xs-12 col-sm-6 col-lg-4 item">
                         <div class="box jumbotron ">
                           <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
@@ -263,9 +262,9 @@
                         </div>
                       </div>
                     </ng-container>
-                    <ng-template #elseTemplate>
+                    <ng-template  #elseTemplate>
                       <div
-                        *ngFor="let houses of filterProperty | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis"
+                        *ngFor="let houses of filterProperty   | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis"
                         class="col-xs-12 col-sm-6 col-lg-4 item">
                         <div class="box jumbotron ">
                           <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"

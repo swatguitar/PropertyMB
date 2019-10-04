@@ -1,6 +1,6 @@
 .ng-autocomplete {
   width: 330px;
-  
+  border-radius: 30px 30px 30px 30px;
 }
 
 input.ng-invalid.ng-touched {

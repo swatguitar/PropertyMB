@@ -26,12 +26,14 @@ export class AddhouseComponent implements OnInit {
   submitted = false;
   back: string = "false"
   keyword = 'Name';
-  contactUser: any[] = [];
+  contactUser: any[];
   selectContact3: any[];
   selectContact: any[];
   selectContact2: any[];
   selectedItem: any = '';
   inputChanged: any = '';
+  IDcon: any;
+  ContactID: string;
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
     this.addhouseForm = new FormGroup({
@@ -57,6 +59,11 @@ export class AddhouseComponent implements OnInit {
       LandR: new FormControl(''),
       LandG: new FormControl(''),
       LandWA: new FormControl(''),
+      Location: new FormControl(''),
+      Lprovince: new FormControl('', Validators.required),
+      Lamphur: new FormControl('', Validators.required),
+      Ldistrict: new FormControl('', Validators.required),
+      ZIPCODE: new FormControl(''),
     });
     this.EditContactForm = new FormGroup({
       ContactName: new FormControl('', Validators.required),
@@ -72,7 +79,7 @@ export class AddhouseComponent implements OnInit {
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
       allowedit2: new FormControl(''),
-      ContactSt: new FormControl('', Validators.required),
+      ContactSt: new FormControl(''),
     });
     this.EditContact3Form = new FormGroup({
       ContactName: new FormControl('', Validators.required),
@@ -80,7 +87,7 @@ export class AddhouseComponent implements OnInit {
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
       allowedit3: new FormControl(''),
-      ContactSo: new FormControl('', Validators.required),
+      ContactSo: new FormControl(''),
     });
     this.CreateContactForm = new FormGroup({
       ContactName: new FormControl('', Validators.required),
@@ -89,9 +96,11 @@ export class AddhouseComponent implements OnInit {
       ContactPhone: new FormControl(''),
     });
   }
+
   latitude: number;
   longitude: number;
   zoom: number = 15;
+  NextstepCon: boolean = false
   address: string;
   province: locationsDetails;
   Lprovince: any[];
@@ -105,6 +114,24 @@ export class AddhouseComponent implements OnInit {
   public details: any;
   createID: string
   years: any[];
+  conID1: string
+  conID2: string
+  conID3: string
+  conName1: string = ''
+  conName2: string = ''
+  conName3: string = ''
+  conEmail1: string
+  conEmail2: string
+  conEmail3: string
+  conPhone1: string
+  conPhone2: string
+  conPhone3: string
+  conLine1: string
+  conLine2: string
+  conLine3: string
+  con1selected: string = "false"
+  con2selected: string = "false"
+  con3selected: string = "false"
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
 
@@ -158,11 +185,11 @@ export class AddhouseComponent implements OnInit {
     LAmphur: '',
     LDistrict: '',
     LZipCode: '',
-    ContactU: 0,
+    ContactU: '',
     ContactS: '',
-    ContactUo: 0,
+    ContactUo: '',
     ContactSo: '',
-    ContactUt: 0,
+    ContactUt: '',
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
@@ -180,6 +207,7 @@ export class AddhouseComponent implements OnInit {
     CCTV: 0,
     shelves: 0,
     sofa: 0,
+    bed: 0,
     TCset: 0,
     wardrobe: 0,
     gasstove: 0,
@@ -225,7 +253,7 @@ export class AddhouseComponent implements OnInit {
     Place: '',
     imgProperty: null,
     //------ contact ------
-    ID_Contact: 0,
+    ID_Contact: '',
     ContactName: '',
     ContactEmail: '',
     ContactLine: '',
@@ -233,21 +261,21 @@ export class AddhouseComponent implements OnInit {
 
 
   }
+  ID_user: string = (this.auth.getUserDetails().ID_User).toString()
 
- 
   ngOnInit() {
     this.setCurrentLocation();
-    $('input.number').keyup(function(event) {
+    $('input.number').keyup(function (event) {
 
       // skip for arrow keys
-      if(event.which >= 37 && event.which <= 40) return;
-    
+      if (event.which >= 37 && event.which <= 40) return;
+
       // format number
-      $(this).val(function(index, value) {
+      $(this).val(function (index, value) {
         return value
-        .replace(/\D/g, "")
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        ;
+          .replace(/\D/g, "")
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          ;
       });
     });
 
@@ -302,17 +330,152 @@ export class AddhouseComponent implements OnInit {
     this.onResiveContact()
   }
   get f() { return this.addhouseForm.controls; }
+  get E() { return this.EditContactForm.controls; }
+  get Et() { return this.EditContact2Form.controls; }
+  get Eo() { return this.EditContact3Form.controls; }
+  get C() { return this.CreateContactForm.controls; }
 
   onGo() {
-    this.submitted = true;
 
-    // stop here if form is invalid
-    if (this.addhouseForm.invalid) {
+    this.submitted = true;
+// stop here if form is invalid
+if (this.addhouseForm.invalid) {
+  console.log(this.addhouseForm)
+  alert(JSON.stringify("กรุณากรอกข้อมูล"))
+  return;
+}
+    if (this.con1selected == 'false') {
+      this.submitted = true;
+      if (this.EditContactForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
+        return;
+      }
+      this.credentials.ContactName = this.conName1
+      this.credentials.ContactPhone = this.conPhone1
+      this.credentials.ContactEmail = this.conEmail1
+      this.credentials.ContactLine = this.conLine1
+      console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " one")
+      this.onRandomcontact()
+      this.auth.getContact().subscribe((con) => {
+        this.contactUser = con
+        this.contactUser.filter(article => {
+          this.IDcon = article.ID_Contact
+          console.log(this.IDcon + "----------------data")
+          this.onCheckContact()
+        });
+        this.credentials.ContactU = this.credentials.ID_Contact
+        console.log(this.credentials.ContactU + " one")
+        this.auth.addcontact(this.credentials).subscribe(
+          () => {
+
+          },
+          err => {
+            console.error(err)
+          }
+        )
+        if (this.con2selected == 'false' && this.conName2 != '') {
+          this.credentials.ContactName = this.conName2
+          this.credentials.ContactPhone = this.conPhone2
+          this.credentials.ContactEmail = this.conEmail2
+          this.credentials.ContactLine = this.conLine2
+          console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " two")
+          this.onRandomcontact()
+          this.auth.getContact().subscribe((con) => {
+            this.contactUser = con
+            this.contactUser.filter(article => {
+              this.IDcon = article.ID_Contact
+              console.log(this.IDcon + "----------------data")
+            });
+            this.credentials.ContactUt = this.credentials.ID_Contact
+            console.log(this.credentials.ContactUt + " two")
+            this.auth.addcontact(this.credentials).subscribe(
+              () => {
+              },
+              err => {
+                console.error(err)
+              }
+            )
+            if (this.con3selected == 'false' && this.conName3 != '') {
+              this.credentials.ContactName = this.conName3
+              this.credentials.ContactPhone = this.conPhone3
+              this.credentials.ContactEmail = this.conEmail3
+              this.credentials.ContactLine = this.conLine3
+              console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
+              this.onRandomcontact()
+              this.auth.getContact().subscribe((con) => {
+                this.contactUser = con
+                this.contactUser.filter(article => {
+                  this.IDcon = article.ID_Contact
+                  console.log(this.IDcon + "----------------data")
+                  this.onCheckContact()
+                });
+                this.credentials.ContactUo = this.credentials.ID_Contact
+                console.log(this.credentials.ContactUo + " three")
+
+                this.auth.addcontact(this.credentials).subscribe(
+                  () => {
+                    this.onFirststep()
+                    alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+                  },
+                  err => {
+                    console.error(err)
+                  }
+                )
+              },
+                err => {
+                  console.error(err)
+                }
+              )
+
+            } else {
+              // stop here if form is invalid
+              if (this.addhouseForm.invalid) {
+                console.log(this.addhouseForm)
+                alert(JSON.stringify("กรุณากรอกข้อมูล"))
+                return;
+              }
+              this.onFirststep()
+              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+            }
+          },
+            err => {
+              console.error(err)
+            }
+          )
+
+
+        } else {
+          // stop here if form is invalid
+          if (this.addhouseForm.invalid) {
+            console.log(this.addhouseForm)
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
+          this.onFirststep()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        }
+      },
+        err => {
+          console.error(err)
+        }
+      )
+
+
+    }else{
+      // stop here if form is invalid
+     if (this.addhouseForm.invalid) {
+      console.log(this.addhouseForm)
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
     this.onFirststep()
     alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+    }
+
+
+
+
+
   }
   onUpdate() {
     this.submitted = true;
@@ -327,7 +490,7 @@ export class AddhouseComponent implements OnInit {
     this.credentials.Longitude = this.longitude
     this.auth.EditHouse(this.credentials).subscribe(
       () => {
-        
+
       },
       err => {
         alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
@@ -453,35 +616,38 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
-  get E() { return this.EditContactForm.controls; }
-  get Et() { return this.EditContact2Form.controls; }
-  get Eo() { return this.EditContact3Form.controls; }
-  get C() { return this.CreateContactForm.controls; }
-  Save: string = 'true'
-  onCreateContact() {
-    this.submitted = true;
-    if (this.CreateContactForm.invalid) {
-      return;
-    }
 
-    this.auth.addcontact(this.credentials).subscribe(() => {
-      this.onResiveContact()
-      this.Save = 'false'
-      alert(JSON.stringify("บันทึกสำเร็จ"))
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
-  onEditContact() {
+
+  onEditContact1() {
     this.submitted = true;
     if (this.EditContactForm.invalid) {
       return;
     }
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.onResiveContact()
+        console.error(err)
+      }
+    )
+  }
+  onEditContact2() {
+    this.submitted = true;
     if (this.EditContact2Form.invalid) {
       return;
     }
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.onResiveContact()
+        console.error(err)
+      }
+    )
+  }
+  onEditContact3() {
+    this.submitted = true;
     if (this.EditContact3Form.invalid) {
       return;
     }
@@ -494,73 +660,103 @@ export class AddhouseComponent implements OnInit {
       }
     )
   }
-  conName1:string
-  conName2:string
-  conName3:string
-  conEmail1:string
-  conEmail2:string
-  conEmail3:string
-  conPhone1:string
-  conLine1:string
-  conPhone2:string
-  selectEvent(item) {
-    console.log(item)
+
+  onGetContact(item) {
+    this.con1selected = 'true'
+    console.log(this.credentials.ContactName)
     this.conName1 = item.Name
     this.conEmail1 = item.Email
     this.conPhone1 = item.Phone
     this.conLine1 = item.Line
-    this.credentials.ID_Contact = item.ID_Contact
+    this.credentials.ContactU = item.ID_Contact
     this.credentials.ContactUt = item.ID_Contact
     this.credentials.ContactUo = item.ID_Contact
-   }
-  
-   onChangeSearch(val: string) {
-     // fetch remote data from here
-     // And reassign the 'data' which is binded to 'data' property.
-   }
-   
-   onFocused(e){
-     // do something when input is focused
-     console.log(e)
-   }
-  onEditContactID(value) {
-    this.credentials.ID_Contact = value
   }
-  onEditContactName(value) {
-    this.credentials.ContactName = value
+  onGetContact2(item) {
+    this.con2selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conName2 = item.Name
+    this.conEmail2 = item.Email
+    this.conPhone2 = item.Phone
+    this.conLine2 = item.Line
+    this.credentials.ContactUt = item.ID_Contact
+    this.credentials.ContactUo = item.ID_Contact
+
   }
-  onEditContactLine(value) {
-    this.credentials.ContactLine = value
-  }
-  onEditContactPhone(value) {
-    this.credentials.ContactPhone = value
-  }
-  onEditContactEmail(value) {
-    this.credentials.ContactEmail = value
+  onGetContact3(item) {
+    this.con3selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conName3 = item.Name
+    this.conEmail3 = item.Email
+    this.conPhone3 = item.Phone
+    this.conLine3 = item.Line
+    this.credentials.ContactUt = item.ID_Contact
+    this.credentials.ContactUo = item.ID_Contact
   }
 
-  onGetContact(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactUt = value
-    this.credentials.ContactUo = value
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
+  onChangeSearch(val: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
   }
-  onGetContact2(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactUo = value
 
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
+  onFocused(e) {
+    // do something when input is focused
   }
-  onGetContact3(value) {
+  onEditContactID1(value) {
     this.credentials.ID_Contact = value
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == value;
-    });
   }
+  onEditContactName1(value) {
+    this.conName1 = value
+    console.log(this.conName1)
+  }
+  onEditContactLine1(value) {
+    this.conLine1 = value
+    console.log(this.conLine1)
+  }
+  onEditContactPhone1(value) {
+    this.conPhone1 = value
+    console.log(this.conPhone1)
+  }
+  onEditContactEmail1(value) {
+    this.conEmail1 = value
+    console.log(this.conEmail1)
+  }
+
+  onEditContactID2(value) {
+    this.credentials.ID_Contact = value
+  }
+  onEditContactName2(value) {
+    this.conName2 = value
+  }
+  onEditContactLine2(value) {
+    this.conLine2 = value
+  }
+  onEditContactPhone2(value) {
+    this.conPhone2 = value
+  }
+  onEditContactEmail2(value) {
+    this.conEmail2 = value
+  }
+
+
+  onEditContactID3(value) {
+    this.credentials.ID_Contact = value
+  }
+  onEditContactName3(value) {
+    this.conName3 = value
+  }
+  onEditContactLine3(value) {
+    this.conLine3 = value
+  }
+  onEditContactPhone3(value) {
+    this.conPhone3 = value
+  }
+  onEditContactEmail3(value) {
+    this.conEmail3 = value
+  }
+
+
+
 
 
   propType: string;
@@ -568,6 +764,7 @@ export class AddhouseComponent implements OnInit {
   onFirststep() {
     this.back = "true"
     this.getZipCode()
+
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     if (this.credentials.PropertyType == "อาคารพานิชย์") {
@@ -590,12 +787,6 @@ export class AddhouseComponent implements OnInit {
         this.onCheckTwo()
       });
       console.log("..........." + this.credentials.ID_Property + " END")
-      this.auth.addcontact(this.credentials).subscribe(() => {
-      },
-        err => {
-          console.error(err)
-        }
-      )
       this.auth.addhouse(this.credentials).subscribe(
         () => {
 
@@ -621,6 +812,44 @@ export class AddhouseComponent implements OnInit {
 
     this.router.navigateByUrl('/home')
   }
+
+  //*****chack ID Contact */
+  onRandomcontact() {
+    var max = 9;
+    var min = 0;
+    var r = Math.floor(Math.random() * (max - min + 1) + min);
+    var x = Math.floor(Math.random() * (max - min + 1) + min);
+    var y = Math.floor(Math.random() * (max - min + 1) + min);
+    var z = Math.floor(Math.random() * (max - min + 1) + min);
+    this.ContactID = this.ID_user + r + x + y + z;
+
+  }
+
+  loopChackcontact() {
+    this.onRandomcontact()
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+
+      this.contactUser.filter(article => {
+        this.IDcon = article.ID_Contact
+        console.log(this.IDcon + "-------Contact222 ")
+        this.onCheckTwo()
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  onCheckContact() {
+    console.log(this.ContactID + "FIrst ")
+    while (this.IDcon == this.ContactID) {
+      this.loopChack()
+    }
+    this.credentials.ID_Contact = this.ContactID
+    console.log(this.credentials.ID_Contact)
+  }
+  //*****chack ID property */
   onRandom() {
     var max = 9;
     var min = 0;

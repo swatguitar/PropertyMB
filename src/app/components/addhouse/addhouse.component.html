@@ -45,14 +45,20 @@
                                                         <select style="border-radius: 30px 30px 30px 30px;"
                                                             id="PropertyType" class="form-control"
                                                             formControlName="PropertyType"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.PropertyType.errors }"
                                                             [(ngModel)]="credentials.PropertyType">
                                                             <option value="บ้าน" selected>
                                                                 บ้าน</option>
-                                                            <option value="อาคารพานิชย์" selected>
-                                                                อาคารพานิชย์</option>
+                                                            <option value="อาคารพาณิชย์" selected>
+                                                                อาคารพาณิชย์</option>
                                                             <option value="คอนโด" selected>
                                                                 คอนโด</option>
                                                         </select>
+                                                        <div *ngIf="submitted && f.PropertyType.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.PropertyType.errors.required">กรุณากรอกข้อมูล
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -90,7 +96,7 @@
                                                         <input style="border-radius: 30px 30px 30px 30px;" type="text"
                                                             id="CodeDeed" class="form-control search-input"
                                                             formControlName="CodeDeed" placeholder="รหัสโฉนดที่ดิน"
-                                                            required [(ngModel)]="credentials.CodeDeed">
+                                                            [(ngModel)]="credentials.CodeDeed">
 
                                                     </div>
                                                 </div>
@@ -134,7 +140,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="credentials.PropertyType == 'อาคารพานิชย์'">
+                                            <div *ngIf="credentials.PropertyType == 'อาคารพาณิชย์'">
                                                 <br>
                                                 <hr>
                                                 <div class="row">
@@ -335,6 +341,12 @@
                                                             <option value="ฝากขาย" selected>
                                                                 ฝากขาย</option>
                                                         </select>
+
+                                                        <div *ngIf="submitted && f.AsseStatus.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.AsseStatus.errors.required">
+                                                                กรุณากรอกข้อมูล</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <br>
@@ -672,7 +684,8 @@
                                                         <select style="border-radius: 30px 30px 30px 30px;"
                                                             id="AsseStatus" placeholder="สถานะทรัพย์สิน"
                                                             class="form-control" formControlName="AsseStatus"
-                                                            [(ngModel)]="credentials.AsseStatus">
+                                                            [(ngModel)]="credentials.AsseStatus"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.AsseStatus.errors }">
                                                             <option value="ว่าง" selected>
                                                                 ว่าง</option>
                                                             <option value="จำนอง" selected>
@@ -683,6 +696,11 @@
                                                                 ฝากขาย</option>
                                                         </select>
 
+                                                        <div *ngIf="submitted && f.AsseStatus.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.AsseStatus.errors.required">
+                                                                กรุณากรอกข้อมูล</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <br>
@@ -950,11 +968,10 @@
                                                                                 placeholder="จำนวนชั้นของบ้าน"
                                                                                 formControlName="Floor" required
                                                                                 [(ngModel)]="credentials.Floor"
-                                                                                [ngClass]="{ 'is-invalid': submitted && f.HouseArea.errors }">
-                                                                            <div *ngIf="submitted && f.HouseArea.errors"
+                                                                                [ngClass]="{ 'is-invalid': submitted && f.Floor.errors }">
+                                                                            <div *ngIf="submitted && f.Floor.errors"
                                                                                 class="invalid-feedback">
-                                                                                <div
-                                                                                    *ngIf="f.HouseArea.errors.required">
+                                                                                <div *ngIf="f.Floor.errors.required">
                                                                                     กรุณากรอกข้อมูล</div>
                                                                             </div>
                                                                         </div>
@@ -1312,6 +1329,11 @@
                                                                     โซฟา
                                                                 </div>
                                                                 <div class="col-sm-12">
+                                                                    <input type="checkbox" id="" value="Yes" name="bed"
+                                                                        [(ngModel)]="credentials.bed">
+                                                                    เตียง
+                                                                </div>
+                                                                <div class="col-sm-12">
                                                                     <input type="checkbox" id="" value="Yes"
                                                                         name="shelves"
                                                                         [(ngModel)]="credentials.shelves"> ชั้นวาง
@@ -1638,6 +1660,11 @@
                                                                     โซฟา
                                                                 </div>
                                                                 <div class="col-sm-12">
+                                                                    <input type="checkbox" id="" value="Yes" name="bed"
+                                                                        [(ngModel)]="credentials.bed">
+                                                                    เตียง
+                                                                </div>
+                                                                <div class="col-sm-12">
                                                                     <input type="checkbox" id="" value="Yes"
                                                                         name="shelves"
                                                                         [(ngModel)]="credentials.shelves"> ชั้นวาง
@@ -1911,6 +1938,11 @@
                                                                         [(ngModel)]="credentials.sofa">โซฟา
                                                                 </div>
                                                                 <div class="col-sm-12">
+                                                                    <input type="checkbox" id="" value="Yes" name="bed"
+                                                                        [(ngModel)]="credentials.bed">
+                                                                    เตียง
+                                                                </div>
+                                                                <div class="col-sm-12">
                                                                     <input type="checkbox" id="" value="Yes"
                                                                         name="shelves"
                                                                         [(ngModel)]="credentials.shelves"> ชั้นวาง
@@ -2152,109 +2184,142 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                                                <div class="row">
-                                                    <div class="col-md-12 ">
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <div>
-                                                                    <label>ที่อยู่:<i class="reqiureinput">*</i></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-8 ">
-                                                                <div>
-                                                                    <input style="border-radius: 30px 30px 30px 30px;"
-                                                                        type="text" id="Location" class="form-control"
-                                                                        placeholder="ที่อยู่" required
-                                                                        [(ngModel)]="credentials.Location">
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <br>
-                                                        <div class="row">
-                                                            <div class="col-md-8">
-                                                                <div class="row">
-                                                                    <div class="col-sm-6">
-                                                                        จังหวัด:<i class="reqiureinput">*</i>
+                                                <form [formGroup]="addhouseForm">
+                                                    <div class="row">
+                                                        <div class="col-md-12 ">
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div>
+                                                                        <label>ที่อยู่:<i
+                                                                                class="reqiureinput">*</i></label>
                                                                     </div>
-                                                                    <div class="col-sm-4">
-                                                                        <select
+                                                                </div>
+                                                                <div class="col-md-8 ">
+                                                                    <div>
+                                                                        <input
                                                                             style="border-radius: 30px 30px 30px 30px;"
-                                                                            id="province" class="form-control"
-                                                                            name="Lprovince" required
-                                                                            [(ngModel)]="Lprovince"
-                                                                            (ngModelChange)="selectprovince($event)">
-                                                                            <option>- จังหวัด -</option>
-                                                                            <option *ngFor="let p of province"
-                                                                                [ngValue]="p">
-                                                                                {{p.PROVINCE_NAME}}
-                                                                            </option>
+                                                                            type="text" id="Location"
+                                                                            class="form-control" placeholder="ที่อยู่"
+                                                                            formControlName="Location"
+                                                                            [ngClass]="{ 'is-invalid': submitted && f.Location.errors }"
+                                                                            [(ngModel)]="credentials.Location">
+                                                                    </div>
+                                                                    <div *ngIf="submitted && f.Location.errors"
+                                                                        class="invalid-feedback">
+                                                                        <div *ngIf="f.Directions.errors.required">
+                                                                            กรุณากรอกข้อมูล</div>
+                                                                    </div>
+                                                                </div>
 
-                                                                        </select>
+                                                            </div>
+                                                            <br>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            จังหวัด:<i class="reqiureinput">*</i>
+                                                                        </div>
+                                                                        <div class="col-sm-4">
+                                                                            <select
+                                                                                style="border-radius: 30px 30px 30px 30px;"
+                                                                                id="province" class="form-control"
+                                                                                name="Lprovince"
+                                                                                formControlName="Lprovince"
+                                                                                [ngClass]="{ 'is-invalid': submitted && f.Lprovince.errors }"
+                                                                                [(ngModel)]="Lprovince"
+                                                                                (ngModelChange)="selectprovince($event)">
+                                                                                <option>- จังหวัด -</option>
+                                                                                <option *ngFor="let p of province"
+                                                                                    [ngValue]="p">
+                                                                                    {{p.PROVINCE_NAME}}
+                                                                                </option>
 
+                                                                            </select>
+                                                                            <div *ngIf="submitted && f.Lprovince.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="f.Lprovince.errors.required">
+                                                                                    กรุณากรอกข้อมูล</div>
+                                                                            </div>
 
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4">
+                                                                            อำเภอ:<i class="reqiureinput">*</i>
+                                                                        </div>
+                                                                        <div class="col-sm-8">
+                                                                            <select
+                                                                                style="border-radius: 30px 30px 30px 30px;"
+                                                                                id="amphur" class="form-control"
+                                                                                name="Lamphur" formControlName="Lamphur"
+                                                                                [ngClass]="{ 'is-invalid': submitted && f.Lamphur.errors }"
+                                                                                [(ngModel)]="Lamphur"
+                                                                                (ngModelChange)="selectamphur($event)">
+                                                                                <option>- อำเภอ -</option>
+                                                                                <option *ngFor="let a of amphur"
+                                                                                    [ngValue]="a">
+                                                                                    {{a.AMPHUR_NAME}}</option>
+                                                                            </select>
+                                                                            <div *ngIf="submitted && f.Lamphur.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div *ngIf="f.Lamphur.errors.required">
+                                                                                    กรุณากรอกข้อมูล</div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-4">
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        อำเภอ:<i class="reqiureinput">*</i>
-                                                                    </div>
-                                                                    <div class="col-sm-8">
-                                                                        <select
-                                                                            style="border-radius: 30px 30px 30px 30px;"
-                                                                            id="amphur" class="form-control"
-                                                                            name="Lamphur" required
-                                                                            [(ngModel)]="Lamphur"
-                                                                            (ngModelChange)="selectamphur($event)">
-                                                                            <option>- อำเภอ -</option>
-                                                                            <option *ngFor="let a of amphur"
-                                                                                [ngValue]="a">
-                                                                                {{a.AMPHUR_NAME}}</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <br>
-                                                        <div class="row">
-                                                            <div class="col-md-8">
-                                                                <div class="row">
-                                                                    <div class="col-sm-6">
-                                                                        ตำบล:<i class="reqiureinput">*</i>
-                                                                    </div>
-                                                                    <div class="col-sm-4">
-                                                                        <select
-                                                                            style="border-radius: 30px 30px 30px 30px;"
-                                                                            id="district" class="form-control"
-                                                                            name="Ldistrict" required
-                                                                            [(ngModel)]="Ldistrict"
-                                                                            (ngModelChange)="selectdistrict($event)">
-                                                                            <option>- ตำบล -</option>
-                                                                            <option *ngFor="let d of district"
-                                                                                [ngValue]="d">
-                                                                                {{d.DISTRICT_NAME}}
-                                                                            </option>
-                                                                        </select>
+                                                            <br>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            ตำบล:<i class="reqiureinput">*</i>
+                                                                        </div>
+                                                                        <div class="col-sm-4">
+                                                                            <select
+                                                                                style="border-radius: 30px 30px 30px 30px;"
+                                                                                id="district" class="form-control"
+                                                                                name="Ldistrict"
+                                                                                formControlName="Ldistrict"
+                                                                                [ngClass]="{ 'is-invalid': submitted && f.Ldistrict.errors }"
+                                                                                [(ngModel)]="Ldistrict"
+                                                                                (ngModelChange)="selectdistrict($event)">
+                                                                                <option>- ตำบล -</option>
+                                                                                <option *ngFor="let d of district"
+                                                                                    [ngValue]="d">
+                                                                                    {{d.DISTRICT_NAME}}
+                                                                                </option>
+                                                                            </select>
+                                                                            <div *ngIf="submitted && f.Ldistrict.errors"
+                                                                                class="invalid-feedback">
+                                                                                <div
+                                                                                    *ngIf="f.Ldistrict.errors.required">
+                                                                                    กรุณากรอกข้อมูล</div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        รหัสไปรษณี:
-                                                                    </div>
-                                                                    <div class="col-sm-8" *ngFor="let pp of zipcode">
-                                                                        <input class="form-control" type="text"
-                                                                            style="border-radius: 30px 30px 30px 30px;"
-                                                                            value="{{pp.ZIPCODE}}" readonly>
+                                                                <div class="col-md-4">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4">
+                                                                            รหัสไปรษณี:
+                                                                        </div>
+                                                                        <div class="col-sm-8"
+                                                                            *ngFor="let pp of zipcode">
+                                                                            <input class="form-control" type="text"
+                                                                                style="border-radius: 30px 30px 30px 30px;"
+                                                                                value="{{pp.ZIPCODE}}">
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -2286,644 +2351,300 @@
                                         aria-labelledby="home-tab">
                                         <div>
                                             <div class="container jumbotron">
+
+                                                <hr>
                                                 <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 1</h4>
                                                 <div class="container">
-                                                    <div>
-                                                        <form>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                                                                    <div class="ng-autocomplete "  >
-                                                                        <ng-autocomplete 
-                                                                          [data]="contactUser"
-                                                                          [searchKeyword]="keyword"
-                                                                          placeHolder="กรุณากรอกข้อมูล"
-                                                                          (selected)='selectEvent($event)'
-                                                                          (inputChanged)='onChangeSearch($event)'
-                                                                          (inputFocused)='onFocused($event)'
-                                                                          historyIdentifier="contactUser"
-                                                                          [itemTemplate]="itemTemplate"
-                                                                          [notFoundTemplate]="notFoundTemplate">
-                                                                        </ng-autocomplete>
-                                                                      
-                                                                        <ng-template #itemTemplate let-item>
-                                                                          <a [innerHTML]="item.Name"></a>
-                                                                        </ng-template>
-                                                                      
-                                                                        <ng-template #notFoundTemplate let-notFound>
-                                                                          <div [innerHTML]="notFound"></div>
-                                                                        </ng-template>
+                                                    <form [formGroup]="EditContactForm">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                                                <div class="ng-autocomplete">
+                                                                    <ng-autocomplete [data]="contactUser"
+                                                                        formControlName="ContactName"
+                                                                        [(ngModel)]="conName1" [searchKeyword]="keyword"
+                                                                        [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                                                                        (selected)='onGetContact($event)'
+                                                                        (inputChanged)='onChangeSearch($event)'
+                                                                        (inputFocused)='onFocused($event)'
+                                                                        historyIdentifier="contactUser"
+                                                                        [itemTemplate]="itemTemplate"
+                                                                        [notFoundTemplate]="notFoundTemplate">
+                                                                    </ng-autocomplete>
+
+                                                                    <ng-template #itemTemplate let-item>
+                                                                        <a [innerHTML]="item.Name"></a>
+                                                                    </ng-template>
+
+                                                                    <ng-template #notFoundTemplate let-notFound>
+                                                                        <div [innerHTML]="notFound"></div>
+                                                                    </ng-template>
+                                                                    <div *ngIf="submitted && E.ContactName.errors"
+                                                                        class="invalid-feedback">
+                                                                        <div *ngIf="E.ContactName.errors.required">
+                                                                            กรุณากรอกข้อมูล</div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputPassword4">สถานะ</label>
-                                                                    <input type="text" class="form-control"
-                                                                        placeholder="เจ้าของ , นายหน้า" name="ContactS"
-                                                                        [(ngModel)]="credentials.ContactS"
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
                                                             </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputCity">อีเมล</label>
-                                                                    <input type="text" class="form-control" value="{{conEmail1}}"
-                                                                        id="inputCity"  (change)="onGetContact2($event.target.value)"
-                                                                        style="border-radius: 30px 30px 30px 30px;">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputPassword4">สถานะ</label>
+                                                                <select style="border-radius: 30px 30px 30px 30px;"
+                                                                    class="form-control" name="ContactS"
+                                                                    formControlName="ContactS"
+                                                                    [(ngModel)]="credentials.ContactS"
+                                                                    [ngClass]="{ 'is-invalid': submitted && E.ContactS.errors }">
+                                                                    <option value="0">เลือกผู้ติดต่อ</option>
+                                                                    <option value="เจ้าของ">เจ้าของ</option>
+                                                                    <option value="นายหน้า">นายหน้า</option>
+                                                                </select>
+                                                                <div *ngIf="submitted && E.ContactS.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div *ngIf="E.ContactS.errors.required">
+                                                                        กรุณากรอกข้อมูล</div>
                                                                 </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputZip">เบอร์โทร</label>
-                                                                    <input type="text" class="form-control"  (change)="onGetContact2($event.target.value)"
-                                                                        style="border-radius: 30px 30px 30px 30px;" value="{{conPhone1}}">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputZip">ไลน์</label>
-                                                                    <input type="text" class="form-control"  (change)="onGetContact2($event.target.value)"
-                                                                        style="border-radius: 30px 30px 30px 30px;" value="{{conLine1}}">
-                                                                </div>
+
                                                             </div>
-                                                        </form>
-                                                    </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputCity">อีเมล</label>
+                                                                <input type="text" class="form-control"
+                                                                    (change)="onEditContactEmail1($event.target.value)"
+                                                                    value="{{conEmail1}}" id="inputCity"
+                                                                    style="border-radius: 30px 30px 30px 30px;">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputZip">เบอร์โทร</label>
+                                                                <input type="text" class="form-control"
+                                                                    (change)="onEditContactPhone1($event.target.value)"
+                                                                    style="border-radius: 30px 30px 30px 30px;"
+                                                                    value="{{conPhone1}}">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputZip">ไลน์</label>
+                                                                <input type="text" class="form-control"
+                                                                    (change)="onEditContactLine1($event.target.value)"
+                                                                    style="border-radius: 30px 30px 30px 30px;"
+                                                                    value="{{conLine1}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="gridCheck"
+                                                                    (change)="onEditContactID1($event.target.value)"
+                                                                    [(ngModel)]="allowedit" formControlName="allowedit"
+                                                                    name="allowedit" value="{{conID1}}">
+                                                                <label class="form-check-label" for="gridCheck">
+                                                                    แก้ไข ข้อมูลผู้ติดต่อ
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <button *ngIf="allowedit" type="button"
+                                                            (click)="onEditContact1()"
+                                                            class="btn btn-warning">บันทึก</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="profile" role="tabpanel"
                                         aria-labelledby="profile-tab">
-                                        <div class="container jumbotron">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>สร้างรายชื่อผู้ติดต่อใหม่</label>
-                                                    <div class="col-md-6">
-                                                        <button type="button" class="btn btn-outline-info"
-                                                            data-toggle="modal" data-target="#Modelone">
-                                                            สร้างรายชื่อผู้ติดต่อใหม่
-                                                        </button>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="Modelone" tabindex="-1" role="dialog"
-                                                        aria-labelledby="Modelone" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="exampleModalCenterTitle">
-                                                                        สร้างรายชื่อผู้ติดต่อใหม่
-                                                                    </h5>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form [formGroup]="CreateContactForm"
-                                                                        (submit)="onCreateContact()">
-                                                                        <div class="form-row">
-                                                                            <div class="form-group col-md-6">
-                                                                                <label for="inputEmail4">ชื่อผู้ติดต่อ<i
-                                                                                        class="reqiureinput">*</i></label>
-                                                                                <input type="Text" class="form-control"
-                                                                                    placeholder="ชื่อผู้ติดต่อ"
-                                                                                    formControlName="ContactName"
-                                                                                    [(ngModel)]="credentials.ContactName"
-                                                                                    style="border-radius: 30px 30px 30px 30px;"
-                                                                                    [ngClass]="{ 'is-invalid': submitted && C.ContactName.errors }">
-                                                                                <div *ngIf="submitted && C.ContactName.errors"
-                                                                                    class="invalid-feedback">
-                                                                                    <div
-                                                                                        *ngIf="C.ContactName.errors.required">
-                                                                                        กรุณากรอกข้อมูล</div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group col-md-6">
-                                                                                <label for="ContactEmail">อีเมล</label>
-                                                                                <input type="email" class="form-control"
-                                                                                    name="ContactEmail"
-                                                                                    formControlName="ContactEmail"
-                                                                                    [(ngModel)]="credentials.ContactEmail"
-                                                                                    style="border-radius: 30px 30px 30px 30px;">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
-
-                                                                            <div class="form-group col-md-6">
-                                                                                <label
-                                                                                    for="ContactPhone">เบอร์โทร</label>
-                                                                                <input type="text" class="form-control"
-                                                                                    name="ContactPhone"
-                                                                                    formControlName="ContactPhone"
-                                                                                    [(ngModel)]="credentials.ContactPhone"
-                                                                                    style="border-radius: 30px 30px 30px 30px;">
-                                                                            </div>
-                                                                            <div class="form-group col-md-4">
-                                                                                <label for="ContactLine">ไลน์</label>
-                                                                                <input type="text" class="form-control"
-                                                                                    name="ContactLine"
-                                                                                    formControlName="ContactLine"
-                                                                                    [(ngModel)]="credentials.ContactLine"
-                                                                                    style="border-radius: 30px 30px 30px 30px;">
-                                                                            </div>
-                                                                        </div>
-                                                                        <button type="submit" class="btn btn-success"
-                                                                            [disabled]=" Save == 'false'">บันทึก</button>
-                                                                    </form>
-                                                                </div>
-                                                                <div class="modal-footer">
-
-                                                                    <button type="button" class="btn btn-primary"
-                                                                        data-dismiss="modal"
-                                                                        [disabled]="credentials.ContactName == ''"
-                                                                        data-toggle="modal"
-                                                                        data-target="#nextsteptwo">ถัดไป</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Modal 2 -->
-                                                    <div class="modal fade" id="nextsteptwo" tabindex="-1" role="dialog"
-                                                        aria-labelledby="nextsteptwo" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="exampleModalCenterTitle">
-                                                                        เลือกผู้ติดต่อ
-                                                                    </h5>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <label for="inputEmail4">รายชื่อผู้ติดต่อ</label>
-                                                                    <select style="border-radius: 30px 30px 30px 30px;"
-                                                                        class="form-control" name="ContactUt"
-                                                                        (change)="onGetContact2($event.target.value)"
-                                                                        [(ngModel)]="credentials.ContactUt">
-                                                                        <option value="0">เลือกผู้ติดต่อ</option>
-                                                                        <option
-                                                                            *ngFor="let user of contactUser; index as i; "
-                                                                            value="{{user.ID_Contact}}"> {{user.Name}}
-                                                                        </option>
-                                                                    </select>
-                                                                    <hr>
-                                                                    <div *ngFor="let item of selectContact2">
-                                                                        <form [formGroup]="EditContact2Form"
-                                                                            (ngSubmit)="onEditContact()">
-                                                                            <div class="form-row">
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label
-                                                                                        for="inputEmail4">ชื่อผู้ติดต่อ<i
-                                                                                            class="reqiureinput">*</i></label>
-                                                                                    <input type="name"
-                                                                                        class="form-control"
-                                                                                        formControlName="ContactName"
-                                                                                        (change)="onEditContactName($event.target.value)"
-                                                                                        value="{{item.Name}}"
-                                                                                        placeholder="ชื่อผู้ติดต่อ"
-                                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                                        [ngClass]="{ 'is-invalid': submitted && Et.ContactName.errors }">
-                                                                                    <div *ngIf="submitted && Et.ContactName.errors"
-                                                                                        class="invalid-feedback">
-                                                                                        <div
-                                                                                            *ngIf="Et.ContactName.errors.required">
-                                                                                            กรุณากรอกข้อมูล</div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label for="inputPassword4">สถานะ<i
-                                                                                            class="reqiureinput">*</i></label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        placeholder="เจ้าของ , นายหน้า"
-                                                                                        name="ContactS"
-                                                                                        [(ngModel)]="credentials.ContactSt"
-                                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                                        formControlName="ContactSt"
-                                                                                        [ngClass]="{ 'is-invalid': submitted && Et.ContactSt.errors }">
-                                                                                    <div *ngIf="submitted && Et.ContactSt.errors"
-                                                                                        class="invalid-feedback">
-                                                                                        <div
-                                                                                            *ngIf="Et.ContactSt.errors.required">
-                                                                                            กรุณากรอกข้อมูล</div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-row">
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label for="inputCity">อีเมล</label>
-                                                                                    <input type="email"
-                                                                                        class="form-control"
-                                                                                        formControlName="ContactEmail"
-                                                                                        (change)="onEditContactEmail($event.target.value)"
-                                                                                        value="{{item.Email}}"
-                                                                                        id="inputCity"
-                                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                                </div>
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label
-                                                                                        for="inputZip">เบอร์โทร</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        value="{{item.Phone}} "
-                                                                                        formControlName="ContactPhone"
-                                                                                        (change)="onEditContactPhone($event.target.value)"
-                                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                                        id="inputZip">
-                                                                                </div>
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label for="inputZip">ไลน์</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        value="{{item.Line}}"
-                                                                                        formControlName="ContactLine"
-                                                                                        (change)="onEditContactLine($event.target.value)"
-                                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox" id="gridCheck"
-                                                                                        (change)="onEditContactID($event.target.value)"
-                                                                                        [(ngModel)]="allowedit2"
-                                                                                        formControlName="allowedit2"
-                                                                                        name="allowedit2"
-                                                                                        value="{{item.ID_Contact}}">
-                                                                                    <label class="form-check-label"
-                                                                                        for="gridCheck">
-                                                                                        แก้ไข ข้อมูลผู้ติดต่อ
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <button *ngIf="allowedit2" type="submit"
-                                                                                class="btn btn-warning">บันทึก</button>
-                                                                        </form>
-
-
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">ปิด</button>
-                                                                    <button type="submit" class="btn btn-primary"
-                                                                        data-dismiss="modal" data-toggle="modal"
-                                                                        [disabled]="credentials.ContactSt == ''">ถัดไป</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label>เลือกจากผู้ติดต่อที่มีอยู่</label>
-                                                    <div class="col-md-6">
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                            data-toggle="modal" data-target="#nextsteptwo">
-                                                            เลือกผู้ติดต่อ
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div *ngIf="credentials.ContactUt != 0 ">
+                                        <div>
                                             <div class="container jumbotron">
                                                 <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 2</h4>
                                                 <div class="container">
-                                                    <div *ngFor="let item of selectContact2">
-                                                        <form>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                                                                    <input type="name" class="form-control"
-                                                                        value="{{item.Name}}"
-                                                                        placeholder="ชื่อผู้ติดต่อ" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputPassword4">สถานะ</label>
-                                                                    <input type="text" class="form-control"
-                                                                        placeholder="เจ้าของ , นายหน้า" name="ContactSt"
-                                                                        [(ngModel)]="credentials.ContactSt" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputCity">อีเมล</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{item.Email}}" id="inputCity" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputZip">เบอร์โทร</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{item.Phone}} " readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                        id="inputZip">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputZip">ไลน์</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{item.Line}}" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
+                                                    <form [formGroup]="EditContact2Form">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                                                <div class="ng-autocomplete">
+                                                                    <ng-autocomplete [data]="contactUser"
+                                                                        formControlName="ContactName"
+                                                                        [(ngModel)]="conName2" [searchKeyword]="keyword"
+                                                                        [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                                                                        (selected)='onGetContact2($event)'
+                                                                        (inputChanged)='onChangeSearch($event)'
+                                                                        (inputFocused)='onFocused($event)'
+                                                                        historyIdentifier="contactUser"
+                                                                        [itemTemplate]="itemTemplate"
+                                                                        [notFoundTemplate]="notFoundTemplate">
+                                                                    </ng-autocomplete>
+
+                                                                    <ng-template #itemTemplate let-item>
+                                                                        <a [innerHTML]="item.Name"></a>
+                                                                    </ng-template>
+
+                                                                    <ng-template #notFoundTemplate let-notFound>
+                                                                        <div [innerHTML]="notFound"></div>
+                                                                    </ng-template>
+                                                                    <div *ngIf="submitted && Et.ContactName.errors"
+                                                                        class="invalid-feedback">
+                                                                        <div *ngIf="Et.ContactName.errors.required">
+                                                                            กรุณากรอกข้อมูล</div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </form>
-                                                    </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputPassword4">สถานะ</label>
+                                                                <select style="border-radius: 30px 30px 30px 30px;"
+                                                                    class="form-control" name="ContactSt"
+                                                                    formControlName="ContactSt"
+                                                                    [(ngModel)]="credentials.ContactSt"
+                                                                    [ngClass]="{ 'is-invalid': submitted && Et.ContactSt.errors }">
+                                                                    <option value="0">เลือกผู้ติดต่อ</option>
+                                                                    <option value="เจ้าของ">เจ้าของ</option>
+                                                                    <option value="นายหน้า">นายหน้า</option>
+                                                                </select>
+                                                                <div *ngIf="submitted && Et.ContactSt.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div *ngIf="Et.ContactSt.errors.required">
+                                                                        กรุณากรอกข้อมูล</div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputCity">อีเมล</label>
+                                                                <input type="text" class="form-control"
+                                                                    (change)="onEditContactEmail2($event.target.value)"
+                                                                    value="{{conEmail2}}" id="inputCity"
+                                                                    style="border-radius: 30px 30px 30px 30px;">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputZip">เบอร์โทร</label>
+                                                                <input type="text" class="form-control"
+                                                                    (change)="onEditContactPhone2($event.target.value)"
+                                                                    style="border-radius: 30px 30px 30px 30px;"
+                                                                    value="{{conPhone2}}">
+                                                            </div>
+                                                            <div class="form-group col-md-4">
+                                                                <label for="inputZip">ไลน์</label>
+                                                                <input type="text" class="form-control"
+                                                                    (change)="onEditContactLine2($event.target.value)"
+                                                                    style="border-radius: 30px 30px 30px 30px;"
+                                                                    value="{{conLine2}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="gridCheck"
+                                                                    (change)="onEditContactID2($event.target.value)"
+                                                                    [(ngModel)]="allowedit2"
+                                                                    formControlName="allowedit2" name="allowedit2"
+                                                                    value="{{conID2}}">
+                                                                <label class="form-check-label" for="gridCheck">
+                                                                    แก้ไข ข้อมูลผู้ติดต่อ
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <button *ngIf="allowedit2" type="submit"
+                                                            class="btn btn-warning">บันทึก</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+
                                     <div class="tab-pane fade" id="contact" role="tabpanel"
                                         aria-labelledby="contact-tab">
                                         <div class="container jumbotron">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>สร้างรายชื่อผู้ติดต่อใหม่</label>
-                                                    <div class="col-md-6">
-                                                        <button type="button" class="btn btn-outline-info"
-                                                            data-toggle="modal" data-target="#Modelone">
-                                                            สร้างรายชื่อผู้ติดต่อใหม่
-                                                        </button>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="Modelone" tabindex="-1" role="dialog"
-                                                        aria-labelledby="Modelone" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="exampleModalCenterTitle">
-                                                                        สร้างรายชื่อผู้ติดต่อใหม่
-                                                                    </h5>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form [formGroup]="CreateContactForm"
-                                                                        (submit)="onCreateContact()">
-                                                                        <div class="form-row">
-                                                                            <div class="form-group col-md-6">
-                                                                                <label for="inputEmail4">ชื่อผู้ติดต่อ<i
-                                                                                        class="reqiureinput">*</i></label>
-                                                                                <input type="Text" class="form-control"
-                                                                                    placeholder="ชื่อผู้ติดต่อ"
-                                                                                    formControlName="ContactName"
-                                                                                    [(ngModel)]="credentials.ContactName"
-                                                                                    style="border-radius: 30px 30px 30px 30px;"
-                                                                                    [ngClass]="{ 'is-invalid': submitted && C.ContactName.errors }">
-                                                                                <div *ngIf="submitted && C.ContactName.errors"
-                                                                                    class="invalid-feedback">
-                                                                                    <div
-                                                                                        *ngIf="C.ContactName.errors.required">
-                                                                                        กรุณากรอกข้อมูล</div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group col-md-6">
-                                                                                <label for="ContactEmail">อีเมล</label>
-                                                                                <input type="email" class="form-control"
-                                                                                    name="ContactEmail"
-                                                                                    formControlName="ContactEmail"
-                                                                                    [(ngModel)]="credentials.ContactEmail"
-                                                                                    style="border-radius: 30px 30px 30px 30px;">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="form-row">
+                                            <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
+                                            <div class="container">
+                                                <form [formGroup]="EditContact3Form">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                                            <div class="ng-autocomplete">
+                                                                <ng-autocomplete [data]="contactUser"
+                                                                    formControlName="ContactName" [(ngModel)]="conName3"
+                                                                    [searchKeyword]="keyword" [initialValue]=""
+                                                                    placeHolder="กรุณากรอกข้อมูล"
+                                                                    (selected)='onGetContact3($event)'
+                                                                    (inputChanged)='onChangeSearch($event)'
+                                                                    (inputFocused)='onFocused($event)'
+                                                                    historyIdentifier="contactUser"
+                                                                    [itemTemplate]="itemTemplate"
+                                                                    [notFoundTemplate]="notFoundTemplate">
+                                                                </ng-autocomplete>
 
-                                                                            <div class="form-group col-md-6">
-                                                                                <label
-                                                                                    for="ContactPhone">เบอร์โทร</label>
-                                                                                <input type="text" class="form-control"
-                                                                                    name="ContactPhone"
-                                                                                    formControlName="ContactPhone"
-                                                                                    [(ngModel)]="credentials.ContactPhone"
-                                                                                    style="border-radius: 30px 30px 30px 30px;">
-                                                                            </div>
-                                                                            <div class="form-group col-md-4">
-                                                                                <label for="ContactLine">ไลน์</label>
-                                                                                <input type="text" class="form-control"
-                                                                                    name="ContactLine"
-                                                                                    formControlName="ContactLine"
-                                                                                    [(ngModel)]="credentials.ContactLine"
-                                                                                    style="border-radius: 30px 30px 30px 30px;">
-                                                                            </div>
-                                                                        </div>
-                                                                        <button type="submit" class="btn btn-success"
-                                                                            [disabled]=" Save == 'false'">บันทึก</button>
-                                                                    </form>
-                                                                </div>
-                                                                <div class="modal-footer">
+                                                                <ng-template #itemTemplate let-item>
+                                                                    <a [innerHTML]="item.Name"></a>
+                                                                </ng-template>
 
-                                                                    <button type="button" class="btn btn-primary"
-                                                                        data-dismiss="modal"
-                                                                        [disabled]="credentials.ContactName == ''"
-                                                                        data-toggle="modal"
-                                                                        data-target="#nextstepthree">ถัดไป</button>
+                                                                <ng-template #notFoundTemplate let-notFound>
+                                                                    <div [innerHTML]="notFound"></div>
+                                                                </ng-template>
+                                                                <div *ngIf="submitted && Eo.ContactName.errors"
+                                                                    class="invalid-feedback">
+                                                                    <div *ngIf="Eo.ContactName.errors.required">
+                                                                        กรุณากรอกข้อมูล</div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <!-- Modal 2 -->
-                                                    <div class="modal fade" id="nextstepthree" tabindex="-1"
-                                                        role="dialog" aria-labelledby="nextstepthree"
-                                                        aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="exampleModalCenterTitle">
-                                                                        เลือกผู้ติดต่อ
-                                                                    </h5>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <label for="inputEmail4">รายชื่อผู้ติดต่อ</label>
-                                                                    <select style="border-radius: 30px 30px 30px 30px;"
-                                                                        class="form-control" name="ContactUo"
-                                                                        (change)="onGetContact3($event.target.value)"
-                                                                        [(ngModel)]="credentials.ContactUo">
-                                                                        <option value="0">เลือกผู้ติดต่อ</option>
-                                                                        <option
-                                                                            *ngFor="let user of contactUser; index as i; "
-                                                                            value="{{user.ID_Contact}}"> {{user.Name}}
-                                                                        </option>
-                                                                    </select>
-                                                                    <hr>
-                                                                    <div *ngFor="let item of selectContact3">
-                                                                        <form [formGroup]="EditContact3Form"
-                                                                            (ngSubmit)="onEditContact()">
-                                                                            <div class="form-row">
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label
-                                                                                        for="inputEmail4">ชื่อผู้ติดต่อ<i
-                                                                                            class="reqiureinput">*</i></label>
-                                                                                    <input type="name"
-                                                                                        class="form-control"
-                                                                                        formControlName="ContactName"
-                                                                                        (change)="onEditContactName($event.target.value)"
-                                                                                        value="{{item.Name}}"
-                                                                                        placeholder="ชื่อผู้ติดต่อ"
-                                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                                        [ngClass]="{ 'is-invalid': submitted && Eo.ContactName.errors }">
-                                                                                    <div *ngIf="submitted && Eo.ContactName.errors"
-                                                                                        class="invalid-feedback">
-                                                                                        <div
-                                                                                            *ngIf="Eo.ContactName.errors.required">
-                                                                                            กรุณากรอกข้อมูล</div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label for="inputPassword4">สถานะ<i
-                                                                                            class="reqiureinput">*</i></label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        placeholder="เจ้าของ , นายหน้า"
-                                                                                        name="ContactSo"
-                                                                                        [(ngModel)]="credentials.ContactSo"
-                                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                                        formControlName="ContactSo"
-                                                                                        [ngClass]="{ 'is-invalid': submitted && Eo.ContactSo.errors }">
-                                                                                    <div *ngIf="submitted && Eo.ContactSo.errors"
-                                                                                        class="invalid-feedback">
-                                                                                        <div
-                                                                                            *ngIf="E.ContactS.errors.required">
-                                                                                            กรุณากรอกข้อมูล</div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-row">
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label for="inputCity">อีเมล</label>
-                                                                                    <input type="email"
-                                                                                        class="form-control"
-                                                                                        formControlName="ContactEmail"
-                                                                                        (change)="onEditContactEmail($event.target.value)"
-                                                                                        value="{{item.Email}}"
-                                                                                        id="inputCity"
-                                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                                </div>
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label
-                                                                                        for="inputZip">เบอร์โทร</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        value="{{item.Phone}} "
-                                                                                        formControlName="ContactPhone"
-                                                                                        (change)="onEditContactPhone($event.target.value)"
-                                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                                        id="inputZip">
-                                                                                </div>
-                                                                                <div class="form-group col-md-4">
-                                                                                    <label for="inputZip">ไลน์</label>
-                                                                                    <input type="text"
-                                                                                        class="form-control"
-                                                                                        value="{{item.Line}}"
-                                                                                        formControlName="ContactLine"
-                                                                                        (change)="onEditContactLine($event.target.value)"
-                                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox" id="gridCheck"
-                                                                                        (change)="onEditContactID($event.target.value)"
-                                                                                        [(ngModel)]="allowedit3"
-                                                                                        formControlName="allowedit3"
-                                                                                        name="allowedit"
-                                                                                        value="{{item.ID_Contact}}">
-                                                                                    <label class="form-check-label"
-                                                                                        for="gridCheck">
-                                                                                        แก้ไข ข้อมูลผู้ติดต่อ
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <button *ngIf="allowedit3" type="submit"
-                                                                                class="btn btn-warning">บันทึก</button>
-                                                                        </form>
-
-
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-dismiss="modal">ปิด</button>
-                                                                    <button type="submit" class="btn btn-primary"
-                                                                        data-dismiss="modal" data-toggle="modal"
-                                                                        [disabled]="credentials.ContactSo == ''">ถัดไป</button>
-                                                                </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="inputPassword4">สถานะ</label>
+                                                            <select style="border-radius: 30px 30px 30px 30px;"
+                                                                class="form-control" name="ContactSo"
+                                                                formControlName="ContactSo"
+                                                                [(ngModel)]="credentials.ContactSo"
+                                                                [ngClass]="{ 'is-invalid': submitted && Eo.ContactSo.errors }">
+                                                                <option value="0">เลือกผู้ติดต่อ</option>
+                                                                <option value="เจ้าของ">เจ้าของ</option>
+                                                                <option value="นายหน้า">นายหน้า</option>
+                                                            </select>
+                                                            <div *ngIf="submitted && Eo.ContactSo.errors"
+                                                                class="invalid-feedback">
+                                                                <div *ngIf="Eo.ContactSo.errors.required">
+                                                                    กรุณากรอกข้อมูล</div>
                                                             </div>
+
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label>เลือกจากผู้ติดต่อที่มีอยู่</label>
-                                                    <div class="col-md-6">
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                            data-toggle="modal" data-target="#nextstepthree">
-                                                            เลือกผู้ติดต่อ
-                                                        </button>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="inputCity">อีเมล</label>
+                                                            <input type="text" class="form-control"
+                                                                (change)="onEditContactEmail3($event.target.value)"
+                                                                value="{{conEmail3}}" id="inputCity"
+                                                                style="border-radius: 30px 30px 30px 30px;">
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="inputZip">เบอร์โทร</label>
+                                                            <input type="text" class="form-control"
+                                                                (change)="onEditContactPhone3($event.target.value)"
+                                                                style="border-radius: 30px 30px 30px 30px;"
+                                                                value="{{conPhone3}}">
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="inputZip">ไลน์</label>
+                                                            <input type="text" class="form-control"
+                                                                (change)="onEditContactLine3($event.target.value)"
+                                                                style="border-radius: 30px 30px 30px 30px;"
+                                                                value="{{conLine3}}">
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="gridCheck"
+                                                                (change)="onEditContactID3($event.target.value)"
+                                                                [(ngModel)]="allowedit3" formControlName="allowedit3"
+                                                                name="allowedit3" value="{{conID3}}">
+                                                            <label class="form-check-label" for="gridCheck">
+                                                                แก้ไข ข้อมูลผู้ติดต่อ
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <button *ngIf="allowedit2" type="submit"
+                                                        class="btn btn-warning">บันทึก</button>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div *ngIf="credentials.ContactUo != 0 ">
-                                            <div class="container jumbotron">
-                                                <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
-                                                <div class="container">
-                                                    <div *ngFor="let item of selectContact3">
-                                                        <form>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                                                                    <input type="name" class="form-control"
-                                                                        value="{{item.Name}}"
-                                                                        placeholder="ชื่อผู้ติดต่อ" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputPassword4">สถานะ</label>
-                                                                    <input type="text" class="form-control"
-                                                                        placeholder="เจ้าของ , นายหน้า" name="ContactSo"
-                                                                        [(ngModel)]="credentials.ContactSo" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputCity">อีเมล</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{item.Email}}" id="inputCity" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputZip">เบอร์โทร</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{item.Phone}} " readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;"
-                                                                        id="inputZip">
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label for="inputZip">ไลน์</label>
-                                                                    <input type="text" class="form-control"
-                                                                        value="{{item.Line}}" readonly
-                                                                        style="border-radius: 30px 30px 30px 30px;">
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

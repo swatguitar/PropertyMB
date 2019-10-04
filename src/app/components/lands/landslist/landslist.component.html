@@ -258,49 +258,98 @@
                         ล้างทั้งหมด <i class="fa fa-times-circle"></i></button>
                       <ul class="filter-list"></ul>
                     </div>
+                  
+                    
                     <div class="search-grid row col-eq">
-                      <div
-                        *ngFor="let lands of details | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
-                        class="col-xs-12 col-sm-6 col-lg-4 item">
-                        <div class="box jumbotron ">
-                          <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
-                                class="fa fa-plus"></i>
-                              Add to group
-                            </button><a [routerLink]="['/lands',lands.ID_Lands]" [queryParams]="{page: activePage}"
-                              target="_blank">
-                              <div class="title">
-                                {{lands.AnnounceTH}} <br>
+                        <ng-container *ngIf="!filterProperty.length; else elseTemplate">
+                            <div
+                            *ngFor="let lands of propertiesclone | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
+                            class="col-xs-12 col-sm-6 col-lg-4 item">
+                            <div class="box jumbotron ">
+                              <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
+                                    class="fa fa-plus"></i>
+                                  Add to group
+                                </button><a [routerLink]="['/lands',lands.ID_Lands]" [queryParams]="{page: activePage}"
+                                  target="_blank">
+                                  <div class="title">
+                                    {{lands.AnnounceTH}} <br>
+                                  </div>
+                                </a>
+                                <div class=""><a [routerLink]="['/lands',lands.ID_Lands]"
+                                    [queryParams]="{page: activePage}"><img
+                                      src="http://www.landvist.xyz/images/{{lands.ImageEX}}"
+                                      class="img-responsive notebook-img rounded"></a>
+                                  <!---->
+                                  <hr>
+                                  <ul class="specification">
+                                    <li></li>
+                                    <li>{{lands.PropertyType}}</li>
+                                    <li>{{lands.LandR}} / {{lands.LandG}} / {{lands.LandWA}}</li>
+                                    <li>{{lands.Location}}</li>
+                                    <li>{{lands.ObservationPoint}}</li>
+                                  </ul>
+                                </div>
+                                <!---->
+                                <div class="info">
+                                  <div class="price">
+                                    ราคา
+                                    <span>{{lands.SellPrice}}</span>
+                                    บาท
+                                  </div>
+                                  <ul>
+                                    <li>อัพเดทล่าสุด {{lands.Created| timeAgoThai}}</li>
+                                  </ul>
+                                </div>
                               </div>
-                            </a>
-                            <div class=""><a [routerLink]="['/lands',lands.ID_Lands]"
-                                [queryParams]="{page: activePage}"><img
-                                  src="http://www.landvist.xyz/images/{{lands.ImageEX}}"
-                                  class="img-responsive notebook-img rounded"></a>
                               <!---->
-                              <hr>
-                              <ul class="specification">
-                                <li></li>
-                                <li>{{lands.PropertyType}}</li>
-                                <li>{{lands.LandR}} / {{lands.LandG}} / {{lands.LandWA}}</li>
-                                <li>{{lands.Location}}</li>
-                                <li>{{lands.ObservationPoint}}</li>
-                              </ul>
-                            </div>
-                            <!---->
-                            <div class="info">
-                              <div class="price">
-                                ราคา
-                                <span>{{lands.SellPrice}}</span>
-                                บาท
-                              </div>
-                              <ul>
-                                <li>อัพเดทล่าสุด {{lands.Created| timeAgoThai}}</li>
-                              </ul>
                             </div>
                           </div>
-                          <!---->
-                        </div>
-                      </div>
+                          </ng-container>
+                          <ng-template #elseTemplate>
+                              <div
+                              *ngFor="let lands of filterProperty | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
+                              class="col-xs-12 col-sm-6 col-lg-4 item">
+                              <div class="box jumbotron ">
+                                <div class=""><button type="button" class="compare-btn"><i aria-hidden="true"
+                                      class="fa fa-plus"></i>
+                                    Add to group
+                                  </button><a [routerLink]="['/lands',lands.ID_Lands]" [queryParams]="{page: activePage}"
+                                    target="_blank">
+                                    <div class="title">
+                                      {{lands.AnnounceTH}} <br>
+                                    </div>
+                                  </a>
+                                  <div class=""><a [routerLink]="['/lands',lands.ID_Lands]"
+                                      [queryParams]="{page: activePage}"><img
+                                        src="http://www.landvist.xyz/images/{{lands.ImageEX}}"
+                                        class="img-responsive notebook-img rounded"></a>
+                                    <!---->
+                                    <hr>
+                                    <ul class="specification">
+                                      <li></li>
+                                      <li>{{lands.PropertyType}}</li>
+                                      <li>{{lands.LandR}} / {{lands.LandG}} / {{lands.LandWA}}</li>
+                                      <li>{{lands.Location}}</li>
+                                      <li>{{lands.ObservationPoint}}</li>
+                                    </ul>
+                                  </div>
+                                  <!---->
+                                  <div class="info">
+                                    <div class="price">
+                                      ราคา
+                                      <span>{{lands.SellPrice}}</span>
+                                      บาท
+                                    </div>
+                                    <ul>
+                                      <li>อัพเดทล่าสุด {{lands.Created| timeAgoThai}}</li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <!---->
+                              </div>
+                            </div>
+                          </ng-template>
+                      
   
                     </div>
   
