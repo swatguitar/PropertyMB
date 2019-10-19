@@ -1,47 +1,130 @@
 <app-navbar></app-navbar>
 <div class="container">
-  <div class="jumbotron mt-5">
-    <div class="col-sm-8 mx-auto">
-      <h1 class="text-center">PROFILE</h1>
+  <div class="row">
+    <br>
+    <div class="col-md-3 col-sm-2 ">
+      <div class="card">
+        <img src="http://www.landvist.xyz/images/{{details?.ProfileImg}}"  class="card-img-top">
+        <div class="card-body">
+          <a [routerLink]="[ '/updateprofile' ]" data-container="body" data-toggle="popover" data-placement="bottom" data-content="แก้ไข รูปภาพของคุณ"><i class="fas fa-edit"></i></a>
+        </div>
+      </div>
+      <br>
+      <h5>{{details?.Firstname}} {{details?.Lastname}}</h5>
+      <br>
+      <div>
+        <button class="btn btn-warning" type="button" [routerLink]="[ '/updateprofile' ]">แก้ไขข้อมูล</button>
+      </div>
+
     </div>
-    <table class="table col-md-6 mx-auto">
 
-        <div class="container" >
-           <img class="card-img-top " src="http://www.landvist.xyz/images/{{ details?.ProfileImg }}" style="width:50%;position: absolute; left: -55%; bottom: 40%; border-radius: 100% ">
-           <br><br><br><br>
+    <div class="col-md-9 ">
+      <br>
+      <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+        <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+            typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i>
+              หน้าแรก</span></a>
+          <meta property="position" content="1">
+        </li>
+        <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/profile' ]" property="item"
+            typeof="WebPage"><span property="name">บัญชีของฉัน</span></a>
+          <meta property="position" content="2">
+        </li>
+      </ul>
+      <br>
+      <h3><i style="color: chocolate" class="fas fa-feather-alt "></i>บัญชีของฉัน</h3>
+      <hr>
+      <h5>กลุ่มของฉัน</h5>
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-2">
+            <button type="button" class="btn btn-default btn-circle btn-xl border border-primary"
+              [routerLink]="['/groups']"><i class="fa fa-users"></i></button>
           </div>
-
-      <tr>
-        <td>ชื่อผู้ใช้ :</td>
-        <td>{{ details?.Firstname }} {{ details?.Lastname }} </td>
-      </tr>
-      
-      <tr>
-        <td>วันเดือนปีเกิด :</td>
-        <td>{{ details?.Birthday }}</td>
-      </tr>
-     
-      <tr>
-        <td>ที่อยู่ :</td>
-        <td>{{ details?.LocationU }}</td>
-      </tr>
-     
-      <tr>
-        <td>อสังหาริมทรัพย์ทั้งหมด:</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td>E-mail :</td>
-        <td>{{ details?.Email }}</td>
-      </tr>
-
-      <tr>
-        <td>เบอร์โทรติดต่อ :</td>
-        <td></td>
-      </tr>
-
-    </table>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-default btn-circle btn-xl border border-primary"
+              [routerLink]="['/groups']"><i class="fa fa-users"></i></button>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-default btn-circle btn-xl border border-primary"
+              [routerLink]="['/groups']"><i class="fa fa-users"></i></button>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-default btn-circle btn-xl border border-primary"
+              [routerLink]="['/groups']"><i class="fa fa-users"></i></button>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-default btn-circle btn-xl border border-primary"
+              [routerLink]="['/groups']"><i class="fa fa-users"></i></button>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-default btn-circle btn-xl border border-primary"
+              [routerLink]="['/groups']"><i class="fa fa-users"></i></button>
+          </div>
+        </div>
+      </div>
+      <br>
+      <h5>ข้อมูลทั่วไป</h5>
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="">ชื่อ-นามสกุล</label>
+            <br>
+            <label for="">ที่อยู่</label>
+            <br>
+            <label for="">อีเมล</label>
+            <br>
+            <label for="">เบอร์โทรศัพท์</label>
+            <br>
+            <label for="">เพศ</label>
+            <br>
+            <label for="">วันเดือนปีที่เกิด</label>
+            <br>
+            <label for="">อายุ</label>
+          </div>
+          <div class="col-md-8">
+            <label for="">{{details.Firstname}} {{details.Lastname}}</label>
+            <br>
+            <label for="">{{details.LocationU}}</label>
+            <br>
+            <label for="">{{details.Email}}</label>
+            <br>
+            <label for="">{{details.Phone}}</label>
+            <br>
+            <label for="">{{details.Gender}}</label>
+            <br>
+            <label for="">{{details.Birthday}}</label>
+            <br>
+            <label for="">{{details.Age}}</label>
+        
+          </div>
+        </div>
+      </div>
+      <br>
+      <h5>ข้อมูลการใช้งาน</h5>
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="">ลักษณะผู้ใช้งาน</label>
+            <br>
+            <label for="">อสังหาริมทรัพย์ทั้งหมด</label>
+            <br>
+            <label for="">อสังหาสิ่งปลูกสร้าง</label>
+            <br>
+            <label for="">ที่ดิน</label>
+          </div>
+          <div class="col-md-8">
+            <label for="">{{details.UserType}}</label>
+            <br>
+            <label for="">{{totalItem}}</label>
+            <br>
+            <label for="">{{totalHouse}}</label>
+            <br>
+            <label for="">{{totalLand}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <app-footer></app-footer>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import {AuthenticationService,UserDetails,PropertyDetails, locationsDetails, TokenPayload} from "../../../authentication.service";
+import { AuthenticationService, UserDetails, PropertyDetails, locationsDetails, TokenPayload } from "../../../authentication.service";
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { FormGroup } from '@angular/forms';
 @Component({
@@ -10,11 +10,11 @@ import { FormGroup } from '@angular/forms';
 export class HouseslistComponent implements OnInit {
   public highlightId: number; // สำหรับเก็บ id ที่เพิ่งเข้าดู
   // filter ประเภทบ้าน
-  filter = { houses: false, condo: false, property: false, newhouse: false, oldhouse: false };
+  filter = { houses: false, condo: false, property: false, newhouse: false, oldhouse: false, priceA: false, priceB: false, priceC: false, priceD: false, priceE: false, priceF: false, priceG: false, priceH: false, priceI: false, priceJ: false, priceK: false, priceL: false };
   properties: PropertyDetails[] = []; // สร้าง array เปล่ารอรับค่าจาก checkbox
   filterProperty: PropertyDetails[] = [];
   // filter ราคา
-  
+
   // ส่วนจัดการเกี่ยวกับการแบ่งหน้า variable
   public iPage: number[] = [];
   public iPageStart: number = 1;
@@ -37,6 +37,11 @@ export class HouseslistComponent implements OnInit {
   searchAmphur1: any[];
   searchDis: string;
   searchDis1: any[];
+  pricemin: number
+  pricemax: number
+  newprice: number
+  newMprice: number
+  newCprice: number
 
   totalItemsearch: number;
   propertiesclone: any[];
@@ -51,9 +56,9 @@ export class HouseslistComponent implements OnInit {
   zipcode: any[];
   createID: string
   years: any[];
- 
 
-  constructor(private auth: AuthenticationService,private route: ActivatedRoute,private router: Router) {}
+
+  constructor(private auth: AuthenticationService, private route: ActivatedRoute, private router: Router) { }
 
 
   // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
@@ -119,7 +124,7 @@ export class HouseslistComponent implements OnInit {
     // ส่วนของการดึงข้อมูล
     this.auth.gethouse().subscribe(house => {
       this.properties = house;
-      this.totalItem =this.properties.length
+      this.totalItem = this.properties.length
     });
 
     // ส่วนของการรับค่า paramMap ที่ส่งกลับมาจากหน้า รายละเอียด
@@ -129,7 +134,7 @@ export class HouseslistComponent implements OnInit {
       // string แปลงเป็นตัวแปร number
       this.highlightId = +params.get("id");
     }
-    
+
     //------------getlocation-------
     this.auth.getProvine().subscribe((province) => {
       this.province = province;
@@ -138,7 +143,7 @@ export class HouseslistComponent implements OnInit {
         console.error(err)
 
       }
-    ) 
+    )
     this.filterChange()
   }
 
@@ -185,6 +190,46 @@ export class HouseslistComponent implements OnInit {
     )
 
   }
+
+  filterprice() {
+    this.filterProperty = this.properties.filter(
+      x => {
+        this.newprice = parseInt(x.SellPrice.replace(/,/g, ""))
+        this.newCprice = parseInt(x.CostestimateB.replace(/,/g, ""))
+        this.newMprice = parseInt(x.MarketPrice.replace(/,/g, ""))
+        return (this.newprice >= 500000 && this.newprice <= 1000000 && this.filter.priceA) || (this.newprice >= 1100000 && this.newprice <= 5000000 && this.filter.priceB) || (this.newprice >= 5100000 && this.newprice <= 10000000 && this.filter.priceC) || (this.newprice >= 10000000 && this.filter.priceD)
+          || (this.newCprice >= 500000 && this.newCprice <= 1000000 && this.filter.priceE) || (this.newCprice >= 1100000 && this.newCprice <= 5000000 && this.filter.priceF) || (this.newCprice >= 5100000 && this.newCprice <= 10000000 && this.filter.priceG) || (this.newCprice >= 10000000 && this.filter.priceH)
+          || (this.newMprice >= 500000 && this.newMprice <= 1000000 && this.filter.priceI) || (this.newMprice >= 1100000 && this.newMprice <= 5000000 && this.filter.priceJ) || (this.newMprice >= 5100000 && this.newMprice <= 10000000 && this.filter.priceK) || (this.newMprice >= 10000000 && this.filter.priceL)
+      });
+    if ((this.filterProperty.length == 0 && this.filter.priceA) || (this.filterProperty.length == 0 && this.filter.priceB) || (this.filterProperty.length == 0 && this.filter.priceC) || (this.filterProperty.length == 0 && this.filter.priceD) || (this.filterProperty.length == 0 && this.filter.priceE) ||
+      (this.filterProperty.length == 0 && this.filter.priceF) || (this.filterProperty.length == 0 && this.filter.priceG) || (this.filterProperty.length == 0 && this.filter.priceH) || (this.filterProperty.length == 0 && this.filter.priceI) || (this.filterProperty.length == 0 && this.filter.priceJ) || (this.filterProperty.length == 0 && this.filter.priceK) || (this.filterProperty.length == 0 && this.filter.priceL)) {
+      this.propertiesclone.length = 0
+    } else if ((this.filterProperty.length == 0 && this.filter.priceA == false) || (this.filterProperty.length == 0 && this.filter.priceB == false) || (this.filterProperty.length == 0 && this.filter.priceC == false) || (this.filterProperty.length == 0 && this.filter.priceD == false) || (this.filterProperty.length == 0 && this.filter.priceE == false) ||
+      (this.filterProperty.length == 0 && this.filter.priceF == false) || (this.filterProperty.length == 0 && this.filter.priceG == false) || (this.filterProperty.length == 0 && this.filter.priceH == false) || (this.filterProperty.length == 0 && this.filter.priceI == false) || (this.filterProperty.length == 0 && this.filter.priceJ == false) || (this.filterProperty.length == 0 && this.filter.priceK == false) || (this.filterProperty.length == 0 && this.filter.priceL == false)) {
+      this.auth.gethouse().subscribe((house) => {
+
+        this.totalItem = house.length;
+        this.propertiesclone = house;
+      })
+    }
+
+    this.totalItem = this.filterProperty.length;
+
+  }
+  filterMaxMin() {
+    this.filterProperty = this.properties.filter(
+      x => {
+        this.newprice = parseInt(x.SellPrice.replace(/,/g, ""))
+        this.newCprice = parseInt(x.CostestimateB.replace(/,/g, ""))
+        this.newMprice = parseInt(x.MarketPrice.replace(/,/g, ""))
+        return (this.newprice > this.pricemin && this.newprice < this.pricemax)
+
+      });
+    if (this.filterProperty.length == 0) {
+      this.propertiesclone.length = 0
+    }
+
+  }
   filterChange() {
     this.filterProperty = this.properties.filter(
       x =>
@@ -194,20 +239,19 @@ export class HouseslistComponent implements OnInit {
         (x.HomeCondition === "ใหม่" && this.filter.newhouse) ||
         (x.HomeCondition === "มือสอง" && this.filter.oldhouse)
     );
-    if((this.filterProperty.length == 0 && this.filter.houses)||(this.filterProperty.length == 0 && this.filter.condo)||(this.filterProperty.length == 0 && this.filter.property)||
-    (this.filterProperty.length == 0 && this.filter.newhouse)||(this.filterProperty.length == 0 && this.filter.oldhouse)){
-      this.propertiesclone.length=0
-    } else if((this.filterProperty.length == 0 && this.filter.houses ==false)||(this.filterProperty.length == 0 && this.filter.condo==false)||(this.filterProperty.length == 0 && this.filter.property==false)||
-    (this.filterProperty.length == 0 && this.filter.newhouse==false)||(this.filterProperty.length == 0 && this.filter.oldhouse==false)){
-      this.auth.gethouse().subscribe((house) =>
-    {
+    if ((this.filterProperty.length == 0 && this.filter.houses) || (this.filterProperty.length == 0 && this.filter.condo) || (this.filterProperty.length == 0 && this.filter.property) ||
+      (this.filterProperty.length == 0 && this.filter.newhouse) || (this.filterProperty.length == 0 && this.filter.oldhouse)) {
+      this.propertiesclone.length = 0
+    } else if ((this.filterProperty.length == 0 && this.filter.houses == false) || (this.filterProperty.length == 0 && this.filter.condo == false) || (this.filterProperty.length == 0 && this.filter.property == false) ||
+      (this.filterProperty.length == 0 && this.filter.newhouse == false) || (this.filterProperty.length == 0 && this.filter.oldhouse == false)) {
+      this.auth.gethouse().subscribe((house) => {
 
-      this.totalItem = house.length;
-      this.propertiesclone = house;
-    })
+        this.totalItem = house.length;
+        this.propertiesclone = house;
+      })
     }
     this.totalItem = this.filterProperty.length;
   }
 
-  
+
 }

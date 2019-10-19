@@ -19,12 +19,16 @@ export class RegisterComponent implements OnInit {
     Firstname: '',
     Lastname: '',
     Email: '',
+    UserType: '',
+    OldPassword: '',
     Password: '',
     Birthday: '',
     CodeProperty: '',
     LocationU: '',
     Phone: '',
     ProfileImg: '',
+    Token:  '',
+    Answer:  '',
     Age: '',
     Gender: '',
     ID_Property: '',
@@ -120,6 +124,7 @@ export class RegisterComponent implements OnInit {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
+    Kitchen:0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -140,6 +145,7 @@ export class RegisterComponent implements OnInit {
   }
   registerForm: FormGroup;
   submitted = false;
+  allowedit:boolean = false;
 
   constructor(private auth: AuthenticationService, private http: HttpClient, private formBuilder: FormBuilder, private router: Router) { }
 
@@ -151,7 +157,10 @@ export class RegisterComponent implements OnInit {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required]
+      confirmPassword: ['', Validators.required],
+      allowedit:[''],
+      UserType:['', Validators.required],
+      
     }, {
         validator: MustMatch('password', 'confirmPassword')
       });
@@ -168,14 +177,22 @@ export class RegisterComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.registerForm.invalid) {
+      console.log(this.registerForm)
       return;
     }
 
 
     this.auth.register(this.credentials).subscribe(
-      () => {
-        alert(JSON.stringify("ลงทะเบียสำเร็จ กรุณา เข้าสู่ระบบ"))
-        this.router.navigateByUrl('/profile');
+      (error) => {
+        console.log(error.error);
+        if(!error.error){
+          alert(JSON.stringify("ลงทะเบียสำเร็จ กรุณา เข้าสู่ระบบ"))
+          this.router.navigateByUrl('/login');
+        }else if(error.error){
+          alert(JSON.stringify("อีเมลนี้ ถูกใช้งานแล้ว"))
+        }
+       
+        
       },
       err => {
         console.error(err);

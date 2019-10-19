@@ -12,8 +12,11 @@
               <a class="nav-link " routerLink="/home">หน้าแรก <span class="sr-only">(current)</span></a>
             </li>
             <li *ngIf="auth.isLoggedIn()" class="nav-item ">
-                <a class="nav-link" routerLink="/property"><i class="fa fa-home font-color-orange" aria-hidden="true"></i><i class="fa fa-tree font-color-green" aria-hidden="true"></i> อสังหาของฉัน<span class="sr-only">(current)</span></a>
+                <a class="nav-link" routerLink="/houses"><i class="fa fa-home font-color-orange" aria-hidden="true"></i> อสังหาของฉัน<span class="sr-only">(current)</span></a>
               </li>
+              <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+                  <a class="nav-link" routerLink="/lands"><i class="fa fa-tree font-color-green" aria-hidden="true"></i> ที่ดินของฉัน<span class="sr-only">(current)</span></a>
+                </li>
                <li *ngIf="auth.isLoggedIn()" class="nav-item ">
                 <a class="nav-link" routerLink="/groups"><i class="fa fa-users font-color-blue " aria-hidden="true"></i> กลุ่มของฉัน <span class="sr-only">(current)</span></a>
               </li>

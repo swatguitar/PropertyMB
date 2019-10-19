@@ -1,18 +1,94 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
-import { count } from 'rxjs/operators';
-import { GroupdetailComponent } from '../../group/grouplist/groupdetail/groupdetail.component';
+import domtoimage from 'dom-to-image';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
-  selector: 'app-houses-detail',
-  templateUrl: './houses-detail.component.html',
-  styleUrls: ['./houses-detail.component.css']
+  selector: 'app-house-pdf',
+  templateUrl: './house-pdf.component.html',
+  styleUrls: ['./house-pdf.component.css']
 })
-export class HousesDetailComponent implements OnInit {
+export class HousePdfComponent implements OnInit {
+
+  htmltoPDF()
+{
+    // parentdiv is the html element which has to be converted to PDF
+    html2canvas(document.querySelector("#parentdiv")).then(canvas => {
+
+      var pdf = new jsPDF('p', 'pt', [canvas.width, canvas.height]);
+
+      var imgData  = canvas.toDataURL("image/jpeg", 1.0);
+      pdf.addImage(imgData,0,0,canvas.width, canvas.height);
+      pdf.save('converteddoc.pdf');
+
+  });
+
+}
+
+  downloadPDF()
+            {
+
+              var node = document.getElementById('parentdiv');
+              
+              var img;
+              var filename;
+              var newImage;
+
+
+              domtoimage.toPng(node, { bgcolor: '#fff' })
+              
+
+                .then(function(dataUrl) {
+
+                  img = new Image();
+                  img.src = dataUrl;
+                  newImage = img.src;
+
+                  img.onload = function(){
+
+                  var pdfWidth = img.width;
+                  var pdfHeight = img.height;
+
+                    // FileSaver.saveAs(dataUrl, 'my-pdfimage.png'); // Save as Image
+
+                    var doc;
+
+                    if(pdfWidth > pdfHeight)
+                    {
+                      doc = new jsPDF('l', 'px', [pdfWidth , pdfHeight]);
+                    }
+                    else
+                    {
+                      doc = new jsPDF('p', 'px', [pdfWidth , pdfHeight]);
+                    }
+
+
+                    var width = doc.internal.pageSize.getWidth();
+                    var height = doc.internal.pageSize.getHeight();
+
+
+                    doc.addImage(newImage, 'PNG',  10, 10, width, height);
+                    filename = 'mypdf_' + '.pdf';
+                    doc.save(filename);
+
+                  };
+
+
+                })
+                .catch(function(error) {
+
+                 // Error Handling
+
+                });
+
+            }
+            
+
   details: PropertyDetails[];
   imgbox: any[];
   imagenew: any[];
@@ -20,12 +96,8 @@ export class HousesDetailComponent implements OnInit {
   public activePage: number;
   public results: PropertyDetails[];
   zoom: number = 5;
-  latitude: number = 13.7348534;
+  latitude: number = 13.7348534;;
   longitude: number = 100.4997134999999;
-  conS1: string;
-  conS2: string;
-  conS3: string;
-
   lat: number;
   lng: number;
   imageIndex = 1;
@@ -38,16 +110,18 @@ export class HousesDetailComponent implements OnInit {
   selectContact2: any[];
   selectContact3: any[];
   contactUser: any[];
-  IDcontact1: string
-  IDcontact2: string
-  IDcontact3: string
+  IDcontact1: number
+  IDcontact2: number
+  IDcontact3: number
   lonnew: number;
   latnew: number;
-  constructor(private auth: AuthenticationService, private route: ActivatedRoute, private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,
-    private router: Router) { }
+
+  constructor(private auth: AuthenticationService, private route: ActivatedRoute, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private router: Router) { }
+
 
   ngOnInit() {
+
+  
 
   
     this.galleryOptions = [
@@ -56,26 +130,6 @@ export class HousesDetailComponent implements OnInit {
       { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
     ]
 
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onForeach()
-    }, 5000);
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onSetcontact()
-      this.recenter() 
-    }, 7000);
-
-
-    let params = this.route.snapshot.paramMap;
-    if (params.has('id')) {
-      this.postID = params.get('id');
-    }
-    this.route
-      .queryParams
-      .subscribe((data: { page: any }) => {
-        if (data != null && data.page != null) {
-          this.activePage = +data.page;
-        }
-      });
     this.auth.getallhouse().subscribe((house) => {
       this.details = house
       // กรณี resuponse success
@@ -87,7 +141,7 @@ export class HousesDetailComponent implements OnInit {
       err => {
         console.error(err)
       })
-
+ 
     //-------- get contact ----
     this.auth.getContact().subscribe((contactUser) => {
       this.contactUser = contactUser;
@@ -151,47 +205,6 @@ export class HousesDetailComponent implements OnInit {
 
     })
 
-  }
-  recenter(){
-    this.latitude = 13.7348534;
-    this.longitude = 100.4997134999999;
-    setTimeout(()=>{
-      
-        this.latitude = Number(this.latnew)
-        this.longitude  = Number(this.lonnew)
-        console.log(this.latnew)
-        console.log(this.lonnew)
-       this.zoom = 15
-      
-    },3000);
-    }
-
-  onForeach() {
-    this.results.forEach((element, index) => {
-      console.log(this.latitude)
-      this.latnew = element.Latitude
-      this.lonnew = element.Longitude
-      this.lat = element.Latitude
-      this.lng = element.Longitude
-      this.conS1 = element.ContactS
-      this.conS2 = element.ContactSt
-      this.conS3 = element.ContactSo
-      this.IDcontact1 = element.ContactU
-      this.IDcontact2 = element.ContactUt
-      this.IDcontact3 = element.ContactUo
-      console.log(this.latitude)
-    });
-  }
-  onSetcontact() {
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact1;
-    });
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact2;
-    });
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact3;
-    });
   }
 
 }

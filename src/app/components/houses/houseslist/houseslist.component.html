@@ -66,62 +66,65 @@
                         <hr>
                       </li>
                       - ราคาขาย
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
-                              type="checkbox" value="0-20000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=500000-1000000"><label><input
+                              [(ngModel)]="filter.priceA" (change)="filterprice()" type="checkbox"
+                              value="500000-1000000">
                             500,000 - 1,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=1100000-5000000"><label><input
+                              [(ngModel)]="filter.priceB" (change)="filterprice()" type="checkbox"
+                              value="1100000-5000000">
                             1,100,000 - 5,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=5100000-10000000"><label><input
+                              [(ngModel)]="filter.priceC" (change)="filterprice()" type="checkbox"
+                              value="5100000-10000000">
                             5,100,000 - 10,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
-                              type="checkbox" value="&gt;50000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=%1E00000"><label><input
+                              [(ngModel)]="filter.priceD" (change)="filterprice()" type="checkbox" value="&gt;1000000">
                             มากกว่า 10,000,000 บาท
                           </label></a></li>
                       - ราคาประเมิน
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
-                              type="checkbox" value="0-20000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=500000-1000000"><label><input
+                              [(ngModel)]="filter.priceE" (change)="filterprice()" type="checkbox" value="500000-1000000">
                             500,000 - 1,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=1100000-5000000"><label><input
+                              [(ngModel)]="filter.priceF" (change)="filterprice()" type="checkbox" value="1100000-5000000">
                             1,100,000 - 5,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=5100000-10000000"><label><input
+                              [(ngModel)]="filter.priceG" (change)="filterprice()" type="checkbox" value="5100000-10000000">
                             5,100,000 - 10,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
-                              type="checkbox" value="&gt;50000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=%1E00000"><label><input
+                              [(ngModel)]="filter.priceH" (change)="filterprice()" type="checkbox" value="&gt;1E00000">
                             มากกว่า 10,000,000 บาท
                           </label></a></li>
                       - ราคาตลาด
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=0-20000"><label><input
-                              type="checkbox" value="0-20000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=500000-1000000"><label><input
+                              [(ngModel)]="filter.priceI" (change)="filterprice()" type="checkbox" value="500000-1000000">
                             500,000 - 1,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=1100000-5000000"><label><input
+                              [(ngModel)]="filter.priceJ" (change)="filterprice()" type="checkbox" value="1100000-5000000">
                             1,100,000 - 5,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=30000-40000"><label><input
-                              type="checkbox" value="30000-40000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=5100000-10000000"><label><input
+                              [(ngModel)]="filter.priceK" (change)="filterprice()" type="checkbox" value="5100000-10000000">
                             5,100,000 - 10,000,000 บาท
                           </label></a></li>
-                      <li><a href="https://notebookspec.com/notebook/searchV4/?price=%3E50000"><label><input
-                              type="checkbox" value="&gt;50000">
+                      <li><a href="https://landvist.xyz/house/searchV4/?price=%1E00000"><label><input
+                              [(ngModel)]="filter.priceL" (change)="filterprice()" type="checkbox" value="&gt;1E00000">
                             มากกว่า 10,000,000 บาท
                           </label></a></li>
                       <li class="filter-range">
                         <div class="d-flex">
-                          <input type="number" placeholder="ต่ำสุด" class="positive-integer">
+                          <input type="number" placeholder="ต่ำสุด" class="positive-integer" [(ngModel)]="pricemin">
                           <div class="divider">-</div>
-                          <input type="number" placeholder="สูงสุด" class="positive-integer">
-                          <div class="divider"></div><button>
+                          <input type="number" placeholder="สูงสุด" class="positive-integer" [(ngModel)]="pricemax">
+                          <div class="divider"></div><button (click)="filterMaxMin()">
                             ค้นหา
                           </button>
                         </div>
@@ -177,12 +180,12 @@
                         <hr>
                       </li>
                       <div id="more-filter-vga" class="">
-                        <li><a href="https://notebookspec.com/notebook/searchV4/?vga=NVIDIA+GeForce+MX150"><label><input
+                        <li><a href="#"><label><input
                                 type="checkbox" value="NVIDIA GeForce MX150" [(ngModel)]="filter.newhouse"
                                 (change)="filterChange()">
                               ใหม่
                             </label></a></li>
-                        <li><a href="https://notebookspec.com/notebook/searchV4/?vga=Intel+UHD+Graphics+620"><label><input
+                        <li><a href="#"><label><input
                                 type="checkbox" value="Intel UHD Graphics 620" [(ngModel)]="filter.oldhouse"
                                 (change)="filterChange()">
                               มือสอง
@@ -234,7 +237,7 @@
                             </a>
                             <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
                                 [queryParams]="{page: activePage}"><img
-                                  src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                                  src="http://www.landvist.xyz/images/{{houses.ImageEX}}" width="180" height="50"
                                   class="img-responsive notebook-img rounded"></a>
                               <!---->
                               <hr>
@@ -262,7 +265,7 @@
                         </div>
                       </div>
                     </ng-container>
-                    <ng-template  #elseTemplate>
+                    <ng-template #elseTemplate>
                       <div
                         *ngFor="let houses of filterProperty   | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis"
                         class="col-xs-12 col-sm-6 col-lg-4 item">
@@ -277,7 +280,7 @@
                               </div>
                             </a>
                             <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
-                                [queryParams]="{page: activePage}"><img style="height: 150px; width:180px"
+                                [queryParams]="{page: activePage}"><img width="180" height="50"
                                   src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
                                   class="img-responsive notebook-img rounded"></a>
                               <!---->

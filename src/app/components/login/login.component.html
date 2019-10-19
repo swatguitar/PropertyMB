@@ -1,25 +1,22 @@
-<div class="container">
+<div class="container PMB">
   <div class="row">
     <div class="col-md-8 jumbotron col-12 col-md-6" style="height: 650%;">
       <div class="text-center" style="margin: 20%">
-        <h1>WELCOME</h1>
+        <h1>ยินดีต้อนรับ</h1>
         <p class="font-weight-light  ">
-          Search for new housing estates all over Bangkok, suburbs and provinces
-          from the most information sources. Convenient to search by separating
-          the location and neighborhood All types, including single houses
-          , townhouses, townhomes, twin houses, etc. with price information,
-          comparison of location and facilities. Easy to decide to buy With loan
-          calculation tools To assess the ability to recover
+          ยินดีต้อนรับ
+          เว็บไซต์สำหรับการบันทึกข้อมูล และลงประกาศขายอสังหาริมทรัพย์ในกรุงเทพ และจังหวัดอื่นทั่วประเทศไทย
+          สะดวกในการค้นหาโดยแยกทำเลและพื้นที่ใกล้เคียงทุกประเภทรวมถึงบ้านเดี่ยวทาวน์เฮ้าส์ทาวน์โฮมบ้านแฝด ฯลฯ
+          พร้อมข้อมูลราคาการเปรียบเทียบที่ตั้งและสิ่งอำนวยความสะดวก ง่ายต่อการตัดสินใจซื้อด้วยระบบแนะนำอสังหาริมทรัพย์
+          ผ่านตัวกรองที่ทางเว็ปไซต์เราเตรียมไว้ให้ เพื่อนำเสนอสิ่งตรงกับความต้องการของคุณ
           <app-loading-spinner *ngIf="logedin =='success'"></app-loading-spinner>
       </div>
     </div>
     <div class="col-md-4 ">
       <div class="col-xs-12- col-sm-6 col-md-12 ">
         <header class="text-center">
-          <img
-            src="http://www.landvist.xyz/images/Defult/logo2.png"
-            width="300" height="250" alt="">
-            <br>
+          <img src="http://www.landvist.xyz/images/Defult/logo2.png" width="300" height="250" alt="">
+          <br>
           <h3>ลงชื่อเข้าใช้งาน</h3>
           <div>ใช้บัญชี PropertyMB ของคุณ</div>
           <div>
@@ -47,7 +44,7 @@
             </div>
           </div>
           <div class="form-group  ">
-            <a class="f" [routerLink]="['/forgetpass']" routerLinkActive="router-link-active">หากลืมรหัสผ่าน</a>
+            <a class="f" [routerLink]="['/resetPassword']" routerLinkActive="router-link-active">หากลืมรหัสผ่าน</a>
           </div>
           <div class="row">
             <div class="col">
@@ -80,8 +77,4 @@
 <div class="container">
   <hr>
 </div>
-
-
-
-
-<router-outlet></router-outlet>
+<app-footer></app-footer>

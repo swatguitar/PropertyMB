@@ -16,6 +16,7 @@ import {FileUploadModule} from 'ng2-file-upload';
 import { ArchwizardModule } from 'angular-archwizard';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { AutocompleteModule } from 'ng2-input-autocomplete';
+import { ScrollSpyDirective } from './lib/ScrollSpyDirective';
 
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -37,8 +38,6 @@ import { LandsDetailComponent } from './components/lands/lands-detail/lands-deta
 import { LandslistComponent } from './components/lands/landslist/landslist.component';
 import { HousesDetailComponent } from './components/houses/houses-detail/houses-detail.component';
 import { HouseslistComponent } from './components/houses/houseslist/houseslist.component';
-import { PropertyComponent } from './components/property/property.component';
-import { PropertylistComponent } from './components/property/propertylist/propertylist.component';
 import { GroupComponent } from './components/group/group.component';
 import { GrouplistComponent } from './components/group/grouplist/grouplist.component';
 import { TestComponent } from './components/test/test.component';
@@ -56,6 +55,10 @@ import { PriceFilterPipe } from './lib/Pipe/price-filter.pipe';
 import { AmphurFilterPipe } from './lib/Pipe/Amphur-filter.pipe';
 import { DistrictFilterPipe } from './lib/Pipe/dis-filter.pipe';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { HousePdfComponent } from './components/houses/house-pdf/house-pdf.component';
+import { ResetpasswordComponent } from './components/login/resetpassword/resetpassword.component';
+import { UpdateprofileComponent } from './components/profile/updateprofile/updateprofile.component';
+
 
 
 
@@ -82,8 +85,6 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     LandslistComponent,
     HousesDetailComponent,
     HouseslistComponent,
-    PropertyComponent,
-    PropertylistComponent,
     GroupComponent,
     GrouplistComponent,
     TestComponent,
@@ -100,6 +101,11 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     PriceFilterPipe,
     AmphurFilterPipe,
     DistrictFilterPipe,
+    HousePdfComponent,
+    ResetpasswordComponent,
+    UpdateprofileComponent,
+    ScrollSpyDirective
+
     
   ],
   imports: [

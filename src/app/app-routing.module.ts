@@ -21,8 +21,6 @@ import { LandsDetailComponent } from './components/lands/lands-detail/lands-deta
 import { LandslistComponent } from './components/lands/landslist/landslist.component';
 import { HousesDetailComponent } from './components/houses/houses-detail/houses-detail.component';
 import { HouseslistComponent } from './components/houses/houseslist/houseslist.component';
-import { PropertyComponent } from './components/property/property.component';
-import { PropertylistComponent } from './components/property/propertylist/propertylist.component';
 import { GroupComponent } from './components/group/group.component';
 import { GrouplistComponent } from './components/group/grouplist/grouplist.component';
 import { TestComponent } from './components/test/test.component';
@@ -31,7 +29,9 @@ import { PagenotfoundComponent } from './lib/pagenotfound/pagenotfound.component
 import { RecdetailsComponent } from './components/recommend/recdetails/recdetails.component';
 import { UploadimgComponent } from './components/addhouse/uploadimg/uploadimg.component';
 import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
-
+import { HousePdfComponent } from './components/houses/house-pdf/house-pdf.component';
+import { ResetpasswordComponent } from './components/login/resetpassword/resetpassword.component';
+import { UpdateprofileComponent } from './components/profile/updateprofile/updateprofile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -40,6 +40,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   { path: "pagenotfound", component: PagenotfoundComponent },
+  { path: "resetPassword", component: ResetpasswordComponent },
   { path: "commingsoon", component: CommingsoonComponent },
   { path: "aboutus", component: AboutusComponent },
   { path: "register", component: RegisterComponent },
@@ -71,6 +72,20 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: "housePDF", component: HousePdfComponent, children: [
+      {
+        path: '',
+        component: HousePdfComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: ':id',
+        component: HousePdfComponent,
+        canActivate: [AuthGuardService]
+      }
+    ]
+  },
 
   {
     path: "houses", component: HousesComponent, children: [
@@ -82,15 +97,6 @@ const routes: Routes = [
       {
         path: ':id',
         component: HousesDetailComponent,
-        canActivate: [AuthGuardService]
-      }
-    ]
-  },
-  {
-    path: "property", component: PropertyComponent, children: [
-      {
-        path: '',
-        component: PropertylistComponent,
         canActivate: [AuthGuardService]
       }
     ]
@@ -125,6 +131,11 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'updateprofile',
+    component: UpdateprofileComponent,
     canActivate: [AuthGuardService]
   },
   { path: "**", redirectTo: "pagenotfound" },

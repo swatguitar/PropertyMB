@@ -33,6 +33,9 @@ export class LandsDetailComponent implements OnInit {
   IDcontact1: string
   IDcontact2: string
   IDcontact3: string
+  conS1:string
+  conS2:string
+  conS3:string
   lonnew: number;
   latnew: number;
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
@@ -153,6 +156,9 @@ export class LandsDetailComponent implements OnInit {
       this.lonnew = element.Longitude
       this.lat = element.Latitude
       this.lng = element.Longitude
+      this.conS1 = element.ContactS
+      this.conS2 = element.ContactSt
+      this.conS3 = element.ContactSo
       this.IDcontact1 = element.ContactU
       this.IDcontact2 = element.ContactUt
       this.IDcontact3 = element.ContactUo

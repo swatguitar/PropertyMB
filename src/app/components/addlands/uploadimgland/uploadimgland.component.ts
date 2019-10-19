@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'https://thinking-armor-245907.appspot.com/users/uploadimageLand';
+const uri = 'https://propermbbackend.appspot.com/users/uploadimageLand';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../../authentication.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class UploadimglandComponent implements OnInit {
   uploader: FileUploader = new FileUploader({ url: uri 
   });
   @Input() ID_Lands: string
-  constructor(private http: HttpClient, public sanitizer: DomSanitizer) {
+  constructor(private http: HttpClient, public sanitizer: DomSanitizer,private auth: AuthenticationService,) {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     }
@@ -30,6 +30,7 @@ export class UploadimglandComponent implements OnInit {
      };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
+      this.onFinish()
    if(response){
     console.log("response"+JSON.stringify(response));
   }
@@ -43,6 +44,15 @@ export class UploadimglandComponent implements OnInit {
         this.uploader.queue.splice(index, 1);
       }
     });
+  }
+  onFinish() {
+    this.auth.uploadftp().subscribe(() => {
+    },
+      err => {
+        console.error(err)
+      }
+    )
+
   }
   ngOnInit() {
   }

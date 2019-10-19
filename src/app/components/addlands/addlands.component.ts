@@ -41,9 +41,12 @@ export class AddlandsComponent {
   conID1: string
   conID2: string
   conID3: string
-  conName1: string = ''
-  conName2: string = ''
-  conName3: string = ''
+  Name1: string = ''
+  Name2: string = ''
+  Name3: string = ''
+  conName1: string
+  conName2: string
+  conName3: string
   conEmail1: string
   conEmail2: string
   conEmail3: string
@@ -53,10 +56,14 @@ export class AddlandsComponent {
   conLine1: string
   conLine2: string
   conLine3: string
+  allowedit: string
+  allowedit2: string
+  allowedit3: string
   con1selected: string = "false"
   con2selected: string = "false"
   con3selected: string = "false"
   IDcon: any;
+  keyword = 'Name';
   ContactID: string;
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
@@ -136,7 +143,11 @@ export class AddlandsComponent {
     ID_User: 0,
     Firstname: '',
     Lastname: '',
+    UserType: '',
     Email: '',
+    Token:  '',
+    Answer:  '',
+    OldPassword: '',
     Password: '',
     Birthday: '',
     CodeProperty: '',
@@ -238,6 +249,7 @@ export class AddlandsComponent {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
+    Kitchen:0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -265,22 +277,57 @@ export class AddlandsComponent {
   submitted = false;
   SellP: string
 
+  CommaFormattedS(event) {
+    // skip for arrow keys
+    if (event.which >= 37 && event.which <= 40) return;
+
+    // format number
+    if (this.credentials.SellPrice) {
+      this.credentials.SellPrice = this.credentials.SellPrice.replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
+  CommaFormattedB(event) {
+    // skip for arrow keys
+    if (event.which >= 37 && event.which <= 40) return;
+
+    // format number
+    if (this.credentials.CostestimateB) {
+      this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
+  CommaFormattedC(event) {
+    // skip for arrow keys
+    if (event.which >= 37 && event.which <= 40) return;
+
+    // format number
+    if (this.credentials.Costestimate) {
+      this.credentials.Costestimate = this.credentials.Costestimate.replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
+  CommaFormattedM(event) {
+    // skip for arrow keys
+    if (event.which >= 37 && event.which <= 40) return;
+
+    // format number
+    if (this.credentials.MarketPrice) {
+      this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  }
+
+  numberCheck(args) {
+    if (args.key === 'e' || args.key === '+' || args.key === '-') {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   ngOnInit() {
-    this.setCurrentLocation();
-    $('input.number').keyup(function (event) {
 
-      // skip for arrow keys
-      if (event.which >= 37 && event.which <= 40) return;
-
-      // format number
-      $(this).val(function (index, value) {
-        return value
-          .replace(/\D/g, "")
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          ;
-      });
-    });
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -288,7 +335,7 @@ export class AddlandsComponent {
       this.geoCoder = new google.maps.Geocoder;
 
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
+        types: [], componentRestrictions: { 'country': 'TH' }
       });
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
@@ -337,8 +384,7 @@ export class AddlandsComponent {
   calPWA() {
     //---------------calulate p/wa-----
     this.SellP = this.credentials.SellPrice.replace(/,/g, "");
-    console.log(this.SellP)
-    this.cal = parseInt(this.SellP) / parseInt(this.credentials.LandWA);
+    this.cal = parseInt(this.SellP) / ((parseInt(this.credentials.LandR)*400) +(parseInt(this.credentials.LandG)*100)+parseInt(this.credentials.LandWA)) ;
     this.credentials.PriceWA = this.cal.toString()
   }
   // Get Current Location Coordinates
@@ -503,7 +549,8 @@ export class AddlandsComponent {
 
   onGetContact(item) {
     this.con1selected = 'true'
-    console.log(this.credentials.ContactName)
+    // console.log(this.credentials.ContactName)
+    this.conID1 = item.ID_Contact
     this.conName1 = item.Name
     this.conEmail1 = item.Email
     this.conPhone1 = item.Phone
@@ -514,7 +561,9 @@ export class AddlandsComponent {
   }
   onGetContact2(item) {
     this.con2selected = 'true'
-    console.log(this.credentials.ContactName)
+    this.Name2 = 'true'
+    //console.log(this.credentials.ContactName)
+    this.conID2 = item.ID_Contact
     this.conName2 = item.Name
     this.conEmail2 = item.Email
     this.conPhone2 = item.Phone
@@ -525,12 +574,13 @@ export class AddlandsComponent {
   }
   onGetContact3(item) {
     this.con3selected = 'true'
-    console.log(this.credentials.ContactName)
+    this.Name3 = 'true'
+    //console.log(this.credentials.ContactName)
+    this.conID3 = item.ID_Contact
     this.conName3 = item.Name
     this.conEmail3 = item.Email
     this.conPhone3 = item.Phone
     this.conLine3 = item.Line
-    this.credentials.ContactUt = item.ID_Contact
     this.credentials.ContactUo = item.ID_Contact
   }
   onChangeSearch(val: string) {
@@ -543,26 +593,34 @@ export class AddlandsComponent {
   }
   onEditContactID1(value) {
     this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.conName1
+    this.credentials.ContactPhone = this.conPhone1
+    this.credentials.ContactEmail = this.conEmail1
+    this.credentials.ContactLine = this.conLine1
   }
-  onEditContactName1(value) {
+  onEditContactName1(value: string) {
     this.conName1 = value
-    console.log(this.conName1)
+    //console.log(this.conName1)
   }
   onEditContactLine1(value) {
     this.conLine1 = value
-    console.log(this.conLine1)
+    //console.log(this.conLine1)
   }
   onEditContactPhone1(value) {
     this.conPhone1 = value
-    console.log(this.conPhone1)
+    //console.log(this.conPhone1)
   }
   onEditContactEmail1(value) {
     this.conEmail1 = value
-    console.log(this.conEmail1)
+    // console.log(this.conEmail1)
   }
 
   onEditContactID2(value) {
     this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.conName1
+    this.credentials.ContactPhone = this.conPhone1
+    this.credentials.ContactEmail = this.conEmail1
+    this.credentials.ContactLine = this.conLine1
   }
   onEditContactName2(value) {
     this.conName2 = value
@@ -580,6 +638,10 @@ export class AddlandsComponent {
 
   onEditContactID3(value) {
     this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.conName3
+    this.credentials.ContactPhone = this.conPhone3
+    this.credentials.ContactEmail = this.conEmail3
+    this.credentials.ContactLine = this.conLine3
   }
   onEditContactName3(value) {
     this.conName3 = value
@@ -599,7 +661,7 @@ export class AddlandsComponent {
     this.submitted = true;
     // stop here if form is invalid
     if (this.addlandForm.invalid) {
-      console.log(this.addlandForm)
+      //console.log(this.addlandForm)
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
@@ -621,6 +683,7 @@ export class AddlandsComponent {
           this.onCheckContact()
         });
         this.credentials.ContactU = this.credentials.ID_Contact
+        //console.log(this.credentials.ContactU)
         this.auth.addcontact(this.credentials).subscribe(
           () => {
 
@@ -629,7 +692,7 @@ export class AddlandsComponent {
             console.error(err)
           }
         )
-        if (this.con2selected == 'false' && this.conName2 != '') {
+        if (this.con2selected == 'false' && this.Name2 != '') {
           this.credentials.ContactName = this.conName2
           this.credentials.ContactPhone = this.conPhone2
           this.credentials.ContactEmail = this.conEmail2
@@ -639,8 +702,10 @@ export class AddlandsComponent {
             this.contactUser = con
             this.contactUser.filter(article => {
               this.IDcon = article.ID_Contact
+              this.onCheckContact()
             });
             this.credentials.ContactUt = this.credentials.ID_Contact
+            //console.log(this.credentials.ContactUt+"two")
             this.auth.addcontact(this.credentials).subscribe(
               () => {
               },
@@ -648,7 +713,7 @@ export class AddlandsComponent {
                 console.error(err)
               }
             )
-            if (this.con3selected == 'false' && this.conName3 != '') {
+            if (this.con3selected == 'false' && this.Name3 != '') {
               this.credentials.ContactName = this.conName3
               this.credentials.ContactPhone = this.conPhone3
               this.credentials.ContactEmail = this.conEmail3
@@ -661,7 +726,7 @@ export class AddlandsComponent {
                   this.onCheckContact()
                 });
                 this.credentials.ContactUo = this.credentials.ID_Contact
-
+                // console.log(this.credentials.ContactUo+"three")
                 this.auth.addcontact(this.credentials).subscribe(
                   () => {
                     this.onFirststep()
@@ -677,9 +742,19 @@ export class AddlandsComponent {
                 }
               )
 
+            } else if (this.con2selected == 'false' && this.Name3 == '') {
+              this.credentials.ContactUo = this.credentials.ID_Contact
+              // stop here if form is invalid
+              if (this.addlandForm.invalid) {
+                alert(JSON.stringify("กรุณากรอกข้อมูล"))
+                return;
+              }
+              this.onFirststep()
+              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
             } else {
               // stop here if form is invalid
               if (this.addlandForm.invalid) {
+                console.log(this.addlandForm)
                 alert(JSON.stringify("กรุณากรอกข้อมูล"))
                 return;
               }
@@ -693,9 +768,20 @@ export class AddlandsComponent {
           )
 
 
+        } else if (this.con2selected == 'false' && this.Name2 == '') {
+          this.credentials.ContactUt = this.credentials.ID_Contact
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          // stop here if form is invalid
+          if (this.addlandForm.invalid) {
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
+          this.onFirststep()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
         } else {
           // stop here if form is invalid
           if (this.addlandForm.invalid) {
+            //console.log(this.addlandForm)
             alert(JSON.stringify("กรุณากรอกข้อมูล"))
             return;
           }
@@ -709,15 +795,132 @@ export class AddlandsComponent {
       )
 
 
+    } else if (this.con2selected == 'false' && this.Name2 != '') {
+      this.credentials.ContactName = this.conName2
+      this.credentials.ContactPhone = this.conPhone2
+      this.credentials.ContactEmail = this.conEmail2
+      this.credentials.ContactLine = this.conLine2
+
+      this.onRandomcontact()
+      this.auth.getContact().subscribe((con) => {
+        this.contactUser = con
+        this.contactUser.filter(article => {
+          this.IDcon = article.ID_Contact
+          this.onCheckContact()
+          //console.log(this.IDcon + "----------------data")
+        });
+        this.credentials.ContactUt = this.credentials.ID_Contact
+        //console.log(this.credentials.ContactUt + " two R")
+        this.auth.addcontact(this.credentials).subscribe(
+          () => {
+          },
+          err => {
+            console.error(err)
+          }
+        )
+        if (this.con3selected == 'false' && this.Name3 != '') {
+          this.credentials.ContactName = this.conName3
+          this.credentials.ContactPhone = this.conPhone3
+          this.credentials.ContactEmail = this.conEmail3
+          this.credentials.ContactLine = this.conLine3
+          //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
+          this.onRandomcontact()
+          this.auth.getContact().subscribe((con) => {
+            this.contactUser = con
+            this.contactUser.filter(article => {
+              this.IDcon = article.ID_Contact
+              //console.log(this.IDcon + "----------------data")
+              this.onCheckContact()
+            });
+            this.credentials.ContactUo = this.credentials.ID_Contact
+            //console.log(this.credentials.ContactUo + " three")
+            this.auth.addcontact(this.credentials).subscribe(
+              () => {
+                this.onFirststep()
+                alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+              },
+              err => {
+                console.error(err)
+              }
+            )
+          },
+            err => {
+              console.error(err)
+            }
+          )
+
+        } else if (this.con2selected == 'false' && this.Name3 == '') {
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          // stop here if form is invalid
+          if (this.addlandForm.invalid) {
+            //console.log(this.addlandForm)
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
+          this.onFirststep()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        } else {
+          // stop here if form is invalid
+          if (this.addlandForm.invalid) {
+            console.log(this.addlandForm)
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
+          this.onFirststep()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        }
+
+      },
+        err => {
+          console.error(err)
+        }
+      )
+
+
+    } else if (this.con3selected == 'false' && this.Name3 != '') {
+      this.credentials.ContactName = this.conName3
+      this.credentials.ContactPhone = this.conPhone3
+      this.credentials.ContactEmail = this.conEmail3
+      this.credentials.ContactLine = this.conLine3
+      //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
+      this.onRandomcontact()
+      this.auth.getContact().subscribe((con) => {
+        this.contactUser = con
+        this.contactUser.filter(article => {
+          this.IDcon = article.ID_Contact
+          //console.log(this.IDcon + "----------------data")
+          this.onCheckContact()
+        });
+        this.credentials.ContactUo = this.credentials.ID_Contact
+        //console.log(this.credentials.ContactUo + " three")
+
+        this.auth.addcontact(this.credentials).subscribe(
+          () => {
+            this.onFirststep()
+            alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+          },
+          err => {
+            console.error(err)
+          }
+        )
+      },
+        err => {
+          console.error(err)
+        }
+      )
+
     } else {
       // stop here if form is invalid
       if (this.addlandForm.invalid) {
+        //console.log(this.addlandForm)
         alert(JSON.stringify("กรุณากรอกข้อมูล"))
         return;
       }
       this.onFirststep()
       alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
     }
+
+
 
   }
   onUpdate() {
@@ -750,39 +953,39 @@ export class AddlandsComponent {
   propType: string;
   IDprop: string;
   onFirststep() {
-    this.back = "true"
-    this.getZipCode()
-    this.credentials.Latitude = this.latitude
-    this.credentials.Longitude = this.longitude
-
-    this.onRandom()
-    this.auth.getAllland().subscribe((land) => {
-      this.details = land
-
-      this.details.filter(article => {
-        this.IDprop = article.ID_Lands
-        console.log(this.IDprop + "----------------data")
-        this.onCheckTwo()
-      });
-      console.log("..........." + this.credentials.ID_Lands + " END")
-
-      this.auth.addland(this.credentials).subscribe(
-        () => {
-
-        },
-        err => {
-          console.error(err)
-
-        }
-
-      )
-    },
-      err => {
-        console.error(err)
-      }
-    )
-
-
+     this.back = "true"
+     this.getZipCode()
+     this.credentials.Latitude = this.latitude
+     this.credentials.Longitude = this.longitude
+ 
+     this.onRandom()
+     this.auth.getAllland().subscribe((land) => {
+       this.details = land
+ 
+       this.details.filter(article => {
+         this.IDprop = article.ID_Lands
+         //console.log(this.IDprop + "----------------data")
+         this.onCheckTwo()
+       });
+       //console.log("..........." + this.credentials.ID_Lands + " END")
+ 
+       this.auth.addland(this.credentials).subscribe(
+         () => {
+ 
+         },
+         err => {
+           console.error(err)
+ 
+         }
+ 
+       )
+     },
+       err => {
+         console.error(err)
+       }
+     )
+ 
+ 
 
 
 
@@ -791,8 +994,8 @@ export class AddlandsComponent {
 
     this.router.navigateByUrl('/home')
   }
-   //*****chack ID Contact */
-   onRandomcontact() {
+  //*****chack ID Contact */
+  onRandomcontact() {
     var max = 9;
     var min = 0;
     var r = Math.floor(Math.random() * (max - min + 1) + min);
@@ -810,7 +1013,7 @@ export class AddlandsComponent {
 
       this.contactUser.filter(article => {
         this.IDcon = article.ID_Contact
-        console.log(this.IDcon + "-------Contact222 ")
+        // console.log(this.IDcon + "-------Contact222 ")
         this.onCheckTwo()
       });
     },
@@ -820,7 +1023,7 @@ export class AddlandsComponent {
     )
   }
   onCheckContact() {
-    console.log(this.ContactID + "FIrst ")
+    //console.log(this.ContactID + "FIrst ")
     while (this.IDcon == this.ContactID) {
       this.loopChack()
     }
@@ -845,7 +1048,7 @@ export class AddlandsComponent {
 
       this.details.filter(article => {
         this.IDprop = article.ID_Lands
-        console.log(this.IDprop + "-------data2222 ")
+        // console.log(this.IDprop + "-------data2222 ")
         this.onCheckTwo()
       });
     },
@@ -855,12 +1058,12 @@ export class AddlandsComponent {
     )
   }
   onCheckTwo() {
-    console.log(this.createID + "FIrst ")
+    //console.log(this.createID + "FIrst ")
     while (this.IDprop == this.createID) {
       this.loopChack()
     }
     this.credentials.ID_Lands = this.createID
-    console.log(this.credentials.ID_Lands)
+    // console.log(this.credentials.ID_Lands)
 
 
   }

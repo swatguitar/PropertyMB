@@ -11,10 +11,13 @@ export interface UserDetails {
   Firstname: string
   Lastname: string
   Email: string
+  UserType: string
   Password: string
   Birthday: string
   LocationU: string
   Phone: string
+  Question: string
+  Answer: string
   ProfileImg: string
   Age: string
   Gender: string
@@ -173,11 +176,15 @@ export interface TokenPayload {
   ID_User: number
   Firstname: string
   Lastname: string
+  UserType: string
   Email: string
+  OldPassword: string
   Password: string
   Birthday: string
   LocationU: string
   Phone: string
+  Token: string
+  Answer: string
   ProfileImg: string
   Age: string
   Gender: string
@@ -277,6 +284,7 @@ export interface TokenPayload {
   Balcony: number
   MeetingR: number
   EventR: number
+  Kitchen:number
   LivingR: number
   Supermarket: number
   CStore: number
@@ -303,6 +311,7 @@ export interface TokenPayload {
 
 @Injectable()
 export class AuthenticationService {
+  //ROOT_URL = "https://propermbbackend.appspot.com";
   ROOT_URL = "http://localhost:3001";
   private token: string
 
@@ -325,7 +334,7 @@ export class AuthenticationService {
     let payload
     if (token) {
       payload = token.split('.')[1]
-      payload = window.atob(payload)
+      payload = window.atob(payload.replace (/-/g, '+').replace(/_/g, '/'))
       return JSON.parse(payload)
     } else {
       return null
@@ -340,11 +349,40 @@ export class AuthenticationService {
       return false
     }
   }
-
+//-----------Post Put----------
   public register(user: TokenPayload): Observable<any> {
     return this.http.post(this.ROOT_URL + `/users/register`, user)
   }
-
+  public resetpassword(user: TokenPayload): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/ResetPass`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public resetpasswordM(user: TokenPayload): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/ResetPassM`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public sendEmail(user: TokenPayload): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/sendEmail`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public compareToken(user: TokenPayload): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/compareToken`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public updateprofile(user: TokenPayload): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/updateprofile`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public GetEmail(user: TokenPayload): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/GetEmail`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
   public addgroup(group: TokenPayload): Observable<any> {
     return this.http.post(this.ROOT_URL + `/users/addgroup`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
@@ -387,6 +425,14 @@ export class AuthenticationService {
     })
   }
 
+  //-----------Delete----------
+  public removeimgProfile(user: TokenPayload): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/removeimg`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  //-----------Select----------
 
   public login(user: TokenPayload): Observable<any> {
     const base = this.http.post(this.ROOT_URL + `/users/login`, user)
