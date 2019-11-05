@@ -5,7 +5,7 @@ import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { count } from 'rxjs/operators';
-import { GroupdetailComponent } from '../../group/grouplist/groupdetail/groupdetail.component';
+
 
 @Component({
   selector: 'app-houses-detail',

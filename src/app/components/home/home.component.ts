@@ -149,7 +149,6 @@ export class HomeComponent {
   public pointEnd: number = 3; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   showSpinner: boolean = true;
   constructor(private auth: AuthenticationService, private router: Router, private spinner: NgxSpinnerService) { }
-
   ngOnInit() {
     /** spinner starts on init */
     this.spinner.show();
@@ -158,7 +157,7 @@ export class HomeComponent {
 
       this.showSpinner = false
       this.auth.gethouse().subscribe((house) => {
-        this.details = house;
+        this.details= house
         if (this.details.length == 0) {
           this.emptyP = 'true'
 

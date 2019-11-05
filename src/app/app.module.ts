@@ -39,11 +39,9 @@ import { LandslistComponent } from './components/lands/landslist/landslist.compo
 import { HousesDetailComponent } from './components/houses/houses-detail/houses-detail.component';
 import { HouseslistComponent } from './components/houses/houseslist/houseslist.component';
 import { GroupComponent } from './components/group/group.component';
-import { GrouplistComponent } from './components/group/grouplist/grouplist.component';
 import { TestComponent } from './components/test/test.component';
 import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.component';
 import { PagenotfoundComponent } from './lib/pagenotfound/pagenotfound.component';
-import { GroupdetailComponent } from './components/group/grouplist/groupdetail/groupdetail.component';
 import { RecdetailsComponent } from './components/recommend/recdetails/recdetails.component';
 import { UploadimgComponent } from './components/addhouse/uploadimg/uploadimg.component';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
@@ -58,6 +56,16 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { HousePdfComponent } from './components/houses/house-pdf/house-pdf.component';
 import { ResetpasswordComponent } from './components/login/resetpassword/resetpassword.component';
 import { UpdateprofileComponent } from './components/profile/updateprofile/updateprofile.component';
+import { GroupdetailComponent } from './components/group/grouplist/groupdetail/groupdetail.component';
+import { GrouplistComponent } from './components/group/grouplist/grouplist.component';
+import { GrouppingComponent } from './components/group/groupping/groupping.component';
+import { HouseupdateComponent } from './components/houses/houseupdate/houseupdate.component';
+import { AdminloginComponent } from './components/adminLTE/admin/adminlogin/adminlogin.component';
+import { AdminfooterComponent } from './components/adminLTE/adminfooter/adminfooter.component';
+import { AdminheaderComponent } from './components/adminLTE/adminheader/adminheader.component';
+import { AdminmenuComponent } from './components/adminLTE/adminmenu/adminmenu.component';
+import { AdminsettingComponent } from './components/adminLTE/adminsetting/adminsetting.component';
+import { AdmindashComponent } from './components/adminLTE/admin/admindash/admindash.component';
 
 
 
@@ -86,12 +94,10 @@ import { UpdateprofileComponent } from './components/profile/updateprofile/updat
     HousesDetailComponent,
     HouseslistComponent,
     GroupComponent,
-    GrouplistComponent,
     TestComponent,
     LoadingSpinnerComponent,
     TimeAgoThaiPipe,
     PagenotfoundComponent,
-    GroupdetailComponent,
     RecdetailsComponent,
     PropertyFilterPipe,
     UploadimgComponent,
@@ -104,9 +110,17 @@ import { UpdateprofileComponent } from './components/profile/updateprofile/updat
     HousePdfComponent,
     ResetpasswordComponent,
     UpdateprofileComponent,
-    ScrollSpyDirective
-
-    
+    ScrollSpyDirective,
+    GroupdetailComponent,
+    GrouplistComponent,
+    GrouppingComponent,
+    HouseupdateComponent,
+    AdminloginComponent,
+    AdmindashComponent,
+    AdminsettingComponent,
+    AdminmenuComponent,
+    AdminheaderComponent, 
+    AdminfooterComponent
   ],
   imports: [
     BrowserModule,

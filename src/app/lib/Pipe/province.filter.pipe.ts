@@ -11,7 +11,8 @@ export class ProvinceFilterPipe implements PipeTransform {
         }
         return property.filter(property =>
             property.LProvince.indexOf(searchPro.toLowerCase()) !== -1);
+           
         }
-    
+
 
 }

@@ -1,0 +1,969 @@
+<app-navbar></app-navbar>
+<img src="../../../assets/Property.jpg" class="img-fluid" alt="Responsive image" style="width:100%;">
+<div class="container " style="width:100%;">
+  <div id="product-container" *ngFor="let house of results">
+
+    <div class="row">
+      <div class="col-md-7">
+        <br>
+        <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+              typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i> หน้าแรก</span></a>
+            <meta property="position" content="1">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/houses' ]" property="item"
+              typeof="WebPage"><span property="name">อสังหาสิ่งปลูกสร้าง</span></a>
+            <meta property="position" content="2">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+                property="name">แก้ไขข้อมูล</span></a>
+            <meta property="position" content="3">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+                property="name">{{house.AnnounceTH }}</span></a>
+            <meta property="position" content="4">
+          </li>
+        </ul>
+        <br>
+        <h1><i style="color: rgb(202, 129, 70)" class="fas fa-edit"></i> แก้ไขข้อมูล </h1>
+      </div>
+
+    </div>
+    <hr class="specification-dash-line">
+    <div class="centered-content">
+      <form [formGroup]="EdithouseForm" (ngSubmit)="onGo()">
+        <div class="row">
+          <div class="col-md-12 ">
+            <h3>ข้อมูลทั่วไป</h3>
+            <div class="row">
+              <div class="container jumbotron">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div>
+                      <label>ประเภทอสังหา:<i class="reqiureinput">*</i></label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 ">
+                    <div>
+                      <input style="border-radius: 30px 30px 30px 30px;" type="text" id="AnnounceTH"
+                        class="form-control" formControlName="AnnounceTH" placeholder="หัวข้อประกาศ"
+                        value="{{house.PropertyType}}" readonly>
+                      <div *ngIf="submitted && f.PropertyType.errors" class="invalid-feedback">
+                        <div *ngIf="f.PropertyType.errors.required">กรุณากรอกข้อมูล
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div>
+                      <label>หัวข้อประกาศ:<i class="reqiureinput">*</i></label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 ">
+                    <div>
+                      <input style="border-radius: 30px 30px 30px 30px;" type="text" id="AnnounceTH"
+                        class="form-control" formControlName="AnnounceTH" placeholder="หัวข้อประกาศ"
+                        value="{{house.AnnounceTH}}">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div>
+                      <label>รหัสโฉนดที่ดิน:<i class="reqiureinput">*</i></label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 ">
+                    <div cl>
+                      <input style="border-radius: 30px 30px 30px 30px;" type="text" id="CodeDeed"
+                        class="form-control search-input" formControlName="CodeDeed" placeholder="รหัสโฉนดที่ดิน"
+                        value="{{house.CodeDeed}}">
+
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div>
+
+                      <label>ราคา (บาท):<i class="reqiureinput">*</i></label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 ">
+                    <div class="row">
+                      <div class="col-sm-4">
+
+                        <input style="border-radius: 30px 30px 30px 30px;" id="SellPrice" class="form-control "
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedS($event)" placeholder="คนขายกำหนด"
+                          formControlName="SellPrice" value="{{house.SellPrice}}">
+                        <div *ngIf="submitted && f.SellPrice.errors" class="invalid-feedback">
+                          <div *ngIf="f.SellPrice.errors.required">กรุณากรอกข้อมูล
+                          </div>
+                        </div>
+                      </div>|
+                      <div class="col-sm-4">
+                        <input style="border-radius: 30px 30px 30px 30px;" id="Costestimate" class="form-control number"
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedB($event)" placeholder="ธนาคารประเมิน"
+                          formControlName="Costestimate" value="{{house.CostestimateB}}">
+
+                      </div>|
+                      <div class="col-sm-3">
+                        <input style="border-radius: 30px 30px 30px 30px;" id="MarketPrice" class="form-control"
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedM($event)" placeholder="ราคาตลาด"
+                          formControlName="MarketPrice" value="{{house.MarketPrice}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="house.PropertyType == 'อาคารพาณิชย์'">
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h4>รายละเอียดอาคารพานิชย์</h4>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-ruler-combined"></i>
+                                พื้นที่ใช้สอย (ตร.ม.)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input (change)="onPIPE()" style="border-radius: 30px 30px 30px 30px;" type="number"
+                                  id="HouseArea" class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)"
+                                  formControlName="HouseArea" value="{{house.HouseArea}}">
+                              </div>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-bath"></i>
+                                ห้องน้ำ<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="10"
+                                  step="1" id="BathRoom" placeholder="จำนวนห้องน้ำ" class="form-control"
+                                  formControlName="BathRoom" value="{{house.BathRoom}}">
+                              </div>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-bed"></i>
+                                ห้องนอน<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="10"
+                                  step="1" id="BedRoom" class="form-control" placeholder="จำนวนห้องนอน"
+                                  formControlName="BedRoom" value="{{house.BedRoom}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-car"></i>
+                                ที่จอดรถ<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="20"
+                                  step="1" id="CarPark" class="form-control" placeholder="จำนวนที่จอดรถ"
+                                  formControlName="CarPark" value="{{house.CarPark}}">
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-bath"></i>
+                                จำนวนชั้น<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="10"
+                                  step="1" id="Floor" class="form-control" placeholder="จำนวนชั้น"
+                                  formControlName="Floor" value="{{house.Floor}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <i class="fas fa-bath"></i>
+                                ค่าใช้จ่ายส่วนกลาง (บาท) <i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" class="form-control"
+                                  placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee" value="{{house.MFee}}">
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>สภาพอาคาร :</label><i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div class="col-sm-4 ">
+                        <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
+                          value="{{house.HomeCondition}}">
+                        อาคารใหม่
+                      </div>
+                      <div class="col-sm-4">
+                        <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
+                          value="{{house.HomeCondition}}">
+                        อาคารมือสอง
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+                      <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" placeholder="สถานะทรัพย์สิน"
+                        class="form-control" formControlName="AsseStatus" value="house.AsseStatus">
+                        <option value="ว่าง" selected>
+                          ว่าง</option>
+                        <option value="จำนอง" selected>
+                          จำนอง</option>
+                        <option value="ขายฝาก" selected>
+                          ขายฝาก</option>
+                        <option value="ฝากขาย" selected>
+                          ฝากขาย</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>วันที่ก่อสร้าง {{ house.BuildFD }} / {{ house.BuildFM }} / {{ house.BuildFY }}
+                          :</label><i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
+                            formControlName="BuildFD" value="{{house.BuildFD}}">
+                            <option>- วัน-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                          </select>
+                        </div>/
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
+                            formControlName="BuildFM" value="{{house.BuildFM}}">
+                            <option>- เดือน -</option>
+                            <option value="มกราคม">มกราคม</option>
+                            <option value="กุมภาพัน">กุมภาพัน</option>
+                            <option value="มีนาคม">มีนาคม</option>
+                            <option value="เมษายน">เมษายน</option>
+                            <option value="พฤษภาคม">พฤษภาคม</option>
+                            <option value="มิถุนายน">มิถุนายน</option>
+                            <option value="กรกฎาคม">กรกฎาคม</option>
+                            <option value="สิงหาคม">สิงหาคม</option>
+                            <option value="กันยายน">กันยายน</option>
+                            <option value="ตุลาคม">ตุลาคม</option>
+                            <option value="พฤศจิกายน">พฤศจิกายน</option>
+                            <option value="ธันวาคม">ธันวาคม</option>
+                          </select>
+                        </div>/
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFY" class="form-control"
+                            formControlName="BuildFY" (change)="onGetbuildage($event.target.value)"
+                            value="{{house.BuildFY}}">
+                            <option>- ปี -</option>
+                            <option *ngFor="let year of years" value="{{year}}">
+                              {{year}}
+                            </option>
+
+                          </select>
+                          <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
+                            <div *ngIf="f.BuildFY.errors.required">
+                              กรุณากรอกข้อมูล</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>อายุอาคาร (ปี) :</label>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+
+                      <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200" step="1"
+                        id="BuildingAge" class="form-control" placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge"
+                        value="{{buildage}}" readonly>
+
+
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <i class="fas fa-compass"></i>
+                        ทิฺศของด้านหน้าอาคาร:
+                      </div>
+                    </div>
+                    <div class="col-md-4 ">
+                      <div>
+                        <select style="border-radius: 30px 30px 30px 30px;" id="Directions" class="form-control"
+                          formControlName="Directions" [ngClass]="{ 'is-invalid': submitted && f.Directions.errors }"
+                          [(ngModel)]="credentials.Directions">
+                          <option>- ทิฺศ -</option>
+                          <option value="ทิศเหนือ">ทิศเหนือ</option>
+                          <option value="ทิศใต้">ทิศใต้</option>
+                          <option value="ทิศตะวันออก">ทิศตะวันออก</option>
+                          <option value="ทิศตะวันตก">ทิศตะวันตก</option>
+                          <option value="ทิศตะวันออกเฉียงเหนือ">
+                            ทิศตะวันออกเฉียงเหนือ</option>
+                          <option value="ทิศตะวันออกเฉียงใต้">ทิศตะวันออกเฉียงใต้
+                          </option>
+                          <option value="ทิศตะวันตกเฉียงเหนือ">
+                            ทิศตะวันตกเฉียงเหนือ
+                          </option>
+                          <option value="ทิศตะวันตกเฉียงใต้">ทิศตะวันตกเฉียงใต้
+                          </option>
+
+                        </select>
+                        <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
+                          <div *ngIf="f.Directions.errors.required">
+                            กรุณากรอกข้อมูล</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="house.PropertyType == 'คอนโด'">
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h4>รายละเอียดคอนโด</h4>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-ruler-combined"></i>
+                                พื้นที่ใช้สอย (ตร.ม.)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="HouseArea"
+                                  class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)" formControlName="HouseArea"
+                                  value="{{house.HouseArea}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-bath"></i>
+                                ห้องน้ำ<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200"
+                                  step="1" id="BathRoom" class="form-control" placeholder="จำนวนห้องน้ำ"
+                                  formControlName="BathRoom" value="{{house.BathRoom}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-bed"></i>
+                                ห้องนอน<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200"
+                                  step="1" id="BedRoom" class="form-control" placeholder="จำนวนห้องนอน"
+                                  formControlName="BedRoom" value="{{house.BedRoom}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-car"></i>
+                                ที่จอดรถ<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200"
+                                  step="1" id="CarPark" class="form-control" placeholder="จำนวนที่จอดรถ"
+                                  formControlName="CarPark" value="{{house.CarPark}}">
+                              </div>
+                            </div>
+                          </div>
+
+                          <br>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-bath"></i>
+                                ชั้นที่อยู่<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Floor"
+                                  class="form-control" placeholder="ชั้นที่อยู่" formControlName="Floor"
+                                  value="{{house.Floor}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-bath"></i>
+                                ค่าใช้จ่ายส่วนกลาง (บาท)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="MFee"
+                                  class="form-control" placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee"
+                                  value="{{house.MFee}}">
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>สภาพคอนโด :</label><i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div class="col-sm-4 ">
+                        <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
+                          value="{{house.HomeCondition}}">
+                        คอนโดใหม่
+                      </div>
+                      <div class="col-sm-4">
+                        <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
+                          value="{{house.HomeCondition}}">
+                        คอนโดมือสอง
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+
+                      <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" placeholder="สถานะทรัพย์สิน"
+                        class="form-control" formControlName="AsseStatus" value="{{house.AsseStatus}}">
+                        <option value="ว่าง" selected>
+                          ว่าง</option>
+                        <option value="จำนอง" selected>
+                          จำนอง</option>
+                        <option value="ขายฝาก" selected>
+                          ขายฝาก</option>
+                        <option value="ฝากขาย" selected>
+                          ฝากขาย</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>วันที่ก่อสร้าง {{ house.BuildFD }} / {{ house.BuildFM }} / {{ house.BuildFY }}
+                          :</label><i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
+                            formControlName="BuildFD" value="{{house.BuildFD}}">
+                            <option>- วัน-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                          </select>
+                        </div>/
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
+                            formControlName="BuildFM" value="{{house.BuildFM}}">
+                            <option>- เดือน -</option>
+                            <option value="มกราคม">มกราคม</option>
+                            <option value="กุมภาพัน">กุมภาพัน</option>
+                            <option value="มีนาคม">มีนาคม</option>
+                            <option value="เมษายน">เมษายน</option>
+                            <option value="พฤษภาคม">พฤษภาคม</option>
+                            <option value="มิถุนายน">มิถุนายน</option>
+                            <option value="กรกฎาคม">กรกฎาคม</option>
+                            <option value="สิงหาคม">สิงหาคม</option>
+                            <option value="กันยายน">กันยายน</option>
+                            <option value="ตุลาคม">ตุลาคม</option>
+                            <option value="พฤศจิกายน">พฤศจิกายน</option>
+                            <option value="ธันวาคม">ธันวาคม</option>
+                          </select>
+                        </div>/
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFY" class="form-control"
+                            formControlName="BuildFY" (change)="onGetbuildage($event.target.value)"
+                            value="{{house.BuildFY}}">
+                            <option value="{{house.BuildFY}}">{{house.BuildFY}}</option>
+                            <option *ngFor="let year of years" value="{{year}}">
+                              {{year}}
+                            </option>
+
+                          </select>
+                          <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
+                            <div *ngIf="f.BuildFY.errors.required">
+                              กรุณากรอกข้อมูล</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>อายุอาคาร (ปี) :</label>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+
+                      <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200" step="1"
+                        id="BuildingAge" class="form-control" placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge"
+                        value="{{buildage}}" readonly>
+
+
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <i class="fas fa-compass"></i>
+                        ทิฺศของด้านหน้าคอนโด :<i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-4 ">
+                      <div>
+                        <select style="border-radius: 30px 30px 30px 30px;" id="Directions" class="form-control"
+                          formControlName="Directions" value="{{house.Directions}}">
+                          <option>- ทิฺศ -</option>
+                          <option value="ทิศเหนือ">ทิศเหนือ</option>
+                          <option value="ทิศใต้">ทิศใต้</option>
+                          <option value="ทิศตะวันออก">ทิศตะวันออก</option>
+                          <option value="ทิศตะวันตก">ทิศตะวันตก</option>
+                          <option value="ทิศตะวันออกเฉียงเหนือ">
+                            ทิศตะวันออกเฉียงเหนือ</option>
+                          <option value="ทิศตะวันออกเฉียงใต้">ทิศตะวันออกเฉียงใต้
+                          </option>
+                          <option value="ทิศตะวันตกเฉียงเหนือ">
+                            ทิศตะวันตกเฉียงเหนือ
+                          </option>
+                          <option value="ทิศตะวันตกเฉียงใต้">ทิศตะวันตกเฉียงใต้
+                          </option>
+
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="house.PropertyType == 'บ้าน'">
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h4>รายละเอียดบ้าน</h4>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-bath"></i>
+                                ห้องน้ำ<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
+                                  step="1" id="BathRoom" class="form-control" placeholder="จำนวนห้องน้ำ"
+                                  formControlName="BathRoom" value="{{house.BathRoom}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-bed"></i>
+                                ห้องนอน<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
+                                  step="1" id="BedRoom" class="form-control" placeholder="จำนวนห้องนอน"
+                                  formControlName="BedRoom" value="{{house.BedRoom}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-car"></i>
+                                ที่จอดรถ<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
+                                  step="1" id="CarPark" class="form-control" placeholder="จำนวนที่จอดรถ"
+                                  formControlName="CarPark" value="{{house.CarPark}}">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-ruler-combined"></i>
+                                พื้นที่ใช้สอย (ตร.ม.)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="HouseArea"
+                                  class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)" formControlName="HouseArea"
+                                  value="{{house.HouseArea}}">
+                              </div>
+                            </div>
+                          </div>
+                          <br>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-12">
+                                <i class="fas fa-bath"></i>
+                                จำนวนขั้น<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
+                                  step="1" id="Floor" class="form-control" placeholder="จำนวนชั้นของบ้าน"
+                                  formControlName="Floor" value="{{house.Floor}}">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <h4>รายละเอียดที่ดิน</h4>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-ruler"></i>
+                                ที่ดิน(ไร่)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandR"
+                                  class="form-control" placeholder="จำนวนไร" formControlName="LandR"
+                                  value="{{house.LandR}}">
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-ruler"></i>
+                                ที่ดิน(งาน)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandG"
+                                  class="form-control" placeholder="จำนวนงาน" formControlName="LandG"
+                                  value="{{house.LandG}}">
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-ruler"></i>
+                                ที่ดิน(ตร.ว.)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandWA"
+                                  class="form-control" placeholder="จำนวนตารางวา" formControlName="LandWA"
+                                  value="{{house.LandWA}}">
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>สภาพบ้าน : </label><i class="reqiureinput">"{{house.HomeCondition}}"</i>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div class="col-sm-4 ">
+                        <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
+                          value="{{house.HomeCondition}}">
+                        บ้านใหม่
+                      </div>
+                      <div class="col-sm-4">
+                        <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
+                          value="{{house.HomeCondition}}">
+                        บ้านมือสอง
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">"{{house.AsseStatus}}"</i>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+
+                      <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" placeholder="สถานะทรัพย์สิน"
+                        class="form-control" formControlName="AsseStatus" value="{{house.AsseStatus}}">
+                        <option value="ว่าง" selected>
+                          ว่าง</option>
+                        <option value="จำนอง" selected>
+                          จำนอง</option>
+                        <option value="ขายฝาก" selected>
+                          ขายฝาก</option>
+                        <option value="ฝากขาย" selected>
+                          ฝากขาย</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>วันที่ก่อสร้างเสร็จ :
+                        </label><i class="reqiureinput"> "{{ house.BuildFD }} / {{ house.BuildFM }} /
+                          {{ house.BuildFY }}"</i>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
+                            formControlName="BuildFD" value="{{house.BuildFD}}">
+                            <option>- วัน-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                          </select>
+                        </div>/
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
+                            formControlName="BuildFM" value="{{house.BuildFM}}">
+                            <option>- เดือน -</option>
+                            <option value="มกราคม">มกราคม</option>
+                            <option value="กุมภาพัน">กุมภาพัน</option>
+                            <option value="มีนาคม">มีนาคม</option>
+                            <option value="เมษายน">เมษายน</option>
+                            <option value="พฤษภาคม">พฤษภาคม</option>
+                            <option value="มิถุนายน">มิถุนายน</option>
+                            <option value="กรกฎาคม">กรกฎาคม</option>
+                            <option value="สิงหาคม">สิงหาคม</option>
+                            <option value="กันยายน">กันยายน</option>
+                            <option value="ตุลาคม">ตุลาคม</option>
+                            <option value="พฤศจิกายน">พฤศจิกายน</option>
+                            <option value="ธันวาคม">ธันวาคม</option>
+                          </select>
+                        </div>/
+                        <div class="col-md-3">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="BuildFY" class="form-control"
+                            formControlName="BuildFY" (change)="onGetbuildage($event.target.value)"
+                            value="{{house.BuildFY}}">
+                            <option value="{{house.BuildFY}}">{{house.BuildFY}}</option>
+                            <option *ngFor="let year of years" value="{{year}}">
+                              {{year}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>อายุอาคาร (ปี) :</label>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+
+                      <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200" step="1"
+                        id="BuildingAge" class="form-control" placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge"
+                        value="{{house.BuildingAge}}" readonly>
+
+
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <i class="fas fa-compass"></i>
+                        ทิฺศของประตูบ้าน :<i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-4 ">
+                      <div>
+                        <select style="border-radius: 30px 30px 30px 30px;" id="Directions" class="form-control"
+                          formControlName="Directions" value="{{ house.Directions }}">
+                          <option>- ทิฺศ -</option>
+                          <option value="ทิศเหนือ">ทิศเหนือ</option>
+                          <option value="ทิศใต้">ทิศใต้</option>
+                          <option value="ทิศตะวันออก">ทิศตะวันออก</option>
+                          <option value="ทิศตะวันตก">ทิศตะวันตก</option>
+                          <option value="ทิศตะวันออกเฉียงเหนือ">
+                            ทิศตะวันออกเฉียงเหนือ</option>
+                          <option value="ทิศตะวันออกเฉียงใต้">ทิศตะวันออกเฉียงใต้
+                          </option>
+                          <option value="ทิศตะวันตกเฉียงเหนือ">
+                            ทิศตะวันตกเฉียงเหนือ
+                          </option>
+                          <option value="ทิศตะวันตกเฉียงใต้">ทิศตะวันตกเฉียงใต้
+                          </option>
+
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

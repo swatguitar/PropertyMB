@@ -106,19 +106,19 @@
                         <div class="specificate-panel">
                           <div class="specificate-list">
                             <div class="specificate-title">ราคาขาย</div>
-                            <div class="specificate-info">{{ lands.SellPrice}} บาท</div>
+                            <div class="specificate-info">{{ lands.SellPrice | number}} บาท</div>
                           </div>
                           <div class="specificate-list">
                             <div class="specificate-title">ธนาคารประเมิน</div>
-                            <div class="specificate-info">{{ lands.CostestimateB }} บาท</div>
+                            <div class="specificate-info">{{ lands.CostestimateB| number }} บาท</div>
                           </div>
                           <div class="specificate-list">
                             <div class="specificate-title">กรมที่ดินประเมิน</div>
-                            <div class="specificate-info">{{ lands.Costestimate}} บาท</div>
+                            <div class="specificate-info">{{ lands.Costestimate | number}} บาท</div>
                           </div>
                           <div class="specificate-list">
                             <div class="specificate-title">ราคาตลาด</div>
-                            <div class="specificate-info">{{ lands.MarketPrice}} บาท</div>
+                            <div class="specificate-info">{{ lands.MarketPrice | number}} บาท</div>
                           </div>
                           <div class="specificate-list">
                             <div class="specificate-title">ราคาต่อตารางวา</div>
@@ -390,31 +390,50 @@
                     <div class="specificate-panel">
                       <div class="specificate-list">
                         <div class="specificate-title">ที่ตาบอด</div>
-                        <div class="specificate-info">{{ lands.Blind }}</div>
+                        <div class="specificate-info" [ngStyle]="{'color': lands.Blind  == '0'?'red':'green'}">
+                          <i *ngIf="lands.Blind  == '0'" class="fas fa-times"></i><i *ngIf="lands.Blind  != '0'"
+                            class="fas fa-check"></i>
+                        </div>
                       </div>
                       <div class="specificate-list">
                         <div class="specificate-title">ใกล้สถานศึกษา</div>
-                        <div class="specificate-info">{{ lands.Neareducation }}</div>
+                        <div class="specificate-info" [ngStyle]="{'color': lands.Neareducation  == '0'?'red':'green'}">
+                          <i *ngIf="lands.Neareducation  == '0'" class="fas fa-times"></i><i
+                            *ngIf="lands.Neareducation  !='0'" class="fas fa-check"></i></div>
                       </div>
                       <div class="specificate-list">
                         <div class="specificate-title">ใกล้ศูนย์การค้า</div>
-                        <div class="specificate-info">{{ lands.Cenmarket }}</div>
+                        <div class="specificate-info" [ngStyle]="{'color': lands.Cenmarket  == '0'?'red':'green'}">
+                          <i *ngIf="lands.Cenmarket  == '0'" class="fas fa-times"></i><i *ngIf="lands.Cenmarket  != '0'"
+                            class="fas fa-check"></i></div>
                       </div>
                       <div class="specificate-list">
                         <div class="specificate-title">ใกล้ตลาด</div>
-                        <div class="specificate-info">{{ lands.Market }}</div>
+                        <div class="specificate-info" [ngStyle]="{'color': lands.Market  == '0'?'red':'green'}">
+                          <i *ngIf="lands.Market  == '0'" class="fas fa-times"></i><i *ngIf="lands.Market  != '0'"
+                            class="fas fa-check"></i>
+                        </div>
                       </div>
                       <div class="specificate-list">
                         <div class="specificate-title">ติดแม่น้ำ</div>
-                        <div class="specificate-info">{{ lands.River }}</div>
+                        <div class="specificate-info" [ngStyle]="{'color': lands.River  == '0'?'red':'green'}">
+                          <i *ngIf="lands.River  == '0'" class="fas fa-times"></i><i *ngIf="lands.River  != '0'"
+                            class="fas fa-check"></i>
+                        </div>
                       </div>
                       <div class="specificate-list">
                         <div class="specificate-title">ติดถนน</div>
-                        <div class="specificate-info">{{ lands.Mainroad }} </div>
+                        <div class="specificate-info" [ngStyle]="{'color': lands.Mainroad  == '0'?'red':'green'}">
+                          <i *ngIf="lands.Mainroad  == '0'" class="fas fa-times"></i><i *ngIf="lands.Mainroad  != '0'"
+                            class="fas fa-check"></i>
+                        </div>
                       </div>
                       <div class="specificate-list">
                         <div class="specificate-title">อยู่ในซอย</div>
-                        <div class="specificate-info">{{ lands.Insoi }} </div>
+                        <div class="specificate-info" [ngStyle]="{'color': lands.Insoi  == '0'?'red':'green'}">
+                          <i *ngIf="lands.Insoi  == '0'" class="fas fa-times"></i><i *ngIf="lands.Insoi  != '0'"
+                            class="fas fa-check"></i>
+                        </div>
                       </div>
                       <div class="specificate-list">
                         <div class="specificate-title">อื่นๆ</div>

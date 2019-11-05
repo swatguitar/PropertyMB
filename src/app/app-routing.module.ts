@@ -22,7 +22,9 @@ import { LandslistComponent } from './components/lands/landslist/landslist.compo
 import { HousesDetailComponent } from './components/houses/houses-detail/houses-detail.component';
 import { HouseslistComponent } from './components/houses/houseslist/houseslist.component';
 import { GroupComponent } from './components/group/group.component';
+import { GroupdetailComponent } from './components/group/grouplist/groupdetail/groupdetail.component';
 import { GrouplistComponent } from './components/group/grouplist/grouplist.component';
+import { GrouppingComponent } from './components/group/groupping/groupping.component';
 import { TestComponent } from './components/test/test.component';
 import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.component';
 import { PagenotfoundComponent } from './lib/pagenotfound/pagenotfound.component';
@@ -32,6 +34,9 @@ import { CommingsoonComponent } from './lib/commingsoon/commingsoon.component';
 import { HousePdfComponent } from './components/houses/house-pdf/house-pdf.component';
 import { ResetpasswordComponent } from './components/login/resetpassword/resetpassword.component';
 import { UpdateprofileComponent } from './components/profile/updateprofile/updateprofile.component';
+import { HouseupdateComponent } from './components/houses/houseupdate/houseupdate.component';
+import { AdminloginComponent } from './components/adminLTE/admin/adminlogin/adminlogin.component';
+import { AdmindashComponent } from './components/adminLTE/admin/admindash/admindash.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -39,24 +44,28 @@ const routes: Routes = [
     path: "home", component: HomeComponent,
     canActivate: [AuthGuardService]
   },
+  { path: "adminlogin", component: AdminloginComponent,  },
+  { path: "admindash", component: AdmindashComponent, canActivate: [AuthGuardService] },
   { path: "pagenotfound", component: PagenotfoundComponent },
   { path: "resetPassword", component: ResetpasswordComponent },
   { path: "commingsoon", component: CommingsoonComponent },
   { path: "aboutus", component: AboutusComponent },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
-  { path: "recommend", component: RecommendComponent, children: [
-    {
-      path: '',
-      component: RecommendComponent,
-      canActivate: [AuthGuardService]
-    },
-    {
-      path: ':id',
-      component: RecdetailsComponent,
-      canActivate: [AuthGuardService]
-    }
-  ] },
+  {
+    path: "recommend", component: RecommendComponent, children: [
+      {
+        path: '',
+        component: RecommendComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: ':id',
+        component: RecdetailsComponent,
+        canActivate: [AuthGuardService]
+      }
+    ]
+  },
   { path: "loading", component: LoadingSpinnerComponent },
   {
     path: "lands", component: LandsComponent, children: [
@@ -86,8 +95,12 @@ const routes: Routes = [
       }
     ]
   },
-
   {
+    path: 'houses/houseUpdate/:id',
+    component: HouseupdateComponent,
+    canActivate: [AuthGuardService]
+  },
+   {
     path: "houses", component: HousesComponent, children: [
       {
         path: '',
@@ -98,14 +111,24 @@ const routes: Routes = [
         path: ':id',
         component: HousesDetailComponent,
         canActivate: [AuthGuardService]
-      }
+      },
     ]
   },
   {
     path: "groups", component: GroupComponent, children: [
       {
-        path: ':id',
+        path: '',
         component: GrouplistComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: 'groupfolder',
+        component: GrouppingComponent,
+        canActivate: [AuthGuardService]
+      },
+      {
+        path: ':id',
+        component: GroupdetailComponent,
         canActivate: [AuthGuardService]
       }
     ]
@@ -139,7 +162,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   { path: "**", redirectTo: "pagenotfound" },
-  
+
 
 ];
 

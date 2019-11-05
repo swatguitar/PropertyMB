@@ -218,9 +218,10 @@ export class LandslistComponent implements OnInit {
   filterMaxMin() {
     this.filterProperty = this.properties.filter(
       x => {
-        this.newprice = parseInt(x.SellPrice.replace(/,/g, ""))
-        this.newCprice = parseInt(x.CostestimateB.replace(/,/g, ""))
-        this.newMprice = parseInt(x.MarketPrice.replace(/,/g, ""))
+        this.newprice = parseInt(x.SellPrice)
+        this.newCprice = parseInt(x.CostestimateB)
+        this.newMprice = parseInt(x.MarketPrice)
+        
         return (this.newprice >= this.pricemin && this.newprice <= this.pricemax)
 
       });

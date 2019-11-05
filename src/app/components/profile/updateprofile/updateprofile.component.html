@@ -1,9 +1,12 @@
 <app-navbar></app-navbar>
+<img src="https://www.234.in.th/images/2019/05/03/derek-torsani-22x.png" class="img-fluid" alt="Responsive image"
+  style="width:100%;">
 <div class="container PMB">
   <div class="row">
     <br>
     <div class="col-md-3 col-sm-2 ">
       <div id="list-example" class="list-group">
+        <br>
         <button class="btn btn-dark" disabled>แก้ไขข้อมูลองฉัน</button>
         <button class="list-group-item list-group-item-action" (click)="onChange1()">ข้อมูลทั่วไป</button>
         <button class="list-group-item list-group-item-action" (click)="onChange2()">ข้อมูลการใช้งาน</button>
@@ -150,7 +153,7 @@
         </form>
       </div>
       <br>
-      <div >
+      <div *ngIf="change3 == true && change2 == false">
         <h5>การรีเซ็ทรหัสผ่านใหม่</h5>
         <hr>
         <form [formGroup]="updatepassForm">
@@ -188,57 +191,7 @@
             <button class="btn btn-outline-primary float-right" type="submit"
               (click)="comparePassword()">รีเซ็ทรหัสผ่าน</button>
           </div>
-        </form>
-        <h5>ข้อมูลความปลอดภัย</h5>
-        <hr>
-        <form [formGroup]="updateQForm">
-          <header class="text-center">
-            <div>คำถามรักษาความปลอดภัย</div>
-          </header>
-          <hr>
-          <div class="form-group">
-            <label>คำถามของคุณ</label>
-            <br>
-            <select class="form-control" formControlName="Question" style="border-radius: 30px 30px 30px 30px;"
-              [ngClass]="{ 'is-invalid': submitted && Q.Question.errors }" [(ngModel)]="credentials.Question">
-              <option value="ชื่อสัตว์เลี้ยงตัวแรกของคุณ">
-                ชื่อสัตว์เลี้ยงตัวแรกของคุณ?</option>
-              <option value="เพื่อนสนิทในวัยเด็กของคุณ">
-                เพื่อนสนิทในวัยเด็กของคุณ?</option>
-              <option value="ภาพยนต์ที่คุณชอบที่สุด">
-                ภาพยนต์ที่คุณชอบที่สุด?</option>
-              <option value="อาหารจานโปรดของคุณ">
-                อาหารจานโปรดของคุณ?</option>
-              <option value="งานอดิเรกที่ชอบทำ">
-                งานอดิเรกที่ชอบทำ?</option>
-              <option value="คุณครูประจำชั้นคนแรกของคุณ">
-                คุณครูประจำชั้นคนแรกของคุณ?</option>
-              <option value="พ่อแม่ของคุณเจอกันที่ไหน">
-                พ่อแม่ของคุณเจอกันที่ไหน?</option>
-              <option value="เพลงแรกที่คุณฟัง">
-                เพลงแรกที่คุณฟัง?</option>
-              <option value="อาชีพในฝันของคุณ">
-                อาชีพในฝันของคุณ?</option>
-              <option value="ทีมกีฬาที่คุณชื่นชอบ">
-                ทีมกีฬาที่คุณชื่นชอบ?</option>
-            </select>
-            <div *ngIf="submitted && Q.Question.errors" class="invalid-feedback">
-              <div *ngIf="Q.Question.errors.required">กรุณาเลือกคำถาม</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>คำตอบของคุณ</label>
-            <br>
-            <input type="text" [(ngModel)]="credentials.Answer" formControlName="Answer" class="form-control"
-              style="border-radius: 30px 30px 30px 30px;" [ngClass]="{ 'is-invalid': submitted && Q.Answer.errors }" />
-            <div *ngIf="submitted && Q.Answer.errors" class="invalid-feedback">
-              <div *ngIf="Q.Answer.errors.required">กรุณากรอกคำตอบ</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-outline-primary float-right" type="button" (click)="onCompareQ()">ถัดไป</button>
-          </div>
-        </form>
+        </form> 
       </div>
     </div>
   </div>

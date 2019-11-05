@@ -1,6 +1,39 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
 
+.font-color-gold{
+  color: #C8BD76;
+}
+.font-color-green{
+  color: rgb(14, 150, 20);
+}
+.font-color-blue{
+  color: rgb(34, 132, 243);
+}
+.font-color-orange{
+  color: rgb(243, 127, 50);
+}
+.font-color-condo{
+  color: rgb(32, 170, 194);
+}
+.font-color-prop{ 
+  color: rgb(162, 32, 194);
+}
+.font-color-area{ 
+  color: rgb(227, 238, 73);
+}
+.font-color-overview{ 
+  color: rgb(34, 132, 243);
+}
+.font-color-map{ 
+  color: rgb(21, 180, 6);
+}
+.font-color-mark{ 
+  color:rgb(219, 85, 85);
+}
+.container{
+  font-family: 'Poppins', 'Prompt', sans-serif;
+}
 .search-input
 {
     border-radius: 30px 30px 30px 30px;
@@ -547,7 +580,7 @@ html.disabled #modal-bg{
 }
 .search-grid .item .box .info .price span{
   font-size: 18px;
-  color: #ff4422;
+  color: rgb(243, 127, 50);
 }
 .search-grid .item .box .info ul{
   list-style: none;

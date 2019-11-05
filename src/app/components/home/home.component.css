@@ -198,8 +198,8 @@ a{
   .content-box > .list-table > .product-list > li > a:hover{
     text-decoration: none;  
   }
-   .product-list > li > a:hover > .item > .info > *{
-    color: #ff5a00;
+  .product-list > li > a:hover > .item > .info > *{
+    color: rgb(243, 127, 50);
     font-weight: bold;
   }
   .content-box > .list-table > .product-list .item{

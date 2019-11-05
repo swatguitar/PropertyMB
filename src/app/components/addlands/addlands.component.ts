@@ -145,8 +145,8 @@ export class AddlandsComponent {
     Lastname: '',
     UserType: '',
     Email: '',
-    Token:  '',
-    Answer:  '',
+    Token: '',
+    Answer: '',
     OldPassword: '',
     Password: '',
     Birthday: '',
@@ -249,7 +249,7 @@ export class AddlandsComponent {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
-    Kitchen:0,
+    Kitchen: 0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -384,7 +384,7 @@ export class AddlandsComponent {
   calPWA() {
     //---------------calulate p/wa-----
     this.SellP = this.credentials.SellPrice.replace(/,/g, "");
-    this.cal = parseInt(this.SellP) / ((parseInt(this.credentials.LandR)*400) +(parseInt(this.credentials.LandG)*100)+parseInt(this.credentials.LandWA)) ;
+    this.cal = parseInt(this.SellP) / ((parseInt(this.credentials.LandR) * 400) + (parseInt(this.credentials.LandG) * 100) + parseInt(this.credentials.LandWA));
     this.credentials.PriceWA = this.cal.toString()
   }
   // Get Current Location Coordinates
@@ -932,6 +932,10 @@ export class AddlandsComponent {
       return;
     }
     this.getZipCode()
+    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
+    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     this.auth.EditLand(this.credentials).subscribe(
@@ -953,39 +957,43 @@ export class AddlandsComponent {
   propType: string;
   IDprop: string;
   onFirststep() {
-     this.back = "true"
-     this.getZipCode()
-     this.credentials.Latitude = this.latitude
-     this.credentials.Longitude = this.longitude
- 
-     this.onRandom()
-     this.auth.getAllland().subscribe((land) => {
-       this.details = land
- 
-       this.details.filter(article => {
-         this.IDprop = article.ID_Lands
-         //console.log(this.IDprop + "----------------data")
-         this.onCheckTwo()
-       });
-       //console.log("..........." + this.credentials.ID_Lands + " END")
- 
-       this.auth.addland(this.credentials).subscribe(
-         () => {
- 
-         },
-         err => {
-           console.error(err)
- 
-         }
- 
-       )
-     },
-       err => {
-         console.error(err)
-       }
-     )
- 
- 
+    this.back = "true"
+    this.getZipCode()
+    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
+    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
+    this.credentials.Latitude = this.latitude
+    this.credentials.Longitude = this.longitude
+
+    this.onRandom()
+    this.auth.getAllland().subscribe((land) => {
+      this.details = land
+
+      this.details.filter(article => {
+        this.IDprop = article.ID_Lands
+        //console.log(this.IDprop + "----------------data")
+        this.onCheckTwo()
+      });
+      //console.log("..........." + this.credentials.ID_Lands + " END")
+
+      this.auth.addland(this.credentials).subscribe(
+        () => {
+
+        },
+        err => {
+          console.error(err)
+
+        }
+
+      )
+    },
+      err => {
+        console.error(err)
+      }
+    )
+
+
 
 
 

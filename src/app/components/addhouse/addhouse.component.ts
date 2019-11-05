@@ -647,6 +647,9 @@ export class AddhouseComponent implements OnInit {
       return;
     }
     this.getZipCode()
+    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     this.auth.EditHouse(this.credentials).subscribe(
@@ -922,8 +925,11 @@ export class AddhouseComponent implements OnInit {
   onFirststep() {
     this.back = "true"
     this.getZipCode()
-
+    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
     this.credentials.Latitude = this.latitude
+    this.credentials.Longitude = this.longitude
     this.credentials.Longitude = this.longitude
     if (this.credentials.PropertyType == "อาคารพาณิชย์") {
       this.propType = "p"

@@ -3,6 +3,7 @@
 
 nav {
     font-family: 'Poppins', 'Prompt', sans-serif;
+    position: fixed;
 }
 .bd-navbar{
     background-color: #292c2f;

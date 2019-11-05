@@ -9,7 +9,12 @@ export class PropertyFilterPipe implements PipeTransform {
             return property;
         }
         return property.filter(property =>
-            property.AnnounceTH.indexOf(searchTerm.toLowerCase()) !== -1 || property.SellPrice.indexOf(searchTerm.toLowerCase()) !== -1);
+            property.AnnounceTH.indexOf(searchTerm.toLowerCase()) !== -1  
+            
+            
+            
+            
+            );
     }
     
 

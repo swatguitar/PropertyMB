@@ -194,9 +194,9 @@ export class HouseslistComponent implements OnInit {
   filterprice() {
     this.filterProperty = this.properties.filter(
       x => {
-        this.newprice = parseInt(x.SellPrice.replace(/,/g, ""))
-        this.newCprice = parseInt(x.CostestimateB.replace(/,/g, ""))
-        this.newMprice = parseInt(x.MarketPrice.replace(/,/g, ""))
+        this.newprice = parseInt(x.SellPrice)
+        this.newCprice = parseInt(x.CostestimateB)
+        this.newMprice = parseInt(x.MarketPrice)
         return (this.newprice >= 500000 && this.newprice <= 1000000 && this.filter.priceA) || (this.newprice >= 1100000 && this.newprice <= 5000000 && this.filter.priceB) || (this.newprice >= 5100000 && this.newprice <= 10000000 && this.filter.priceC) || (this.newprice >= 10000000 && this.filter.priceD)
           || (this.newCprice >= 500000 && this.newCprice <= 1000000 && this.filter.priceE) || (this.newCprice >= 1100000 && this.newCprice <= 5000000 && this.filter.priceF) || (this.newCprice >= 5100000 && this.newCprice <= 10000000 && this.filter.priceG) || (this.newCprice >= 10000000 && this.filter.priceH)
           || (this.newMprice >= 500000 && this.newMprice <= 1000000 && this.filter.priceI) || (this.newMprice >= 1100000 && this.newMprice <= 5000000 && this.filter.priceJ) || (this.newMprice >= 5100000 && this.newMprice <= 10000000 && this.filter.priceK) || (this.newMprice >= 10000000 && this.filter.priceL)
@@ -219,10 +219,10 @@ export class HouseslistComponent implements OnInit {
   filterMaxMin() {
     this.filterProperty = this.properties.filter(
       x => {
-        this.newprice = parseInt(x.SellPrice.replace(/,/g, ""))
-        this.newCprice = parseInt(x.CostestimateB.replace(/,/g, ""))
-        this.newMprice = parseInt(x.MarketPrice.replace(/,/g, ""))
-        return (this.newprice > this.pricemin && this.newprice < this.pricemax)
+        this.newprice = parseInt(x.SellPrice)
+        this.newCprice = parseInt(x.CostestimateB)
+        this.newMprice = parseInt(x.MarketPrice)
+        return (this.newprice >= this.pricemin && this.newprice <= this.pricemax)
 
       });
     if (this.filterProperty.length == 0) {
@@ -235,7 +235,7 @@ export class HouseslistComponent implements OnInit {
       x =>
         (x.PropertyType === "บ้าน" && this.filter.houses) ||
         (x.PropertyType === "คอนโด" && this.filter.condo) ||
-        (x.PropertyType === "อาคารพานิชย์" && this.filter.property) ||
+        (x.PropertyType === "อาคารพาณิชย์" && this.filter.property) ||
         (x.HomeCondition === "ใหม่" && this.filter.newhouse) ||
         (x.HomeCondition === "มือสอง" && this.filter.oldhouse)
     );

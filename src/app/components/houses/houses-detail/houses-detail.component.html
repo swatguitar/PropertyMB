@@ -2,20 +2,20 @@
   style="width:100%;">
 <section *ngFor="let house of results" class="container">
   <div id="web-body">
-    <div id="page-content">
+    <div id="">
       <!------------------------------------------------------------------------>
 
       <div class="container">
         <div id="product-container">
           <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-6">
               <br>
               <ul id="breadcrumb-nav" typeof="BreadcrumbList">
                 <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
                     typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i> หน้าแรก</span></a>
                   <meta property="position" content="1">
                 </li>
-                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/lands' ]" property="item"
+                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/houses' ]" property="item"
                     typeof="WebPage"><span property="name">อสังหาสิ่งปลูกสร้าง</span></a>
                   <meta property="position" content="2">
                 </li>
@@ -30,32 +30,53 @@
                 {{ house.LAmphur }}, {{ house.LProvince }}, ประเทศไทย, {{house.LZipCode}}</h5>
               <hr>
             </div>
-            <div class="col-md-5 ">
-              <div class="logo-distributed ">
+            <div class="col-md-6 center">
+              <div class="logo-distributed text-center ">
                 <h3>Property<span>Management</span></h3>
                 <br>
-                <button class="btn btn-success" [routerLink]="['/housePDF',house.ID_Property]">
-                  บันทึกเป็น PDF
-                </button>
               </div>
-
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  <button class="btn btn-warning" [routerLink]="['/houses/houseUpdate',house.ID_Property]">
+                    <i class="fas fa-edit"></i> แก้ไขข้อมูล
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button class="btn btn-danger"[routerLink]="['/houseUpdateA/',house.ID_Property]" >
+                    <i class="fas fa-trash-alt"></i> ลบอสังหานี้
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-6">
             <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
           </div>
-          <div class="col-md-4">
-            <div class="jumbotron">
-              <div class="header-blog">สถานะการซื้อขาย</div>
-              <label>{{house.PPStatus}}</label>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="jumbotron">
+                  <div class="header-blog">สถานะการซื้อขาย</div>
+                  <label>{{house.PPStatus}}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="jumbotron">
+                  <div class="header-blog">สถานะทรัพย์สิน</div>
+                  <label>{{house.AsseStatus}}</label>
+                </div>
+              </div>
+              <hr>
+              <div class="col-md-12">
+                <button class="btn btn-success btn-lg btn-block" [routerLink]="['/housePDF',house.ID_Property]">
+                  บันทึกเป็น PDF
+                </button>
+              </div>
             </div>
-            <div class="jumbotron">
-              <div class="header-blog">สถานะทรัพย์สิน</div>
-              <label>{{house.AsseStatus}}</label>
-            </div>
+
           </div>
         </div>
         <div id="product-specificate">
@@ -92,15 +113,15 @@
                         <div class="specificate-panel">
                           <div class="specificate-list">
                             <div class="specificate-title">ราคาขาย</div>
-                            <div class="specificate-info">{{ house.SellPrice}} บาท</div>
+                            <div class="specificate-info">{{ house.SellPrice | number}} บาท</div>
                           </div>
                           <div class="specificate-list">
                             <div class="specificate-title">ราคาประเมิน</div>
-                            <div class="specificate-info">{{ house.CostestimateB}} บาท</div>
+                            <div class="specificate-info">{{ house.CostestimateB | number}} บาท</div>
                           </div>
                           <div class="specificate-list">
                             <div class="specificate-title">ราคาตลาด</div>
-                            <div class="specificate-info">{{ house.MarketPrice}} บาท</div>
+                            <div class="specificate-info">{{ house.MarketPrice | number}} บาท</div>
                           </div>
                         </div>
                       </div>
@@ -405,73 +426,59 @@
                   <div class="col-md-4">
                     <div class="header-blog">ทำเล</div>
                     <div class="specificate-panel">
-                        <div class="specificate-list">
-                            <div class="specificate-title">ที่ตาบอด</div>
-                            <div class="specificate-info"
-                                [ngStyle]="{'color': house.Blind  == '0'?'red':'green'}">
-                                <i *ngIf="house.Blind  == '0'" class="fas fa-times"></i><i
-                                    *ngIf="house.Blind  != '0'" class="fas fa-check"></i>
-                            </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ที่ตาบอด</div>
+                        <div class="specificate-info" [ngStyle]="{'color': house.Blind  == '0'?'red':'green'}">
+                          <i *ngIf="house.Blind  == '0'" class="fas fa-times"></i><i *ngIf="house.Blind  != '0'"
+                            class="fas fa-check"></i>
                         </div>
-                        <div class="specificate-list">
-                            <div class="specificate-title">ใกล้สถานศึกษา</div>
-                            <div class="specificate-info"
-                                [ngStyle]="{'color': house.Neareducation  == '0'?'red':'green'}">
-                                <i *ngIf="house.Neareducation  == '0'"
-                                    class="fas fa-times"></i><i
-                                    *ngIf="house.Neareducation  !='0'"
-                                    class="fas fa-check"></i></div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้สถานศึกษา</div>
+                        <div class="specificate-info" [ngStyle]="{'color': house.Neareducation  == '0'?'red':'green'}">
+                          <i *ngIf="house.Neareducation  == '0'" class="fas fa-times"></i><i
+                            *ngIf="house.Neareducation  !='0'" class="fas fa-check"></i></div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้ศูนย์การค้า</div>
+                        <div class="specificate-info" [ngStyle]="{'color': house.Cenmarket  == '0'?'red':'green'}">
+                          <i *ngIf="house.Cenmarket  == '0'" class="fas fa-times"></i><i *ngIf="house.Cenmarket  != '0'"
+                            class="fas fa-check"></i></div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ใกล้ตลาด</div>
+                        <div class="specificate-info" [ngStyle]="{'color': house.Market  == '0'?'red':'green'}">
+                          <i *ngIf="house.Market  == '0'" class="fas fa-times"></i><i *ngIf="house.Market  != '0'"
+                            class="fas fa-check"></i>
                         </div>
-                        <div class="specificate-list">
-                            <div class="specificate-title">ใกล้ศูนย์การค้า</div>
-                            <div class="specificate-info"
-                                [ngStyle]="{'color': house.Cenmarket  == '0'?'red':'green'}">
-                                <i *ngIf="house.Cenmarket  == '0'"
-                                    class="fas fa-times"></i><i
-                                    *ngIf="house.Cenmarket  != '0'"
-                                    class="fas fa-check"></i></div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ติดแม่น้ำ</div>
+                        <div class="specificate-info" [ngStyle]="{'color': house.River  == '0'?'red':'green'}">
+                          <i *ngIf="house.River  == '0'" class="fas fa-times"></i><i *ngIf="house.River  != '0'"
+                            class="fas fa-check"></i>
                         </div>
-                        <div class="specificate-list">
-                            <div class="specificate-title">ใกล้ตลาด</div>
-                            <div class="specificate-info"
-                                [ngStyle]="{'color': house.Market  == '0'?'red':'green'}">
-                                <i *ngIf="house.Market  == '0'"
-                                    class="fas fa-times"></i><i
-                                    *ngIf="house.Market  != '0'" class="fas fa-check"></i>
-                            </div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">ติดถนน</div>
+                        <div class="specificate-info" [ngStyle]="{'color': house.Mainroad  == '0'?'red':'green'}">
+                          <i *ngIf="house.Mainroad  == '0'" class="fas fa-times"></i><i *ngIf="house.Mainroad  != '0'"
+                            class="fas fa-check"></i>
                         </div>
-                        <div class="specificate-list">
-                            <div class="specificate-title">ติดแม่น้ำ</div>
-                            <div class="specificate-info"
-                                [ngStyle]="{'color': house.River  == '0'?'red':'green'}">
-                                <i *ngIf="house.River  == '0'" class="fas fa-times"></i><i
-                                    *ngIf="house.River  != '0'" class="fas fa-check"></i>
-                            </div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">อยู่ในซอย</div>
+                        <div class="specificate-info" [ngStyle]="{'color': house.Insoi  == '0'?'red':'green'}">
+                          <i *ngIf="house.Insoi  == '0'" class="fas fa-times"></i><i *ngIf="house.Insoi  != '0'"
+                            class="fas fa-check"></i>
                         </div>
-                        <div class="specificate-list">
-                            <div class="specificate-title">ติดถนน</div>
-                            <div class="specificate-info"
-                                [ngStyle]="{'color': house.Mainroad  == '0'?'red':'green'}">
-                                <i *ngIf="house.Mainroad  == '0'"
-                                    class="fas fa-times"></i><i
-                                    *ngIf="house.Mainroad  != '0'"
-                                    class="fas fa-check"></i>
-                            </div>
-                        </div>
-                        <div class="specificate-list">
-                            <div class="specificate-title">อยู่ในซอย</div>
-                            <div class="specificate-info"
-                                [ngStyle]="{'color': house.Insoi  == '0'?'red':'green'}">
-                                <i *ngIf="house.Insoi  == '0'" class="fas fa-times"></i><i
-                                    *ngIf="house.Insoi  != '0'" class="fas fa-check"></i>
-                            </div>
-                        </div>
-                        <div class="specificate-list">
-                            <div class="specificate-title">อื่นๆ</div>
-                            <div class="specificate-info">{{ house.Letc }} </div>
-                        </div>
+                      </div>
+                      <div class="specificate-list">
+                        <div class="specificate-title">อื่นๆ</div>
+                        <div class="specificate-info">{{ house.Letc }} </div>
+                      </div>
                     </div>
-                </div>
+                  </div>
                   <div class="col-md-8">
                     <div class="">
                       <div class="header-blog">ถนน</div>
@@ -494,8 +501,7 @@
                 </div>
               </div>
               <hr>
-              <div class="col-xs-12 "
-                *ngIf="house.PropertyType == 'บ้าน' || house.PropertyType =='อาคารพาณิชย์'">
+              <div class="col-xs-12 " *ngIf="house.PropertyType == 'บ้าน' || house.PropertyType =='อาคารพาณิชย์'">
                 <h3>สิ่งอำนวยความสดวก</h3>
                 <div class="container ">
                   <div class="row">
@@ -513,22 +519,20 @@
                         <div class="specificate-list">
                           <div class="specificate-title">พัดลม</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.afan  == '0'?'red':'green'}">
-                            <i *ngIf="house.afan  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.afan  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.afan  == '0'" class="fas fa-times"></i><i *ngIf="house.afan  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เครื่องฟอกอากาศ</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.AirPurifier  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.AirPurifier  == '0'?'red':'green'}">
                             <i *ngIf="house.AirPurifier  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.AirPurifier  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เครื่องทำน้ำอุ่น</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Waterheater  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Waterheater  == '0'?'red':'green'}">
                             <i *ngIf="house.Waterheater  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Waterheater  != '0'" class="fas fa-check"></i>
                           </div>
@@ -537,8 +541,8 @@
                           <div class="specificate-title">มีอินเตอร์เน็ตไร้สาย
                             (Wi-Fi)</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.WIFI  == '0'?'red':'green'}">
-                            <i *ngIf="house.WIFI  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.WIFI  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.WIFI  == '0'" class="fas fa-times"></i><i *ngIf="house.WIFI  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
@@ -550,70 +554,65 @@
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ตู้เย็น</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.refrigerator  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.refrigerator  == '0'?'red':'green'}">
                             <i *ngIf="house.refrigerator  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.refrigerator  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ไมโครเวฟ</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.microwave  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.microwave  == '0'?'red':'green'}">
                             <i *ngIf="house.microwave  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.microwave  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เตาแก๊ส</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.gasstove  == '0'?'red':'green'}">
-                            <i *ngIf="house.gasstove  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.gasstove  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.gasstove  == '0'?'red':'green'}">
+                            <i *ngIf="house.gasstove  == '0'" class="fas fa-times"></i><i *ngIf="house.gasstove  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ชุดโต๊ะเก้าอี้</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.TCset  == '0'?'red':'green'}">
-                            <i *ngIf="house.TCset  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.TCset  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.TCset  == '0'" class="fas fa-times"></i><i *ngIf="house.TCset  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ตู้เสื้อผ้า</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.wardrobe  == '0'?'red':'green'}">
-                            <i *ngIf="house.wardrobe  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.wardrobe  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.wardrobe  == '0'?'red':'green'}">
+                            <i *ngIf="house.wardrobe  == '0'" class="fas fa-times"></i><i *ngIf="house.wardrobe  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">โซฟา</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.sofa  == '0'?'red':'green'}">
-                            <i *ngIf="house.sofa  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.sofa  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.sofa  == '0'" class="fas fa-times"></i><i *ngIf="house.sofa  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เตียง</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.bed  == '0'?'red':'green'}">
-                            <i *ngIf="house.bed  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.bed  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.bed  == '0'" class="fas fa-times"></i><i *ngIf="house.bed  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ชั้นวาง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.shelves  == '0'?'red':'green'}">
-                            <i *ngIf="house.shelves  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.shelves  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.shelves  == '0'?'red':'green'}">
+                            <i *ngIf="house.shelves  == '0'" class="fas fa-times"></i><i *ngIf="house.shelves  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">กล้องวงจรปิด CCTV</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.CCTV  == '0'?'red':'green'}">
-                            <i *ngIf="house.CCTV  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.CCTV  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.CCTV  == '0'" class="fas fa-times"></i><i *ngIf="house.CCTV  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                       </div>
@@ -634,30 +633,27 @@
                         <div class="specificate-list">
                           <div class="specificate-title">สระว่ายน้ำ</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.pool  == '0'?'red':'green'}">
-                            <i *ngIf="house.pool  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.pool  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.pool  == '0'" class="fas fa-times"></i><i *ngIf="house.pool  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ฟิตเนส</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Fitness  == '0'?'red':'green'}">
-                            <i *ngIf="house.Fitness  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Fitness  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.Fitness  == '0'?'red':'green'}">
+                            <i *ngIf="house.Fitness  == '0'" class="fas fa-times"></i><i *ngIf="house.Fitness  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">พื้นที่ส่วนกลาง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Publicarea  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Publicarea  == '0'?'red':'green'}">
                             <i *ngIf="house.Publicarea  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Publicarea  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">รถรับส่ง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.ShuttleBus  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.ShuttleBus  == '0'?'red':'green'}">
                             <i *ngIf="house.ShuttleBus  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.ShuttleBus  != '0'" class="fas fa-check"></i>
                           </div>
@@ -688,14 +684,13 @@
                           <div class="specificate-title">ตู้เอทีเอ็ม / ธนาคาร
                           </div>
                           <div class="specificate-info" [ngStyle]="{'color': house.ATM  == '0'?'red':'green'}">
-                            <i *ngIf="house.ATM  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.ATM  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.ATM  == '0'" class="fas fa-times"></i><i *ngIf="house.ATM  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านเสริมสวย</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.BeautySalon  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.BeautySalon  == '0'?'red':'green'}">
                             <i *ngIf="house.BeautySalon  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.BeautySalon  != '0'" class="fas fa-check"></i>
                           </div>
@@ -703,37 +698,34 @@
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านสะดวกซื้อ</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.CStore  == '0'?'red':'green'}">
-                            <i *ngIf="house.CStore  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.CStore  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.CStore  == '0'" class="fas fa-times"></i><i *ngIf="house.CStore  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านทำผม</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Hairsalon  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Hairsalon  == '0'?'red':'green'}">
                             <i *ngIf="house.Hairsalon  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Hairsalon  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านซักรีด/ซักแห้ง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Laundry  == '0'?'red':'green'}">
-                            <i *ngIf="house.Laundry  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Laundry  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.Laundry  == '0'?'red':'green'}">
+                            <i *ngIf="house.Laundry  == '0'" class="fas fa-times"></i><i *ngIf="house.Laundry  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านค้า</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.Store  == '0'?'red':'green'}">
-                            <i *ngIf="house.Store  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Store  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.Store  == '0'" class="fas fa-times"></i><i *ngIf="house.Store  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ซุปเปอร์มาร์เก็ต</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Supermarket  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Supermarket  == '0'?'red':'green'}">
                             <i *ngIf="house.Supermarket  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Supermarket  != '0'" class="fas fa-check"></i>
                           </div>
@@ -761,22 +753,20 @@
                         <div class="specificate-list">
                           <div class="specificate-title">พัดลม</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.afan  == '0'?'red':'green'}">
-                            <i *ngIf="house.afan  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.afan  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.afan  == '0'" class="fas fa-times"></i><i *ngIf="house.afan  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เครื่องฟอกอากาศ</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.AirPurifier  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.AirPurifier  == '0'?'red':'green'}">
                             <i *ngIf="house.AirPurifier  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.AirPurifier  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เครื่องทำน้ำอุ่น</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Waterheater  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Waterheater  == '0'?'red':'green'}">
                             <i *ngIf="house.Waterheater  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Waterheater  != '0'" class="fas fa-check"></i>
                           </div>
@@ -785,8 +775,8 @@
                           <div class="specificate-title">มีอินเตอร์เน็ตไร้สาย
                             (Wi-Fi)</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.WIFI  == '0'?'red':'green'}">
-                            <i *ngIf="house.WIFI  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.WIFI  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.WIFI  == '0'" class="fas fa-times"></i><i *ngIf="house.WIFI  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
@@ -798,70 +788,65 @@
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ตู้เย็น</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.refrigerator  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.refrigerator  == '0'?'red':'green'}">
                             <i *ngIf="house.refrigerator  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.refrigerator  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ไมโครเวฟ</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.microwave  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.microwave  == '0'?'red':'green'}">
                             <i *ngIf="house.microwave  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.microwave  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เตาแก๊ส</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.gasstove  == '0'?'red':'green'}">
-                            <i *ngIf="house.gasstove  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.gasstove  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.gasstove  == '0'?'red':'green'}">
+                            <i *ngIf="house.gasstove  == '0'" class="fas fa-times"></i><i *ngIf="house.gasstove  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ชุดโต๊ะเก้าอี้</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.TCset  == '0'?'red':'green'}">
-                            <i *ngIf="house.TCset  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.TCset  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.TCset  == '0'" class="fas fa-times"></i><i *ngIf="house.TCset  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ตู้เสื้อผ้า</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.wardrobe  == '0'?'red':'green'}">
-                            <i *ngIf="house.wardrobe  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.wardrobe  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.wardrobe  == '0'?'red':'green'}">
+                            <i *ngIf="house.wardrobe  == '0'" class="fas fa-times"></i><i *ngIf="house.wardrobe  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">โซฟา</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.sofa  == '0'?'red':'green'}">
-                            <i *ngIf="house.sofa  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.sofa  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.sofa  == '0'" class="fas fa-times"></i><i *ngIf="house.sofa  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">เตียง</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.bed  == '0'?'red':'green'}">
-                            <i *ngIf="house.bed  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.bed  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.bed  == '0'" class="fas fa-times"></i><i *ngIf="house.bed  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ชั้นวาง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.shelves  == '0'?'red':'green'}">
-                            <i *ngIf="house.shelves  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.shelves  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.shelves  == '0'?'red':'green'}">
+                            <i *ngIf="house.shelves  == '0'" class="fas fa-times"></i><i *ngIf="house.shelves  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">กล้องวงจรปิด CCTV</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.CCTV  == '0'?'red':'green'}">
-                            <i *ngIf="house.CCTV  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.CCTV  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.CCTV  == '0'" class="fas fa-times"></i><i *ngIf="house.CCTV  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                       </div>
@@ -881,30 +866,27 @@
                         <div class="specificate-list">
                           <div class="specificate-title">สระว่ายน้ำ</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.pool  == '0'?'red':'green'}">
-                            <i *ngIf="house.pool  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.pool  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.pool  == '0'" class="fas fa-times"></i><i *ngIf="house.pool  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ฟิตเนส</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Fitness  == '0'?'red':'green'}">
-                            <i *ngIf="house.Fitness  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Fitness  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.Fitness  == '0'?'red':'green'}">
+                            <i *ngIf="house.Fitness  == '0'" class="fas fa-times"></i><i *ngIf="house.Fitness  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">พื้นที่ส่วนกลาง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Publicarea  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Publicarea  == '0'?'red':'green'}">
                             <i *ngIf="house.Publicarea  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Publicarea  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">รถรับส่ง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.ShuttleBus  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.ShuttleBus  == '0'?'red':'green'}">
                             <i *ngIf="house.ShuttleBus  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.ShuttleBus  != '0'" class="fas fa-check"></i>
                           </div>
@@ -912,8 +894,7 @@
                         <div class="specificate-list">
                           <div class="specificate-title">ตู้น้ำหยอดเหรียญ
                           </div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.WVmachine  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.WVmachine  == '0'?'red':'green'}">
                             <i *ngIf="house.WVmachine  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.WVmachine  != '0'" class="fas fa-check"></i>
                           </div>
@@ -921,24 +902,21 @@
                         <div class="specificate-list">
                           <div class="specificate-title">
                             เครื่องซักผ้าหยอดเหรียญ</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.CWmachine  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.CWmachine  == '0'?'red':'green'}">
                             <i *ngIf="house.CWmachine  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.CWmachine  != '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ลิฟต์</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Elevator  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Elevator  == '0'?'red':'green'}">
                             <i *ngIf="house.Elevator  === '0'" class="fas fa-times"></i><i
                               *ngIf="house.Elevator  !== '0'" class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ล๊อบบี้</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Elevator  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Elevator  == '0'?'red':'green'}">
                             <i *ngIf="house.Elevator  !== '1'" class="fas fa-times"></i><i
                               *ngIf="house.Elevator  === '1'" class="fas fa-check"></i>
                           </div>
@@ -947,8 +925,8 @@
                           <div class="specificate-title">กล้องวงจรปิด</div>
                           <div class="specificate-info" [ngStyle]="{'color':
                           house.CCTV == '0'?'red':'green'}">
-                            <i *ngIf="house.CCTV  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.CCTV  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.CCTV  == '0'" class="fas fa-times"></i><i *ngIf="house.CCTV  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                       </div>
@@ -958,41 +936,37 @@
                       <div class="specificate-panel">
                         <div class="specificate-list">
                           <div class="specificate-title">ห้องครัว</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Kitchen  == '0'?'red':'green'}">
-                            <i *ngIf="house.Kitchen  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Kitchen != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.Kitchen  == '0'?'red':'green'}">
+                            <i *ngIf="house.Kitchen  == '0'" class="fas fa-times"></i><i *ngIf="house.Kitchen != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ห้องนั่งเล่น</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.LivingR  == '0'?'red':'green'}">
-                            <i *ngIf="house.LivingR  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.LivingR  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.LivingR  == '0'?'red':'green'}">
+                            <i *ngIf="house.LivingR  == '0'" class="fas fa-times"></i><i *ngIf="house.LivingR  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ห้องจัดงาน</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.EventR  == '0'?'red':'green'}">
-                            <i *ngIf="house.EventR  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.EventR  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.EventR  == '0'" class="fas fa-times"></i><i *ngIf="house.EventR  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ห้องประชุม</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.MeetingR  == '0'?'red':'green'}">
-                            <i *ngIf="house.MeetingR  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.MeetingR  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.MeetingR  == '0'?'red':'green'}">
+                            <i *ngIf="house.MeetingR  == '0'" class="fas fa-times"></i><i *ngIf="house.MeetingR  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ระเบียง</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Balcony  == '0'?'red':'green'}">
-                            <i *ngIf="house.Balcony  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Balcony  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.Balcony  == '0'?'red':'green'}">
+                            <i *ngIf="house.Balcony  == '0'" class="fas fa-times"></i><i *ngIf="house.Balcony  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                       </div>
@@ -1002,14 +976,13 @@
                           <div class="specificate-title"> ตู้เอทีเอ็ม /
                             ธนาคาร</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.ATM  == '0'?'red':'green'}">
-                            <i *ngIf="house.ATM  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.ATM  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.ATM  == '0'" class="fas fa-times"></i><i *ngIf="house.ATM  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านเสริมสวย</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.BeautySalon  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.BeautySalon  == '0'?'red':'green'}">
                             <i *ngIf="house.BeautySalon  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.BeautySalon  != '0'" class="fas fa-check"></i>
                           </div>
@@ -1017,14 +990,13 @@
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านสะดวกซื้อ</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.CStore  == '0'?'red':'green'}">
-                            <i *ngIf="house.CStore  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.CStore  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.CStore  == '0'" class="fas fa-times"></i><i *ngIf="house.CStore  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านทำผม</div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Hairsalon  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Hairsalon  == '0'?'red':'green'}">
                             <i *ngIf="house.Hairsalon  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Hairsalon  != '0'" class="fas fa-check"></i>
                           </div>
@@ -1032,24 +1004,22 @@
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านซักรีด/ซักแห้ง
                           </div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Laundry  == '0'?'red':'green'}">
-                            <i *ngIf="house.Laundry  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Laundry  != '0'" class="fas fa-check"></i>
+                          <div class="specificate-info" [ngStyle]="{'color': house.Laundry  == '0'?'red':'green'}">
+                            <i *ngIf="house.Laundry  == '0'" class="fas fa-times"></i><i *ngIf="house.Laundry  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ร้านค้า</div>
                           <div class="specificate-info" [ngStyle]="{'color': house.Store  == '0'?'red':'green'}">
-                            <i *ngIf="house.Store  == '0'" class="fas fa-times"></i><i
-                              *ngIf="house.Store  != '0'" class="fas fa-check"></i>
+                            <i *ngIf="house.Store  == '0'" class="fas fa-times"></i><i *ngIf="house.Store  != '0'"
+                              class="fas fa-check"></i>
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ซุปเปอร์มาร์เก็ต
                           </div>
-                          <div class="specificate-info"
-                            [ngStyle]="{'color': house.Supermarket  == '0'?'red':'green'}">
+                          <div class="specificate-info" [ngStyle]="{'color': house.Supermarket  == '0'?'red':'green'}">
                             <i *ngIf="house.Supermarket  == '0'" class="fas fa-times"></i><i
                               *ngIf="house.Supermarket  != '0'" class="fas fa-check"></i>
                           </div>
