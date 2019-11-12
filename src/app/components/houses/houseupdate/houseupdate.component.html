@@ -48,10 +48,6 @@
                       <input style="border-radius: 30px 30px 30px 30px;" type="text" id="AnnounceTH"
                         class="form-control" formControlName="AnnounceTH" placeholder="หัวข้อประกาศ"
                         value="{{house.PropertyType}}" readonly>
-                      <div *ngIf="submitted && f.PropertyType.errors" class="invalid-feedback">
-                        <div *ngIf="f.PropertyType.errors.required">กรุณากรอกข้อมูล
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -66,7 +62,7 @@
                     <div>
                       <input style="border-radius: 30px 30px 30px 30px;" type="text" id="AnnounceTH"
                         class="form-control" formControlName="AnnounceTH" placeholder="หัวข้อประกาศ"
-                        value="{{house.AnnounceTH}}">
+                        value="{{house.AnnounceTH}}" (change)="onGetAnnounceTH($event.target.value)">
                     </div>
                   </div>
                 </div>
@@ -81,7 +77,7 @@
                     <div cl>
                       <input style="border-radius: 30px 30px 30px 30px;" type="text" id="CodeDeed"
                         class="form-control search-input" formControlName="CodeDeed" placeholder="รหัสโฉนดที่ดิน"
-                        value="{{house.CodeDeed}}">
+                        value="{{house.CodeDeed}}" (change)="onGetCodeDeed($event.target.value)">
 
                     </div>
                   </div>
@@ -97,25 +93,26 @@
                   <div class="col-md-8 ">
                     <div class="row">
                       <div class="col-sm-4">
-
+                        <a><small>ราคาขาย</small></a>
                         <input style="border-radius: 30px 30px 30px 30px;" id="SellPrice" class="form-control "
                           (keydown)="numberCheck($event)" (keyup)="CommaFormattedS($event)" placeholder="คนขายกำหนด"
-                          formControlName="SellPrice" value="{{house.SellPrice}}">
-                        <div *ngIf="submitted && f.SellPrice.errors" class="invalid-feedback">
-                          <div *ngIf="f.SellPrice.errors.required">กรุณากรอกข้อมูล
-                          </div>
-                        </div>
-                      </div>|
+                          formControlName="SellPrice" value="{{house.SellPrice | number}}"
+                          (change)="onGetSell($event.target.value)">
+                      </div>
                       <div class="col-sm-4">
+                        <a><small>ราคาประเมิน</small></a>
                         <input style="border-radius: 30px 30px 30px 30px;" id="Costestimate" class="form-control number"
                           (keydown)="numberCheck($event)" (keyup)="CommaFormattedB($event)" placeholder="ธนาคารประเมิน"
-                          formControlName="Costestimate" value="{{house.CostestimateB}}">
+                          formControlName="Costestimate" value="{{house.CostestimateB | number}}"
+                          (change)="onGetSellB($event.target.value)">
 
-                      </div>|
+                      </div>
                       <div class="col-sm-3">
+                        <a><small>ราคาตลาด</small></a>
                         <input style="border-radius: 30px 30px 30px 30px;" id="MarketPrice" class="form-control"
                           (keydown)="numberCheck($event)" (keyup)="CommaFormattedM($event)" placeholder="ราคาตลาด"
-                          formControlName="MarketPrice" value="{{house.MarketPrice}}">
+                          formControlName="MarketPrice" value="{{house.MarketPrice | number}}"
+                          (change)="onGetSellM($event.target.value)">
                       </div>
                     </div>
                   </div>
@@ -137,7 +134,8 @@
                               <div class="col-sm-10">
                                 <input (change)="onPIPE()" style="border-radius: 30px 30px 30px 30px;" type="number"
                                   id="HouseArea" class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)"
-                                  formControlName="HouseArea" value="{{house.HouseArea}}">
+                                  formControlName="HouseArea" value="{{house.HouseArea}}"
+                                  (change)="onGetHouseArea($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -151,7 +149,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="10"
                                   step="1" id="BathRoom" placeholder="จำนวนห้องน้ำ" class="form-control"
-                                  formControlName="BathRoom" value="{{house.BathRoom}}">
+                                  formControlName="BathRoom" value="{{house.BathRoom}}"
+                                  (change)="onGetBathRoom($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -165,7 +164,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="10"
                                   step="1" id="BedRoom" class="form-control" placeholder="จำนวนห้องนอน"
-                                  formControlName="BedRoom" value="{{house.BedRoom}}">
+                                  formControlName="BedRoom" value="{{house.BedRoom}}"
+                                  (change)="onGetBedRoom($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -178,7 +178,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="20"
                                   step="1" id="CarPark" class="form-control" placeholder="จำนวนที่จอดรถ"
-                                  formControlName="CarPark" value="{{house.CarPark}}">
+                                  formControlName="CarPark" value="{{house.CarPark}}"
+                                  (change)="onGetCarPark($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -193,7 +194,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="10"
                                   step="1" id="Floor" class="form-control" placeholder="จำนวนชั้น"
-                                  formControlName="Floor" value="{{house.Floor}}">
+                                  formControlName="Floor" value="{{house.Floor}}"
+                                  (change)="onGetFloor($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -205,7 +207,8 @@
                               </div>
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" class="form-control"
-                                  placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee" value="{{house.MFee}}">
+                                  placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee" value="{{house.MFee}}"
+                                  (change)="onGetMFee($event.target.value)">
 
                               </div>
                             </div>
@@ -225,13 +228,13 @@
                     </div>
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
-                        <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
-                          value="{{house.HomeCondition}}">
+                        <input type="radio" id="newhouse" value="ใหม่" formControlName="HomeCondition"
+                          [(ngModel)]="credentials.HomeCondition">
                         อาคารใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                          value="{{house.HomeCondition}}">
+                          [(ngModel)]="credentials.HomeCondition">
                         อาคารมือสอง
                       </div>
                     </div>
@@ -245,7 +248,8 @@
                     </div>
                     <div class="col-md-2 ">
                       <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" placeholder="สถานะทรัพย์สิน"
-                        class="form-control" formControlName="AsseStatus" value="house.AsseStatus">
+                        class="form-control" formControlName="AsseStatus" value="{{house.AsseStatus}}"
+                        (change)="onGetAsseStatus($event.target.value)">
                         <option value="ว่าง" selected>
                           ว่าง</option>
                         <option value="จำนอง" selected>
@@ -262,7 +266,7 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div>
-                        <label>วันที่ก่อสร้าง {{ house.BuildFD }} / {{ house.BuildFM }} / {{ house.BuildFY }}
+                        <label>วันที่ก่อสร้าง
                           :</label><i class="reqiureinput">*</i>
                       </div>
                     </div>
@@ -270,8 +274,8 @@
                       <div class="row">
                         <div class="col-md-3">
                           <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
-                            formControlName="BuildFD" value="{{house.BuildFD}}">
-                            <option>- วัน-</option>
+                            formControlName="BuildFD" value="{{house.BuildFD}}"
+                            (change)="onGetBuildFD($event.target.value)">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -307,8 +311,8 @@
                         </div>/
                         <div class="col-md-3">
                           <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
-                            formControlName="BuildFM" value="{{house.BuildFM}}">
-                            <option>- เดือน -</option>
+                            formControlName="BuildFM" value="{{house.BuildFM}}"
+                            (change)="onGetBuildFM($event.target.value)">
                             <option value="มกราคม">มกราคม</option>
                             <option value="กุมภาพัน">กุมภาพัน</option>
                             <option value="มีนาคม">มีนาคม</option>
@@ -327,16 +331,10 @@
                           <select style="border-radius: 30px 30px 30px 30px;" id="BuildFY" class="form-control"
                             formControlName="BuildFY" (change)="onGetbuildage($event.target.value)"
                             value="{{house.BuildFY}}">
-                            <option>- ปี -</option>
                             <option *ngFor="let year of years" value="{{year}}">
                               {{year}}
                             </option>
-
                           </select>
-                          <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
-                            <div *ngIf="f.BuildFY.errors.required">
-                              กรุณากรอกข้อมูล</div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -353,8 +351,6 @@
                       <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200" step="1"
                         id="BuildingAge" class="form-control" placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge"
                         value="{{buildage}}" readonly>
-
-
                     </div>
                   </div>
                   <br>
@@ -368,9 +364,8 @@
                     <div class="col-md-4 ">
                       <div>
                         <select style="border-radius: 30px 30px 30px 30px;" id="Directions" class="form-control"
-                          formControlName="Directions" [ngClass]="{ 'is-invalid': submitted && f.Directions.errors }"
-                          [(ngModel)]="credentials.Directions">
-                          <option>- ทิฺศ -</option>
+                          formControlName="Directions" value="{{house.Directions}}"
+                          (change)="onGetDirections($event.target.value)">
                           <option value="ทิศเหนือ">ทิศเหนือ</option>
                           <option value="ทิศใต้">ทิศใต้</option>
                           <option value="ทิศตะวันออก">ทิศตะวันออก</option>
@@ -386,10 +381,6 @@
                           </option>
 
                         </select>
-                        <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
-                          <div *ngIf="f.Directions.errors.required">
-                            กรุณากรอกข้อมูล</div>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -411,7 +402,7 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" id="HouseArea"
                                   class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)" formControlName="HouseArea"
-                                  value="{{house.HouseArea}}">
+                                  value="{{house.HouseArea}}" (change)="onGetHouseArea($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -424,7 +415,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200"
                                   step="1" id="BathRoom" class="form-control" placeholder="จำนวนห้องน้ำ"
-                                  formControlName="BathRoom" value="{{house.BathRoom}}">
+                                  formControlName="BathRoom" value="{{house.BathRoom}}"
+                                  (change)="onGetBathRoom($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -437,7 +429,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200"
                                   step="1" id="BedRoom" class="form-control" placeholder="จำนวนห้องนอน"
-                                  formControlName="BedRoom" value="{{house.BedRoom}}">
+                                  formControlName="BedRoom" value="{{house.BedRoom}}"
+                                  (change)="onGetBedRoom($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -450,7 +443,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200"
                                   step="1" id="CarPark" class="form-control" placeholder="จำนวนที่จอดรถ"
-                                  formControlName="CarPark" value="{{house.CarPark}}">
+                                  formControlName="CarPark" value="{{house.CarPark}}"
+                                  (change)="onGetCarPark($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -465,7 +459,7 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Floor"
                                   class="form-control" placeholder="ชั้นที่อยู่" formControlName="Floor"
-                                  value="{{house.Floor}}">
+                                  (change)="onGetFloor($event.target.value)" value="{{house.Floor}}">
                               </div>
                             </div>
                           </div>
@@ -478,7 +472,7 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" id="MFee"
                                   class="form-control" placeholder="ค่าใช้จ่ายส่วนกลาง" formControlName="MFee"
-                                  value="{{house.MFee}}">
+                                  (change)="onGetMFee($event.target.value)" value="{{house.MFee}}">
 
                               </div>
                             </div>
@@ -498,13 +492,13 @@
                     </div>
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
-                        <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
-                          value="{{house.HomeCondition}}">
+                        <input type="radio" id="newhouse" value="ใหม่" formControlName="HomeCondition"
+                          [(ngModel)]="credentials.HomeCondition">
                         คอนโดใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                          value="{{house.HomeCondition}}">
+                          [(ngModel)]="credentials.HomeCondition">
                         คอนโดมือสอง
                       </div>
                     </div>
@@ -519,7 +513,8 @@
                     <div class="col-md-2 ">
 
                       <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" placeholder="สถานะทรัพย์สิน"
-                        class="form-control" formControlName="AsseStatus" value="{{house.AsseStatus}}">
+                        class="form-control" formControlName="AsseStatus" value="{{house.AsseStatus}}"
+                        (change)="onGetAsseStatus($event.target.value)">
                         <option value="ว่าง" selected>
                           ว่าง</option>
                         <option value="จำนอง" selected>
@@ -535,7 +530,7 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div>
-                        <label>วันที่ก่อสร้าง {{ house.BuildFD }} / {{ house.BuildFM }} / {{ house.BuildFY }}
+                        <label>วันที่ก่อสร้าง
                           :</label><i class="reqiureinput">*</i>
                       </div>
                     </div>
@@ -543,8 +538,8 @@
                       <div class="row">
                         <div class="col-md-3">
                           <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
-                            formControlName="BuildFD" value="{{house.BuildFD}}">
-                            <option>- วัน-</option>
+                            formControlName="BuildFD" value="{{house.BuildFD}}"
+                            (change)="onGetBuildFD($event.target.value)">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -580,8 +575,8 @@
                         </div>/
                         <div class="col-md-3">
                           <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
-                            formControlName="BuildFM" value="{{house.BuildFM}}">
-                            <option>- เดือน -</option>
+                            formControlName="BuildFM" value="{{house.BuildFM}}"
+                            (change)="onGetBuildFM($event.target.value)">
                             <option value="มกราคม">มกราคม</option>
                             <option value="กุมภาพัน">กุมภาพัน</option>
                             <option value="มีนาคม">มีนาคม</option>
@@ -606,10 +601,6 @@
                             </option>
 
                           </select>
-                          <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
-                            <div *ngIf="f.BuildFY.errors.required">
-                              กรุณากรอกข้อมูล</div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -626,8 +617,6 @@
                       <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200" step="1"
                         id="BuildingAge" class="form-control" placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge"
                         value="{{buildage}}" readonly>
-
-
                     </div>
                   </div>
                   <br>
@@ -641,8 +630,8 @@
                     <div class="col-md-4 ">
                       <div>
                         <select style="border-radius: 30px 30px 30px 30px;" id="Directions" class="form-control"
-                          formControlName="Directions" value="{{house.Directions}}">
-                          <option>- ทิฺศ -</option>
+                          formControlName="Directions" value="{{house.Directions}}"
+                          (change)="onGetDirections($event.target.value)">
                           <option value="ทิศเหนือ">ทิศเหนือ</option>
                           <option value="ทิศใต้">ทิศใต้</option>
                           <option value="ทิศตะวันออก">ทิศตะวันออก</option>
@@ -679,7 +668,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
                                   step="1" id="BathRoom" class="form-control" placeholder="จำนวนห้องน้ำ"
-                                  formControlName="BathRoom" value="{{house.BathRoom}}">
+                                  formControlName="BathRoom" value="{{house.BathRoom}}"
+                                  (change)="onGetBathRoom($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -692,7 +682,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
                                   step="1" id="BedRoom" class="form-control" placeholder="จำนวนห้องนอน"
-                                  formControlName="BedRoom" value="{{house.BedRoom}}">
+                                  formControlName="BedRoom" value="{{house.BedRoom}}"
+                                  (change)="onGetBedRoom($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -705,7 +696,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
                                   step="1" id="CarPark" class="form-control" placeholder="จำนวนที่จอดรถ"
-                                  formControlName="CarPark" value="{{house.CarPark}}">
+                                  formControlName="CarPark" value="{{house.CarPark}}"
+                                  (change)="onGetCarPark($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -732,7 +724,8 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="100"
                                   step="1" id="Floor" class="form-control" placeholder="จำนวนชั้นของบ้าน"
-                                  formControlName="Floor" value="{{house.Floor}}">
+                                  formControlName="Floor" value="{{house.Floor}}"
+                                  (change)="onGetFloor($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -751,7 +744,7 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandR"
                                   class="form-control" placeholder="จำนวนไร" formControlName="LandR"
-                                  value="{{house.LandR}}">
+                                  value="{{house.LandR}}" (change)="onGetLandR($event.target.value)">
 
                               </div>
                             </div>
@@ -765,21 +758,21 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandG"
                                   class="form-control" placeholder="จำนวนงาน" formControlName="LandG"
-                                  value="{{house.LandG}}">
+                                  value="{{house.LandG}}" (change)="onGetLandG($event.target.value)">
 
                               </div>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="row">
-                              <div class="col-sm-6">
+                              <div class="col-sm-8">
                                 <i class="fas fa-ruler"></i>
                                 ที่ดิน(ตร.ว.)<i class="reqiureinput">*</i>
                               </div>
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandWA"
                                   class="form-control" placeholder="จำนวนตารางวา" formControlName="LandWA"
-                                  value="{{house.LandWA}}">
+                                  value="{{house.LandWA}}" (change)="onGetLandWA($event.target.value)">
 
                               </div>
                             </div>
@@ -794,18 +787,18 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div>
-                        <label>สภาพบ้าน : </label><i class="reqiureinput">"{{house.HomeCondition}}"</i>
+                        <label>สภาพบ้าน : </label><i class="reqiureinput">*</i>
                       </div>
                     </div>
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
                         <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
-                          value="{{house.HomeCondition}}">
+                          [(ngModel)]="credentials.HomeCondition">
                         บ้านใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                          value="{{house.HomeCondition}}">
+                          [(ngModel)]="credentials.HomeCondition">
                         บ้านมือสอง
                       </div>
                     </div>
@@ -814,13 +807,14 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div>
-                        <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">"{{house.AsseStatus}}"</i>
+                        <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">*</i>
                       </div>
                     </div>
                     <div class="col-md-2 ">
 
                       <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" placeholder="สถานะทรัพย์สิน"
-                        class="form-control" formControlName="AsseStatus" value="{{house.AsseStatus}}">
+                        class="form-control" formControlName="AsseStatus" value="{{house.AsseStatus}}"
+                        (change)="onGetAsseStatus($event.target.value)">
                         <option value="ว่าง" selected>
                           ว่าง</option>
                         <option value="จำนอง" selected>
@@ -837,16 +831,15 @@
                     <div class="col-md-4">
                       <div>
                         <label>วันที่ก่อสร้างเสร็จ :
-                        </label><i class="reqiureinput"> "{{ house.BuildFD }} / {{ house.BuildFM }} /
-                          {{ house.BuildFY }}"</i>
+                        </label><i class="reqiureinput">*</i>
                       </div>
                     </div>
                     <div class="col-md-8 ">
                       <div class="row">
                         <div class="col-md-3">
                           <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
-                            formControlName="BuildFD" value="{{house.BuildFD}}">
-                            <option>- วัน-</option>
+                            formControlName="BuildFD" value="{{house.BuildFD}}"
+                            (change)="onGetBuildFD($event.target.value)">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -882,8 +875,8 @@
                         </div>/
                         <div class="col-md-3">
                           <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
-                            formControlName="BuildFM" value="{{house.BuildFM}}">
-                            <option>- เดือน -</option>
+                            formControlName="BuildFM" value="{{house.BuildFM}}"
+                            (change)="onGetBuildFM($event.target.value)">
                             <option value="มกราคม">มกราคม</option>
                             <option value="กุมภาพัน">กุมภาพัน</option>
                             <option value="มีนาคม">มีนาคม</option>
@@ -922,7 +915,7 @@
 
                       <input style="border-radius: 30px 30px 30px 30px;" type="number" min="0" max="200" step="1"
                         id="BuildingAge" class="form-control" placeholder="อายุอาคาร(ปี)" formControlName="BuildingAge"
-                        value="{{house.BuildingAge}}" readonly>
+                        value="{{buildage}}" readonly>
 
 
                     </div>
@@ -938,8 +931,8 @@
                     <div class="col-md-4 ">
                       <div>
                         <select style="border-radius: 30px 30px 30px 30px;" id="Directions" class="form-control"
-                          formControlName="Directions" value="{{ house.Directions }}">
-                          <option>- ทิฺศ -</option>
+                          formControlName="Directions" value="{{ house.Directions }}"
+                          (change)="onGetDirections($event.target.value)">
                           <option value="ทิศเหนือ">ทิศเหนือ</option>
                           <option value="ทิศใต้">ทิศใต้</option>
                           <option value="ทิศตะวันออก">ทิศตะวันออก</option>
@@ -964,6 +957,1148 @@
           </div>
         </div>
       </form>
+      <div class="row" *ngIf="house.PropertyType == 'คอนโด'">
+        <div class="col-md-8">
+          <h3>สิ่งอำนวยความสะดวก</h3>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div class="container jumbotron ">
+                    <div class="row ">
+                      <div class="col-md-6 ">
+                        <h4>สิ่งอำนวยความสะดวกภายในห้อง</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="airconditioner"
+                              [(ngModel)]="credentials.airconditioner">
+                            เครื่องปรับอากาศ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="afan" [(ngModel)]="credentials.afan">
+                            พัดลม
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="AirPurifier"
+                              [(ngModel)]="credentials.AirPurifier">
+                            เครื่องฟอกอากาศ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Waterheater"
+                              [(ngModel)]="credentials.Waterheater">
+                            เครื่องทำน้ำอุ่น
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="WIFI" [(ngModel)]="credentials.WIFI">
+                            มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="TV" [(ngModel)]="credentials.TV">
+                            เคเบิลทีวี
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="refrigerator"
+                              [(ngModel)]="credentials.refrigerator">
+                            ตู้เย็น
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="microwave" [(ngModel)]="credentials.microwave">
+                            ไมโครเวฟ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="gasstove" [(ngModel)]="credentials.gasstove">
+                            เตาแก๊ส
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="wardrobe" [(ngModel)]="credentials.wardrobe">
+                            ตู้เสื้อผ้า
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="TCset" [(ngModel)]="credentials.TCset">
+                            ชุดโต๊ะเก้าอี้
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="sofa" [(ngModel)]="credentials.sofa">
+                            โซฟา
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="bed" [(ngModel)]="credentials.bed">
+                            เตียง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="shelves" [(ngModel)]="credentials.shelves">
+                            ชั้นวาง
+                          </div>
+
+
+                        </div>
+                        <br>
+                        <h4 style="color: cornflowerblue;">
+                          สิ่งอำนวยความสะดวกส่วนกลาง</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Securityguard"
+                              [(ngModel)]="credentials.Securityguard">
+                            เจ้าหน้าที่รักษาความปลอดภัย
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="pool" [(ngModel)]="credentials.pool">
+                            สระว่ายน้ำ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Fitness" [(ngModel)]="credentials.Fitness">
+                            ฟิตเนส
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Publicarea"
+                              [(ngModel)]="credentials.Publicarea">
+                            พื้นที่ส่วนกลาง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="ShuttleBus"
+                              [(ngModel)]="credentials.ShuttleBus">
+                            รถรับส่ง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="ShuttleBus"
+                              [(ngModel)]="credentials.WVmachine">
+                            ตู้น้ำหยอดเหรียญ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Publicarea"
+                              [(ngModel)]="credentials.CWmachine">
+                            เครื่องซักผ้าหยอดเหรียญ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Publicarea" [(ngModel)]="credentials.Elevator">
+                            ลิฟต์
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Publicarea" [(ngModel)]="credentials.Lobby">
+                            ล๊อบบี้
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="CCTV" [(ngModel)]="credentials.CCTV">
+                            กล้องวงจรปิด CCTV
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-md-6 ">
+                        <h4 style="color: cornflowerblue;">ทั่วไป</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Kitchen" [(ngModel)]="credentials.Kitchen">
+                            ห้องครัว
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="LivingR" [(ngModel)]="credentials.LivingR">
+                            ห้องนั่งเล่น
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="EventR" [(ngModel)]="credentials.EventR">
+                            ห้องจัดงาน
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="MeetingR" [(ngModel)]="credentials.MeetingR">
+                            ห้องประชุม
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Balcony" [(ngModel)]="credentials.Balcony">
+                            ระเบียง
+                          </div>
+                        </div>
+                        <br>
+                        <h4 style="color: cornflowerblue;">
+                          สิ่งอำนวยความสะดวกบริเวณคอนโด</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="ATM" [(ngModel)]="credentials.ATM">
+                            ตู้เอทีเอ็ม /
+                            ธนาคาร
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="BeautySalon"
+                              [(ngModel)]="credentials.BeautySalon">
+                            ร้านเสริมสวย
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="CStore" [(ngModel)]="credentials.CStore">
+                            ร้านสะดวกซื้อ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Hairsalon" [(ngModel)]="credentials.Hairsalon">
+                            ร้านทำผม
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Laundry" [(ngModel)]="credentials.Laundry">
+                            ร้านซักรีด/ซักแห้ง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Store" [(ngModel)]="credentials.Store">
+                            ร้านค้า
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Supermarket"
+                              [(ngModel)]="credentials.Supermarket">
+                            ซุปเปอร์มาร์เก็ต
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <h3>ทำเล</h3>
+          <div class="row">
+            <div class="container jumbotron ">
+              <div class="row ">
+                <div class="col-md-12 ">
+                  <h4>ทำเล</h4>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Blind" [(ngModel)]="credentials.Blind">
+                    ที่ตาบอด
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Neareducation" [(ngModel)]="credentials.Neareducation">
+                    ใกล้สถานศึกษา
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" [(ngModel)]="credentials.Cenmarket">
+                    ใกล้ศูนย์การค้า
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
+                    ใกล้ตลาด
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
+                    ใกล้รถไฟฟ้า
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Mainroad" [(ngModel)]="credentials.Mainroad">ติดถนน
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Insoi" [(ngModel)]="credentials.Insoi"> อยู่ในซอย
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
+                  </div>
+                  <div *ngIf="onther " class="col-sm-12">
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Letc" class="form-control"
+                      placeholder="โปรดระบุ" name="Letc" [(ngModel)]="credentials.Letc">
+                  </div>
+                  <h4>สถานะถนน</h4>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType">โคลน
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    ยางมะตอย
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="คอนกรีต" checked name="RoadType"
+                      [(ngModel)]="credentials.RoadType"> คอนกรีต
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
+                  </div>
+                  <div *ngIf="Ronther " class="col-sm-12">
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
+                      placeholder="โปรดระบุ" name="RoadType" [(ngModel)]="credentials.RoadType">
+                  </div>
+
+                  <div class="col-sm-12">
+                    <br>
+                    <label>ความกว้างถนน</label>
+                    <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control"
+                      value="{{house.RoadWide}}" (change)="onGetRoadWide($event.target.value)">
+                      <option value="ซอยแคบ">ซอยแคบ</option>
+                      <option value="1 เมตร">1 เมตร</option>
+                      <option value="2 เมตร">2 เมตร</option>
+                      <option value="4 เมตร">4 เมตร</option>
+                      <option value="8 เมตร">8 เมตร</option>
+                      <option value="12 เมตร">12 เมตร</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="house.PropertyType == 'อาคารพาณิชย์'">
+        <div class="col-md-8">
+          <h3>สิ่งอำนวยความสะดวก</h3>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div class="container jumbotron ">
+                    <div class="row ">
+                      <div class="col-md-6 ">
+                        <h4>เฟอร์นิเจอร์</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1"  [checked]="house.airconditioner == 'true'" name="airconditioner"
+                              [(ngModel)]="credentials.airconditioner">
+                            เครื่องปรับอากาศ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="afan" [(ngModel)]="credentials.afan">
+                            พัดลม
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="AirPurifier"
+                              [(ngModel)]="credentials.AirPurifier">
+                            เครื่องฟอกอากาศ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Waterheater"
+                              [(ngModel)]="credentials.Waterheater"> เครื่องทำน้ำอุ่น
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="WIFI" [(ngModel)]="credentials.WIFI">
+                            มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="TV" [(ngModel)]="credentials.TV">
+                            เคเบิลทีวี
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="refrigerator"
+                              [(ngModel)]="credentials.refrigerator">
+                            ตู้เย็น
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="microwave" [(ngModel)]="credentials.microwave">
+                            ไมโครเวฟ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="gasstove" [(ngModel)]="credentials.gasstove">
+                            เตาแก๊ส
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="wardrobe" [(ngModel)]="credentials.wardrobe">
+                            ตู้เสื้อผ้า
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="TCset" [(ngModel)]="credentials.TCset">
+                            ชุดโต๊ะเก้าอี้
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="sofa" [(ngModel)]="credentials.sofa">
+                            โซฟา
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="bed" [(ngModel)]="credentials.bed">
+                            เตียง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="shelves" [(ngModel)]="credentials.shelves">
+                            ชั้นวาง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="CCTV" [(ngModel)]="credentials.CCTV">
+                            กล้องวงจรปิด CCTV
+                          </div>
+
+                        </div>
+
+                      </div>
+                      <div class="col-md-6 ">
+                        <h4 style="color: cornflowerblue;">
+                          สิ่งอำนวยความสะดวกบริเวณอาคาร</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Securityguard"
+                              [(ngModel)]="credentials.Securityguard">
+                            เจ้าหน้าที่รักษาความปลอดภัย
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Publicarea"
+                              [(ngModel)]="credentials.Publicarea">
+                            พื้นที่ส่วนกลาง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="ATM" [(ngModel)]="credentials.ATM">
+                            ตู้เอทีเอ็ม /
+                            ธนาคาร
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="BeautySalon"
+                              [(ngModel)]="credentials.BeautySalon">
+                            ร้านเสริมสวย
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="CStore" [(ngModel)]="credentials.CStore">
+                            ร้านสะดวกซื้อ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Hairsalon" [(ngModel)]="credentials.Hairsalon">
+                            ร้านทำผม
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Laundry" [(ngModel)]="credentials.Laundry">
+                            ร้านซักรีด/ซักแห้ง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Store" [(ngModel)]="credentials.Store">
+                            ร้านค้า
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Supermarket"
+                              [(ngModel)]="credentials.Supermarket">
+                            ซุปเปอร์มาร์เก็ต
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <h3>ทำเล</h3>
+          <div class="row">
+            <div class="container jumbotron ">
+              <div class="row ">
+                <div class="col-md-12 ">
+                  <h4>ทำเล</h4>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Blind" [(ngModel)]="credentials.Blind"> ที่ตาบอด
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Neareducation" [(ngModel)]="credentials.Neareducation">
+                    ใกล้สถานศึกษา
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" [(ngModel)]="credentials.Cenmarket">
+                    ใกล้ศูนย์การค้า
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market"> ใกล้ตลาด
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Mainroad" [(ngModel)]="credentials.Mainroad"> ติดถนน
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Insoi" [(ngModel)]="credentials.Insoi"> อยู่ในซอย
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
+                  </div>
+                  <div *ngIf="onther " class="col-sm-12">
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Letc" class="form-control"
+                      placeholder="โปรดระบุ" name="Letc" [(ngModel)]="credentials.Letc">
+                  </div>
+                  <h4>สถานะถนน</h4>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType"> โคลน
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    ยางมะตอย
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="คอนกรีต" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    คอนกรีต
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
+                  </div>
+                  <div *ngIf="Ronther " class="col-sm-12">
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
+                      placeholder="โปรดระบุ" name="RoadType" [(ngModel)]="credentials.RoadType">
+                  </div>
+
+                  <div class="col-sm-12">
+                    <br>
+                    <label>ความกว้างถนน</label>
+                    <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control"
+                      value="{{house.RoadWide}}" (change)="onGetRoadWide($event.target.value)">
+                      <option value="ซอยแคบ">ซอยแคบ</option>
+                      <option value="1 เมตร">1 เมตร</option>
+                      <option value="2 เมตร">2 เมตร</option>
+                      <option value="4 เมตร">4 เมตร</option>
+                      <option value="8 เมตร">8 เมตร</option>
+                      <option value="12 เมตร">12 เมตร</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-12">
+                    <br>
+                    <label>ระดับพื้นดิน</label>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <input type="radio" id="GroundLevel" value="สูงกว่าถนน" name="GroundLevel"
+                          [(ngModel)]="credentials.GroundLevel"> สูงกว่าถนน
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน" name="GroundLevel"
+                          [(ngModel)]="credentials.GroundLevel"> ต่ำกว่าถนน
+                      </div>
+
+                    </div>
+                    <br>
+                    <label for="">ระดับพื้นดินจากถนน (เมตร)</label>
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="GroundValue" class="form-control"
+                      value="{{house.GroundValue}}" placeholder="ระดับพื้นดินจากถนน (เมตร)"
+                      (change)="onGetGroundValue($event.target.value)">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="house.PropertyType == 'บ้าน'">
+        <div class="col-md-8">
+          <h3>สิ่งอำนวยความสะดวก</h3>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div class="container jumbotron ">
+                    <div class="row ">
+                      <div class="col-md-6 ">
+                        <h4>เฟอร์นิเจอร์</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="airconditioner"
+                              [(ngModel)]="credentials.airconditioner">
+                            เครื่องปรับอากาศ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="afan" [(ngModel)]="credentials.afan">
+                            พัดลม
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="AirPurifier"
+                              [(ngModel)]="credentials.AirPurifier">
+                            เครื่องฟอกอากาศ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Waterheater"
+                              [(ngModel)]="credentials.Waterheater">
+                            เครื่องทำน้ำอุ่น
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="WIFI" [(ngModel)]="credentials.WIFI">
+                            มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="TV" [(ngModel)]="credentials.TV">
+                            เคเบิลทีวี
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="refrigerator"
+                              [(ngModel)]="credentials.refrigerator">
+                            ตู้เย็น
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="microwave" [(ngModel)]="credentials.microwave">
+                            ไมโครเวฟ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="gasstove" [(ngModel)]="credentials.gasstove">
+                            เตาแก๊ส
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="wardrobe" [(ngModel)]="credentials.wardrobe">
+                            ตู้เสื้อผ้า
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="TCset" [(ngModel)]="credentials.TCset">
+                            ชุดโต๊ะเก้าอี้
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="sofa" [(ngModel)]="credentials.sofa">
+                            โซฟา
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="bed" [(ngModel)]="credentials.bed">
+                            เตียง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="shelves" [(ngModel)]="credentials.shelves">
+                            ชั้นวาง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="CCTV" [(ngModel)]="credentials.CCTV">
+                            กล้องวงจรปิด CCTV
+                          </div>
+
+                        </div>
+
+                      </div>
+                      <div class="col-md-6 ">
+                        <h4 style="color: cornflowerblue;">
+                          สิ่งอำนวยความสะดวกบริเวณบ้าน</h4>
+                        <div>
+
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Securityguard"
+                              [(ngModel)]="credentials.Securityguard">
+                            เจ้าหน้าที่รักษาความปลอดภัย
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="pool" [(ngModel)]="credentials.pool">
+                            สระว่ายน้ำ
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Fitness" [(ngModel)]="credentials.Fitness">
+                            ฟิตเนส
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="Publicarea"
+                              [(ngModel)]="credentials.Publicarea">
+                            พื้นที่ส่วนกลาง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="checkbox" id="" value="1" name="ShuttleBus"
+                              [(ngModel)]="credentials.ShuttleBus">
+                            รถรับส่ง
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <h3>ทำเล</h3>
+          <div class="row">
+            <div class="container jumbotron ">
+              <div class="row ">
+                <div class="col-md-12 ">
+                  <h4>ทำเล</h4>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Blind"  [checked]="house.Blind == '1'"> ที่ตาบอด
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Neareducation" [(ngModel)]="credentials.Neareducation">
+                    ใกล้สถานศึกษา
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" [(ngModel)]="credentials.Cenmarket">
+                    ใกล้ศูนย์การค้า
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
+                    ใกล้ตลาด
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Mainroad" [(ngModel)]="credentials.Mainroad">
+                    ติดถนน
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id="" value="1" name="Insoi" [(ngModel)]="credentials.Insoi"> อยู่ในซอย
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
+                  </div>
+                  <div *ngIf="onther " class="col-sm-12">
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Letc" class="form-control"
+                      placeholder="โปรดระบุ" name="Letc" [(ngModel)]="credentials.Letc">
+                  </div>
+                  <h4>สถานะถนน</h4>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="โคลน" checked name="RoadType" [(ngModel)]="credentials.RoadType">
+                    โคลน
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    ยางมะตอย
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id="" value="คอนกรีต" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    คอนกรีต
+                  </div>
+                  <div class="col-sm-12">
+                    <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
+                  </div>
+                  <div *ngIf="Ronther " class="col-sm-12">
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
+                      placeholder="โปรดระบุ" name="RoadType" [(ngModel)]="credentials.RoadType">
+                  </div>
+
+                  <div class="col-sm-12">
+                    <br>
+                    <label>ความกว้างถนน</label>
+                    <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control"
+                      value="{{house.RoadWide}}" (change)="onGetRoadWide($event.target.value)">
+                      <option value="ซอยแคบ">ซอยแคบ</option>
+                      <option value="1 เมตร">1 เมตร</option>
+                      <option value="2 เมตร">2 เมตร</option>
+                      <option value="4 เมตร">4 เมตร</option>
+                      <option value="8 เมตร">8 เมตร</option>
+                      <option value="12 เมตร">12 เมตร</option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-12">
+                    <br>
+                    <label>ระดับพื้นดิน</label>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <input type="radio" id="GroundLevel" value="สูงกว่าถนน" name="GroundLevel"
+                          [(ngModel)]="credentials.GroundLevel"> สูงกว่าถนน
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน" name="GroundLevel"
+                          [(ngModel)]="credentials.GroundLevel"> ต่ำกว่าถนน
+                      </div>
+
+                    </div>
+                    <br>
+                    <label for="">ระดับพื้นดินจากถนน (เมตร)</label>
+                    <input style="border-radius: 30px 30px 30px 30px;" type="text" id="GroundValue" class="form-control"
+                      value="{{house.GroundValue}}" placeholder="ระดับพื้นดินจากถนน (เมตร)"
+                      (change)="onGetGroundValue($event.target.value)">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12  ">
+          <h3><i class="far fa-file-alt"></i> รายละเอียดเพิ่มเติม</h3>
+          <div class="row">
+            <div class="container jumbotron">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label for="FormControlTextarea">กรอกรายละเอียดของอสังหา</label>
+                  <textarea class="form-control" id="FormControlTextarea" rows="3" value="{{house.MoreDetails}}"
+                    (change)="onGetMoreDetails($event.target.value)"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12  ">
+          <h3><i class="fas fa-map-marker-alt"></i> ที่อยู่อสังหา</h3>
+          <div class="row">
+            <div class="container jumbotron">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h4>ค้นหาที่อยู่</h4>
+                  <div class="form-group">
+                    <div class="text-right text-danger">
+                      *ท่านสามารถเลือนจุดไปยังสถานที่ที่ท่านต้องการได้
+                    </div>
+                    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+                      placeholder="ค้นหาอยู่ของอสังหา" autocorrect="off" autocapitalize="off" spellcheck="off"
+                      type="text" #search>
+                  </div>
+                  <div>
+                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                      <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                        (dragEnd)="markerDragEnd($event)">
+                      </agm-marker>
+                    </agm-map>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3">ละติจูต: <input class="form-control" readonly type="text" id="latitude"
+                        [(ngModel)]="credentials.Latitude" value='{{latitude}}' name="latitude"> </div>
+                    <div class="col-sm-3">ลองจิจูต: <input class="form-control" readonly type="text" id="longitude"
+                        [(ngModel)]="credentials.Longitude" value='{{longitude}}' name="longitude">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <br>
+                  <hr>
+                  <h4>รายละเอียดที่อยู่</h4>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>จุดสังเกตุ :</label>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div cl>
+                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="ObservationPoint"
+                          class="form-control search-input" placeholder="สถานที่ใกล้เคียง"
+                          value="{{house.ObservationPoint}}" (change)="onGetObservationPoint($event.target.value)">
+
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <form [formGroup]="EdithouseForm">
+                    <div class="row">
+                      <div class="col-md-12 ">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div>
+                              <label>ที่อยู่:<i class="reqiureinput">*</i></label>
+                            </div>
+                          </div>
+                          <div class="col-md-8 ">
+                            <div>
+                              <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Location"
+                                class="form-control" placeholder="ที่อยู่" formControlName="Location"
+                                value="{{house.Location}}" (change)="onGetLocation($event.target.value)">
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-8">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                จังหวัด:<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-4">
+                                <select style="border-radius: 30px 30px 30px 30px;" id="province" class="form-control"
+                                  name="Lprovince" formControlName="Lprovince" value="{{house.LProvince}}"
+                                  (ngModelChange)="selectprovince($event)">
+                                  <option *ngFor="let p of province" [ngValue]="p">
+                                    {{p?.PROVINCE_NAME}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="row">
+                              <div class="col-sm-4">
+                                อำเภอ:<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-8">
+                                <select style="border-radius: 30px 30px 30px 30px;" id="amphur" class="form-control"
+                                  name="Lamphur" formControlName="Lamphur" value="{{house.LAmphur}}"
+                                  (ngModelChange)="selectamphur($event)">
+                                  <option *ngFor="let a of amphur" [ngValue]="a">
+                                    {{a?.AMPHUR_NAME}}</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-8">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                ตำบล:<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-4">
+                                <select style="border-radius: 30px 30px 30px 30px;" id="district" class="form-control"
+                                  name="Ldistrict" formControlName="Ldistrict" value="{{house.LDistrict}}"
+                                  (ngModelChange)="selectdistrict($event)">
+                                  <option *ngFor="let d of district" [ngValue]="d">
+                                    {{d?.DISTRICT_NAME}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="row">
+                              <div class="col-sm-4">
+                                รหัสไปรษณี:
+                              </div>
+                              <div class="col-sm-8" *ngFor="let pp of zipcode">
+                                <input class="form-control" type="text" style="border-radius: 30px 30px 30px 30px;"
+                                  value="{{pp.ZIPCODE}}" readonly>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12  ">
+          <h3><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                aria-selected="true">ผู้ติดต่อบุคคลที่
+                1<i class="reqiureinput">*</i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                aria-selected="false">ผู้ติดต่อบุคคลที่
+                2</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+                aria-selected="false">ผู้ติดต่อบุคคลที่
+                3</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div>
+                <div class="container jumbotron">
+                  <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 1</h4>
+                  <hr>
+                  <div class="container ">
+                    <form [formGroup]="EditContactForm">
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                          <div class="ng-autocomplete">
+                            <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name1"
+                              [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                              (selected)='onGetContact($event)' (inputChanged)='onEditContactName1($event)'
+                              (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
+                              [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                            </ng-autocomplete>
+
+                            <ng-template #itemTemplate let-item>
+                              <a [innerHTML]="item.Name"></a>
+                            </ng-template>
+
+                            <ng-template #notFoundTemplate let-notFound>
+                              <div>ไม่พบผู้ติดต่อ</div>
+                            </ng-template>
+                            <div *ngIf="submitted && E.ContactName.errors" class="invalid-feedback">
+                              <div *ngIf="E.ContactName.errors.required">
+                                กรุณากรอกข้อมูล</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputPassword4">สถานะ</label>
+                          <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactS"
+                            formControlName="ContactS" value="{{conS1}}">
+                            <option value="เจ้าของ">เจ้าของ</option>
+                            <option value="นายหน้า">นายหน้า</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputCity">อีเมล</label>
+                          <input type="text" class="form-control" (change)="onEditContactEmail1($event.target.value)"
+                            value="{{conEmail1}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">เบอร์โทร</label>
+                          <input type="text" class="form-control" (change)="onEditContactPhone1($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conPhone1}}">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">ไลน์</label>
+                          <input type="text" class="form-control" (change)="onEditContactLine1($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conLine1}}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="gridCheck"
+                            (change)="onEditContactID1($event.target.value)" [(ngModel)]="allowedit"
+                            formControlName="allowedit" name="allowedit" value="{{conID1}}">
+                          <label class="form-check-label" for="gridCheck">
+                            แก้ไข ข้อมูลผู้ติดต่อ
+                          </label>
+                        </div>
+                      </div>
+                      <button *ngIf="allowedit" type="button" (click)="onEditContact1()"
+                        class="btn btn-warning">บันทึก</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <div>
+                <div class="container jumbotron">
+                  <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 2</h4>
+                  <div class="container">
+                    <form [formGroup]="EditContact2Form">
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                          <div class="ng-autocomplete">
+                            <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name2"
+                              [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                              (selected)='onGetContact2($event)' (inputChanged)='onEditContactName2($event)'
+                              (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
+                              [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                            </ng-autocomplete>
+
+                            <ng-template #itemTemplate let-item>
+                              <a [innerHTML]="item.Name"></a>
+                            </ng-template>
+
+                            <ng-template #notFoundTemplate let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template>
+                            <div *ngIf="submitted && Et.ContactName.errors" class="invalid-feedback">
+                              <div *ngIf="Et.ContactName.errors.required">
+                                กรุณากรอกข้อมูล</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputPassword4">สถานะ</label>
+                          <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSt"
+                            formControlName="ContactSt" value="conS2">
+                            <option value="เจ้าของ">เจ้าของ</option>
+                            <option value="นายหน้า">นายหน้า</option>
+                          </select>
+
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputCity">อีเมล</label>
+                          <input type="text" class="form-control" (change)="onEditContactEmail2($event.target.value)"
+                            value="{{conEmail2}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">เบอร์โทร</label>
+                          <input type="text" class="form-control" (change)="onEditContactPhone2($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conPhone2}}">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">ไลน์</label>
+                          <input type="text" class="form-control" (change)="onEditContactLine2($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conLine2}}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="gridCheck"
+                            (change)="onEditContactID2($event.target.value)" [(ngModel)]="allowedit2"
+                            formControlName="allowedit2" name="allowedit2" value="{{conID2}}">
+                          <label class="form-check-label" for="gridCheck">
+                            แก้ไข ข้อมูลผู้ติดต่อ
+                          </label>
+                        </div>
+                      </div>
+                      <button *ngIf="allowedit2" type="submit" (click)="onEditContact()"
+                        class="btn btn-warning">บันทึก</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+              <div class="container jumbotron">
+                <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
+                <div class="container">
+                  <form [formGroup]="EditContact3Form">
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                        <div class="ng-autocomplete">
+                          <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name3"
+                            [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                            (selected)='onGetContact3($event)' (inputChanged)='onEditContactName3($event)'
+                            (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
+                            [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                          </ng-autocomplete>
+
+                          <ng-template #itemTemplate let-item>
+                            <a [innerHTML]="item.Name"></a>
+                          </ng-template>
+
+                          <ng-template #notFoundTemplate let-notFound>
+                            <div [innerHTML]="notFound"></div>
+                          </ng-template>
+                        </div>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputPassword4">สถานะ</label>
+                        <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSo"
+                          formControlName="ContactSo" value="conS3">
+                          <option value="เจ้าของ">เจ้าของ</option>
+                          <option value="นายหน้า">นายหน้า</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="inputCity">อีเมล</label>
+                        <input type="text" class="form-control" (change)="onEditContactEmail3($event.target.value)"
+                          value="{{conEmail3}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputZip">เบอร์โทร</label>
+                        <input type="text" class="form-control" (change)="onEditContactPhone3($event.target.value)"
+                          style="border-radius: 30px 30px 30px 30px;" value="{{conPhone3}}">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputZip">ไลน์</label>
+                        <input type="text" class="form-control" (change)="onEditContactLine3($event.target.value)"
+                          style="border-radius: 30px 30px 30px 30px;" value="{{conLine3}}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck"
+                          (change)="onEditContactID3($event.target.value)" [(ngModel)]="allowedit3"
+                          formControlName="allowedit3" name="allowedit3" value="{{conID3}}">
+                        <label class="form-check-label" for="gridCheck">
+                          แก้ไข ข้อมูลผู้ติดต่อ
+                        </label>
+                      </div>
+                    </div>
+                    <button *ngIf="allowedit3" type="submit" (click)="onEditContact()"
+                      class="btn btn-warning">บันทึก</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 ">
+              <button class="btn btn-success float-right" (click)="onUpdate()" >
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
+              </button>
+            
+        </div>
     </div>
   </div>
 </div>
+
+<app-footer></app-footer>

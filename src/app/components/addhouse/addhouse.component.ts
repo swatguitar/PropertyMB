@@ -997,7 +997,7 @@ export class AddhouseComponent implements OnInit {
       this.contactUser.filter(article => {
         this.IDcon = article.ID_Contact
         // console.log(this.IDcon + "-------Contact222 ")
-        this.onCheckTwo()
+        this.onCheckContact()
       });
     },
       err => {
@@ -1008,7 +1008,7 @@ export class AddhouseComponent implements OnInit {
   onCheckContact() {
     //console.log(this.ContactID + "FIrst ")
     while (this.IDcon == this.ContactID) {
-      this.loopChack()
+      this.loopChackcontact()
     }
     this.credentials.ID_Contact = this.ContactID
     console.log(this.credentials.ID_Contact)

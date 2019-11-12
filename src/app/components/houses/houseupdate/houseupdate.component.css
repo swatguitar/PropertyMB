@@ -2,6 +2,9 @@
     width: 100%;
     border-radius: 30px 30px 30px 30px;
   }
+  .container{
+    font-family: 'Poppins', 'Prompt', sans-serif;
+  }
   
   input.ng-invalid.ng-touched {
     border: solid 1px rgb(238, 74, 74);

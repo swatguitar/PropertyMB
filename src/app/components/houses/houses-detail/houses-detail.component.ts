@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, Delete, locationsDetails, PropertyDetails } from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { count } from 'rxjs/operators';
 
@@ -25,7 +25,6 @@ export class HousesDetailComponent implements OnInit {
   conS1: string;
   conS2: string;
   conS3: string;
-
   lat: number;
   lng: number;
   imageIndex = 1;
@@ -43,6 +42,10 @@ export class HousesDetailComponent implements OnInit {
   IDcontact3: string
   lonnew: number;
   latnew: number;
+  credentials: Delete = {
+    ID_Lands: '',
+    ID_Property: ''
+  }
   constructor(private auth: AuthenticationService, private route: ActivatedRoute, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
     private router: Router) { }
@@ -192,6 +195,19 @@ export class HousesDetailComponent implements OnInit {
     this.selectContact3 = this.contactUser.filter(article => {
       return article.ID_Contact == this.IDcontact3;
     });
+  }
+  onDelete(){
+    this.credentials.ID_Property = this.postID;
+    this.auth.DeleteHouse(this.credentials).subscribe(() => {
+     
+    },
+      err => {
+        console.error(err)
+        alert(JSON.stringify("อสังหานี้ถูกลบแล้ว"))
+        this.router.navigateByUrl('/home')
+        
+      }
+    )
   }
 
 }

@@ -8,7 +8,8 @@
       <div class="container">
         <div id="product-container">
           <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-6">
+                <br>
               <ul id="breadcrumb-nav" typeof="BreadcrumbList">
                 <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
                     typeof="WebPage"><span property="name">หน้าแรก</span></a>
@@ -29,39 +30,81 @@
                 {{ lands.LAmphur }}, {{ lands.LProvince }}, ประเทศไทย, {{lands.LZipCode}}</h5>
               <hr>
             </div>
-            <div class="col-md-5 ">
-              <div class="logo-distributed ">
+            <div class="col-md-6 center">
+              <div class="logo-distributed text-center ">
                 <h3>Property<span>Management</span></h3>
                 <br>
-                <button kendo-button class="btn btn-success" (click)="pdf.saveAs('invoice.pdf')">
-                  บันทึกเป็น PDF
-                </button>
               </div>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  <button class="btn btn-warning" [routerLink]="['/lands/landUpdate',lands.ID_Lands]">
+                    <i class="fas fa-edit"></i> แก้ไขข้อมูล
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="fas fa-trash-alt"></i> ลบอสังหานี้
+                  </button>
 
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">ต้องการลบอังหานี้ใช่หรือไม่?</h5>
+                        </div>
+                        <div class="modal-body">
+                          <div class="text-center">
+                            <div class="col-md-6">
+                              <button type="button" class="btn btn-success" (click)="onDelete()">
+                                <i class="fas fa-trash-alt"></i> ยืนยัน
+                              </button>
+                            </div>
+                            <div class="col-md-6">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                ยกเลิก
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div style="position: absolute; left: -1000px; top: 0;">
-          <kendo-pdf-export #pdf paperSize="A4" margin="1cm">
-            <div style="width: 500px;">
 
-
-            </div>
-          </kendo-pdf-export>
-        </div>
         <div class="row">
           <div class="col-md-6">
             <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
           </div>
-          <div class="col-md-4">
-            <div class="jumbotron">
-              <div class="header-blog">สถานะการซื้อขาย</div>
-              <label>{{lands.PPStatus}}</label>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="jumbotron">
+                  <div class="header-blog">สถานะการซื้อขาย</div>
+                  <label>{{lands.PPStatus}}</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="jumbotron">
+                  <div class="header-blog">สถานะทรัพย์สิน</div>
+                  <label>{{lands.AsseStatus}}</label>
+                </div>
+              </div>
+              <hr>
+              <div class="col-md-12">
+                <button class="btn btn-success btn-lg btn-block" [routerLink]="['/landsPDF',lands.ID_Lands]">
+                  บันทึกเป็น PDF
+                </button>
+              </div>
             </div>
-            <div class="jumbotron">
-              <div class="header-blog">สถานะทรัพย์สิน</div>
-              <label>{{lands.AsseStatus}}</label>
-            </div>
+
           </div>
         </div>
         <hr>

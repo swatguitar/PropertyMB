@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { AuthenticationService, UserDetails, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, Delete,UserDetails, PropertyDetails } from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
@@ -38,6 +38,10 @@ export class LandsDetailComponent implements OnInit {
   conS3:string
   lonnew: number;
   latnew: number;
+  credentials: Delete = {
+    ID_Lands: '',
+    ID_Property: ''
+  }
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
     private router: Router) { }
 
@@ -176,6 +180,19 @@ export class LandsDetailComponent implements OnInit {
     this.selectContact3 = this.contactUser.filter(article => {
       return article.ID_Contact == this.IDcontact3;
     });
+  }
+
+  onDelete(){
+    this.credentials.ID_Property = this.postID;
+    this.auth.DeleteLands(this.credentials).subscribe(() => {
+     
+    },
+      err => {
+        console.error(err)
+        alert(JSON.stringify("อสังหานี้ถูกลบแล้ว"))
+        this.router.navigateByUrl('/home')
+      }
+    )
   }
 
 }

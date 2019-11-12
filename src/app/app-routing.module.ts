@@ -45,7 +45,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   { path: "adminlogin", component: AdminloginComponent,  },
-  { path: "admindash", component: AdmindashComponent, canActivate: [AuthGuardService] },
+  { path: "admindash", component: AdmindashComponent, },
   { path: "pagenotfound", component: PagenotfoundComponent },
   { path: "resetPassword", component: ResetpasswordComponent },
   { path: "commingsoon", component: CommingsoonComponent },

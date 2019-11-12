@@ -5,6 +5,9 @@
 input.ng-invalid.ng-touched {
   border: solid 1px rgb(238, 74, 74);
 }
+.container{
+  font-family: 'Poppins', 'Prompt', sans-serif;
+}
 .test li.active {
   width: 100%;
   border-radius: 30px 30px 30px 30px;

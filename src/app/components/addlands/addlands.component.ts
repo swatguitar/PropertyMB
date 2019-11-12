@@ -328,7 +328,9 @@ export class AddlandsComponent {
 
   ngOnInit() {
 
-
+    this.credentials.LandR = '0'
+    this.credentials.LandG = '0'
+    this.credentials.LandWA = '0'
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
@@ -384,6 +386,8 @@ export class AddlandsComponent {
   calPWA() {
     //---------------calulate p/wa-----
     this.SellP = this.credentials.SellPrice.replace(/,/g, "");
+   
+  
     this.cal = parseInt(this.SellP) / ((parseInt(this.credentials.LandR) * 400) + (parseInt(this.credentials.LandG) * 100) + parseInt(this.credentials.LandWA));
     this.credentials.PriceWA = this.cal.toString()
   }
@@ -1022,7 +1026,7 @@ export class AddlandsComponent {
       this.contactUser.filter(article => {
         this.IDcon = article.ID_Contact
         // console.log(this.IDcon + "-------Contact222 ")
-        this.onCheckTwo()
+        this.onCheckContact()
       });
     },
       err => {
@@ -1033,7 +1037,7 @@ export class AddlandsComponent {
   onCheckContact() {
     //console.log(this.ContactID + "FIrst ")
     while (this.IDcon == this.ContactID) {
-      this.loopChack()
+      this.loopChackcontact()
     }
     this.credentials.ID_Contact = this.ContactID
     console.log(this.credentials.ID_Contact)

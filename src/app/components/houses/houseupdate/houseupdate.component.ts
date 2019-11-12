@@ -13,8 +13,8 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 export class HouseupdateComponent implements OnInit {
   public postID: string;
   public activePage: number;
-  public results: PropertyDetails[];
-  public details: any[];
+  results: PropertyDetails[];
+  public details: PropertyDetails[];
   EdithouseForm: FormGroup;
   EditContactForm: FormGroup;
   EditContact2Form: FormGroup;
@@ -29,6 +29,9 @@ export class HouseupdateComponent implements OnInit {
   selectContact2: any[];
   selectedItem: any = '';
   inputChanged: any = '';
+  IDcontact1: string
+  IDcontact2: string
+  IDcontact3: string
   IDcon: any;
   ContactID: string;
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
@@ -133,6 +136,13 @@ export class HouseupdateComponent implements OnInit {
   con1selected: string = "false"
   con2selected: string = "false"
   con3selected: string = "false"
+  conS1: string;
+  conS2: string;
+  conS3: string;
+  lonnew: number;
+  latnew: number;
+  lat: number;
+  lng: number;
   @ViewChild('search', { static: true })
   public searchElementRef: ElementRef;
   credentials: TokenPayload = {
@@ -141,8 +151,8 @@ export class HouseupdateComponent implements OnInit {
     Lastname: '',
     UserType: '',
     Email: '',
-    Token:  '',
-    Answer:  '',
+    Token: '',
+    Answer: '',
     OldPassword: '',
     Password: '',
     Birthday: '',
@@ -245,7 +255,7 @@ export class HouseupdateComponent implements OnInit {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
-    Kitchen:0,
+    Kitchen: 0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -272,8 +282,8 @@ export class HouseupdateComponent implements OnInit {
     if (event.which >= 37 && event.which <= 40) return;
 
     // format number
-    if (event) {
-      event = event.replace(/\D/g, "")
+    if (event.target.value) {
+      event.target.value = event.target.value.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
@@ -282,8 +292,8 @@ export class HouseupdateComponent implements OnInit {
     if (event.which >= 37 && event.which <= 40) return;
 
     // format number
-    if (event) {
-      event = event.replace(/\D/g, "")
+    if (event.target.value) {
+      event.target.value = event.target.value.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
@@ -292,8 +302,8 @@ export class HouseupdateComponent implements OnInit {
     if (event.which >= 37 && event.which <= 40) return;
 
     // format number
-    if (event) {
-      event = event.replace(/\D/g, "")
+    if (event.target.value) {
+      event.target.value = event.target.value.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
@@ -306,17 +316,343 @@ export class HouseupdateComponent implements OnInit {
     }
   }
 
+  onGo() {
+
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.EdithouseForm.invalid) {
+      //console.log(this.addlandForm)
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
+    }
+    if (this.con1selected == 'false') {
+      this.submitted = true;
+      if (this.EditContactForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
+        return;
+      }
+      this.credentials.ContactName = this.conName1
+      this.credentials.ContactPhone = this.conPhone1
+      this.credentials.ContactEmail = this.conEmail1
+      this.credentials.ContactLine = this.conLine1
+      this.onRandomcontact()
+      this.auth.getContact().subscribe((con) => {
+        this.contactUser = con
+        this.contactUser.filter(article => {
+          this.IDcon = article.ID_Contact
+          this.onCheckContact()
+        });
+        this.credentials.ContactU = this.credentials.ID_Contact
+        //console.log(this.credentials.ContactU)
+        this.auth.addcontact(this.credentials).subscribe(
+          () => {
+
+          },
+          err => {
+            console.error(err)
+          }
+        )
+        if (this.con2selected == 'false' && this.Name2 != '') {
+          this.credentials.ContactName = this.conName2
+          this.credentials.ContactPhone = this.conPhone2
+          this.credentials.ContactEmail = this.conEmail2
+          this.credentials.ContactLine = this.conLine2
+          this.onRandomcontact()
+          this.auth.getContact().subscribe((con) => {
+            this.contactUser = con
+            this.contactUser.filter(article => {
+              this.IDcon = article.ID_Contact
+              this.onCheckContact()
+            });
+            this.credentials.ContactUt = this.credentials.ID_Contact
+            //console.log(this.credentials.ContactUt+"two")
+            this.auth.addcontact(this.credentials).subscribe(
+              () => {
+              },
+              err => {
+                console.error(err)
+              }
+            )
+            if (this.con3selected == 'false' && this.Name3 != '') {
+              this.credentials.ContactName = this.conName3
+              this.credentials.ContactPhone = this.conPhone3
+              this.credentials.ContactEmail = this.conEmail3
+              this.credentials.ContactLine = this.conLine3
+              this.onRandomcontact()
+              this.auth.getContact().subscribe((con) => {
+                this.contactUser = con
+                this.contactUser.filter(article => {
+                  this.IDcon = article.ID_Contact
+                  this.onCheckContact()
+                });
+                this.credentials.ContactUo = this.credentials.ID_Contact
+               // console.log(this.credentials.ContactUo+"three")
+                 this.auth.addcontact(this.credentials).subscribe(
+                   () => {
+                     this.onUpdate()
+                     alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+                   },
+                   err => {
+                     console.error(err)
+                   }
+                 )
+              },
+                err => {
+                  console.error(err)
+                }
+              )
+
+            } else if (this.con2selected == 'false' && this.Name3 == '')  {
+              this.credentials.ContactUo = this.credentials.ID_Contact
+              // stop here if form is invalid
+              if (this.EdithouseForm.invalid) {
+                alert(JSON.stringify("กรุณากรอกข้อมูล"))
+                return;
+              }
+              this.onUpdate()
+              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+            }else {
+              // stop here if form is invalid
+               if (this.EdithouseForm.invalid) {
+                 console.log(this.EdithouseForm)
+                 alert(JSON.stringify("กรุณากรอกข้อมูล"))
+                 return;
+               }
+              this.onUpdate()
+              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+            }
+          },
+            err => {
+              console.error(err)
+            }
+          )
+
+
+        } else if (this.con2selected == 'false' && this.Name2 == '')  {
+          this.credentials.ContactUt = this.credentials.ID_Contact
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          // stop here if form is invalid
+           if (this.EdithouseForm.invalid) {
+             alert(JSON.stringify("กรุณากรอกข้อมูล"))
+             return;
+           }
+          this.onUpdate()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        }else {
+          // stop here if form is invalid
+           if (this.EdithouseForm.invalid) {
+             //console.log(this.addlandForm)
+             alert(JSON.stringify("กรุณากรอกข้อมูล"))
+             return;
+           }
+          this.onUpdate()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        }
+      },
+        err => {
+          console.error(err)
+        }
+      )
+
+
+    } else if (this.con2selected == 'false' && this.Name2 != '') {
+      this.credentials.ContactName = this.conName2
+      this.credentials.ContactPhone = this.conPhone2
+      this.credentials.ContactEmail = this.conEmail2
+      this.credentials.ContactLine = this.conLine2
+
+      this.onRandomcontact()
+      this.auth.getContact().subscribe((con) => {
+        this.contactUser = con
+        this.contactUser.filter(article => {
+          this.IDcon = article.ID_Contact
+          this.onCheckContact()
+          //console.log(this.IDcon + "----------------data")
+        });
+        this.credentials.ContactUt = this.credentials.ID_Contact
+        //console.log(this.credentials.ContactUt + " two R")
+        this.auth.addcontact(this.credentials).subscribe(
+          () => {
+          },
+          err => {
+            console.error(err)
+          }
+        )
+        if (this.con3selected == 'false' && this.Name3 != '') {
+          this.credentials.ContactName = this.conName3
+          this.credentials.ContactPhone = this.conPhone3
+          this.credentials.ContactEmail = this.conEmail3
+          this.credentials.ContactLine = this.conLine3
+          //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
+          this.onRandomcontact()
+          this.auth.getContact().subscribe((con) => {
+            this.contactUser = con
+            this.contactUser.filter(article => {
+              this.IDcon = article.ID_Contact
+              //console.log(this.IDcon + "----------------data")
+              this.onCheckContact()
+            });
+            this.credentials.ContactUo = this.credentials.ID_Contact
+            //console.log(this.credentials.ContactUo + " three")
+            this.auth.addcontact(this.credentials).subscribe(
+              () => {
+                this.onUpdate()
+                alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+              },
+              err => {
+                console.error(err)
+              }
+            )
+          },
+            err => {
+              console.error(err)
+            }
+          )
+
+        } else if (this.con2selected == 'false' && this.Name3 == '')  {
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          // stop here if form is invalid
+           if (this.EdithouseForm.invalid) {
+             //console.log(this.addlandForm)
+             alert(JSON.stringify("กรุณากรอกข้อมูล"))
+             return;
+           }
+          this.onUpdate()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        }else {
+          // stop here if form is invalid
+           if (this.EdithouseForm.invalid) {
+             console.log(this.EdithouseForm)
+             alert(JSON.stringify("กรุณากรอกข้อมูล"))
+             return;
+           }
+          this.onUpdate()
+          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        }
+        
+      },
+        err => {
+          console.error(err)
+        }
+      )
+
+
+    } else if (this.con3selected == 'false' && this.Name3 != '') {
+      this.credentials.ContactName = this.conName3
+      this.credentials.ContactPhone = this.conPhone3
+      this.credentials.ContactEmail = this.conEmail3
+      this.credentials.ContactLine = this.conLine3
+      //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
+      this.onRandomcontact()
+      this.auth.getContact().subscribe((con) => {
+        this.contactUser = con
+        this.contactUser.filter(article => {
+          this.IDcon = article.ID_Contact
+          //console.log(this.IDcon + "----------------data")
+          this.onCheckContact()
+        });
+        this.credentials.ContactUo = this.credentials.ID_Contact
+        //console.log(this.credentials.ContactUo + " three")
+
+        this.auth.addcontact(this.credentials).subscribe(
+          () => {
+            this.onUpdate()
+            alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+          },
+          err => {
+            console.error(err)
+          }
+        )
+      },
+        err => {
+          console.error(err)
+        }
+      )
+
+    } else {
+      // stop here if form is invalid
+       if (this.EdithouseForm.invalid) {
+         //console.log(this.addlandForm)
+         alert(JSON.stringify("กรุณากรอกข้อมูล"))
+         return;
+       }
+      this.onUpdate()
+      alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+    }
+  }
+   //*****chack ID Contact */
+   onRandomcontact() {
+    var max = 9;
+    var min = 0;
+    var r = Math.floor(Math.random() * (max - min + 1) + min);
+    var x = Math.floor(Math.random() * (max - min + 1) + min);
+    var y = Math.floor(Math.random() * (max - min + 1) + min);
+    var z = Math.floor(Math.random() * (max - min + 1) + min);
+    this.ContactID = this.ID_user + r + x + y + z;
+
+  }
+
+  loopChackcontact() {
+    this.onRandomcontact()
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+
+      this.contactUser.filter(article => {
+        this.IDcon = article.ID_Contact
+        // console.log(this.IDcon + "-------Contact222 ")
+        this.onCheckContact()
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  onCheckContact() {
+    //console.log(this.ContactID + "FIrst ")
+    while (this.IDcon == this.ContactID) {
+      this.loopChackcontact()
+    }
+    this.credentials.ID_Contact = this.ContactID
+    console.log(this.credentials.ID_Contact)
+  }
   ngOnInit() {
+    
+    //load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      this.setCurrentLocation();
+      this.geoCoder = new google.maps.Geocoder;
+
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+        types: [], componentRestrictions: { 'country': 'TH' }
+      });
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          //verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          //set latitude, longitude and zoom
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 15;
+        });
+      });
+    });
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = params.get('id');
     }
     this.auth.getallhouse().subscribe((house) => {
       this.details = house
-      console.log( this.postID )
+      console.log(this.postID)
       // กรณี resuponse success
       this.results = this.details.filter(article => {
-       
+
         return article.ID_Property == this.postID;
       });
 
@@ -325,7 +661,7 @@ export class HouseupdateComponent implements OnInit {
         console.error(err)
       })
 
-          //-------------------------------------------------
+    //-------------------------------------------------
     var year = new Date().getFullYear();
     var yearth = year + 543
     var range = [];
@@ -336,7 +672,427 @@ export class HouseupdateComponent implements OnInit {
     }
     this.years = range;
 
+    //------------getlocation-------
+    this.auth.getProvine().subscribe((province) => {
+      this.province = province;
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+    setTimeout(() => {    //<<<---    using ()=> syntax
+      this.onForeach()
+      this.onSetcontact()
+    }, 5000);
+    setTimeout(() => {    //<<<---    using ()=> syntax
+      this.recenter() 
+    }, 7000);
+    //-------- get contact ----
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+    },
+      err => {
+        console.error(err)
+      }
+    )
   }
+  recenter(){
+    this.latitude = 13.7348534;
+    this.longitude = 100.4997134999999;
+
+    setTimeout(()=>{
+      
+        this.latitude = Number(this.latnew)
+        this.longitude  = Number(this.lonnew)
+       this.zoom = 15
+       this.selectContact.forEach((element, index) => {
+        this.Name1 = element.Name
+        this.conEmail1 = element.Email
+        this.conPhone1 = element.Phone
+        this.conLine1 = element.Line
+        this.conID1 = element.ID_Contact
+      });
+      this.selectContact2.forEach((element, index) => {
+        this.Name2 = element.Name
+        this.conEmail2 = element.Email
+        this.conPhone2 = element.Phone
+        this.conLine2 = element.Line
+        this.conID2 = element.ID_Contact
+      });
+      this.selectContact3.forEach((element, index) => {
+        this.Name3 = element.Name
+        this.conEmail3 = element.Email
+        this.conPhone3 = element.Phone
+        this.conLine3 = element.Line
+        this.conID3 = element.ID_Contact
+      });
+      
+    },3000);
+    }
+  
+  onForeach() {
+    this.results.forEach((element, index) => {
+      this.latnew = element.Latitude
+      this.lonnew = element.Longitude
+      this.lat = element.Latitude
+      this.lng = element.Longitude
+      this.conS1 = element.ContactS
+      this.conS2 = element.ContactSt
+      this.conS3 = element.ContactSo
+      this.IDcontact1 = element.ContactU
+      this.IDcontact2 = element.ContactUt
+      this.IDcontact3 = element.ContactUo
+      console.log(this.conS1)
+    });
+  
+
+  }
+  onSetcontact() {
+    this.selectContact = this.contactUser.filter(article => {
+      return article.ID_Contact == this.IDcontact1;
+    });
+    this.selectContact2 = this.contactUser.filter(article => {
+      return article.ID_Contact == this.IDcontact2;
+    });
+    this.selectContact3 = this.contactUser.filter(article => {
+      return article.ID_Contact == this.IDcontact3;
+    });
+  }
+  // Get Current Location Coordinates
+  private setCurrentLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.zoom = 15;
+        this.getAddress(this.latitude, this.longitude);
+      });
+    }
+  }
+
+
+  markerDragEnd($event: MouseEvent) {
+    console.log($event);
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.getAddress(this.latitude, this.longitude);
+  }
+
+  getAddress(latitude, longitude) {
+    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+      console.log(results);
+      console.log(status);
+      if (status === 'OK') {
+        if (results[0]) {
+          this.zoom = 15;
+          this.address = results[0].formatted_address;
+        } else {
+          console.log('No results found');
+        }
+      } else {
+        console.log('Geocoder failed due to: ' + status);
+      }
+
+    });
+
+  }
+  selectprovince(data) {
+    this.credentials.LProvince = data.PROVINCE_NAME
+    this.auth.getAmphur().subscribe((amphur) => {
+      // กรณี resuponse success
+      this.amphur = amphur.filter(article => {
+        return article.PROVINCE_ID == data.PROVINCE_ID;
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  selectamphur(data) {
+    this.credentials.LAmphur = data.AMPHUR_NAME
+    this.auth.getDistrict().subscribe((district) => {
+      // กรณี resuponse success
+      this.district = district.filter(article => {
+        return article.AMPHUR_ID == data.AMPHUR_ID;
+      });
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  selectdistrict(data) {
+    this.credentials.LDistrict = data.DISTRICT_NAME
+    this.auth.getZipcode().subscribe((zipcode) => {
+      // กรณี resuponse success
+      this.zipcode = zipcode.filter(article => {
+        return article.DISTRICT_ID == data.DISTRICT_ID;
+      });
+
+    },
+      err => {
+        console.error(err)
+      }
+    )
+
+  }
+  getZipCode() {
+    this.zipcode.forEach((element, index) => {
+      this.credentials.LZipCode = element.ZIPCODE
+    });
+
+  }
+  onResiveContact() {
+    //-------- get contact ----
+    this.auth.getContact().subscribe((contactUser) => {
+      this.contactUser = contactUser;
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+  onEditContact1() {
+
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.onResiveContact()
+        console.error(err)
+      }
+    )
+  }
+  onEditContact2() {
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.onResiveContact()
+        console.error(err)
+      }
+    )
+  }
+  onEditContact3() {
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.onResiveContact()
+        console.error(err)
+      }
+    )
+  }
+
+  onGetContact(item) {
+    this.con1selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conID1 = item.ID_Contact
+    this.conName1 = item.Name
+    this.conEmail1 = item.Email
+    this.conPhone1 = item.Phone
+    this.conLine1 = item.Line
+    this.credentials.ContactU = item.ID_Contact
+  }
+  onGetContact2(item) {
+    this.con2selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conID2 = item.ID_Contact
+    this.conName2 = item.Name
+    this.conEmail2 = item.Email
+    this.conPhone2 = item.Phone
+    this.conLine2 = item.Line
+    this.credentials.ContactUt = item.ID_Contact
+  }
+  onGetContact3(item) {
+    this.con3selected = 'true'
+    console.log(this.credentials.ContactName)
+    this.conID3 = item.ID_Contact
+    this.conName3 = item.Name
+    this.conEmail3 = item.Email
+    this.conPhone3 = item.Phone
+    this.conLine3 = item.Line
+    this.credentials.ContactUo = item.ID_Contact
+  }
+
+  onFocused(e) {
+    // do something when input is focused
+  }
+  onEditContactID1(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.conName1
+    this.credentials.ContactPhone = this.conPhone1
+    this.credentials.ContactEmail = this.conEmail1
+    this.credentials.ContactLine = this.conLine1
+  }
+  onEditContactName1(value: string) {
+    this.conName1 = value
+  }
+  onEditContactLine1(value) {
+    this.conLine1 = value
+    //console.log(this.conLine1)
+  }
+  onEditContactPhone1(value) {
+    this.conPhone1 = value
+    //console.log(this.conPhone1)
+  }
+  onEditContactEmail1(value) {
+    this.conEmail1 = value
+    //console.log(this.conEmail1)
+  }
+
+  onEditContactID2(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.conName2
+    this.credentials.ContactPhone = this.conPhone2
+    this.credentials.ContactEmail = this.conEmail2
+    this.credentials.ContactLine = this.conLine2
+  }
+  onEditContactName2(value: string) {
+    this.conName2 = value
+  }
+  onEditContactLine2(value) {
+    this.conLine2 = value
+  }
+  onEditContactPhone2(value) {
+    this.conPhone2 = value
+  }
+  onEditContactEmail2(value) {
+    this.conEmail2 = value
+  }
+
+
+  onEditContactID3(value) {
+    this.credentials.ID_Contact = value
+    this.credentials.ContactName = this.conName3
+    this.credentials.ContactPhone = this.conPhone3
+    this.credentials.ContactEmail = this.conEmail3
+    this.credentials.ContactLine = this.conLine3
+  }
+  onEditContactName3(value: string) {
+    this.conName3 = value
+  }
+  onEditContactLine3(value) {
+    this.conLine3 = value
+  }
+  onEditContactPhone3(value) {
+    this.conPhone3 = value
+  }
+  onEditContactEmail3(value) {
+    this.conEmail3 = value
+  }
+
+
+  onGetAnnounceTH(value) {
+    this.credentials.AnnounceTH = value
+  }
+  onGetCodeDeed(value) {
+    this.credentials.CodeDeed = value
+  }
+  onGetSell(value) {
+    this.credentials.SellPrice = value
+  }
+  onGetSellB(value) {
+    this.credentials.CostestimateB = value
+  }
+  onGetSellM(value) {
+    this.credentials.MarketPrice = value
+  }
+  onGetHouseArea(value) {
+    this.credentials.HouseArea = value
+  }
+  onGetBathRoom(value) {
+    this.credentials.BathRoom = value
+  }
+  onGetBedRoom(value) {
+    this.credentials.BedRoom = value
+  }
+  onGetCarPark(value) {
+    this.credentials.CarPark = value
+  }
+  onGetFloor(value) {
+    this.credentials.Floor = value
+  }
+  onGetMFee(value) {
+    this.credentials.MFee = value
+  }
+  onGetAsseStatus(value) {
+    this.credentials.AsseStatus = value
+    console.log(this.credentials.AsseStatus)
+  }
+  onGetBuildFD(value) {
+    this.credentials.BuildFD = value
+  }
+  onGetBuildFM(value) {
+    this.credentials.BuildFM = value
+  }
+  buildage: number
+  onGetbuildage(year) {
+    this.credentials.BuildFM = year
+    var yearEN = new Date().getFullYear();
+    this.buildage = ((yearEN + 543) - year);
+    this.credentials.BuildingAge = this.buildage.toString()
+  }
+  onGetDirections(value) {
+    this.credentials.Directions = value
+  }
+  onGetLandR(value) {
+    this.credentials.LandR = value
+  }
+  onGetLandG(value) {
+    this.credentials.LandG = value
+  }
+  onGetLandWA(value) {
+    this.credentials.LandWA = value
+  }
+  onGetGroundValue(value) {
+    this.credentials.GroundValue = value
+  }
+  onGetRoadWide(value) {
+    this.credentials.RoadWide = value
+  }
+  onGetMoreDetails(value) {
+    this.credentials.MoreDetails = value
+  }
+  onGetObservationPoint(value) {
+    this.credentials.ObservationPoint = value
+  }
+  onGetLocation(value) {
+    this.credentials.Location = value
+  }
+
+  onUpdate(){
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.EdithouseForm.invalid) {
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
+    }
+  
+  
+    this.getZipCode()
+    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
+    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
+    this.credentials.Latitude = this.latitude
+    this.credentials.Longitude = this.longitude
+    this.auth.EditHouse(this.credentials).subscribe(
+      () => {
+
+      },
+      err => {
+        alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
+        console.error(err)
+
+      }
+
+    )
+  }
+
 }
 
-  

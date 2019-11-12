@@ -3,6 +3,7 @@ import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 const uri = 'https://propermbbackend.appspot.com/users/uploadimageLand';
+//const uri = 'http://localhost:3001/users/uploadimageLand';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../../authentication.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class UploadimglandComponent implements OnInit {
   uploader: FileUploader = new FileUploader({ url: uri 
   });
   @Input() ID_Lands: string
+ 
   constructor(private http: HttpClient, public sanitizer: DomSanitizer,private auth: AuthenticationService,) {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
@@ -26,7 +28,7 @@ export class UploadimglandComponent implements OnInit {
       console.log(fileItem._file.size);
     }
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('ID_lands' , this.ID_Lands);
+      form.append('ID_lands' ,this.ID_Lands);
      };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {

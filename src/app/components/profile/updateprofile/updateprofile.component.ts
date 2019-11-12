@@ -6,7 +6,7 @@ import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 import { MustMatch } from '../../register/helper/must-match.validator';
 import { Router } from '@angular/router';
-const uri = 'http://localhost:3001/users/uploadprofile';
+const uri = 'https://propermbbackend.appspot.com/users/uploadprofile';
 @Component({
   selector: 'app-updateprofile',
   templateUrl: './updateprofile.component.html',

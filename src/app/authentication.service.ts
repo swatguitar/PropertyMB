@@ -170,7 +170,10 @@ export interface PropertyDetails {
 interface TokenResponse {
   token: string
 }
-
+export interface Delete {
+  ID_Lands: string
+  ID_Property: string
+}
 export interface TokenPayload {
   //------user----
   ID_User: number
@@ -428,6 +431,16 @@ export class AuthenticationService {
   //-----------Delete----------
   public removeimgProfile(user: TokenPayload): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/removeimg`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public DeleteHouse(house: Delete): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/house/Delete`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public DeleteLands(land: Delete): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/land/Delete`, land, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }

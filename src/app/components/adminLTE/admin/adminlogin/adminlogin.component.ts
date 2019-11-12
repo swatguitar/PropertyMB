@@ -15,10 +15,11 @@ export class AdminloginComponent implements OnInit {
   ngOnInit() {}
 
   onSubmit() {
-    if (this.mUsername == "Teerawat" && this.mPassword == "1234") {
+    this.router.navigate(["/admindash"]);
+    /*if (this.mUsername == "Teerawat" && this.mPassword == "1234") {
       this.router.navigate(["/admindash"]);
     } else {
       window.alert("Login Failed");
-    }
+    }*/
   }
 }
