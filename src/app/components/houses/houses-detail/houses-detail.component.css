@@ -4,7 +4,9 @@
   font: normal 36px 'Cookie', cursive;
   margin: 0;
 }
-
+.container{
+  font-family: 'Poppins', 'Prompt', sans-serif;
+}
 .logo-distributed h3 span{
   color:  #2fbd2a;
 }

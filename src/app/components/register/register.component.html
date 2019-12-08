@@ -41,14 +41,10 @@
             <label>ลักษณะผู้ใช้งาน</label>
             <select class="form-control" formControlName="UserType"
               [ngClass]="{ 'is-invalid': submitted && f.UserType.errors }" [(ngModel)]="credentials.UserType">
-              <option value="ซื้ออสังหาถาวร">
-                ซื้ออสังหาถาวร</option>
               <option value="ระยะสั้น">
-                ระยะสั้น 1-3 ปี</option>
+                ระยะสั้น ต่ำกว่าหรือเท่ากับ 1 ปี</option>
               <option value="ระยะยาว">
-                ระยะยาว 3-5 ปี</option>
-              <option value="เพื่อการลงทุน">
-                เพื่อการลงทุน</option>
+                ระยะยาว 1 ปีขึ้นไป</option>
             </select>
             <div *ngIf="submitted && f.UserType.errors" class="invalid-feedback">
               <div *ngIf="f.UserType.errors.required">กรุณาเลือกลักษณะผู้ใช้งาน</div>

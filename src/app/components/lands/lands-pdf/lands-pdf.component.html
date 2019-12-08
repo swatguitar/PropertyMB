@@ -1,0 +1,161 @@
+<app-navbar></app-navbar>
+<div class="page-content">
+  <img src="http://www.landvist.xyz/assets/BGPDF.png" alt="index.png" alt="Responsive image" style="width:100%;">
+</div>
+
+<div class="container" *ngFor="let land of results">
+  <div id="product-container">
+    <div class="row">
+      <div class="col-md-6">
+        <br>
+        <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+              typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i>
+                หน้าแรก</span></a>
+            <meta property="position" content="1">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/houses' ]" property="item"
+              typeof="WebPage"><span property="name">อสังหาสิ่งปลูกสร้าง</span></a>
+            <meta property="position" content="2">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+            property="name">ข้อมูลอสังหาอิเล็กทรอนิกส์</span></a>
+        <meta property="position" content="3">
+      </li>
+      <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+            property="name">{{land.AnnounceTH }}</span></a>
+        <meta property="position" content="4">
+      </li>
+        </ul>
+        <br>
+        <h1><i style="color: chocolate" class="fas fa-feather-alt "></i>ข้อมูลอสังหาอิเล็กทรอนิกส์</h1>
+      </div>
+      <div class="col-md-6">
+        <br>
+        <br>
+        <br>
+        <button class="btn btn-success " type="button" (click)="downloadPDF()">บันทึกเป็น PDF</button>
+      </div>
+
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-8 border border-dark">
+        <div id="parentdiv" #parentdiv>
+          <header class="text-center"> <img src="http://www.landvist.xyz/images/Defult/Navbar.png" width="200"
+              height="200" alt=""></header>
+          <div class="logo-distributed text-center ">
+            <h3>Property<span>Management</span></h3>
+            <br>
+          </div>
+
+          <h1 class="text-center">{{ land.AnnounceTH }}</h1>
+          <br>
+          <h5>ข้อมูลทั่วไป</h5>
+          <hr>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-8"><b>ประเภทที่ดิน</b></div>
+              <div class="col-md-4">{{ land.ColorType }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>พื้นที่(ไร่)</b></div>
+              <div class="col-md-4">{{ land.LandR }} ไร่</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>พื้นที่(งาน)</b></div>
+              <div class="col-md-4">{{ land.LandG }} งาน</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>พื้นที่(ตร.ว.)</b></div>
+              <div class="col-md-4">{{ land.LandWA }} ตร.ว.</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>พื้นที่(กว้าง*ยาว)</b></div>
+              <div class="col-md-4">{{ land.Land }} ตร.ม.</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>ประเภทโฉนด</b></div>
+              <div class="col-md-4">{{ land.Deed }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>เลขที่โฉนด</b></div>
+              <div class="col-md-4">{{ land.CodeDeed }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>อายุการถือครองที่ดิน</b></div>
+              <div class="col-md-4">{{ land.LandAge }} ปี</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>สถานะถนน</b></div>
+              <div class="col-md-4">{{ land.RoadType }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>ความกว้างถนน</b></div>
+              <div class="col-md-4">{{ land.RoadWide }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>ระดับพื้นดิน</b></div>
+              <div class="col-md-4">{{ land.GroundLevel }} | {{ land.GroundValue }}</div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-8"><b>สถานะการซื้อขาย</b></div>
+              <div class="col-md-4">{{ land.PPStatus }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>*วางเงินมัดจำ 10 เปอร์เซ็น</b></div>
+              <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>ชื่อผู้ดูแล</b></div>
+              <div class="col-md-4">{{UserProfile?.Firstname}} {{UserProfile?.Lastname}}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>เบอร์โทรติดต่อ</b></div>
+              <div class="col-md-4">{{UserProfile?.Phone}}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>อีเมล</b></div>
+              <div class="col-md-4">{{UserProfile?.Email}}</div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-8"><b>ราคาเริ่มต้น</b></div>
+              <div class="col-md-4">{{ land.SellPrice | number}} บาท</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>รายละเอียดเพิ่มเติม</b></div>
+              <div class="col-md-4">{{ land.HouseArea }}</div>
+            </div>
+           
+          </div>
+          <br>
+          <h5>รูปภาพ</h5>
+          <hr>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let img of imagenew">
+              <img src="http://www.landvist.xyz/images/{{ img.URL}}" width="200" height="150">
+              <div>
+                <br>
+              </div>
+            </div>
+          </div>
+         <br>
+          <h5>แผนที่</h5>
+          <hr>
+          <div class="container">
+            <div class="text-center">
+                <img id="imgMap" alt="" style="display: none" width="700" height="350" />
+            </div>
+          </div>
+          <br>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

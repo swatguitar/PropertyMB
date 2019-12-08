@@ -1,0 +1,1222 @@
+<div class="Font">
+
+  <nav class="main-header  fixed-top navbar navbar-expand-lg navbar-white navbar-light bd-light">
+    <!-- Left navbar links -->
+
+    <!-- SEARCH FORM
+          <form class="form-inline ml-3">
+            <div class="input-group input-group-sm">
+              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+              <div class="input-group-append">
+                <button class="btn btn-navbar" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form> -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarText">
+      <ul class="navbar-nav mr-auto ">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        </li>
+        <li *ngIf="auth.isLoggedIn()" class="nav-item active">
+          <a class="nav-link " routerLink="/home">หน้าหลัก <span class="sr-only">(current)</span></a>
+        </li>
+        <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+          <a class="nav-link" routerLink="/houses"><i class="fa fa-home font-color-orange" aria-hidden="true"></i>
+            อสังหาสิ่งปลูกสร้างของฉัน<span class="sr-only">(current)</span></a>
+        </li>
+        <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+          <a class="nav-link" routerLink="/lands"><i class="fa fa-tree font-color-green" aria-hidden="true"></i>
+            ที่ดินของฉัน<span class="sr-only">(current)</span></a>
+        </li>
+        <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+          <a class="nav-link" routerLink="/groups"><i class="fa fa-users font-color-blue " aria-hidden="true"></i>
+            กลุ่มของฉัน <span class="sr-only">(current)</span></a>
+        </li>
+        <li *ngIf="auth.isLoggedIn()" class="nav-item ">
+          <a class="nav-link" routerLink="/recommend"><i class="fa fa-star font-color-gold" aria-hidden="true"></i>
+            แนะนำ<span class="sr-only">(current)</span></a>
+        </li>
+        <li *ngIf="auth.isLoggedIn()" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus-circle"></i>
+            เพิ่มอสังหาริมทรัพย์
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="/addhouse"><i class="fa fa-home font-color-orange "
+                aria-hidden="true"></i> อสังหาสิ่งปลูกสร้าง</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLink="/addlands"><i class="fa fa-tree font-color-green"
+                aria-hidden="true"></i> ที่ดิน</a>
+          </div>
+        </li>
+      </ul>
+      <div class="d-flex flex-row-reverse">
+
+        <ul class="navbar-nav mr-auto">
+
+          <li *ngIf="auth.isLoggedIn()" class="nav-item">
+            <a class="nav-link" routerLink="/profile"><img src="{{ auth.getUserDetails()?.Profile1}}" alt=""><i
+                class="fa fa-user-circle"></i></a>
+          </li>
+          <li *ngIf="auth.isLoggedIn()" class="nav-item active">
+            <a class="nav-link" routerLink="/profile">{{ auth.getUserDetails()?.Email }}</a>
+          </li>
+          <li *ngIf="auth.isLoggedIn()" class="nav-item">
+            <a class="nav-link" routerLink="" (click)="auth.logout()">ออกจากระบบ</a>
+          </li>
+          <li *ngIf="!auth.isLoggedIn()" class="nav-item">
+            <a class="nav-link" routerLink="/login">ลงชื่อเข้าใช้งาน</a>
+          </li>
+          <li *ngIf="!auth.isLoggedIn()" class="nav-item">
+            <a class="nav-link" routerLink="/register">สมัคสมาชิก</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+          <li class="nav-header">
+            <h5>กลุ่ม</h5>
+          </li>
+          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <button type="button" class="btn btn-success" [routerLink]="['/groups/creategroup']"><i
+                class="fas fa-plus-circle"></i> สร้างกลุ่มใหม่</button>
+            <div class="info">
+              <a href="#" class="d-block"></a>
+            </div>
+          </div>
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+              <i class="fas fa-users-cog"></i>
+              <p>
+                กลุ่มที่คุณจัดการ
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <div class="user-panel mt-3 pb-3 mb-3 d-flex" *ngFor="let group of Groups">
+                <div class="image">
+                  <img src="http://www.landvist.xyz/images/{{group.Img}}" class="img-circle elevation-2"
+                    alt="User Image" width="20px" height="20px">
+                </div>
+                <div class="info">
+                  <a [routerLink]="['/groups/groupfolder',group.ID_Group]" (click)="reload()"
+                    class="d-block">{{group.NameG}}</a>
+                </div>
+              </div>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+              <i class="fas fa-users"></i>
+              <p>
+                กลุ่มที่คุณเป็นสมาชิก
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <div class="user-panel mt-3 pb-3 mb-3 d-flex" *ngFor="let group of GDetails">
+                <div class="image">
+                  <img src="http://www.landvist.xyz/images/{{group.Img}}" class="img-circle elevation-2"
+                    alt="User Image" width="20px" height="20px">
+                </div>
+                <div class="info">
+                  <a [routerLink]="['/groups/member/groupfolder',group.ID_Group]" class="d-block">{{group.NameG}}</a>
+                </div>
+              </div>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <div class="content-wrapper">
+
+    <div class="container">
+      <div id="product-container" *ngFor="let F of GFolders">
+        <div class="row" *ngFor="let D of GroupsDetail">
+          <div class="col-md-12" *ngFor="let P of Prop">
+            <br>
+            <br>
+            <br>
+            <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+              <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+                  typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i>
+                    หน้าแรก</span></a>
+                <meta property="position" content="1">
+              </li>
+              <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/groups' ]" property="item"
+                  typeof="WebPage"><span property="name">กลุ่มของฉัน</span></a>
+                <meta property="position" content="2">
+              </li>
+              <li property="itemListElement" typeof="ListItem"><a
+                  [routerLink]="['/groups/member/groupfolder',D.ID_Group]" property="item" typeof="WebPage"><span
+                    property="name"></span>{{D.NameG}}</a>
+                <meta property="position" content="3">
+              </li>
+              <li property="itemListElement" typeof="ListItem"><a
+                  [routerLink]="['/groups/member/groupfolder/itemlist',F.ID_Folder]" property="item"
+                  typeof="WebPage"><span property="name"></span>{{F.NameF}}</a>
+                <meta property="position" content="3">
+              </li>
+              <li property="itemListElement" typeof="ListItem"><a
+                  [routerLink]="['/groups/member/groupfolder/itemlist/details',D.ID_Group,F.ID_Folder,P.ID_Property]"
+                  property="item" typeof="WebPage"><span property="name"></span>{{P.AnnounceTH}}</a>
+                <meta property="position" content="3">
+              </li>
+            </ul>
+            <br>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <h1 *ngIf="P.PropertyType == 'บ้าน'"><i class="fa fa-home font-color-orange " aria-hidden="true"></i>
+                    {{P.AnnounceTH}}</h1>
+                  <h1 *ngIf="P.PropertyType == 'อาคารพาณิชย์'"><i class="fas fa-store-alt font-color-prop"></i>
+                    {{P.AnnounceTH}}</h1>
+                  <h1 *ngIf="P.PropertyType == 'คอนโด'"><i class="fas fa-building font-color-condo"></i>
+                    {{P.AnnounceTH}}</h1>
+                  <h1 *ngIf="!P.PropertyType"><i class="fas fa-map" style="color: green;"></i> {{P.AnnounceTH}}</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+    </div>
+    <app-loading-spinner *ngIf="showSpinner==true"></app-loading-spinner>
+    <div class="container" *ngIf="showSpinner==false">
+      <div class="row" *ngFor="let P of Prop">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="jumbotron">
+                    <div class="header-blog">สถานะการซื้อขาย</div>
+                    <label>{{P.PPStatus}}</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="jumbotron">
+                    <div class="header-blog">สถานะทรัพย์สิน</div>
+                    <label>{{P.AsseStatus}}</label>
+                  </div>
+                </div>
+                <hr>
+                <div class="col-md-12">
+                  <div class="jumbotron">
+                    <div class="header-blog">ติดต่อคุณ</div>
+                    <label *ngIf="!P.PropertyType">{{P.Place}}</label>
+                    <label *ngIf="P.PropertyType">{{P.Costestimate}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="col-md-12">
+
+          <hr>
+          <div *ngIf="P.PropertyType" id="product-specificate">
+
+            <!-- Tab panes -->
+            <div class="">
+              <div role="tabpanel" class="tab-pane active" id="specificate">
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>ข้อมูลทั่วไป</h3>
+                    <div class="row">
+                      <div class="col-md-12 ">
+                        <div class="col-sm-6">
+                          <div class="header-blog">ข้อมูลอสังหา</div>
+                          <div class="specificate-panel">
+                            <div class="specificate-list">
+                              <div class="specificate-title">ประเภทอสังหาฯ</div>
+                              <div class="specificate-info">{{ P.PropertyType }}</div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">หัวข้อประกาศ</div>
+                              <div class="specificate-info">{{ P.AnnounceTH }}</div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">รหัสอสังหาฯ</div>
+                              <div class="specificate-info">{{ P.CodeDeed }}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 ">
+                          <div class="header-blog">ราคา</div>
+                          <div class="specificate-panel">
+                            <div class="specificate-list">
+                              <div class="specificate-title">ราคาขาย</div>
+                              <div class="specificate-info">{{ P.SellPrice | number}} บาท</div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ราคาประเมิน</div>
+                              <div class="specificate-info">{{ P.CostestimateB | number}} บาท</div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ราคาตลาด</div>
+                              <div class="specificate-info">{{ P.MarketPrice | number}} บาท</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="container">
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="header-blog">รายละเอียดบ้าน</div>
+                          <ul>
+                            <li>
+                              <div><i class="fas fa-bath"></i> {{P.BathRoom}} ห้องน้ำ </div>
+
+                            </li>
+                            <li>
+                              <div><i class="fas fa-bed"></i> {{P.BedRoom}} ห้องนอน </div>
+
+                            </li>
+                            <li>
+                              <div><i class="fas fa-car"></i> {{P.CarPark}} ที่จอดรถ</div>
+
+                            </li>
+
+                            <li>
+                              <div><i class="fas fa-ruler"></i> พื้นที่ใช้สอย {{P.HouseArea}} ตารางเมตร</div>
+
+                            </li>
+                            <li
+                            *ngIf="P.PropertyType == 'บ้าน' || P.PropertyType =='อาคารพาณิชย์'">
+                            <div><i class="fas fa-ruler"></i> จำนวนชั้น
+                              {{P.Floor}} ชั้น</div>
+  
+                          </li>
+                          <li *ngIf="P.PropertyType == 'คอนโด'">
+                            <div><i class="fas fa-ruler"></i> ชั้นที่อยู่
+                              {{P.Floor}} </div>
+  
+                          </li>
+                          <li
+                            *ngIf="P.PropertyType == 'คอนโด' || P.PropertyType =='อาคารพาณิชย์'">
+                            <div><i class="fas fa-ruler"></i> ค่าใช้จ่ายส่วนกลาง
+                              {{P.MFee}} บาท</div>
+  
+                          </li>
+                          </ul>
+                        </div>
+                        <br>
+                        <div class="col-sm-6">
+                          <div class="header-blog">รายละเอียดที่ดิน</div>
+                          <ul>
+                            <li>
+                              <div><i class="fas fa-ruler"></i> {{P.LandR}} ไร่ </div>
+
+                            </li>
+                            <li>
+                              <div><i class="fas fa-ruler"></i> {{P.LandG}} งาน </div>
+
+                            </li>
+                            <li>
+                              <div><i class="fas fa-ruler"></i> {{P.LandWA}} ตารางวา</div>
+
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="">
+                            <div class="header-blog">รายละเอียดเพิ่มเติม</div>
+                            <p>{{P.MoreDetails}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <h3>ข้อมูลสถานที่</h3>
+                <h5><i class="fas fa-map-marker-alt"></i> {{ P.Location }}, {{ P.LDistrict }},
+                  {{ P.LAmphur }}, {{ P.LProvince }}, ประเทศไทย, {{P.LZipCode}}</h5>
+                <div class="row">
+                  <div class="col-md-12 ">
+                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    </agm-map>
+                  </div>
+                </div>
+                <hr>
+                <h3>รายละเอียด</h3>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-4 ">
+                      <div class="header-blog">รายละเอียดอสังหา</div>
+                      <div class="specificate-panel">
+                        <div class="specificate-list">
+                          <div class="specificate-title">สภาพ</div>
+                          <div class="specificate-info">{{ P.HomeCondition }}</div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">อายุ</div>
+                          <div class="specificate-info">{{ P.BuildingAge }} ปี</div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">ปีที่ก่อสร้างเสร็จ</div>
+                          <div class="specificate-info">{{ P.BuildFD }} / {{ P.BuildFM }} / {{ P.BuildFY }}
+                          </div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">ทิฺศของประตูหน้า</div>
+                          <div class="specificate-info">{{ P.Directions }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="">
+                        <div class="header-blog">ถนน</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">สถานะถนน</div>
+                            <div class="specificate-info">{{ P.RoadType }}</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ความกว้างถนน</div>
+                            <div class="specificate-info">{{ P.RoadWide }}</div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ระดับพื้นดิน</div>
+                            <div class="specificate-info">{{ P.GroundLevel }} | {{ P.GroundValue }} เมตร</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="header-blog">ทำเล</div>
+                      <div class="specificate-panel">
+                        <div class="specificate-list">
+                          <div class="specificate-title">ที่ตาบอด</div>
+                          <div class="specificate-info" [ngStyle]="{'color': P.Blind  == '0'?'red':'green'}">
+                            <i *ngIf="P.Blind  == '0'" class="fas fa-times"></i><i *ngIf="P.Blind  != '0'"
+                              class="fas fa-check"></i>
+                          </div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">ใกล้สถานศึกษา</div>
+                          <div class="specificate-info" [ngStyle]="{'color': P.Neareducation  == '0'?'red':'green'}">
+                            <i *ngIf="P.Neareducation  == '0'" class="fas fa-times"></i><i
+                              *ngIf="P.Neareducation  !='0'" class="fas fa-check"></i></div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">ใกล้ศูนย์การค้า</div>
+                          <div class="specificate-info" [ngStyle]="{'color': P.Cenmarket  == '0'?'red':'green'}">
+                            <i *ngIf="P.Cenmarket  == '0'" class="fas fa-times"></i><i *ngIf="P.Cenmarket  != '0'"
+                              class="fas fa-check"></i></div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">ใกล้ตลาด</div>
+                          <div class="specificate-info" [ngStyle]="{'color': P.Market  == '0'?'red':'green'}">
+                            <i *ngIf="P.Market  == '0'" class="fas fa-times"></i><i *ngIf="P.Market  != '0'"
+                              class="fas fa-check"></i>
+                          </div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">ติดแม่น้ำ</div>
+                          <div class="specificate-info" [ngStyle]="{'color': P.River  == '0'?'red':'green'}">
+                            <i *ngIf="P.River  == '0'" class="fas fa-times"></i><i *ngIf="P.River  != '0'"
+                              class="fas fa-check"></i>
+                          </div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">ติดถนน</div>
+                          <div class="specificate-info" [ngStyle]="{'color': P.Mainroad  == '0'?'red':'green'}">
+                            <i *ngIf="P.Mainroad  == '0'" class="fas fa-times"></i><i *ngIf="P.Mainroad  != '0'"
+                              class="fas fa-check"></i>
+                          </div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">อยู่ในซอย</div>
+                          <div class="specificate-info" [ngStyle]="{'color': P.Insoi  == '0'?'red':'green'}">
+                            <i *ngIf="P.Insoi  == '0'" class="fas fa-times"></i><i *ngIf="P.Insoi  != '0'"
+                              class="fas fa-check"></i>
+                          </div>
+                        </div>
+                        <div class="specificate-list">
+                          <div class="specificate-title">อื่นๆ</div>
+                          <div class="specificate-info">{{ P.Letc }} </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="col-xs-12 " *ngIf="P.PropertyType == 'บ้าน' || P.PropertyType =='อาคารพาณิชย์'">
+                  <h3>สิ่งอำนวยความสะดวก</h3>
+                  <div class="container ">
+                    <div class="row">
+                      <div class=" col-md-6">
+                        <div class="header-blog">ภายใน</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">เครื่องปรับอากาศ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.airconditioner  == '0'?'red':'green'}">
+                              <i *ngIf="P.airconditioner  == '0'" class="fas fa-times"></i><i
+                                *ngIf="P.airconditioner  != '0'" class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">พัดลม</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.afan  == '0'?'red':'green'}">
+                              <i *ngIf="P.afan  == '0'" class="fas fa-times"></i><i *ngIf="P.afan  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เครื่องฟอกอากาศ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.AirPurifier  == '0'?'red':'green'}">
+                              <i *ngIf="P.AirPurifier  == '0'" class="fas fa-times"></i><i *ngIf="P.AirPurifier  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เครื่องทำน้ำอุ่น</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Waterheater  == '0'?'red':'green'}">
+                              <i *ngIf="P.Waterheater  == '0'" class="fas fa-times"></i><i *ngIf="P.Waterheater  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">มีอินเตอร์เน็ตไร้สาย
+                              (Wi-Fi)</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.WIFI  == '0'?'red':'green'}">
+                              <i *ngIf="P.WIFI  == '0'" class="fas fa-times"></i><i *ngIf="P.WIFI  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เคเบิลทีวี</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.TV  == '0'?'red':'green'}">
+                              <i *ngIf="P.TV  == '0'" class="fas fa-times"></i><i *ngIf="P.TV  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ตู้เย็น</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.refrigerator  == '0'?'red':'green'}">
+                              <i *ngIf="P.refrigerator  == '0'" class="fas fa-times"></i><i
+                                *ngIf="P.refrigerator  != '0'" class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ไมโครเวฟ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.microwave  == '0'?'red':'green'}">
+                              <i *ngIf="P.microwave  == '0'" class="fas fa-times"></i><i *ngIf="P.microwave  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เตาแก๊ส</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.gasstove  == '0'?'red':'green'}">
+                              <i *ngIf="P.gasstove  == '0'" class="fas fa-times"></i><i *ngIf="P.gasstove  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ชุดโต๊ะเก้าอี้</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.TCset  == '0'?'red':'green'}">
+                              <i *ngIf="P.TCset  == '0'" class="fas fa-times"></i><i *ngIf="P.TCset  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ตู้เสื้อผ้า</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.wardrobe  == '0'?'red':'green'}">
+                              <i *ngIf="P.wardrobe  == '0'" class="fas fa-times"></i><i *ngIf="P.wardrobe  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">โซฟา</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.sofa  == '0'?'red':'green'}">
+                              <i *ngIf="P.sofa  == '0'" class="fas fa-times"></i><i *ngIf="P.sofa  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เตียง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.bed  == '0'?'red':'green'}">
+                              <i *ngIf="P.bed  == '0'" class="fas fa-times"></i><i *ngIf="P.bed  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ชั้นวาง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.shelves  == '0'?'red':'green'}">
+                              <i *ngIf="P.shelves  == '0'" class="fas fa-times"></i><i *ngIf="P.shelves  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">กล้องวงจรปิด CCTV</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.CCTV  == '0'?'red':'green'}">
+                              <i *ngIf="P.CCTV  == '0'" class="fas fa-times"></i><i *ngIf="P.CCTV  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6" *ngIf="P.PropertyType == 'บ้าน'">
+                        <div class="header-blog">บริเวณบ้าน</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">
+                              เจ้าหน้าที่รักษาความปลอดภัย</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Securityguard  == '0'?'red':'green'}">
+                              <i *ngIf="P.Securityguard  == '0'" class="fas fa-times"></i><i
+                                *ngIf="P.Securityguard  != '0'" class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">สระว่ายน้ำ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.pool  == '0'?'red':'green'}">
+                              <i *ngIf="P.pool  == '0'" class="fas fa-times"></i><i *ngIf="P.pool  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ฟิตเนส</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Fitness  == '0'?'red':'green'}">
+                              <i *ngIf="P.Fitness  == '0'" class="fas fa-times"></i><i *ngIf="P.Fitness  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">พื้นที่ส่วนกลาง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Publicarea  == '0'?'red':'green'}">
+                              <i *ngIf="P.Publicarea  == '0'" class="fas fa-times"></i><i *ngIf="P.Publicarea  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">รถรับส่ง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.ShuttleBus  == '0'?'red':'green'}">
+                              <i *ngIf="P.ShuttleBus  == '0'" class="fas fa-times"></i><i *ngIf="P.ShuttleBus  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="P.PropertyType == 'อาคารพาณิชย์'">
+                        <div class="header-blog">สิ่งอำนวยความสะดวกบริเวณอาคาร</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">
+                              เจ้าหน้าที่รักษาความปลอดภัย</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Securityguard  == '0'?'red':'green'}">
+                              <i *ngIf="P.Securityguard  == '0'" class="fas fa-times"></i><i
+                                *ngIf="P.Securityguard  != '0'" class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">พื้นที่ส่วนกลาง</div>
+                            <div class="specificate-info" [ngStyle]="{'color':
+                              P.Publicarea == '0'?'red':'green'}">
+                              <i *ngIf="P.Publicarea  == '0'" class="fas fa-times"></i><i *ngIf="P.Publicarea  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ตู้เอทีเอ็ม / ธนาคาร
+                            </div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.ATM  == '0'?'red':'green'}">
+                              <i *ngIf="P.ATM  == '0'" class="fas fa-times"></i><i *ngIf="P.ATM  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านเสริมสวย</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.BeautySalon  == '0'?'red':'green'}">
+                              <i *ngIf="P.BeautySalon  == '0'" class="fas fa-times"></i><i *ngIf="P.BeautySalon  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านสะดวกซื้อ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.CStore  == '0'?'red':'green'}">
+                              <i *ngIf="P.CStore  == '0'" class="fas fa-times"></i><i *ngIf="P.CStore  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านทำผม</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Hairsalon  == '0'?'red':'green'}">
+                              <i *ngIf="P.Hairsalon  == '0'" class="fas fa-times"></i><i *ngIf="P.Hairsalon  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านซักรีด/ซักแห้ง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Laundry  == '0'?'red':'green'}">
+                              <i *ngIf="P.Laundry  == '0'" class="fas fa-times"></i><i *ngIf="P.Laundry  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านค้า</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Store  == '0'?'red':'green'}">
+                              <i *ngIf="P.Store  == '0'" class="fas fa-times"></i><i *ngIf="P.Store  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ซุปเปอร์มาร์เก็ต</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Supermarket  == '0'?'red':'green'}">
+                              <i *ngIf="P.Supermarket  == '0'" class="fas fa-times"></i><i *ngIf="P.Supermarket  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-12 " *ngIf="P.PropertyType == 'คอนโด'">
+                  <h3>สิ่งอำนวยความสดวก</h3>
+                  <div class="container ">
+                    <div class="row">
+                      <div class=" col-md-4">
+                        <div class="header-blog">สิ่งอำนวยความสะดวกภายในห้อง</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">เครื่องปรับอากาศ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.airconditioner  == '0'?'red':'green'}">
+                              <i *ngIf="P.airconditioner  == '0'" class="fas fa-times"></i><i
+                                *ngIf="P.airconditioner  != '0'" class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">พัดลม</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.afan  == '0'?'red':'green'}">
+                              <i *ngIf="P.afan  == '0'" class="fas fa-times"></i><i *ngIf="P.afan  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เครื่องฟอกอากาศ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.AirPurifier  == '0'?'red':'green'}">
+                              <i *ngIf="P.AirPurifier  == '0'" class="fas fa-times"></i><i *ngIf="P.AirPurifier  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เครื่องทำน้ำอุ่น</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Waterheater  == '0'?'red':'green'}">
+                              <i *ngIf="P.Waterheater  == '0'" class="fas fa-times"></i><i *ngIf="P.Waterheater  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">มีอินเตอร์เน็ตไร้สาย
+                              (Wi-Fi)</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.WIFI  == '0'?'red':'green'}">
+                              <i *ngIf="P.WIFI  == '0'" class="fas fa-times"></i><i *ngIf="P.WIFI  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เคเบิลทีวี</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.TV  == '0'?'red':'green'}">
+                              <i *ngIf="P.TV  == '0'" class="fas fa-times"></i><i *ngIf="P.TV  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ตู้เย็น</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.refrigerator  == '0'?'red':'green'}">
+                              <i *ngIf="P.refrigerator  == '0'" class="fas fa-times"></i><i
+                                *ngIf="P.refrigerator  != '0'" class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ไมโครเวฟ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.microwave  == '0'?'red':'green'}">
+                              <i *ngIf="P.microwave  == '0'" class="fas fa-times"></i><i *ngIf="P.microwave  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เตาแก๊ส</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.gasstove  == '0'?'red':'green'}">
+                              <i *ngIf="P.gasstove  == '0'" class="fas fa-times"></i><i *ngIf="P.gasstove  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ชุดโต๊ะเก้าอี้</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.TCset  == '0'?'red':'green'}">
+                              <i *ngIf="P.TCset  == '0'" class="fas fa-times"></i><i *ngIf="P.TCset  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ตู้เสื้อผ้า</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.wardrobe  == '0'?'red':'green'}">
+                              <i *ngIf="P.wardrobe  == '0'" class="fas fa-times"></i><i *ngIf="P.wardrobe  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">โซฟา</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.sofa  == '0'?'red':'green'}">
+                              <i *ngIf="P.sofa  == '0'" class="fas fa-times"></i><i *ngIf="P.sofa  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">เตียง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.bed  == '0'?'red':'green'}">
+                              <i *ngIf="P.bed  == '0'" class="fas fa-times"></i><i *ngIf="P.bed  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ชั้นวาง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.shelves  == '0'?'red':'green'}">
+                              <i *ngIf="P.shelves  == '0'" class="fas fa-times"></i><i *ngIf="P.shelves  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">กล้องวงจรปิด CCTV</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.CCTV  == '0'?'red':'green'}">
+                              <i *ngIf="P.CCTV  == '0'" class="fas fa-times"></i><i *ngIf="P.CCTV  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="header-blog">สิ่งอำนวยความสะดวกส่วนกลาง</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">
+                              เจ้าหน้าที่รักษาความปลอดภัย</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Securityguard  == '0'?'red':'green'}">
+                              <i *ngIf="P.Securityguard  == '0'" class="fas fa-times"></i><i
+                                *ngIf="P.Securityguard  != '0'" class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">สระว่ายน้ำ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.pool  == '0'?'red':'green'}">
+                              <i *ngIf="P.pool  == '0'" class="fas fa-times"></i><i *ngIf="P.pool  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ฟิตเนส</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Fitness  == '0'?'red':'green'}">
+                              <i *ngIf="P.Fitness  == '0'" class="fas fa-times"></i><i *ngIf="P.Fitness  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">พื้นที่ส่วนกลาง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Publicarea  == '0'?'red':'green'}">
+                              <i *ngIf="P.Publicarea  == '0'" class="fas fa-times"></i><i *ngIf="P.Publicarea  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">รถรับส่ง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.ShuttleBus  == '0'?'red':'green'}">
+                              <i *ngIf="P.ShuttleBus  == '0'" class="fas fa-times"></i><i *ngIf="P.ShuttleBus  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ตู้น้ำหยอดเหรียญ
+                            </div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.WVmachine  == '0'?'red':'green'}">
+                              <i *ngIf="P.WVmachine  == '0'" class="fas fa-times"></i><i *ngIf="P.WVmachine  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">
+                              เครื่องซักผ้าหยอดเหรียญ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.CWmachine  == '0'?'red':'green'}">
+                              <i *ngIf="P.CWmachine  == '0'" class="fas fa-times"></i><i *ngIf="P.CWmachine  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ลิฟต์</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Elevator  == '0'?'red':'green'}">
+                              <i *ngIf="P.Elevator  === '0'" class="fas fa-times"></i><i *ngIf="P.Elevator  !== '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ล๊อบบี้</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Elevator  == '0'?'red':'green'}">
+                              <i *ngIf="P.Elevator  !== '1'" class="fas fa-times"></i><i *ngIf="P.Elevator  === '1'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">กล้องวงจรปิด</div>
+                            <div class="specificate-info" [ngStyle]="{'color':
+                              P.CCTV == '0'?'red':'green'}">
+                              <i *ngIf="P.CCTV  == '0'" class="fas fa-times"></i><i *ngIf="P.CCTV  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="header-blog">ทั่วไป</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title">ห้องครัว</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Kitchen  == '0'?'red':'green'}">
+                              <i *ngIf="P.Kitchen  == '0'" class="fas fa-times"></i><i *ngIf="P.Kitchen != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ห้องนั่งเล่น</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.LivingR  == '0'?'red':'green'}">
+                              <i *ngIf="P.LivingR  == '0'" class="fas fa-times"></i><i *ngIf="P.LivingR  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ห้องจัดงาน</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.EventR  == '0'?'red':'green'}">
+                              <i *ngIf="P.EventR  == '0'" class="fas fa-times"></i><i *ngIf="P.EventR  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ห้องประชุม</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.MeetingR  == '0'?'red':'green'}">
+                              <i *ngIf="P.MeetingR  == '0'" class="fas fa-times"></i><i *ngIf="P.MeetingR  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ระเบียง</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Balcony  == '0'?'red':'green'}">
+                              <i *ngIf="P.Balcony  == '0'" class="fas fa-times"></i><i *ngIf="P.Balcony  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="header-blog">สิ่งอำนวยความสะดวกบริเวณคอนโด</div>
+                        <div class="specificate-panel">
+                          <div class="specificate-list">
+                            <div class="specificate-title"> ตู้เอทีเอ็ม /
+                              ธนาคาร</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.ATM  == '0'?'red':'green'}">
+                              <i *ngIf="P.ATM  == '0'" class="fas fa-times"></i><i *ngIf="P.ATM  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านเสริมสวย</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.BeautySalon  == '0'?'red':'green'}">
+                              <i *ngIf="P.BeautySalon  == '0'" class="fas fa-times"></i><i *ngIf="P.BeautySalon  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านสะดวกซื้อ</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.CStore  == '0'?'red':'green'}">
+                              <i *ngIf="P.CStore  == '0'" class="fas fa-times"></i><i *ngIf="P.CStore  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านทำผม</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Hairsalon  == '0'?'red':'green'}">
+                              <i *ngIf="P.Hairsalon  == '0'" class="fas fa-times"></i><i *ngIf="P.Hairsalon  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านซักรีด/ซักแห้ง
+                            </div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Laundry  == '0'?'red':'green'}">
+                              <i *ngIf="P.Laundry  == '0'" class="fas fa-times"></i><i *ngIf="P.Laundry  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ร้านค้า</div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Store  == '0'?'red':'green'}">
+                              <i *ngIf="P.Store  == '0'" class="fas fa-times"></i><i *ngIf="P.Store  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                          <div class="specificate-list">
+                            <div class="specificate-title">ซุปเปอร์มาร์เก็ต
+                            </div>
+                            <div class="specificate-info" [ngStyle]="{'color': P.Supermarket  == '0'?'red':'green'}">
+                              <i *ngIf="P.Supermarket  == '0'" class="fas fa-times"></i><i *ngIf="P.Supermarket  != '0'"
+                                class="fas fa-check"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+        <div class="col-md-12">
+            <div *ngIf="!P.PropertyType" id="product-specificate">
+                <!-- Tab panes -->
+                <div class="">
+                  <div role="tabpanel" class="tab-pane active" id="specificate">
+    
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h3>ข้อมูลทั่วไป</h3>
+                        <div class="row">
+                          <div class="col-md-12 ">
+                            <div class="col-sm-6">
+                              <div class="header-blog">ข้อมูลอสังหา</div>
+                              <div class="specificate-panel">
+                                <div class="specificate-list">
+                                  <div class="specificate-title">ประเภทที่ดิน</div>
+                                  <div class="specificate-info">{{ P.ColorType }}</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">หัวข้อประกาศ</div>
+                                  <div class="specificate-info">{{ P.AnnounceTH }}</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">รหัสอสังหา</div>
+                                  <div class="specificate-info">{{ P.CodeProperty}}</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">ประเภทโฉนด</div>
+                                  <div class="specificate-info">{{ P.Deed }}</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">เลขโฉนด</div>
+                                  <div class="specificate-info">{{ P.CodeDeed }}</div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-6 ">
+                              <div class="header-blog">ราคา</div>
+                              <div class="specificate-panel">
+                                <div class="specificate-list">
+                                  <div class="specificate-title">ราคาขาย</div>
+                                  <div class="specificate-info">{{ P.SellPrice | number}} บาท</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">ธนาคารประเมิน</div>
+                                  <div class="specificate-info">{{ P.CostestimateB| number }} บาท</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">กรมที่ดินประเมิน</div>
+                                  <div class="specificate-info">{{ P.Costestimate | number}} บาท</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">ราคาตลาด</div>
+                                  <div class="specificate-info">{{ P.MarketPrice | number}} บาท</div>
+                                </div>
+                                <div class="specificate-list">
+                                  <div class="specificate-title">ราคาต่อตารางวา</div>
+                                  <div class="specificate-info">{{ P.PriceWA | number}} บาท</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+    
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="header-blog">รายละเอียดที่ดิน</div>
+                              <ul>
+                                <li>
+                                  <div><i class="fas fa-ruler"></i> {{P.LandR}} ไร่ </div>
+    
+                                </li>
+                                <li>
+                                  <div><i class="fas fa-ruler"></i> {{P.LandG}} งาน </div>
+    
+                                </li>
+                                <li>
+                                  <div><i class="fas fa-ruler"></i> {{P.LandWA}} ตารางวา</div>
+    
+                                </li>
+    
+                                <li>
+                                  <div><i class="fas fa-ruler"></i> พื้นที่ (กว้าง*ลึก) {{P.Land}} เมตร</div>
+    
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="header-blog">รายละเอียดเพิ่มเติม</div>
+                              <p>{{P.MoreDetails}}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <h3>ข้อมูลสถานที่</h3>
+                    <h5><i class="fas fa-map-marker-alt"></i> {{ P.Location }}, {{ P.LDistrict }},
+                      {{ P.LAmphur }}, {{ P.LProvince }}, ประเทศไทย, {{P.LZipCode}}</h5>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                        </agm-map>
+                      </div>
+                    </div>
+                    <hr>
+                    <h3>รายละเอียด</h3>
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-xs-12 ">
+                          <div class="header-blog">รายละเอียดอสังหา</div>
+                          <div class="specificate-panel">
+                            <div class="specificate-list">
+                              <div class="specificate-title">อายุการถือครองที่ดิน</div>
+                              <div class="specificate-info">{{P.LandAge}} ปี</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="header-blog">ทำเล</div>
+                          <div class="specificate-panel">
+                            <div class="specificate-list">
+                              <div class="specificate-title">ที่ตาบอด</div>
+                              <div class="specificate-info" [ngStyle]="{'color': P.Blind  == '0'?'red':'green'}">
+                                <i *ngIf="P.Blind  == '0'" class="fas fa-times"></i><i *ngIf="P.Blind  != '0'"
+                                  class="fas fa-check"></i>
+                              </div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ใกล้สถานศึกษา</div>
+                              <div class="specificate-info" [ngStyle]="{'color': P.Neareducation  == '0'?'red':'green'}">
+                                <i *ngIf="P.Neareducation  == '0'" class="fas fa-times"></i><i
+                                  *ngIf="P.Neareducation  !='0'" class="fas fa-check"></i></div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ใกล้ศูนย์การค้า</div>
+                              <div class="specificate-info" [ngStyle]="{'color': P.Cenmarket  == '0'?'red':'green'}">
+                                <i *ngIf="P.Cenmarket  == '0'" class="fas fa-times"></i><i *ngIf="P.Cenmarket  != '0'"
+                                  class="fas fa-check"></i></div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ใกล้ตลาด</div>
+                              <div class="specificate-info" [ngStyle]="{'color': P.Market  == '0'?'red':'green'}">
+                                <i *ngIf="P.Market  == '0'" class="fas fa-times"></i><i *ngIf="P.Market  != '0'"
+                                  class="fas fa-check"></i>
+                              </div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ติดแม่น้ำ</div>
+                              <div class="specificate-info" [ngStyle]="{'color': P.River  == '0'?'red':'green'}">
+                                <i *ngIf="P.River  == '0'" class="fas fa-times"></i><i *ngIf="P.River  != '0'"
+                                  class="fas fa-check"></i>
+                              </div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ติดถนน</div>
+                              <div class="specificate-info" [ngStyle]="{'color': P.Mainroad  == '0'?'red':'green'}">
+                                <i *ngIf="P.Mainroad  == '0'" class="fas fa-times"></i><i *ngIf="P.Mainroad  != '0'"
+                                  class="fas fa-check"></i>
+                              </div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">อยู่ในซอย</div>
+                              <div class="specificate-info" [ngStyle]="{'color': P.Insoi  == '0'?'red':'green'}">
+                                <i *ngIf="P.Insoi  == '0'" class="fas fa-times"></i><i *ngIf="P.Insoi  != '0'"
+                                  class="fas fa-check"></i>
+                              </div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">อื่นๆ</div>
+                              <div class="specificate-info">{{ P.Letc }} </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-8">
+                          <div class="header-blog">ถนน</div>
+                          <div class="specificate-panel">
+                            <div class="specificate-list">
+                              <div class="specificate-title">สถานะถนน</div>
+                              <div class="specificate-info">{{ P.RoadType }}</div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ความกว้างถนน</div>
+                              <div class="specificate-info">{{ P.RoadWide }}</div>
+                            </div>
+                            <div class="specificate-list">
+                              <div class="specificate-title">ระดับพื้นดิน</div>
+                              <div class="specificate-info">{{ P.GroundLevel }} | {{ P.GroundValue }} เมตร</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <br><br><br><br><br><br>
+    <br><br><br><br><br><br>
+    <hr><br><br>
+
+    <app-footer></app-footer>
+  </div>
+</div>

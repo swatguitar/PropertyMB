@@ -69,7 +69,7 @@
                 <div class="form-group">
                   <label for="inputZip">เพศ</label>
                   <select class="form-control" formControlName="Gender" style="border-radius: 30px 30px 30px 30px;"
-                    (change)="onGetUpdateG($event.target.value)" [(ngModel)]="credentials.Gender">
+                    (change)="onGetUpdateG($event.target.value)" value='{{details.Gender}}'>
                     <option value="ชาย">
                       ชาย</option>
                     <option value="หญิง">
@@ -106,7 +106,7 @@
                     <i class="fas fa-edit"></i>แก้ไข
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item btn-file"><input type="file" class="" ng2FileSelect
+                    <a class="dropdown-item btn-file"><input type="file" name="file" class="" ng2FileSelect
                         [uploader]="uploader">อัพโหลดรูปภาพ</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" (click)="RemoveImage()">ลบรูปภาพ</a>
@@ -115,6 +115,7 @@
 
               </div>
             </div>
+            <app-loading-spinner *ngIf="showSpinner2 == true"></app-loading-spinner>
           </div>
         </div>
       </div>
@@ -125,22 +126,14 @@
         <form [formGroup]="updateDForm">
           <div class="form-group">
             <label for="inputZip">ลักษณะผู้ใช้งาน</label>
-            <div class="col-md-4">
-              <input type="text" class="form-control" readonly style="border-radius: 30px 30px 30px 30px;"
-                value="{{UserType}}">
-            </div>
-            <br>
+         
             <div class="col-md-4">
                 <select class="form-control" formControlName="UserType" (change)="onGetUpdateD($event.target.value)" style="border-radius: 30px 30px 30px 30px;"
-                [ngClass]="{ 'is-invalid': submitted && D.UserType.errors }" [(ngModel)]="credentials.UserType">
-                <option value="ซื้ออสังหาถาวร">
-                  ซื้ออสังหาถาวร</option>
+                [ngClass]="{ 'is-invalid': submitted && D.UserType.errors }" value="{{UserType}}">
                 <option value="ระยะสั้น">
-                  ระยะสั้น 1-3 ปี</option>
-                <option value="ระยะยาว">
-                  ระยะยาว 3-5 ปี</option>
-                <option value="เพื่อการลงทุน">
-                  เพื่อการลงทุน</option>
+                    ระยะสั้น ต่ำกว่าหรือเท่ากับ 1 ปี</option>
+                  <option value="ระยะยาว">
+                    ระยะยาว 1 ปีขึ้นไป</option>
               </select>
               <div *ngIf="submitted && D.UserType.errors" class="invalid-feedback">
                 <div *ngIf="D.UserType.errors.required">กรุณาเลือกลักษณะผู้ใช้งาน</div>

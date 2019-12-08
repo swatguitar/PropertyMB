@@ -37,6 +37,17 @@ import { UpdateprofileComponent } from './components/profile/updateprofile/updat
 import { HouseupdateComponent } from './components/houses/houseupdate/houseupdate.component';
 import { AdminloginComponent } from './components/adminLTE/admin/adminlogin/adminlogin.component';
 import { AdmindashComponent } from './components/adminLTE/admin/admindash/admindash.component';
+import { LandsupdateComponent } from './components/lands/landsupdate/landsupdate.component';
+import { LandsPDFComponent } from './components/lands/lands-pdf/lands-pdf.component';
+import { UpdateimgHComponent } from './components/houses/updateimg-h/updateimg-h.component';
+import { UpdateimgLComponent } from './components/lands/updateimg-l/updateimg-l.component';
+import { CreateGComponent } from './components/group/create-g/create-g.component';
+import { MememberlistComponent } from './components/group/mememberlist/mememberlist.component';
+import { MemberdetailsComponent } from './components/group/mememberlist/memberdetails/memberdetails.component';
+import { ItemslistComponent } from './components/group/itemslist/itemslist.component';
+import { ItemslistmemberComponent } from './components/group/itemslistmember/itemslistmember.component';
+import { EditgroupComponent } from './components/group/grouplist/editgroup/editgroup.component';
+import { DetailComponent } from './components/detail/detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -44,7 +55,7 @@ const routes: Routes = [
     path: "home", component: HomeComponent,
     canActivate: [AuthGuardService]
   },
-  { path: "adminlogin", component: AdminloginComponent,  },
+  { path: "adminlogin", component: AdminloginComponent, },
   { path: "admindash", component: AdmindashComponent, },
   { path: "pagenotfound", component: PagenotfoundComponent },
   { path: "resetPassword", component: ResetpasswordComponent },
@@ -52,6 +63,7 @@ const routes: Routes = [
   { path: "aboutus", component: AboutusComponent },
   { path: "register", component: RegisterComponent },
   { path: "login", component: LoginComponent },
+  { path: "detail", component: DetailComponent },
   {
     path: "recommend", component: RecommendComponent, children: [
       {
@@ -82,25 +94,71 @@ const routes: Routes = [
     ]
   },
   {
-    path: "housePDF", component: HousePdfComponent, children: [
-      {
-        path: '',
-        component: HousePdfComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: ':id',
-        component: HousePdfComponent,
-        canActivate: [AuthGuardService]
-      }
-    ]
+    path: "houses/DownloadPDF/:id", 
+    component: HousePdfComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "lands/DownloadPDF/:id", 
+    component: LandsPDFComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "houses/updateimage/:id", 
+    component: UpdateimgHComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: "lands/updateimage/:id", 
+    component: UpdateimgLComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'houses/houseUpdate/:id',
     component: HouseupdateComponent,
     canActivate: [AuthGuardService]
   },
-   {
+  {
+    path: 'lands/landUpdate/:id',
+    component: LandsupdateComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'groups/groupfolder/:id',
+    component: GrouplistComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'groups/groupfolder/Edit/:id',
+    component: EditgroupComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'groups/groupfolder/itemlist/:id',
+    component: ItemslistComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'groups/groupfolder/itemlist/details/:id',
+    component: GroupdetailComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'groups/member/groupfolder/:id',
+    component: MememberlistComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'groups/member/groupfolder/itemlist/:id',
+    component: ItemslistmemberComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'groups/member/groupfolder/itemlist/details/:group/:folder/:id',
+    component: MemberdetailsComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
     path: "houses", component: HousesComponent, children: [
       {
         path: '',
@@ -118,17 +176,12 @@ const routes: Routes = [
     path: "groups", component: GroupComponent, children: [
       {
         path: '',
-        component: GrouplistComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: 'groupfolder',
         component: GrouppingComponent,
         canActivate: [AuthGuardService]
       },
       {
-        path: ':id',
-        component: GroupdetailComponent,
+        path: 'creategroup',
+        component: CreateGComponent,
         canActivate: [AuthGuardService]
       }
     ]

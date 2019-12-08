@@ -19,13 +19,13 @@
                     typeof="WebPage"><span property="name">อสังหาสิ่งปลูกสร้าง</span></a>
                   <meta property="position" content="2">
                 </li>
-                <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
-                      property="name">{{ house.AnnounceTH }}</span></a>
+                <li property="itemListElement" typeof="ListItem" ><a property="item" typeof="WebPage"><span
+                      property="name" >{{ house.AnnounceTH }}</span></a>
                   <meta property="position" content="2">
                 </li>
               </ul>
 
-              <h1>{{ house.AnnounceTH }}</h1>
+              <h1 >{{ house.AnnounceTH }}</h1>
               <h5><i class="fas fa-map-marker-alt"></i> {{ house.Location }}, {{ house.LDistrict }},
                 {{ house.LAmphur }}, {{ house.LProvince }}, ประเทศไทย, {{house.LZipCode}}</h5>
               <hr>
@@ -37,12 +37,17 @@
               </div>
               <br>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <button class="btn btn-warning" [routerLink]="['/houses/houseUpdate',house.ID_Property]">
                     <i class="fas fa-edit"></i> แก้ไขข้อมูล
                   </button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <button class="btn btn-primary" [routerLink]="['/houses/updateimage',house.ID_Property]">
+                      <i class="far fa-images"></i> แก้ไขรูปภาพ
+                    </button>
+                  </div>
+                <div class="col-md-4">
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
                     <i class="fas fa-trash-alt"></i> ลบอสังหานี้
@@ -58,17 +63,17 @@
                         </div>
                         <div class="modal-body">
                           <div class="text-center">
-                          <div class="col-md-6">
-                              <button type="button" class="btn btn-success"  data-dismiss="modal" (click)="onDelete()">
-                                  <i class="fas fa-trash-alt"></i> ยืนยัน
-                                </button> 
+                            <div class="col-md-6">
+                              <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onDelete()">
+                                <i class="fas fa-trash-alt"></i> ยืนยัน
+                              </button>
+                            </div>
+                            <div class="col-md-6">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                ยกเลิก
+                              </button>
+                            </div>
                           </div>
-                          <div class="col-md-6">
-                              <button type="button" class="btn btn-danger"  data-dismiss="modal">
-                                   ยกเลิก
-                                </button> 
-                          </div>
-                        </div>
                         </div>
                       </div>
                     </div>
@@ -86,8 +91,44 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="jumbotron">
+                    <a class="float-right" data-toggle="modal" data-target="#exampleModalCenter2"
+                    [routerLink]><i class="fas fa-edit"></i></a>
                   <div class="header-blog">สถานะการซื้อขาย</div>
                   <label>{{house.PPStatus}}</label>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">สถานะการซื้อขาย</h5>
+                        </div>
+                        <div class="modal-body">
+
+                          <div class="col-sm-12 ">
+                            <input type="radio" id="newhouse" value="ยังไม่ขาย"  name="PPStatus"
+                            (change)="PPStatus($event.target.value)"  [checked]="house.PPStatus == 'ยังไม่ขาย'">
+                            ยังไม่ขาย
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="radio" id="oldhouse" value="อยู่ระหว่างการจอง" name="PPStatus"
+                            (change)="PPStatus($event.target.value)"  [checked]="house.PPStatus == 'อยู่ระหว่างการจอง'">
+                            อยู่ระหว่างการจอง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="radio" id="oldhouse" value="ขายแล้ว" name="PPStatus"
+                            (change)="PPStatus($event.target.value)"  [checked]="house.PPStatus == 'ขายแล้ว'">
+                            ขายแล้ว
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                          <button type="button" class="btn btn-success"  data-dismiss="modal" (click)="UpdateStatus()">บันทึก</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -98,7 +139,8 @@
               </div>
               <hr>
               <div class="col-md-12">
-                <button class="btn btn-success btn-lg btn-block" [routerLink]="['/housePDF',house.ID_Property]">
+                <button class="btn btn-success btn-lg btn-block"
+                  [routerLink]="['/houses/DownloadPDF',house.ID_Property]">
                   บันทึกเป็น PDF
                 </button>
               </div>
@@ -115,7 +157,6 @@
 
               <div class="row">
                 <div class="col-xs-12">
-                  <hr>
                   <h3>ข้อมูลทั่วไป</h3>
                   <div class="row">
                     <div class="col-md-12 ">
@@ -123,7 +164,7 @@
                         <div class="header-blog">ข้อมูลอสังหา</div>
                         <div class="specificate-panel">
                           <div class="specificate-list">
-                            <div class="specificate-title">ประเภทบ้าน</div>
+                            <div class="specificate-title">ประเภทอสังหาฯ</div>
                             <div class="specificate-info">{{ house.PropertyType }}</div>
                           </div>
                           <div class="specificate-list">
@@ -160,7 +201,7 @@
 
                     <div class="row">
                       <div class="col-sm-6">
-                        <div class="header-blog">รายละเอียดบ้าน</div>
+                        <div class="header-blog">รายละเอียด</div>
                         <ul>
                           <li>
                             <div><i class="fas fa-bath"></i> {{house.BathRoom}} ห้องน้ำ </div>
@@ -176,9 +217,26 @@
                           </li>
 
                           <li>
-                            <div><i class="fas fa-ruler"></i> พื้นที่ตัวบ้าน {{house.HouseArea}} ตารางวา</div>
+                            <div><i class="fas fa-ruler"></i> พื้นที่ใช้สอย {{house.HouseArea}} ตารางเมตร</div>
 
                           </li>
+                          <li
+                          *ngIf="house.PropertyType == 'บ้าน' || house.PropertyType =='อาคารพาณิชย์'">
+                          <div><i class="fas fa-ruler"></i> จำนวนชั้น
+                            {{house.Floor}} ชั้น</div>
+
+                        </li>
+                        <li *ngIf="house.PropertyType == 'คอนโด'">
+                          <div><i class="fas fa-ruler"></i> ชั้นที่อยู่
+                            {{house.Floor}} </div>
+
+                        </li>
+                        <li
+                          *ngIf="house.PropertyType == 'คอนโด' || house.PropertyType =='อาคารพาณิชย์'">
+                          <div><i class="fas fa-ruler"></i> ค่าใช้จ่ายส่วนกลาง
+                            {{house.MFee}} บาท</div>
+
+                        </li>
                         </ul>
                       </div>
                       <br>
@@ -195,11 +253,6 @@
                           </li>
                           <li>
                             <div><i class="fas fa-ruler"></i> {{house.LandWA}} ตารางวา</div>
-
-                          </li>
-
-                          <li>
-                            <div><i class="fas fa-ruler"></i> พื้นที่ใช้สอย {{house.LandU}} ตารางวา</div>
 
                           </li>
                         </ul>
@@ -431,11 +484,11 @@
                     <div class="header-blog">รายละเอียดอสังหา</div>
                     <div class="specificate-panel">
                       <div class="specificate-list">
-                        <div class="specificate-title">สภาพบ้าน</div>
+                        <div class="specificate-title">สภาพ</div>
                         <div class="specificate-info">{{ house.HomeCondition }}</div>
                       </div>
                       <div class="specificate-list">
-                        <div class="specificate-title">อายุบ้าน</div>
+                        <div class="specificate-title">อายุ</div>
                         <div class="specificate-info">{{ house.BuildingAge }} ปี</div>
                       </div>
                       <div class="specificate-list">
@@ -444,7 +497,7 @@
                         </div>
                       </div>
                       <div class="specificate-list">
-                        <div class="specificate-title">ทิฺศของประตูบ้าน</div>
+                        <div class="specificate-title">ทิฺศของประตูหน้า</div>
                         <div class="specificate-info">{{ house.Directions }}</div>
                       </div>
                     </div>

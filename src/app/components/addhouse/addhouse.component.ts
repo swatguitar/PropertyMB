@@ -102,13 +102,13 @@ export class AddhouseComponent implements OnInit {
   longitude: number;
   NextstepCon: boolean = false
   address: string;
-  province: locationsDetails;
+  province: locationsDetails[];
   Lprovince: any[];
   Ldistrict: any[];
   Lamphur: any[];
   amphur: any[];
   PA: locationsDetails;
-  district: locationsDetails;
+  district: locationsDetails[];
   zipcode: any[];
   private geoCoder;
   public details: any;
@@ -146,8 +146,8 @@ export class AddhouseComponent implements OnInit {
     Lastname: '',
     UserType: '',
     Email: '',
-    Token:  '',
-    Answer:  '',
+    Token: '',
+    Answer: '',
     OldPassword: '',
     Password: '',
     Birthday: '',
@@ -250,7 +250,7 @@ export class AddhouseComponent implements OnInit {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
-    Kitchen:0,
+    Kitchen: 0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -319,7 +319,7 @@ export class AddhouseComponent implements OnInit {
       this.geoCoder = new google.maps.Geocoder;
 
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: [],componentRestrictions:{'country':'TH'}
+        types: [], componentRestrictions: { 'country': 'TH' }
       });
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
@@ -355,6 +355,7 @@ export class AddhouseComponent implements OnInit {
     //------------getlocation-------
     this.auth.getProvine().subscribe((province) => {
       this.province = province;
+      this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
     },
       err => {
         console.error(err)
@@ -396,8 +397,14 @@ export class AddhouseComponent implements OnInit {
           this.IDcon = article.ID_Contact
           this.onCheckContact()
         });
-        this.credentials.ContactU = this.credentials.ID_Contact
-        //console.log(this.credentials.ContactU)
+
+        while (this.credentials.ContactU == '') {
+          this.credentials.ContactU = this.credentials.ID_Contact
+          this.onCheckContact()
+         
+        }
+        // console.log(this.credentials.ContactU+"--------")
+
         this.auth.addcontact(this.credentials).subscribe(
           () => {
 
@@ -418,8 +425,13 @@ export class AddhouseComponent implements OnInit {
               this.IDcon = article.ID_Contact
               this.onCheckContact()
             });
-            this.credentials.ContactUt = this.credentials.ID_Contact
-            //console.log(this.credentials.ContactUt+"two")
+            while (this.credentials.ContactUt == '') {
+              this.credentials.ContactUt = this.credentials.ID_Contact
+              this.onCheckContact()
+              //console.log(this.credentials.ContactU+"-***")
+            }
+
+            console.log(this.credentials.ContactUt + "two")
             this.auth.addcontact(this.credentials).subscribe(
               () => {
               },
@@ -439,24 +451,29 @@ export class AddhouseComponent implements OnInit {
                   this.IDcon = article.ID_Contact
                   this.onCheckContact()
                 });
-                this.credentials.ContactUo = this.credentials.ID_Contact
-               // console.log(this.credentials.ContactUo+"three")
-                 this.auth.addcontact(this.credentials).subscribe(
-                   () => {
-                     this.onFirststep()
-                     alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-                   },
-                   err => {
-                     console.error(err)
-                   }
-                 )
+                while (this.credentials.ContactUo == '') {
+                  this.credentials.ContactUo = this.credentials.ID_Contact
+                  this.onCheckContact()
+                  //console.log(this.credentials.ContactU+"-***")
+                }
+
+                console.log(this.credentials.ContactUo + "three")
+                this.auth.addcontact(this.credentials).subscribe(
+                  () => {
+                    this.onFirststep()
+                    alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+                  },
+                  err => {
+                    console.error(err)
+                  }
+                )
               },
                 err => {
                   console.error(err)
                 }
               )
 
-            } else if (this.con2selected == 'false' && this.Name3 == '')  {
+            } else if (this.con2selected == 'false' && this.Name3 == '') {
               this.credentials.ContactUo = this.credentials.ID_Contact
               // stop here if form is invalid
               if (this.addhouseForm.invalid) {
@@ -465,13 +482,13 @@ export class AddhouseComponent implements OnInit {
               }
               this.onFirststep()
               alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-            }else {
+            } else {
               // stop here if form is invalid
-               if (this.addhouseForm.invalid) {
-                 console.log(this.addhouseForm)
-                 alert(JSON.stringify("กรุณากรอกข้อมูล"))
-                 return;
-               }
+              if (this.addhouseForm.invalid) {
+                console.log(this.addhouseForm)
+                alert(JSON.stringify("กรุณากรอกข้อมูล"))
+                return;
+              }
               this.onFirststep()
               alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
             }
@@ -482,23 +499,23 @@ export class AddhouseComponent implements OnInit {
           )
 
 
-        } else if (this.con2selected == 'false' && this.Name2 == '')  {
+        } else if (this.con2selected == 'false' && this.Name2 == '') {
           this.credentials.ContactUt = this.credentials.ID_Contact
           this.credentials.ContactUo = this.credentials.ID_Contact
           // stop here if form is invalid
-           if (this.addhouseForm.invalid) {
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
+          if (this.addhouseForm.invalid) {
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
           this.onFirststep()
           alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-        }else {
+        } else {
           // stop here if form is invalid
-           if (this.addhouseForm.invalid) {
-             //console.log(this.addlandForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
+          if (this.addhouseForm.invalid) {
+            //console.log(this.addlandForm)
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
           this.onFirststep()
           alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
         }
@@ -523,7 +540,12 @@ export class AddhouseComponent implements OnInit {
           this.onCheckContact()
           //console.log(this.IDcon + "----------------data")
         });
-        this.credentials.ContactUt = this.credentials.ID_Contact
+        while (this.credentials.ContactUt == '') {
+          this.credentials.ContactUt = this.credentials.ID_Contact
+          this.onCheckContact()
+          //console.log(this.credentials.ContactU+"-***")
+        }
+
         //console.log(this.credentials.ContactUt + " two R")
         this.auth.addcontact(this.credentials).subscribe(
           () => {
@@ -546,7 +568,12 @@ export class AddhouseComponent implements OnInit {
               //console.log(this.IDcon + "----------------data")
               this.onCheckContact()
             });
-            this.credentials.ContactUo = this.credentials.ID_Contact
+            while (this.credentials.ContactUo == '') {
+              this.credentials.ContactUo = this.credentials.ID_Contact
+              this.onCheckContact()
+              //console.log(this.credentials.ContactU+"-***")
+            }
+
             //console.log(this.credentials.ContactUo + " three")
             this.auth.addcontact(this.credentials).subscribe(
               () => {
@@ -563,27 +590,27 @@ export class AddhouseComponent implements OnInit {
             }
           )
 
-        } else if (this.con2selected == 'false' && this.Name3 == '')  {
+        } else if (this.con2selected == 'false' && this.Name3 == '') {
           this.credentials.ContactUo = this.credentials.ID_Contact
           // stop here if form is invalid
-           if (this.addhouseForm.invalid) {
-             //console.log(this.addlandForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
+          if (this.addhouseForm.invalid) {
+            //console.log(this.addlandForm)
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
           this.onFirststep()
           alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-        }else {
+        } else {
           // stop here if form is invalid
-           if (this.addhouseForm.invalid) {
-             console.log(this.addhouseForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
+          if (this.addhouseForm.invalid) {
+            console.log(this.addhouseForm)
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
           this.onFirststep()
           alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
         }
-        
+
       },
         err => {
           console.error(err)
@@ -605,7 +632,10 @@ export class AddhouseComponent implements OnInit {
           //console.log(this.IDcon + "----------------data")
           this.onCheckContact()
         });
-        this.credentials.ContactUo = this.credentials.ID_Contact
+        while (this.credentials.ContactUo == '') {
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          this.onCheckContact()
+        }
         //console.log(this.credentials.ContactUo + " three")
 
         this.auth.addcontact(this.credentials).subscribe(
@@ -625,11 +655,11 @@ export class AddhouseComponent implements OnInit {
 
     } else {
       // stop here if form is invalid
-       if (this.addhouseForm.invalid) {
-         //console.log(this.addlandForm)
-         alert(JSON.stringify("กรุณากรอกข้อมูล"))
-         return;
-       }
+      if (this.addhouseForm.invalid) {
+        //console.log(this.addlandForm)
+        alert(JSON.stringify("กรุณากรอกข้อมูล"))
+        return;
+      }
       this.onFirststep()
       alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
     }
@@ -719,6 +749,7 @@ export class AddhouseComponent implements OnInit {
       this.amphur = amphur.filter(article => {
         return article.PROVINCE_ID == data.PROVINCE_ID;
       });
+      this.amphur.sort((a, b) => a.AMPHUR_NAME.localeCompare(b.AMPHUR_NAME));
     },
       err => {
         console.error(err)
@@ -733,6 +764,7 @@ export class AddhouseComponent implements OnInit {
       this.district = district.filter(article => {
         return article.AMPHUR_ID == data.AMPHUR_ID;
       });
+      this.district.sort((a, b) => a.DISTRICT_NAME.localeCompare(b.DISTRICT_NAME));
     },
       err => {
         console.error(err)
@@ -746,7 +778,6 @@ export class AddhouseComponent implements OnInit {
       this.zipcode = zipcode.filter(article => {
         return article.DISTRICT_ID == data.DISTRICT_ID;
       });
-
     },
       err => {
         console.error(err)
@@ -996,7 +1027,7 @@ export class AddhouseComponent implements OnInit {
 
       this.contactUser.filter(article => {
         this.IDcon = article.ID_Contact
-        // console.log(this.IDcon + "-------Contact222 ")
+        console.log(this.IDcon + "-------Contact222 ")
         this.onCheckContact()
       });
     },
@@ -1006,7 +1037,7 @@ export class AddhouseComponent implements OnInit {
     )
   }
   onCheckContact() {
-    //console.log(this.ContactID + "FIrst ")
+    console.log(this.ContactID + "FIrst ")
     while (this.IDcon == this.ContactID) {
       this.loopChackcontact()
     }

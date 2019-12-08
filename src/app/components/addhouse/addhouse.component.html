@@ -150,7 +150,7 @@
                                       พื้นที่ใช้สอย (ตร.ม.)<i class="reqiureinput">*</i>
                                     </div>
                                     <div class="col-sm-10">
-                                      <input (change)="onPIPE()" style="border-radius: 30px 30px 30px 30px;"
+                                      <input style="border-radius: 30px 30px 30px 30px;"
                                         type="number" id="HouseArea" class="form-control"
                                         placeholder="พื้นที่ใช้สอย (ตร.ม.)" formControlName="HouseArea" required
                                         [(ngModel)]="credentials.HouseArea"
@@ -1325,10 +1325,6 @@
                           ใกล้ตลาด
                         </div>
                         <div class="col-sm-12">
-                          <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
-                          ใกล้รถไฟฟ้า
-                        </div>
-                        <div class="col-sm-12">
                           <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
                         </div>
                         <div class="col-sm-12">
@@ -2328,10 +2324,6 @@
                     [disabled]="credentials.ID_Property == ''">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ถัดไป
                   </button>
-                  <button class="btn btn-primary float-right" type="button" awNextStep
-                  >
-                   <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ถัดไป
-                 </button>
                 </div>
               </div>
             </div>

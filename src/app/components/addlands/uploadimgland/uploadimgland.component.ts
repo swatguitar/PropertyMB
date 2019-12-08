@@ -29,6 +29,7 @@ export class UploadimglandComponent implements OnInit {
     }
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
       form.append('ID_lands' ,this.ID_Lands);
+  
      };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {

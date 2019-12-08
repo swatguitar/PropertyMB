@@ -1,52 +1,132 @@
 <app-navbar></app-navbar>
-        <div class="container">
-          <div id="product-container">
-            <div class="row">
-              <div class="col-md-7">
-                  <div id="parentdiv" #parentdiv>
-                <div class="logo-distributed ">
-                <h3 align = 'center'>Property<span>Management</span></h3>
-                </div>
-                
-                <h1 align = 'center'>บ้านแสนศิรี</h1>
-                <p><b>ประเภทโครงการ</b><span class="float-right">บ้านเดี่ยว</span></p>
-                <p><b>ที่ดิน</b><span class="float-right">35 - 70 ตร.ว.</span></p>
-                <p><b>พื้นที่ใช้สอย</b><span class="float-right">20 - 150 ตร.ว.</span></p>
-                <p><b>เลขที่โฉนด</b><span class="float-right">78988542</span></p>
-                <br>
-                <p><b>เงื่อนไขการขาย</b><span class="float-right">จ่ายเงินก่อน</span></p>
-                <p><b>*วางเงินมัดจำ 10 เปอร์เซ็น</b><span class="float-right"></span></p>
-                <p><b>ชื่อผู้ดูแล:</b><span class="float-right">Matty</span></p>
-                <p><b>เบอร์โทรติดต่อ</b><span class="float-right">098-7654321</span></p>
-                <p><b>Line ID:</b><span class="float-right">Matty1956</span></p>
-                <br>
-                <p><b>ราคาเริ่มต้น.........................................................................................</b><span class="float-right">2,900,000 บาท</span></p>
-                <div class="row">
-                  <div class="col-md-4" ><img src="https://www.gannett-cdn.com/presto/2019/08/28/PCLA/8cf4e395-b08a-4f69-b409-2b6cbae8bde4-House_3.JPG?width=540&height=&fit=bounds&auto=webp" width="150" height="150"></div>
-                  <div class="col-md-4" ><img src="https://www.gannett-cdn.com/presto/2019/08/28/PCLA/8cf4e395-b08a-4f69-b409-2b6cbae8bde4-House_3.JPG?width=540&height=&fit=bounds&auto=webp" width="150" height="150"></div>
-                  <div class="col-md-4" ><img src="https://www.gannett-cdn.com/presto/2019/08/28/PCLA/8cf4e395-b08a-4f69-b409-2b6cbae8bde4-House_3.JPG?width=540&height=&fit=bounds&auto=webp" width="150" height="150"></div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-4" ><img src="https://www.gannett-cdn.com/presto/2019/08/28/PCLA/8cf4e395-b08a-4f69-b409-2b6cbae8bde4-House_3.JPG?width=540&height=&fit=bounds&auto=webp" width="150" height="150"></div>
-                    <div class="col-md-4" ><img src="https://www.gannett-cdn.com/presto/2019/08/28/PCLA/8cf4e395-b08a-4f69-b409-2b6cbae8bde4-House_3.JPG?width=540&height=&fit=bounds&auto=webp" width="150" height="150"></div>
-                    <div class="col-md-4" ><img src="https://www.gannett-cdn.com/presto/2019/08/28/PCLA/8cf4e395-b08a-4f69-b409-2b6cbae8bde4-House_3.JPG?width=540&height=&fit=bounds&auto=webp" width="150" height="150"></div>
-                  </div>
-                  <br>
-                  <img id="imgMap" alt="" style="display: none" />
-                  <br>
-                </div>
-              </div>
-            </div>
-            
-                </div>
-                </div>
-       
-      <div class="col-md-5 ">
-          <button class="button" type="button" id="btnExport" onclick="Export()" >เพิ่มแผนที่</button>
-        
-          <button class="button" type="button" (click)="downloadPDF()">บันทึกเป็น PDF</button>
+<div class="page-content">
+  <img src="http://www.landvist.xyz/assets/BGPDF.png" alt="index.png" alt="Responsive image" style="width:100%;">
+</div>
 
+<div class="container" *ngFor="let house of results">
+  <div id="product-container">
+    <div class="row">
+      <div class="col-md-6">
+        <br>
+        <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+              typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i>
+                หน้าแรก</span></a>
+            <meta property="position" content="1">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/houses' ]" property="item"
+              typeof="WebPage"><span property="name">อสังหาสิ่งปลูกสร้าง</span></a>
+            <meta property="position" content="2">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+            property="name">ข้อมูลอสังหาอิเล็กทรอนิกส์</span></a>
+        <meta property="position" content="3">
+      </li>
+      <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+            property="name">{{house.AnnounceTH }}</span></a>
+        <meta property="position" content="4">
+      </li>
+        </ul>
+        <br>
+        <h1><i style="color: chocolate" class="fas fa-feather-alt "></i>ข้อมูลอสังหาอิเล็กทรอนิกส์</h1>
+      </div>
+      <div class="col-md-6">
+        <br>
+        <br>
+        <br>
+        <button class="btn btn-success " type="button" (click)="downloadPDF()">บันทึกเป็น PDF</button>
       </div>
 
-      <app-footer></app-footer>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-8 border border-dark">
+        <div id="parentdiv" #parentdiv >
+          <div id="specificate">
+          <header class="text-center"> <img src="http://www.landvist.xyz/images/Defult/Navbar.png" width="200"
+              height="200" alt=""></header>
+          <div class="logo-distributed text-center ">
+            <h3>Property<span>Management</span></h3>
+            <br>
+          </div>
+
+          <h1 class="text-center">{{ house.AnnounceTH }}</h1>
+          <br>
+          <h5>ข้อมูลทั่วไป</h5>
+          <hr>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-8"><b>ประเภทโครงการ</b></div>
+              <div class="col-md-4">{{ house.PropertyType }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>ที่ดิน</b></div>
+              <div class="col-md-4">{{ house.LandWA }} ตร.ม.</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>พื้นที่ตัวบ้าน</b></div>
+              <div class="col-md-4">{{ house.HouseArea }} ตร.ม.</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>เลขที่โฉนด</b></div>
+              <div class="col-md-4">{{ house.CodeDeed }}</div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-8"><b>สถานะการซื้อขาย</b></div>
+              <div class="col-md-4">{{ house.PPStatus }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>*วางเงินมัดจำ 10 เปอร์เซ็น</b></div>
+              <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>ชื่อผู้ดูแล</b></div>
+              <div class="col-md-4">{{UserProfile?.Firstname}} {{UserProfile?.Lastname}}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>เบอร์โทรติดต่อ</b></div>
+              <div class="col-md-4">{{UserProfile?.Phone}}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-8"><b>อีเมล</b></div>
+              <div class="col-md-4">{{UserProfile?.Email}}</div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-8"><b>ราคาเริ่มต้น</b></div>
+              <div class="col-md-4">{{ house.SellPrice | number}} บาท</div>
+            </div>
+          </div>
+          <hr>
+         
+          <br>
+          <h5>รูปภาพ</h5>
+          <hr>
+          <div class="row">
+            <div class="col-md-4" *ngFor="let img of imagenew">
+              <img src="http://www.landvist.xyz/images/{{ img.URL}}" width="200" height="150">
+              <div>
+                <br>
+              </div>
+            </div>
+          </div>
+         <br>
+          <h5>แผนที่</h5>
+          <hr>
+          <div class="container">
+            <div class="text-center">
+                <img id="imgMap" alt="" style="display: none" width="700" height="350" />
+            </div>
+          </div>
+          <br>
+          <br>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

@@ -1,0 +1,834 @@
+<p>
+  landsupdate works!
+</p>
+<app-navbar></app-navbar>
+<img src="../../../assets/Property.jpg" class="img-fluid" alt="Responsive image" style="width:100%;">
+<div class="container " style="width:100%;">
+  <div id="product-container" *ngFor="let land of results">
+
+    <div class="row">
+      <div class="col-md-7">
+        <br>
+        <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+              typeof="WebPage"><span property="name"><i class="fas fa-paper-plane"></i> หน้าแรก</span></a>
+            <meta property="position" content="1">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/lands' ]" property="item"
+              typeof="WebPage"><span property="name">ที่ดิน</span></a>
+            <meta property="position" content="2">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+                property="name">แก้ไขข้อมูล</span></a>
+            <meta property="position" content="3">
+          </li>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+                property="name">{{land.AnnounceTH }}</span></a>
+            <meta property="position" content="4">
+          </li>
+        </ul>
+        <br>
+        <h1><i style="color: rgb(202, 129, 70)" class="fas fa-edit"></i> แก้ไขข้อมูล </h1>
+      </div>
+
+    </div>
+    <hr class="specification-dash-line">
+    <div class="centered-content">
+      <form [formGroup]="EdithouseForm" (ngSubmit)="onGo()">
+        <div class="row">
+          <div class="col-md-12 ">
+            <h3>ข้อมูลทั่วไป</h3>
+            <div class="row">
+              <div class="container jumbotron">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div>
+                      <label>ประเภททีดิน:<i class="reqiureinput">*</i></label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 ">
+                    <div>
+                      <select style="border-radius: 30px 30px 30px 30px;" id="ColorType" class="form-control"
+                        formControlName="ColorType" value={{land.ColorType}} (change)="ColorType($event.target.value)">
+                        <option style="color:rgb(174, 180, 80)"
+                          value="พื้นที่สีเหลือง – ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย" selected>
+                          พื้นที่สีเหลือง – ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย
+                        </option>
+                        <option style="color:orangered" value="พื้นที่สีส้ม – ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง"
+                          selected>
+                          พื้นที่สีส้ม – ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง
+                        </option>
+                        <option style="color:brown" value="พื้นที่สีน้ำตาล – ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก"
+                          selected>
+                          พื้นที่สีน้ำตาล – ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก
+                        </option>
+                        <option style="color:red" value="พื้นที่สีแดง – ที่ดินประเภทพาณิชยกรรม" selected>
+                          พื้นที่สีแดง – ที่ดินประเภทพาณิชยกรรม</option>
+                        <option style="color:darkmagenta" value="พื้นที่สีม่วง – ที่ดินประเภทอุตสาหกรรมและคลังสินค้า"
+                          selected>
+                          พื้นที่สีม่วง – ที่ดินประเภทอุตสาหกรรมและคลังสินค้า</option>
+                        <option style="color:blueviolet" value="พื้นที่สีเม็ดมะปราง – ที่ดินประเภทคลังสินค้า" selected>
+                          พื้นที่สีเม็ดมะปราง – ที่ดินประเภทคลังสินค้า</option>
+                        <option style="color:green" value="พื้นที่สีเขียว – ที่ดินประเภทชนบทและเกษตรกรรม" selected>
+                          พื้นที่สีเขียว – ที่ดินประเภทชนบทและเกษตรกรรม</option>
+                        <option value="พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว – ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม"
+                          selected>
+                          พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว –
+                          ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม</option>
+                        <option style="color:chocolate"
+                          value="พื้นที่สีน้ำตาลอ่อน – ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย"
+                          selected>
+                          พื้นที่สีน้ำตาลอ่อน –
+                          ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย
+                        </option>
+                        <option style="color: blue"
+                          value="พื้นที่สีน้ำเงิน – ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ" selected>
+                          พื้นที่สีน้ำเงิน – ที่ดินประเภทสถาบันราชการ
+                          สาธารณูปโภคและสาธารณูปการ
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div>
+                      <label>หัวข้อประกาศ:<i class="reqiureinput">*</i></label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 ">
+                    <div>
+                      <input style="border-radius: 30px 30px 30px 30px;" type="text" id="AnnounceTH"
+                        class="form-control" formControlName="AnnounceTH" placeholder="หัวข้อประกาศ"
+                        value="{{land.AnnounceTH}}" (change)="onGetAnnounceTH($event.target.value)">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div>
+
+                      <label>ราคา (บาท):<i class="reqiureinput">*</i></label>
+                    </div>
+                  </div>
+                  <div class="col-md-8 ">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <a><small>ราคาขาย</small></a>
+                        <input style="border-radius: 30px 30px 30px 30px;" id="SellPrice" class="form-control "
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedS($event)" placeholder="คนขายกำหนด"
+                          formControlName="SellPrice" value="{{land.SellPrice | number}}"
+                          (change)="onGetSell($event.target.value)">
+                      </div>
+                      <div class="col-sm-4">
+                        <a><small>ราคาประเมิน ธนาคาร</small></a>
+                        <input style="border-radius: 30px 30px 30px 30px;" id="Costestimate" class="form-control number"
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedB($event)" placeholder="ธนาคารประเมิน"
+                          formControlName="Costestimate" value="{{land.CostestimateB | number}}"
+                          (change)="onGetSellB($event.target.value)">
+
+                      </div>
+                      <div class="col-sm-4">
+                        <a><small>ราคาประเมิน กรมที่ดิน</small></a>
+                        <input style="border-radius: 30px 30px 30px 30px;" id="Costestimate" class="form-control number"
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedB($event)" placeholder="ธนาคารประเมิน"
+                          formControlName="Costestimate" value="{{land.Costestimate | number}}"
+                          (change)="onGetSellMB($event.target.value)">
+                      </div>
+                      <div class="col-sm-4">
+                        <a><small>ราคาตลาด</small></a>
+                        <input style="border-radius: 30px 30px 30px 30px;" id="MarketPrice" class="form-control"
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedM($event)" placeholder="ราคาตลาด"
+                          formControlName="MarketPrice" value="{{land.MarketPrice | number}}"
+                          (change)="onGetSellM($event.target.value)">
+                      </div>
+                      <div class="col-sm-4">
+                        <a><small>ราคาต่อตารางวา</small></a>
+                        <input style="border-radius: 30px 30px 30px 30px;" id="MarketPrice" class="form-control"
+                          (keydown)="numberCheck($event)" (keyup)="CommaFormattedM($event)"
+                          formControlName="PriceWA" value="{{cal | number}}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h4>รายละเอียดที่ดิน</h4>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-ruler"></i>
+                                ที่ดิน(ไร่)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandR"
+                                  class="form-control" placeholder="จำนวนไร" formControlName="LandR"
+                                  value="{{land.LandR}}" (change)="onGetLandR($event.target.value)">
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <i class="fas fa-ruler"></i>
+                                ที่ดิน(งาน)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandG"
+                                  class="form-control" placeholder="จำนวนงาน" formControlName="LandG"
+                                  value="{{land.LandG}}" (change)="onGetLandG($event.target.value)">
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-8">
+                                <i class="fas fa-ruler"></i>
+                                ที่ดิน(ตร.ว.)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandWA"
+                                  class="form-control" placeholder="จำนวนตารางวา" formControlName="LandWA"
+                                  value="{{land.LandWA}}" (change)="onGetLandWA($event.target.value)">
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="row">
+                              <div class="col-sm-8">
+                                <i class="fas fa-ruler"></i>
+                                พื้นที่ (กว้าง*ลึก)<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-10">
+                                <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandWA"
+                                  class="form-control" placeholder="จำนวนตารางวา" formControlName="LandWA"
+                                  value="{{land.Land}}" (change)="onGetLand($event.target.value)">
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <br>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>รหัสทรัพย์สิน:</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 ">
+                      <div cl>
+                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="CodeProperty"
+                          class="form-control search-input" formControlName="CodeProperty"
+                          placeholder="รหัสทรัพย์สิน(จากธนาคาร หรือ กรมที่ดิน)" value="{{land.CodeProperty}}"
+                          (change)="CodeProperty($event.target.value)">
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>เลขโฉนด:</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 ">
+                      <div cl>
+                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="CodeDeed"
+                          class="form-control search-input" formControlName="CodeDeed" placeholder="เลขโฉนด"
+                          value="{{land.CodeDeed}}" (change)="onGetCodeDeed($event.target.value)">
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>โฉนด :<i class="reqiureinput">*</i></label>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+                      <select style="border-radius: 30px 30px 30px 30px;" id="Deed" class="form-control"
+                        formControlName="Deed" value="{{land.Deed}}" (change)="Deed($event.target.value)">
+                        <option value="น.ส.4จ.">น.ส.4จ.</option>
+                        <option value="น.ส.3">น.ส.3</option>
+                        <option value="น.ส.3ก.">น.ส.3ก.</option>
+                        <option value="น.ส.2">น.ส.2</option>
+                        <option value="ส.ค.1">ส.ค.1</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">*</i>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+
+                      <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" placeholder="สถานะทรัพย์สิน"
+                        class="form-control" formControlName="AsseStatus" value="{{land.AsseStatus}}"
+                        (change)="onGetAsseStatus($event.target.value)">
+                        <option value="ว่าง" selected>
+                          ว่าง</option>
+                        <option value="จำนอง" selected>
+                          จำนอง</option>
+                        <option value="ขายฝาก" selected>
+                          ขายฝาก</option>
+                        <option value="ฝากขาย" selected>
+                          ฝากขาย</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>อายุการถือครองที่ดิน (ปี) :</label>
+                      </div>
+                    </div>
+                    <div class="col-md-2 ">
+
+                      <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandAge" class="form-control"
+                        formControlName="LandAge" placeholder="(ปี)" value="{{land.LandAge}}"
+                        (change)="LandAge($event.target.value)">
+
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row ">
+                    <div class="col-md-6 ">
+                      <h4>ทำเล</h4>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id="" value="1" name="Blind" formControlName="AsseStatus" (change)="Blind($event.target.checked)"
+                          [checked]="land.Blind == '1'">
+                        ที่ตาบอด
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id="" value="1" name="Neareducation"  formControlName="AsseStatus" (change)="Neareducation($event.target.checked)"
+                          [checked]="land.Neareducation == '1'">
+                        ใกล้สถานศึกษา
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id="" value="1" name="Cenmarket" formControlName="AsseStatus" (change)="Cenmarket($event.target.checked)"
+                          [checked]="land.Cenmarket == '1'">
+                        ใกล้ศูนย์การค้า
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id="" value="1" name="Market" formControlName="AsseStatus" (change)="Market($event.target.checked)"
+                          [checked]="land.Market == '1'">
+                        ใกล้ตลาด
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id="" value="1" name="River" formControlName="AsseStatus" (change)="River($event.target.checked)"
+                          [checked]="land.River == '1'"> ติดแม่น้ำ
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id="" name="Mainroad" formControlName="AsseStatus" (change)="Mainroad($event.target.checked)"
+                          [checked]="land.Mainroad"> ติดถนน
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id="" value="1" name="Insoi"  formControlName="AsseStatus" (change)="Insoi($event.target.checked)"
+                          [checked]="land.Insoi == '1'"> อยู่ในซอย
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="checkbox" id=" " value="1" name="onther" formControlName="AsseStatus"  [(ngModel)]="onther"> อื่นๆ
+                      </div>
+                      <div *ngIf="onther " class="col-sm-12">
+                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Letc" class="form-control"
+                          placeholder="โปรดระบุ" name="Letc" formControlName="AsseStatus" [(ngModel)]="credentials.Letc">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <h4>สถานะถนน</h4>
+                      <div class="col-sm-12">
+                        <input type="radio" id="" value="โคลน" name="RoadType" formControlName="RoadType" (change)="RoadType($event.target.value)"
+                          [checked]="land.RoadType == 'โคลน'"> โคลน
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="radio" id="" value="ยางมะตอย" name="RoadType" formControlName="RoadType" (change)="RoadType($event.target.value)"
+                          [checked]="land.RoadType == 'ยางมะตอย'">
+                        ยางมะตอย
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="radio" id="" value="คอนกรีต" name="RoadType" formControlName="RoadType" (change)="RoadType($event.target.value)"
+                          [checked]="land.RoadType == 'คอนกรีต'"> คอนกรีต
+                      </div>
+                      <div class="col-sm-12">
+                        <input type="radio" id=" " value="1" name="RoadType" formControlName="RoadType" [(ngModel)]="Ronther"  [checked]="land.RoadType != 'คอนกรีต' && land.RoadType != 'โคลน' && land.RoadType != 'ยางมะตอย' " > อื่นๆ
+                      </div>
+                      <div *ngIf="land.RoadType != 'คอนกรีต' && land.RoadType != 'โคลน' && land.RoadType != 'ยางมะตอย'  " class="col-sm-12">
+                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control" 
+                          placeholder="โปรดระบุ" name="RoadType"  formControlName="AsseStatus" (change)="RoadType($event.target.value)" value="{{land.RoadType}}">
+                      </div>
+                      <div class="col-md-6">
+                        <br>
+                        <label>ความกว้างถนน</label>
+                        <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control" name="RoadWide" formControlName="RoadWide"
+                          value="{{land.RoadWide}}" (change)="onGetRoadWide($event.target.value)">
+                          <option value="ซอยแคบ">ซอยแคบ</option>
+                          <option value="1 เมตร">1 เมตร</option>
+                          <option value="2 เมตร">2 เมตร</option>
+                          <option value="4 เมตร">4 เมตร</option>
+                          <option value="8 เมตร">8 เมตร</option>
+                          <option value="12 เมตร">12 เมตร</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-12">
+                        <br>
+                        <label>ระดับพื้นดิน</label>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <input type="radio" id="GroundLevel" value="สูงกว่าถนน" name="GroundLevel" formControlName="GroundLevel"
+                              (change)="GroundLevel($event.target.value)" [checked]="land.GroundLevel == 'สูงกว่าถนน'">
+                            สูงกว่าถนน
+                          </div>
+                          <div class="col-sm-6">
+                            <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน" name="GroundLevel" formControlName="GroundLevel"
+                              (change)="GroundLevel($event.target.value)" [checked]="land.GroundLevel == 'ต่ำกว่าถนน'">
+                            ต่ำกว่าถนน
+                          </div>
+            
+                        </div>
+                        <br>
+                        <label for="">ระดับพื้นดินจากถนน (เมตร)</label>
+                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="GroundValue" class="form-control" name="GroundValue"
+                          value="{{land.GroundValue}}" placeholder="ระดับพื้นดินจากถนน (เมตร)" formControlName="GroundValue"
+                          (change)="onGetGroundValue($event.target.value)">
+                      </div>
+                    </div>
+                     
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    
+
+      <div class="row">
+        <div class="col-md-12  ">
+          <h3><i class="far fa-file-alt"></i> รายละเอียดเพิ่มเติม</h3>
+          <div class="row">
+            <div class="container jumbotron">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label for="FormControlTextarea">กรอกรายละเอียดของอสังหา</label>
+                  <textarea class="form-control" id="FormControlTextarea" rows="3" value="{{land.MoreDetails}}"
+                    (change)="onGetMoreDetails($event.target.value)"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12  ">
+          <h3><i class="fas fa-map-marker-alt"></i> ที่อยู่อสังหา</h3>
+          <div class="row">
+            <div class="container jumbotron">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h4>ค้นหาที่อยู่</h4>
+                  <div class="form-group">
+                    <div class="text-right text-danger">
+                      *ท่านสามารถเลือนจุดไปยังสถานที่ที่ท่านต้องการได้
+                    </div>
+                    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+                      placeholder="ค้นหาอยู่ของอสังหา" autocorrect="off" autocapitalize="off" spellcheck="off"
+                      type="text" #search>
+                  </div>
+                  <div>
+                    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                      <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                        (dragEnd)="markerDragEnd($event)">
+                      </agm-marker>
+                    </agm-map>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3">ละติจูต: <input class="form-control" readonly type="text" id="latitude"
+                        [(ngModel)]="credentials.Latitude" value='{{latitude}}' name="latitude"> </div>
+                    <div class="col-sm-3">ลองจิจูต: <input class="form-control" readonly type="text" id="longitude"
+                        [(ngModel)]="credentials.Longitude" value='{{longitude}}' name="longitude">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <br>
+                  <hr>
+                  <h4>รายละเอียดที่อยู่</h4>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div>
+                        <label>จุดสังเกตุ :</label>
+                      </div>
+                    </div>
+                    <div class="col-md-8 ">
+                      <div cl>
+                        <input style="border-radius: 30px 30px 30px 30px;" type="text" id="ObservationPoint"
+                          class="form-control search-input" placeholder="สถานที่ใกล้เคียง"
+                          value="{{land.ObservationPoint}}" (change)="onGetObservationPoint($event.target.value)">
+
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <form [formGroup]="EdithouseForm">
+                    <div class="row">
+                      <div class="col-md-12 ">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div>
+                              <label>ที่อยู่:<i class="reqiureinput">*</i></label>
+                            </div>
+                          </div>
+                          <div class="col-md-8 ">
+                            <div>
+                              <input style="border-radius: 30px 30px 30px 30px;" type="text" id="Location"
+                                class="form-control" placeholder="ที่อยู่" formControlName="Location"
+                                value="{{land.Location}}" (change)="onGetLocation($event.target.value)">
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-8">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                จังหวัด:<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-4">
+                                <select style="border-radius: 30px 30px 30px 30px;" id="province" class="form-control"
+                                  name="Lprovince" formControlName="Lprovince" value="{{land.LProvince}}"
+                                  (ngModelChange)="selectprovince($event)">
+                                  <option *ngFor="let p of province" [ngValue]="p">
+                                    {{p?.PROVINCE_NAME}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="row">
+                              <div class="col-sm-4">
+                                อำเภอ:<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-8">
+                                <select style="border-radius: 30px 30px 30px 30px;" id="amphur" class="form-control"
+                                  name="Lamphur" formControlName="Lamphur" value="{{land.LAmphur}}"
+                                  (ngModelChange)="selectamphur($event)">
+                                  <option *ngFor="let a of amphur" [ngValue]="a">
+                                    {{a?.AMPHUR_NAME}}</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-md-8">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                ตำบล:<i class="reqiureinput">*</i>
+                              </div>
+                              <div class="col-sm-4">
+                                <select style="border-radius: 30px 30px 30px 30px;" id="district" class="form-control"
+                                  name="Ldistrict" formControlName="Ldistrict" value="{{land.LDistrict}}"
+                                  (ngModelChange)="selectdistrict($event)">
+                                  <option *ngFor="let d of district" [ngValue]="d">
+                                    {{d?.DISTRICT_NAME}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="row">
+                              <div class="col-sm-4">
+                                รหัสไปรษณี:
+                              </div>
+                              <div class="col-sm-8" *ngFor="let pp of zipcode">
+                                <input class="form-control" type="text" style="border-radius: 30px 30px 30px 30px;"
+                                  value="{{pp.ZIPCODE}}" readonly>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12  ">
+          <h3><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                aria-selected="true">ผู้ติดต่อบุคคลที่
+                1<i class="reqiureinput">*</i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                aria-selected="false">ผู้ติดต่อบุคคลที่
+                2</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+                aria-selected="false">ผู้ติดต่อบุคคลที่
+                3</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div>
+                <div class="container jumbotron">
+                  <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 1</h4>
+                  <hr>
+                  <div class="container ">
+                    <form [formGroup]="EditContactForm">
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                          <div class="ng-autocomplete">
+                            <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name1"
+                              [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                              (selected)='onGetContact($event)' (inputChanged)='onEditContactName1($event)'
+                              (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
+                              [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                            </ng-autocomplete>
+
+                            <ng-template #itemTemplate let-item>
+                              <a [innerHTML]="item.Name"></a>
+                            </ng-template>
+
+                            <ng-template #notFoundTemplate let-notFound>
+                              <div>ไม่พบผู้ติดต่อ</div>
+                            </ng-template>
+                            <div *ngIf="submitted && E.ContactName.errors" class="invalid-feedback">
+                              <div *ngIf="E.ContactName.errors.required">
+                                กรุณากรอกข้อมูล</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputPassword4">สถานะ</label>
+                          <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactS"
+                            formControlName="ContactS" value="{{conS1}}">
+                            <option value="เจ้าของ">เจ้าของ</option>
+                            <option value="นายหน้า">นายหน้า</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputCity">อีเมล</label>
+                          <input type="text" class="form-control" (change)="onEditContactEmail1($event.target.value)"
+                            value="{{conEmail1}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">เบอร์โทร</label>
+                          <input type="text" class="form-control" (change)="onEditContactPhone1($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conPhone1}}">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">ไลน์</label>
+                          <input type="text" class="form-control" (change)="onEditContactLine1($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conLine1}}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="gridCheck"
+                            (change)="onEditContactID1($event.target.value)" [(ngModel)]="allowedit"
+                            formControlName="allowedit" name="allowedit" value="{{conID1}}">
+                          <label class="form-check-label" for="gridCheck">
+                            แก้ไข ข้อมูลผู้ติดต่อ
+                          </label>
+                        </div>
+                      </div>
+                      <button *ngIf="allowedit" type="button" (click)="onEditContact1()"
+                        class="btn btn-warning">บันทึก</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <div>
+                <div class="container jumbotron">
+                  <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 2</h4>
+                  <div class="container">
+                    <form [formGroup]="EditContact2Form">
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                          <div class="ng-autocomplete">
+                            <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name2"
+                              [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                              (selected)='onGetContact2($event)' (inputChanged)='onEditContactName2($event)'
+                              (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
+                              [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                            </ng-autocomplete>
+
+                            <ng-template #itemTemplate let-item>
+                              <a [innerHTML]="item.Name"></a>
+                            </ng-template>
+
+                            <ng-template #notFoundTemplate let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template>
+                            <div *ngIf="submitted && Et.ContactName.errors" class="invalid-feedback">
+                              <div *ngIf="Et.ContactName.errors.required">
+                                กรุณากรอกข้อมูล</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputPassword4">สถานะ</label>
+                          <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSt"
+                            formControlName="ContactSt" value="conS2">
+                            <option value="เจ้าของ">เจ้าของ</option>
+                            <option value="นายหน้า">นายหน้า</option>
+                          </select>
+
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                          <label for="inputCity">อีเมล</label>
+                          <input type="text" class="form-control" (change)="onEditContactEmail2($event.target.value)"
+                            value="{{conEmail2}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">เบอร์โทร</label>
+                          <input type="text" class="form-control" (change)="onEditContactPhone2($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conPhone2}}">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputZip">ไลน์</label>
+                          <input type="text" class="form-control" (change)="onEditContactLine2($event.target.value)"
+                            style="border-radius: 30px 30px 30px 30px;" value="{{conLine2}}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="gridCheck"
+                            (change)="onEditContactID2($event.target.value)" [(ngModel)]="allowedit2"
+                            formControlName="allowedit2" name="allowedit2" value="{{conID2}}">
+                          <label class="form-check-label" for="gridCheck">
+                            แก้ไข ข้อมูลผู้ติดต่อ
+                          </label>
+                        </div>
+                      </div>
+                      <button *ngIf="allowedit2" type="submit" (click)="onEditContact()"
+                        class="btn btn-warning">บันทึก</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+              <div class="container jumbotron">
+                <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
+                <div class="container">
+                  <form [formGroup]="EditContact3Form">
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                        <div class="ng-autocomplete">
+                          <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name3"
+                            [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
+                            (selected)='onGetContact3($event)' (inputChanged)='onEditContactName3($event)'
+                            (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
+                            [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                          </ng-autocomplete>
+
+                          <ng-template #itemTemplate let-item>
+                            <a [innerHTML]="item.Name"></a>
+                          </ng-template>
+
+                          <ng-template #notFoundTemplate let-notFound>
+                            <div [innerHTML]="notFound"></div>
+                          </ng-template>
+                        </div>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputPassword4">สถานะ</label>
+                        <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSo"
+                          formControlName="ContactSo" value="conS3">
+                          <option value="เจ้าของ">เจ้าของ</option>
+                          <option value="นายหน้า">นายหน้า</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="inputCity">อีเมล</label>
+                        <input type="text" class="form-control" (change)="onEditContactEmail3($event.target.value)"
+                          value="{{conEmail3}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputZip">เบอร์โทร</label>
+                        <input type="text" class="form-control" (change)="onEditContactPhone3($event.target.value)"
+                          style="border-radius: 30px 30px 30px 30px;" value="{{conPhone3}}">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputZip">ไลน์</label>
+                        <input type="text" class="form-control" (change)="onEditContactLine3($event.target.value)"
+                          style="border-radius: 30px 30px 30px 30px;" value="{{conLine3}}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck"
+                          (change)="onEditContactID3($event.target.value)" [(ngModel)]="allowedit3"
+                          formControlName="allowedit3" name="allowedit3" value="{{conID3}}">
+                        <label class="form-check-label" for="gridCheck">
+                          แก้ไข ข้อมูลผู้ติดต่อ
+                        </label>
+                      </div>
+                    </div>
+                    <button *ngIf="allowedit3" type="submit" (click)="onEditContact()"
+                      class="btn btn-warning">บันทึก</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 ">
+        <button class="btn btn-success float-right" (click)="onGo()">
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

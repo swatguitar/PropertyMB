@@ -4,7 +4,7 @@
   <div id="product-container" *ngFor="let house of results">
 
     <div class="row">
-      <div class="col-md-7">
+      <div class="col-md-12">
         <br>
         <ul id="breadcrumb-nav" typeof="BreadcrumbList">
           <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
@@ -229,12 +229,12 @@
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
                         <input type="radio" id="newhouse" value="ใหม่" formControlName="HomeCondition"
-                          [(ngModel)]="credentials.HomeCondition">
+                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'ใหม่'">
                         อาคารใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                          [(ngModel)]="credentials.HomeCondition">
+                        (change)="onGetHomeCondition($event.target.value)" [checked]="house.HomeCondition == 'มือสอง'">
                         อาคารมือสอง
                       </div>
                     </div>
@@ -493,12 +493,12 @@
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
                         <input type="radio" id="newhouse" value="ใหม่" formControlName="HomeCondition"
-                          [(ngModel)]="credentials.HomeCondition">
+                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'ใหม่'">
                         คอนโดใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                          [(ngModel)]="credentials.HomeCondition">
+                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'มือสอง'">
                         คอนโดมือสอง
                       </div>
                     </div>
@@ -710,7 +710,7 @@
                               <div class="col-sm-10">
                                 <input style="border-radius: 30px 30px 30px 30px;" type="text" id="HouseArea"
                                   class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)" formControlName="HouseArea"
-                                  value="{{house.HouseArea}}">
+                                  value="{{house.HouseArea}}" (change)="onGetHouseArea($event.target.value)">
                               </div>
                             </div>
                           </div>
@@ -793,12 +793,12 @@
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
                         <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
-                          [(ngModel)]="credentials.HomeCondition">
+                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'ใหม่'">
                         บ้านใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                          [(ngModel)]="credentials.HomeCondition">
+                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'มือสอง'">
                         บ้านมือสอง
                       </div>
                     </div>
@@ -972,62 +972,62 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="airconditioner"
-                              [(ngModel)]="credentials.airconditioner">
+                            (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
                             เครื่องปรับอากาศ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="afan" [(ngModel)]="credentials.afan">
+                            <input type="checkbox" id="" value="1" name="afan"(change)="afan($event.target.checked)" [checked]="house.afan == '1'">
                             พัดลม
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="AirPurifier"
-                              [(ngModel)]="credentials.AirPurifier">
+                            (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
                             เครื่องฟอกอากาศ
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Waterheater"
-                              [(ngModel)]="credentials.Waterheater">
+                            (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
                             เครื่องทำน้ำอุ่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="WIFI" [(ngModel)]="credentials.WIFI">
+                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)" [checked]="house.WIFI == '1'">
                             มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TV" [(ngModel)]="credentials.TV">
+                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)" [checked]="house.TV == '1'">
                             เคเบิลทีวี
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="refrigerator"
-                              [(ngModel)]="credentials.refrigerator">
+                            (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
                             ตู้เย็น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="microwave" [(ngModel)]="credentials.microwave">
+                            <input type="checkbox" id="" value="1" name="microwave" (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
                             ไมโครเวฟ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="gasstove" [(ngModel)]="credentials.gasstove">
+                            <input type="checkbox" id="" value="1" name="gasstove" (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
                             เตาแก๊ส
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="wardrobe" [(ngModel)]="credentials.wardrobe">
+                            <input type="checkbox" id="" value="1" name="wardrobe" (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
                             ตู้เสื้อผ้า
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TCset" [(ngModel)]="credentials.TCset">
+                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)" [checked]="house.TCset == '1'">
                             ชุดโต๊ะเก้าอี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="sofa" [(ngModel)]="credentials.sofa">
+                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)" [checked]="house.sofa == '1'">
                             โซฟา
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="bed" [(ngModel)]="credentials.bed">
+                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)" [checked]="house.bed == '1'">
                             เตียง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="shelves" [(ngModel)]="credentials.shelves">
+                            <input type="checkbox" id="" value="1" name="shelves" (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
                             ชั้นวาง
                           </div>
 
@@ -1040,47 +1040,47 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Securityguard"
-                              [(ngModel)]="credentials.Securityguard">
+                            (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
                             เจ้าหน้าที่รักษาความปลอดภัย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="pool" [(ngModel)]="credentials.pool">
+                            <input type="checkbox" id="" value="1" name="pool" (change)="pool($event.target.checked)" [checked]="house.pool == '1'">
                             สระว่ายน้ำ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Fitness" [(ngModel)]="credentials.Fitness">
+                            <input type="checkbox" id="" value="1" name="Fitness" (change)="Fitness($event.target.checked)" [checked]="house.Fitness == '1'">
                             ฟิตเนส
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Publicarea"
-                              [(ngModel)]="credentials.Publicarea">
+                            (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
                             พื้นที่ส่วนกลาง
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="ShuttleBus"
-                              [(ngModel)]="credentials.ShuttleBus">
+                            (change)="ShuttleBus($event.target.checked)" [checked]="house.ShuttleBus == '1'">
                             รถรับส่ง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="ShuttleBus"
-                              [(ngModel)]="credentials.WVmachine">
+                            <input type="checkbox" id="" value="1" name="WVmachine"
+                            (change)="WVmachine($event.target.checked)" [checked]="house.WVmachine == '1'">
                             ตู้น้ำหยอดเหรียญ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Publicarea"
-                              [(ngModel)]="credentials.CWmachine">
+                            <input type="checkbox" id="" value="1" name="CWmachine"
+                            (change)="CWmachine($event.target.checked)" [checked]="house.CWmachine == '1'">
                             เครื่องซักผ้าหยอดเหรียญ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Publicarea" [(ngModel)]="credentials.Elevator">
+                            <input type="checkbox" id="" value="1" name="Elevator" (change)="Elevator($event.target.checked)" [checked]="house.Elevator == '1'">
                             ลิฟต์
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Publicarea" [(ngModel)]="credentials.Lobby">
+                            <input type="checkbox" id="" value="1" name="Lobby" (change)="Lobby($event.target.checked)" [checked]="house.Lobby == '1'">
                             ล๊อบบี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CCTV" [(ngModel)]="credentials.CCTV">
+                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)" [checked]="house.CCTV == '1'">
                             กล้องวงจรปิด CCTV
                           </div>
                         </div>
@@ -1091,23 +1091,23 @@
                         <div>
 
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Kitchen" [(ngModel)]="credentials.Kitchen">
+                            <input type="checkbox" id="" value="1" name="Kitchen" (change)="Kitchen($event.target.checked)" [checked]="house.Kitchen == '1'">
                             ห้องครัว
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="LivingR" [(ngModel)]="credentials.LivingR">
+                            <input type="checkbox" id="" value="1" name="LivingR" (change)="LivingR($event.target.checked)" [checked]="house.LivingR == '1'">
                             ห้องนั่งเล่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="EventR" [(ngModel)]="credentials.EventR">
+                            <input type="checkbox" id="" value="1" name="EventR" (change)="EventR($event.target.checked)" [checked]="house.EventR == '1'">
                             ห้องจัดงาน
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="MeetingR" [(ngModel)]="credentials.MeetingR">
+                            <input type="checkbox" id="" value="1" name="MeetingR" (change)="MeetingR($event.target.checked)" [checked]="house.MeetingR == '1'">
                             ห้องประชุม
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Balcony" [(ngModel)]="credentials.Balcony">
+                            <input type="checkbox" id="" value="1" name="Balcony" (change)="Balcony($event.target.checked)" [checked]="house.Balcony == '1'">
                             ระเบียง
                           </div>
                         </div>
@@ -1117,34 +1117,34 @@
                         <div>
 
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="ATM" [(ngModel)]="credentials.ATM">
+                            <input type="checkbox" id="" value="1" name="ATM" (change)="ATM($event.target.checked)" [checked]="house.ATM == '1'">
                             ตู้เอทีเอ็ม /
                             ธนาคาร
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="BeautySalon"
-                              [(ngModel)]="credentials.BeautySalon">
+                            (change)="BeautySalon($event.target.checked)" [checked]="house.BeautySalon == '1'">
                             ร้านเสริมสวย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CStore" [(ngModel)]="credentials.CStore">
+                            <input type="checkbox" id="" value="1" name="CStore" (change)="CStore($event.target.checked)" [checked]="house.CStore == '1'">
                             ร้านสะดวกซื้อ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Hairsalon" [(ngModel)]="credentials.Hairsalon">
+                            <input type="checkbox" id="" value="1" name="Hairsalon" (change)="Hairsalon($event.target.checked)" [checked]="house.Hairsalon == '1'">
                             ร้านทำผม
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Laundry" [(ngModel)]="credentials.Laundry">
+                            <input type="checkbox" id="" value="1" name="Laundry" (change)="Laundry($event.target.checked)" [checked]="house.Laundry == '1'">
                             ร้านซักรีด/ซักแห้ง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Store" [(ngModel)]="credentials.Store">
+                            <input type="checkbox" id="" value="1" name="Store" (change)="Store($event.target.checked)" [checked]="house.Store == '1'">
                             ร้านค้า
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Supermarket"
-                              [(ngModel)]="credentials.Supermarket">
+                            (change)="Supermarket($event.target.checked)" [checked]="house.Supermarket == '1'">
                             ซุปเปอร์มาร์เก็ต
                           </div>
                         </div>
@@ -1165,33 +1165,29 @@
                 <div class="col-md-12 ">
                   <h4>ทำเล</h4>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Blind" [(ngModel)]="credentials.Blind">
+                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)" [checked]="house.Blind == '1'">
                     ที่ตาบอด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Neareducation" [(ngModel)]="credentials.Neareducation">
+                    <input type="checkbox" id="" value="1" name="Neareducation" (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
                     ใกล้สถานศึกษา
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Cenmarket" [(ngModel)]="credentials.Cenmarket">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)" [checked]="house.Cenmarket == '1'">
                     ใกล้ศูนย์การค้า
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
+                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)" [checked]="house.Market == '1'">
                     ใกล้ตลาด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
-                    ใกล้รถไฟฟ้า
+                    <input type="checkbox" id="" value="1" name="River"(change)="River($event.target.checked)" [checked]="house.River == '1'"> ติดแม่น้ำ
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
+                    <input type="checkbox" id=""  name="Mainroad" (change)="Mainroad($event.target.checked)" [checked]="house.Mainroad"> ติดถนน
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Mainroad" [(ngModel)]="credentials.Mainroad">ติดถนน
-                  </div>
-                  <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Insoi" [(ngModel)]="credentials.Insoi"> อยู่ในซอย
+                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)" [checked]="house.Insoi == '1'"> อยู่ในซอย
                   </div>
                   <div class="col-sm-12">
                     <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
@@ -1202,22 +1198,22 @@
                   </div>
                   <h4>สถานะถนน</h4>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType">โคลน
+                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'โคลน'"> โคลน
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'ยางมะตอย'">
                     ยางมะตอย
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="คอนกรีต" checked name="RoadType"
-                      [(ngModel)]="credentials.RoadType"> คอนกรีต
+                    <input type="radio" id="" value="คอนกรีต"  name="RoadType"
+                    (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
                   </div>
                   <div class="col-sm-12">
                     <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
                   </div>
                   <div *ngIf="Ronther " class="col-sm-12">
                     <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
-                      placeholder="โปรดระบุ" name="RoadType" [(ngModel)]="credentials.RoadType">
+                      placeholder="โปรดระบุ" name="RoadType"  (change)="RoadType($event.target.value)" >
                   </div>
 
                   <div class="col-sm-12">
@@ -1253,66 +1249,67 @@
                         <div>
 
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1"  [checked]="house.airconditioner == 'true'" name="airconditioner"
-                              [(ngModel)]="credentials.airconditioner">
+                            <input type="checkbox" id="" value="1" name="airconditioner"
+                            (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
                             เครื่องปรับอากาศ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="afan" [(ngModel)]="credentials.afan">
+                            <input type="checkbox" id="" value="1" name="afan"(change)="afan($event.target.checked)" [checked]="house.afan == '1'">
                             พัดลม
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="AirPurifier"
-                              [(ngModel)]="credentials.AirPurifier">
+                            (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
                             เครื่องฟอกอากาศ
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Waterheater"
-                              [(ngModel)]="credentials.Waterheater"> เครื่องทำน้ำอุ่น
+                            (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
+                            เครื่องทำน้ำอุ่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="WIFI" [(ngModel)]="credentials.WIFI">
+                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)" [checked]="house.WIFI == '1'">
                             มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TV" [(ngModel)]="credentials.TV">
+                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)" [checked]="house.TV == '1'">
                             เคเบิลทีวี
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="refrigerator"
-                              [(ngModel)]="credentials.refrigerator">
+                            (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
                             ตู้เย็น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="microwave" [(ngModel)]="credentials.microwave">
+                            <input type="checkbox" id="" value="1" name="microwave" (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
                             ไมโครเวฟ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="gasstove" [(ngModel)]="credentials.gasstove">
+                            <input type="checkbox" id="" value="1" name="gasstove" (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
                             เตาแก๊ส
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="wardrobe" [(ngModel)]="credentials.wardrobe">
+                            <input type="checkbox" id="" value="1" name="wardrobe" (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
                             ตู้เสื้อผ้า
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TCset" [(ngModel)]="credentials.TCset">
+                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)" [checked]="house.TCset == '1'">
                             ชุดโต๊ะเก้าอี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="sofa" [(ngModel)]="credentials.sofa">
+                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)" [checked]="house.sofa == '1'">
                             โซฟา
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="bed" [(ngModel)]="credentials.bed">
+                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)" [checked]="house.bed == '1'">
                             เตียง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="shelves" [(ngModel)]="credentials.shelves">
+                            <input type="checkbox" id="" value="1" name="shelves" (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
                             ชั้นวาง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CCTV" [(ngModel)]="credentials.CCTV">
+                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)" [checked]="house.CCTV == '1'">
                             กล้องวงจรปิด CCTV
                           </div>
 
@@ -1326,43 +1323,43 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Securityguard"
-                              [(ngModel)]="credentials.Securityguard">
+                            (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
                             เจ้าหน้าที่รักษาความปลอดภัย
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Publicarea"
-                              [(ngModel)]="credentials.Publicarea">
+                            (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
                             พื้นที่ส่วนกลาง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="ATM" [(ngModel)]="credentials.ATM">
+                            <input type="checkbox" id="" value="1" name="ATM" (change)="ATM($event.target.checked)" [checked]="house.ATM == '1'">
                             ตู้เอทีเอ็ม /
                             ธนาคาร
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="BeautySalon"
-                              [(ngModel)]="credentials.BeautySalon">
+                            (change)="BeautySalon($event.target.checked)" [checked]="house.BeautySalon == '1'">
                             ร้านเสริมสวย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CStore" [(ngModel)]="credentials.CStore">
+                            <input type="checkbox" id="" value="1" name="CStore" (change)="CStore($event.target.checked)" [checked]="house.CStore == '1'">
                             ร้านสะดวกซื้อ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Hairsalon" [(ngModel)]="credentials.Hairsalon">
+                            <input type="checkbox" id="" value="1" name="Hairsalon" (change)="Hairsalon($event.target.checked)" [checked]="house.Hairsalon == '1'">
                             ร้านทำผม
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Laundry" [(ngModel)]="credentials.Laundry">
+                            <input type="checkbox" id="" value="1" name="Laundry" (change)="Laundry($event.target.checked)" [checked]="house.Laundry == '1'">
                             ร้านซักรีด/ซักแห้ง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Store" [(ngModel)]="credentials.Store">
+                            <input type="checkbox" id="" value="1" name="Store" (change)="Store($event.target.checked)" [checked]="house.Store == '1'">
                             ร้านค้า
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Supermarket"
-                              [(ngModel)]="credentials.Supermarket">
+                            (change)="Supermarket($event.target.checked)" [checked]="house.Supermarket == '1'">
                             ซุปเปอร์มาร์เก็ต
                           </div>
                         </div>
@@ -1383,27 +1380,29 @@
                 <div class="col-md-12 ">
                   <h4>ทำเล</h4>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Blind" [(ngModel)]="credentials.Blind"> ที่ตาบอด
+                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)" [checked]="house.Blind == '1'">
+                    ที่ตาบอด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Neareducation" [(ngModel)]="credentials.Neareducation">
+                    <input type="checkbox" id="" value="1" name="Neareducation" (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
                     ใกล้สถานศึกษา
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Cenmarket" [(ngModel)]="credentials.Cenmarket">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)" [checked]="house.Cenmarket == '1'">
                     ใกล้ศูนย์การค้า
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market"> ใกล้ตลาด
+                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)" [checked]="house.Market == '1'">
+                    ใกล้ตลาด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
+                    <input type="checkbox" id="" value="1" name="River"(change)="River($event.target.checked)" [checked]="house.River == '1'"> ติดแม่น้ำ
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Mainroad" [(ngModel)]="credentials.Mainroad"> ติดถนน
+                    <input type="checkbox" id=""  name="Mainroad" (change)="Mainroad($event.target.checked)" [checked]="house.Mainroad"> ติดถนน
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Insoi" [(ngModel)]="credentials.Insoi"> อยู่ในซอย
+                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)" [checked]="house.Insoi == '1'"> อยู่ในซอย
                   </div>
                   <div class="col-sm-12">
                     <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
@@ -1414,22 +1413,22 @@
                   </div>
                   <h4>สถานะถนน</h4>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType"> โคลน
+                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'โคลน'"> โคลน
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'ยางมะตอย'">
                     ยางมะตอย
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="คอนกรีต" name="RoadType" [(ngModel)]="credentials.RoadType">
-                    คอนกรีต
+                    <input type="radio" id="" value="คอนกรีต"  name="RoadType"
+                    (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
                   </div>
                   <div class="col-sm-12">
                     <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
                   </div>
                   <div *ngIf="Ronther " class="col-sm-12">
                     <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
-                      placeholder="โปรดระบุ" name="RoadType" [(ngModel)]="credentials.RoadType">
+                      placeholder="โปรดระบุ" name="RoadType"  (change)="RoadType($event.target.value)" >
                   </div>
 
                   <div class="col-sm-12">
@@ -1452,11 +1451,11 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevel" value="สูงกว่าถนน" name="GroundLevel"
-                          [(ngModel)]="credentials.GroundLevel"> สูงกว่าถนน
+                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'สูงกว่าถนน'"> สูงกว่าถนน
                       </div>
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน" name="GroundLevel"
-                          [(ngModel)]="credentials.GroundLevel"> ต่ำกว่าถนน
+                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'ต่ำกว่าถนน'"> ต่ำกว่าถนน
                       </div>
 
                     </div>
@@ -1488,66 +1487,66 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="airconditioner"
-                              [(ngModel)]="credentials.airconditioner">
+                            (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
                             เครื่องปรับอากาศ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="afan" [(ngModel)]="credentials.afan">
+                            <input type="checkbox" id="" value="1" name="afan"(change)="afan($event.target.checked)" [checked]="house.afan == '1'">
                             พัดลม
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="AirPurifier"
-                              [(ngModel)]="credentials.AirPurifier">
+                            (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
                             เครื่องฟอกอากาศ
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Waterheater"
-                              [(ngModel)]="credentials.Waterheater">
+                            (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
                             เครื่องทำน้ำอุ่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="WIFI" [(ngModel)]="credentials.WIFI">
+                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)" [checked]="house.WIFI == '1'">
                             มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TV" [(ngModel)]="credentials.TV">
+                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)" [checked]="house.TV == '1'">
                             เคเบิลทีวี
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="refrigerator"
-                              [(ngModel)]="credentials.refrigerator">
+                            (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
                             ตู้เย็น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="microwave" [(ngModel)]="credentials.microwave">
+                            <input type="checkbox" id="" value="1" name="microwave" (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
                             ไมโครเวฟ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="gasstove" [(ngModel)]="credentials.gasstove">
+                            <input type="checkbox" id="" value="1" name="gasstove" (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
                             เตาแก๊ส
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="wardrobe" [(ngModel)]="credentials.wardrobe">
+                            <input type="checkbox" id="" value="1" name="wardrobe" (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
                             ตู้เสื้อผ้า
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TCset" [(ngModel)]="credentials.TCset">
+                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)" [checked]="house.TCset == '1'">
                             ชุดโต๊ะเก้าอี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="sofa" [(ngModel)]="credentials.sofa">
+                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)" [checked]="house.sofa == '1'">
                             โซฟา
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="bed" [(ngModel)]="credentials.bed">
+                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)" [checked]="house.bed == '1'">
                             เตียง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="shelves" [(ngModel)]="credentials.shelves">
+                            <input type="checkbox" id="" value="1" name="shelves" (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
                             ชั้นวาง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CCTV" [(ngModel)]="credentials.CCTV">
+                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)" [checked]="house.CCTV == '1'">
                             กล้องวงจรปิด CCTV
                           </div>
 
@@ -1561,25 +1560,25 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Securityguard"
-                              [(ngModel)]="credentials.Securityguard">
+                            (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
                             เจ้าหน้าที่รักษาความปลอดภัย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="pool" [(ngModel)]="credentials.pool">
+                            <input type="checkbox" id="" value="1" name="pool" (change)="pool($event.target.checked)" [checked]="house.pool == '1'">
                             สระว่ายน้ำ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Fitness" [(ngModel)]="credentials.Fitness">
+                            <input type="checkbox" id="" value="1" name="Fitness" (change)="Fitness($event.target.checked)" [checked]="house.Fitness == '1'">
                             ฟิตเนส
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Publicarea"
-                              [(ngModel)]="credentials.Publicarea">
+                            (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
                             พื้นที่ส่วนกลาง
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="ShuttleBus"
-                              [(ngModel)]="credentials.ShuttleBus">
+                            (change)="ShuttleBus($event.target.checked)" [checked]="house.ShuttleBus == '1'">
                             รถรับส่ง
                           </div>
                         </div>
@@ -1600,29 +1599,29 @@
                 <div class="col-md-12 ">
                   <h4>ทำเล</h4>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Blind"  [checked]="house.Blind == '1'"> ที่ตาบอด
+                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)" [checked]="house.Blind == '1'">
+                    ที่ตาบอด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Neareducation" [(ngModel)]="credentials.Neareducation">
+                    <input type="checkbox" id="" value="1" name="Neareducation" (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
                     ใกล้สถานศึกษา
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Cenmarket" [(ngModel)]="credentials.Cenmarket">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)" [checked]="house.Cenmarket == '1'">
                     ใกล้ศูนย์การค้า
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
+                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)" [checked]="house.Market == '1'">
                     ใกล้ตลาด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
+                    <input type="checkbox" id="" value="1" name="River"(change)="River($event.target.checked)" [checked]="house.River == '1'"> ติดแม่น้ำ
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Mainroad" [(ngModel)]="credentials.Mainroad">
-                    ติดถนน
+                    <input type="checkbox" id=""  name="Mainroad" (change)="Mainroad($event.target.checked)" [checked]="house.Mainroad"> ติดถนน
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Insoi" [(ngModel)]="credentials.Insoi"> อยู่ในซอย
+                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)" [checked]="house.Insoi == '1'"> อยู่ในซอย
                   </div>
                   <div class="col-sm-12">
                     <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
@@ -1633,23 +1632,22 @@
                   </div>
                   <h4>สถานะถนน</h4>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="โคลน" checked name="RoadType" [(ngModel)]="credentials.RoadType">
-                    โคลน
+                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'โคลน'"> โคลน
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'ยางมะตอย'">
                     ยางมะตอย
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="คอนกรีต" name="RoadType" [(ngModel)]="credentials.RoadType">
-                    คอนกรีต
+                    <input type="radio" id="" value="คอนกรีต"  name="RoadType"
+                    (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
                   </div>
                   <div class="col-sm-12">
                     <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
                   </div>
                   <div *ngIf="Ronther " class="col-sm-12">
                     <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
-                      placeholder="โปรดระบุ" name="RoadType" [(ngModel)]="credentials.RoadType">
+                      placeholder="โปรดระบุ" name="RoadType"  (change)="RoadType($event.target.value)" >
                   </div>
 
                   <div class="col-sm-12">
@@ -1672,11 +1670,11 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevel" value="สูงกว่าถนน" name="GroundLevel"
-                          [(ngModel)]="credentials.GroundLevel"> สูงกว่าถนน
+                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'สูงกว่าถนน'"> สูงกว่าถนน
                       </div>
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน" name="GroundLevel"
-                          [(ngModel)]="credentials.GroundLevel"> ต่ำกว่าถนน
+                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'ต่ำกว่าถนน'"> ต่ำกว่าถนน
                       </div>
 
                     </div>
@@ -2092,7 +2090,7 @@
         </div>
       </div>
       <div class="col-md-12 ">
-              <button class="btn btn-success float-right" (click)="onUpdate()" >
+              <button class="btn btn-success float-right" (click)="onGo()"  >
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
               </button>
             

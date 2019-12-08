@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { AuthenticationService, Delete,UserDetails, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, ID,UserDetails, PropertyDetails ,ImageID} from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
@@ -38,9 +38,16 @@ export class LandsDetailComponent implements OnInit {
   conS3:string
   lonnew: number;
   latnew: number;
-  credentials: Delete = {
+  credentials: ID = {
     ID_Lands: '',
-    ID_Property: ''
+    ID_Property: '',
+    PPStatus: '',
+  }
+  imageID: ImageID = {
+    ID_Lands: '',
+    ID_Property: '',
+    ID_Photo: '',
+    URL: '',
   }
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
     private router: Router) { }
@@ -66,6 +73,7 @@ export class LandsDetailComponent implements OnInit {
     if (params.has('id')) {
       this.postID = params.get('id');
     }
+    this.imageID.ID_Lands = this.postID
     this.route
       .queryParams
       .subscribe((data: { page: any }) => {
@@ -90,13 +98,10 @@ export class LandsDetailComponent implements OnInit {
         console.error(err)
       }
     )
-    this.auth.getimgland().subscribe((img) => {
-      this.imgbox = img
+    this.auth.getimgland(this.imageID).subscribe((img) => {
+      this.imagenew = img
       // กรณี resuponse success
-      this.imagenew = this.imgbox.filter(article => {
-        return article.ID_land == this.postID;
-
-      });
+      console.log( this.imagenew)
       if (this.imagenew.length == 0) {
         this.galleryImages = [
           {
@@ -183,7 +188,7 @@ export class LandsDetailComponent implements OnInit {
   }
 
   onDelete(){
-    this.credentials.ID_Property = this.postID;
+    this.credentials.ID_Lands = this.postID;
     this.auth.DeleteLands(this.credentials).subscribe(() => {
      
     },
@@ -194,5 +199,25 @@ export class LandsDetailComponent implements OnInit {
       }
     )
   }
+  PPStatus(value) {
+    this.credentials.PPStatus = value
+  }
+  UpdateStatus() {
+    this.credentials.ID_Property = this.postID;
+    this.auth.UpdateStatusL(this.credentials).subscribe(() => {
 
+    },
+      err => {
+        console.error(err)
+        this.refresh()
+
+      }
+    )
+
+  
+  }
+  
+  refresh(): void {
+    window.location.reload();
+}
 }

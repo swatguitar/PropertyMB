@@ -1,16 +1,26 @@
-<app-navbar></app-navbar>
-    <div class="parallax1"></div>
-    <img  src="../../../assets/Untitled-2.png" alt="index.png"   style="width:100%;" >
-    <img  src="../../../assets/Untitled-3.png" alt="index.png"   style="width:100%;" >
-    <div>
-    <img class="inline-photo show-on-scroll" src="../../../assets/Untitled-7.png" alt="index.png"   style="width:40%;" >
-    <img class="inline-photo show-on-scroll" src="../../../assets/Untitled-7.1.png" alt="index.png"   style="width:40%;" >
-    <img class="inline-photo show-on-scroll" src="../../../assets/Untitled-7.2.png" alt="index.png"   style="width:40%;" >
-    </div>
-    <img  src="../../../assets/Untitled-5.png" alt="index.png"   style="width:100%;" >
-    <img  src="../../../assets/Untitled-6.png" alt="index.png"   style="width:100%;" >
-
-
-<app-footer></app-footer>      
-         
-    
+ <app-navbar></app-navbar>
+ <!--<div class="parallax1"></div>-->
+ <section>
+ <a [routerLink]="['/register']" routerLinkActive="router-link-active"><img src="../../../assets/001.png" alt="index.png"
+     style="width:100%;"></a>
+     <a href="#" class="scroll-down" address="true"></a>
+</section>
+ <div #target>
+   <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
+       src="../../../assets/2.01.png" alt="index.png" style="width:25%;"></a>
+   <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
+       src="../../../assets/2.02.png" alt="index.png" style="width:25%;"></a>
+   <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
+       src="../../../assets/2.03.png" alt="index.png" style="width:25%;"></a>
+   <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
+       src="../../../assets/2.04.png" alt="index.png" style="width:25%;"></a>
+ </div>
+ <div class="inner" id="content">
+   <img src="../../../assets/003.png" alt="index.png" style="width:100%;">
+   <img class="inline-photo show-on-scroll inner-image" src="../../../assets/003.2.png" alt="index.png"
+     style="width:30%;">
+ </div>
+ <img src="../../../assets/004.png" alt="index.png" style="width:100%;">
+ <img src="../../../assets/005.png" alt="index.png" style="width:100%;">
+ 
+ <app-footer></app-footer>

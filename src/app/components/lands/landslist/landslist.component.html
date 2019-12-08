@@ -1,294 +1,300 @@
-<body>
-  <div id="web-body">
-    <div id="page-content">
-      <!------------------------------------------------------------------------>
+<div id="web-body">
+  <div id="page-content">
+    <!------------------------------------------------------------------------>
+    <br><br><br><br>
+    <div class="container">
+      <div id="product-container">
+        <div class="row">
+          <div class="col-md-7">
+            <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+              <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+                  typeof="WebPage"><span property="name">หน้าแรก</span></a>
+                <meta property="position" content="1">
+              </li>
+              <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/lands' ]" property="item"
+                  typeof="WebPage"><span property="name">ที่ดิน</span></a>
+                <meta property="position" content="2">
+              </li>
+            </ul>
 
-      <div class="container">
-        <div id="product-container">
-          <div class="row">
-            <div class="col-md-7">
-              <ul id="breadcrumb-nav" typeof="BreadcrumbList">
-                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
-                    typeof="WebPage"><span property="name">หน้าแรก</span></a>
-                  <meta property="position" content="1">
-                </li>
-                <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/lands' ]" property="item"
-                    typeof="WebPage"><span property="name">ที่ดิน</span></a>
-                  <meta property="position" content="2">
-                </li>
-              </ul>
-
-              <h1><i class="fa fa-tree" aria-hidden="true"></i> ที่ดินของคุณ</h1>
-            </div>
-
+            <h1><i class="fa fa-tree" aria-hidden="true"></i>ที่ดินของคุณ</h1>
           </div>
+
         </div>
+      </div>
 
+      <div>
         <div>
-          <div>
-            <div id="content-container">
-              <hr class="specification-dash-line">
-              <div id="search-body" class="d-flex">
-                <div id="search-filter-box">
-                  <div class="filter-box">
-                    <div data-toggle="collapse" data-target="#filter-type" aria-expanded="false"
-                      aria-controls="filter-type" class="header collapsed">
-                      ประเภทอสังหาริมทรัพย์
-                    </div>
-                    <ul id="filter-type" class="filter-item collapse" aria-expanded="false" style="height: 0px;">
-                      <li>
-                        <hr>
-                      </li>
+          <div id="content-container"><br>
+            <hr class="specification-dash-line">
+            <div id="search-body" class="d-flex">
+              <div id="modal-bg"></div>
+              <div id="search-result">
+                <div class="row ">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <!--<input type="text" class="form-control" aria-label="Text input with dropdown button">-->
+                      <!-- Basic dropdown -->
+                      <select class="btn btn-outline-secondary dropdown-toggle" name="propertyType"
+                        (change)="selectfilterOne($event.target.value)">
+                        <option >ประเภทของสีที่ดิน</option>
+                        <option value="พื้นที่สีเหลือง - ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย">พื้นที่สีเหลือง</option>
+                        <option value="พื้นที่สีส้ม – ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง">พื้นที่สีส้ม</option>
+                        <option value="พื้นที่สีน้ำตาล – ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก">พื้นที่สีน้ำตาล</option>
+                        <option value="พื้นที่สีแดง - ที่ดินประเภทภาณิชยกรรม">พื้นที่สีแดง</option>
+                        <option value="พื้นที่สีม่วง - ที่ดินประเภทอุตสาหกรรมและคลังสินค้า">พื้นที่สีม่วง</option>
+                        <option value="พื้นที่สีเม็ดมะปราง - ที่ดินประเภทคลังสินค้า">พื้นที่สีเม็ดมะปราง</option>
+                        <option value="พื้นที่สีเขียว - ที่ดินประเภทชนบทและเกษตรกรรม">พื้นที่สีเขียว</option>
+                        <option value="พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว - ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม">
+                          พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว
+                        </option>
+                        <option value="พื้นที่สีน้ำตาลอ่อน - ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย">
+                          พื้นที่สีน้ำตาลอ่อน</option>
+                        <option value="พื้นที่สีน้ำเงิน - ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ">
+                          พื้นที่สีน้ำเงิน</option>
 
-                      <div id="more-filter-type" class="">
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.yellow"
-                                (change)="filterChange()">
-                              พื้นที่สีเหลือง
-                              <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.orange"
-                                (change)="filterChange()">
-                              พื้นที่สีส้ม
-                              <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.brown"
-                                (change)="filterChange()">
-                              พื้นที่สีน้ำตาล
-                              <!----></label></a></li>
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.red"
-                                (change)="filterChange()">
-                              พื้นที่สีแดง
-                              <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.purple"
-                                (change)="filterChange()">
-                              พื้นที่สีม่วง
-                              <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.plum"
-                                (change)="filterChange()">
-                              พื้นที่สีเม็ดมะปราง
-                              <!----></label></a></li>
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.green"
-                                (change)="filterChange()">
-                              พื้นที่สีเขียว
-                              <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.whitegreen"
-                                (change)="filterChange()">
-                              พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว
-                              <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.brownweak"
-                                (change)="filterChange()">
-                              พื้นที่สีน้ำตาลอ่อน
-                              <!----></label></a></li>
-                        <li><a href=""><label><input type="checkbox" [(ngModel)]="filter.blue"
-                                (change)="filterChange()">
-                              พื้นที่สีน้ำเงิน
-                              <!----></label></a></li>
-                      </div>
-                      <!---->
-                    </ul>
-                  </div>
-                  <div class="filter-box">
-                    <div data-toggle="collapse" data-target="#filter-deed" aria-expanded="false"
-                      aria-controls="filter-deed" class="header collapsed">
-                      ชนิดของโฉนด
-                    </div>
-                    <ul id="filter-deed" class="filter-item collapse" aria-expanded="false" style="height: 0px;">
-                      <li>
-                        <hr>
-                      </li>
+                      </select>
+                      <select class="btn btn-outline-secondary dropdown-toggle"
+                        (change)="selectfiltersix($event.target.value)">
+                        <option >ชนิดโฉนด</option>
+                        <option value="น.ส.4จ.">น.ส.4จ.</option>
+                        <option value="น.ส.3ก.">น.ส.3ก.</option>
+                        <option value="น.ส.3">น.ส.3</option>
+                        <option value="น.ส.2">น.ส.2</option>
+                        <option value="ส.ค.1">ส.ค.1</option>
 
-                      <div id="more-filter-type" class="">
-                        <li><a href="#"><label><input type="checkbox"  [(ngModel)]="filter.typecodeA" (change)="filterChangetwo()">
-                              น.ส.4จ.
-                              <!----></label></a></li>
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.typecodeB" (change)="filterChangetwo()">
-                              น.ส.3ก.
-                              <!----></label></a></li>
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.typecodeC" (change)="filterChangetwo()">
-                              น.ส.3
-                              <!----></label></a></li>
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.typecodeD" (change)="filterChangetwo()">
-                              น.ส.2
-                              <!----></label></a></li>
-                        <li><a href="#"><label><input type="checkbox" [(ngModel)]="filter.typecodeE" (change)="filterChangetwo()">
-                              ส.ค.1
-                              <!----></label></a></li>
+                      </select>
+                       <!-- Basic dropdown -->
+                       <select class="btn btn-outline-secondary dropdown-toggle" name="FilterPrice"
+                       (change)="selectfiltertwo($event.target.value)">
+                       <option>ช่วงราคา</option>
+                       <option value="P1">500,000 - 1,000,000 บาท</option>
+                       <option value="P2">1,100,000 - 5,000,000 บาท</option>
+                       <option value="P3">5,100,000 - 10,000,000 บาท</option>
+                       <option value="P4">มากกว่า 10,000,000 บาท</option>
+ 
+                     </select>
+                      <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">ที่อยู่</button>
+                        <div class="dropdown-content">
+                          <p>จังหวัด</p>
+                          <div class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                              placeholder="ค้นหา" class="form-control" [(ngModel)]="searchPro1"
+                              (ngModelChange)="selectprovince($event)">
+                              <option>- จังหวัด -</option>
+                              <option *ngFor="let p of province" [ngValue]="p">
+                                {{p.PROVINCE_NAME}}
+                              </option>
 
-                      </div>
-                      <!---->
-                    </ul>
-                  </div>
-                  <div class="filter-box">
-                    <div data-toggle="collapse" data-target="#filter-price" aria-expanded="false"
-                      aria-controls="filter-price" class="header collapsed">
-                      ช่วงราคา
-                    </div>
-                    <ul id="filter-price" class="filter-item collapse" aria-expanded="false" style="height: 0px;">
-                      <li>
-                        <hr>
-                      </li>
-                      - ราคาขาย
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=500000-1000000"><label><input
-                              [(ngModel)]="filter.priceA" (change)="filterprice()" type="checkbox"
-                              value="500000-1000000">
-                            500,000 - 1,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=1100000-5000000"><label><input
-                              [(ngModel)]="filter.priceB" (change)="filterprice()" type="checkbox"
-                              value="1100000-5000000">
-                            1,100,000 - 5,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=5100000-10000000"><label><input
-                              [(ngModel)]="filter.priceC" (change)="filterprice()" type="checkbox"
-                              value="5100000-10000000">
-                            5,100,000 - 10,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=%1E00000"><label><input
-                              [(ngModel)]="filter.priceD" (change)="filterprice()" type="checkbox" value="&gt;1000000">
-                            มากกว่า 10,000,000 บาท
-                          </label></a></li>
-                      - ราคาประเมิน
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=500000-1000000"><label><input
-                              [(ngModel)]="filter.priceE" (change)="filterprice()" type="checkbox"
-                              value="500000-1000000">
-                            500,000 - 1,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=1100000-5000000"><label><input
-                              [(ngModel)]="filter.priceF" (change)="filterprice()" type="checkbox"
-                              value="1100000-5000000">
-                            1,100,000 - 5,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=5100000-10000000"><label><input
-                              [(ngModel)]="filter.priceG" (change)="filterprice()" type="checkbox"
-                              value="5100000-10000000">
-                            5,100,000 - 10,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=%1E00000"><label><input
-                              [(ngModel)]="filter.priceH" (change)="filterprice()" type="checkbox" value="&gt;1E00000">
-                            มากกว่า 10,000,000 บาท
-                          </label></a></li>
-                      - ราคาตลาด
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=500000-1000000"><label><input
-                              [(ngModel)]="filter.priceI" (change)="filterprice()" type="checkbox"
-                              value="500000-1000000">
-                            500,000 - 1,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=1100000-5000000"><label><input
-                              [(ngModel)]="filter.priceJ" (change)="filterprice()" type="checkbox"
-                              value="1100000-5000000">
-                            1,100,000 - 5,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=5100000-10000000"><label><input
-                              [(ngModel)]="filter.priceK" (change)="filterprice()" type="checkbox"
-                              value="5100000-10000000">
-                            5,100,000 - 10,000,000 บาท
-                          </label></a></li>
-                      <li><a href="https://landvist.xyz/house/searchV4/?price=%1E00000"><label><input
-                              [(ngModel)]="filter.priceL" (change)="filterprice()" type="checkbox" value="&gt;1E00000">
-                            มากกว่า 10,000,000 บาท
-                          </label></a></li>
-                      <li class="filter-range">
-                        <div class="d-flex">
-                          <input type="number" placeholder="ต่ำสุด" class="positive-integer" [(ngModel)]="pricemin">
-                          <div class="divider">-</div>
-                          <input type="number" placeholder="สูงสุด" class="positive-integer" [(ngModel)]="pricemax">
-                          <div class="divider"></div><button (click)="filterMaxMin()">
-                            ค้นหา
-                          </button>
+                            </select></div>
+                          <p>อำเภอ</p>
+                          <div class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                              placeholder="ค้นหา" class="form-control" [(ngModel)]="searchAmphur1"
+                              (ngModelChange)="selectamphur($event)">
+                              <option>- อำเภอ -</option>
+                              <option *ngFor="let a of amphur" [ngValue]="a">
+                                {{a.AMPHUR_NAME}}</option>
+                            </select></div>
+                          <p>ตำบล</p>
+                          <div class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
+                              placeholder="ค้นหา" class="form-control" [(ngModel)]="searchDis1"
+                              (ngModelChange)="selectdistrict($event)">
+                              <option>- ตำบล -</option>
+                              <option *ngFor="let d of district" [ngValue]="d">
+                                {{d.DISTRICT_NAME}}</option>
+                            </select></div>
                         </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="filter-box">
-                    <div data-toggle="collapse" data-target="#filter-brand" aria-controls="filter-brand" class="header">
-                      ที่อยู่
+                      </div>
                     </div>
-                    <ul id="filter-brand" class="filter-item collapse">
-                      <li>
-                        <hr>
-                      </li>
-                      <p>จังหวัด</p>
-                      <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchPro1"
-                          (ngModelChange)="selectprovince($event)">
-                          <option>- จังหวัด -</option>
-                          <option *ngFor="let p of province" [ngValue]="p">
-                            {{p.PROVINCE_NAME}}
-                          </option>
-                        </select></li>
-                      <p>อำเภอ</p>
-                      <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchAmphur1"
-                          (ngModelChange)="selectamphur($event)">
-                          <option>- อำเภอ -</option>
-                          <option *ngFor="let a of amphur" [ngValue]="a">
-                            {{a.AMPHUR_NAME}}</option>
-                        </select></li>
-                      <p>ตำบล</p>
-                      <li class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                          placeholder="ค้นหา" class="form-control" [(ngModel)]="searchDis1"
-                          (ngModelChange)="selectdistrict($event)">
-                          <option>- ตำบล -</option>
-                          <option *ngFor="let d of district" [ngValue]="d">
-                            {{d.DISTRICT_NAME}}</option>
-                        </select></li>
-                      <!---->
-                      <div id="more-filter-brand" class="">
+                  </div>
+                  <div class=" row col-md-3">
+                    <div>
+                      <button class="btn btn-success" (click)="spinnerload()">ค้นหา</button>
+                    </div>
+                    <div class="col-md-2">
+                      <button class="btn btn-warning" (click)="Reset()">รีเซ็ท</button>
+                    </div>
+                  </div>
 
-                      </div>
-                      <!---->
-                    </ul>
-                  </div>
-                  <div class="filter-box">
-                    <div data-toggle="collapse" data-target="#filter-ram" aria-controls="filter-ram" class="header">
-                      ทำเลที่ตั้ง
-                    </div>
-                    <ul id="filter-ram" class="filter-item collapse">
-                      <li>
-                        <hr>
-                      </li>
-                      <!---->
-                      <div id="more-filter-ram" class="">
-                        <li><a href="#"><label><input type="checkbox"  [(ngModel)]="filter.LocationA" (change)="filterChangetwo()">
-                              ติดถนน
-                            </label></a></li>
-                        <li><a href="#"><label><input type="checkbox"  [(ngModel)]="filter.LocationB" (change)="filterChangetwo()" >
-                              อยู่ในซอย
-                            </label></a></li>
-                        <li><a href="#"><label><input type="checkbox"  [(ngModel)]="filter.LocationC" (change)="filterChangetwo()">
-                              ใกล้ศูนย์การค้า
-                            </label></a></li>
-                      </div>
-                      <!---->
-                    </ul>
-                  </div>
                 </div>
-                <div id="modal-bg"></div>
-                <div id="search-result">
-                  <div class="search-tools-box"><button id="mobile-filter-btn" class="visible-xs visible-sm"><i
-                        class="fa fa-filter"></i></button>
-                    <div class="search-box">
-                      <div class="search-form">
-                        <div class="input-group mb-3">
-                          <input style="border-radius: 30px 30px 30px 30px;" [(ngModel)]="searchTerm" type="text"
-                            class="form-control" placeholder="ค้นหาที่ดินที่คุณต้องการ">
-                          <div class="input-group-append">
-                            <button class="btn btn-circle"><i class="fa fa-search"></i></button>
+                <br>
+                <hr class="specification-dash-line">
+
+                <label for="">ผลการค้นหาทั้งหมด {{totalItem}} ที่</label>
+                <br>
+                <app-loading-spinner *ngIf="showSpinner==true"></app-loading-spinner>
+                <div class="search-grid row col-eq">
+
+
+                  <div *ngFor="let lands of filterProperty | slice:pointStart:pointEnd "
+                    class="col-xs-12 col-sm-6 col-lg-3 item">
+                    <div class="box jumbotron ">
+                      <div class=""><button type="button" class="compare-btn" data-toggle="modal"
+                          data-target="#Createlist"><i aria-hidden="true" class="fa fa-plus"></i>
+                          เพิ่มลงกลุ่ม
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="Createlist" tabindex="-1" role="dialog" aria-labelledby="Createlist"
+                          aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="Createlist">เลือกกลุ่ม</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                      class="form-control" name="selectGroup"
+                                      (change)="selectGroup($event.target.value)">
+                                      <option>กรุณาเลือกกลุ่ม</option>
+                                      <option *ngFor="let G of groupAll" value="{{G.ID_Group}}">
+                                        {{G.NameG}}
+                                      </option>
+
+                                    </select>
+                                  </div>
+                                  <div class="col-md-6" *ngIf="credentials.ID_Group != ''">
+                                    <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                      class="form-control" name="selectGroup"
+                                      (change)="selectFolder($event.target.value,lands.ID_Lands)">
+                                      <option>กรุณาเลือกแฟ้ม</option>
+                                      <option *ngFor="let F of folder" value="{{F.ID_Folder}}">
+                                        {{F.NameF}}
+                                      </option>
+
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                  (click)="CreateList()">เพิ่มลงกลุ่ม</button>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                        <a [routerLink]="['/lands',lands.ID_Lands]" [queryParams]="{page: activePage}"
+                          target="_blank">
+                          <div class="title" style="white-space: nowrap; 	
+                              overflow: hidden; text-overflow: ellipsis;">
+                            {{lands.AnnounceTH}} <br>
+                          </div>
+                        </a>
+                        <div class=""><a [routerLink]="['/lands',lands.ID_Lands]"
+                            [queryParams]="{page: activePage}"><img
+                              src="http://www.landvist.xyz/images/{{lands.ImageEX}}" width="180" height="50"
+                              class="img-responsive notebook-img rounded"></a>
+                          <!---->
+                          <hr>
+                          <ul class="specification">
+                            <li *ngIf="lands.ColorType == 'พื้นที่สีเหลือง - ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย'">
+                              <i class="fa fa-home font-color-orange " aria-hidden="true"></i><b>
+                                {{lands.ColorType}}</b></li>
+                            <li *ngIf="lands.ColorType == 'พื้นที่สีส้ม - ที่ดินประเภทที่อยู่อาศัยหนาแน่นปานกลาง'">
+                              <i class="fas fa-building font-color-condo"></i><b> {{lands.ColorType}}</b></li>
+                            <li *ngIf="lands.ColorType == 'พื้นที่สีน้ำตาล - ที่ดินประเภทที่อยู่อาศัยหนาแน่นมาก'">
+                              <i class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li *ngIf="lands.ColorType == 'พื้นที่สีแดง - ที่ดินประเภทภาณิชยกรรม'"><i
+                                class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li *ngIf="lands.ColorType == 'พื้นที่สีม่วง - ที่ดินประเภทอุตสาหกรรมและคลังสินค้า'"><i
+                                class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li *ngIf="lands.ColorType == 'พื้นที่สีเม็ดมะปราง - ที่ดินประเภทคลังสินค้า'"><i
+                                class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li *ngIf="lands.ColorType == 'พื้นที่สีเขียว - ที่ดินประเภทชนบทและเกษตรกรรม'"><i
+                                class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li
+                              *ngIf="lands.ColorType == 'พื้นที่สีขาวมีกรอบและเส้นทะแยงสีเขียว - ที่ดินประเภทอนุรักษ์ชนบทและเกษตรกรรม'">
+                              <i class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li
+                              *ngIf="lands.ColorType == 'พื้นที่สีน้ำตาลอ่อน - ที่ดินประเภทอนุรักษ์เพื่อส่งเสริมเอกลักษณ์ศิลปวัฒนธรรมไทย'">
+                              <i class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li
+                              *ngIf="lands.ColorType == 'พื้นที่สีน้ำเงิน - ที่ดินประเภทสถาบันราชการ สาธารณูปโภคและสาธารณูปการ'">
+                              <i class="fas fa-store-alt font-color-prop"></i><b> {{lands.ColorType}}</b></li>
+                            <li><i class="fas fa-ruler-combined font-color-gold"></i><b> {{lands.LandR}} ไร่ </b> |
+                              <b> {{lands.LandG}} งาน</b> | <b> {{lands.LandWA}} ตารางวา </b></li>
+
+                            <li><i class="fas fa-map-marker-alt font-color-mark"></i><b> {{lands.Location}}</b></li>
+                            <li><i class="fas fa-map-marked-alt font-color-overview"></i><b>
+                                {{lands.ObservationPoint}}</b></li>
+                          </ul>
+                        </div>
+                        <!---->
+                        <div class="info">
+                          <div class="price">
+                            ราคา
+                            <span>{{lands.SellPrice | number}}</span>
+                            บาท
+                          </div>
+                          <ul>
+                            <li>อัพเดทล่าสุด {{lands.Created| timeAgoThai}}</li>
+                          </ul>
+                        </div>
                       </div>
-
-                      <div class="result-message">ค้นพบ {{totalItem}} ที่ </div>
+                      <!---->
                     </div>
-
-                  </div>
-                  <div class="search-tag-result hidden">
-                    ตัวกรองค้นหา |
-                    <button type="button" class="del-all-tag">
-                      ล้างทั้งหมด <i class="fa fa-times-circle"></i></button>
-                    <ul class="filter-list"></ul>
                   </div>
 
 
-                  <div class="search-grid row col-eq">
+
+
+
+                </div>
+
+                <nav aria-label="Page navigation" class="text-center">
+                  <ul class="pagination ">
+                    <li class="page-item">
+                      <a class="page-link" [routerLink]="['/lands']" [queryParams]="{page: 1}">หน้าแรก</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="activePage==1">
+                      <a class="page-link" [routerLink]="['/lands']" [queryParams]="{page: prevPage}"> <i
+                          class="fa fa-angle-left"></i></a>
+                    </li>
+                    <li class="page-item" *ngFor="let i of iPage" [class.active]="activePage==i">
+                      <a class="page-link" [routerLink]="['/lands']" [queryParams]="{page: i}"> {{ i }} </a>
+                    </li>
+                    <li class="page-item" [class.disabled]="activePage==totalPage">
+                      <a class="page-link" [routerLink]="['/lands']" [queryParams]="{page: nextPage}"> <i
+                          class="fa fa-angle-right"></i></a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" [routerLink]="['/lands']" [queryParams]="{page: totalPage}">
+                        หน้าสุดท้าย</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="compare-box" class="">
+          <ul class="compare-list"></ul>
+          <ul class="compare-button-box">
+            <li><a href="#" target="_blank"><button id="compare-submmit" type="button"><i
+                    class="fa fa-plus"></i>เปรียบเทียบ (<span>0</span>)
+                </button></a></li>
+            <li><button id="clear-compare" type="button"><i class="fa fa-times"></i>
+                ล้างตัวเลือก
+              </button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div> <!-- /page-content -->
+</div> <!-- /web-body -->
+
+<!-- <div class="search-grid row col-eq">
+                      <div class="loaderer">
+                          <app-loading-spinner class="loader" *ngIf="showSpinner"></app-loading-spinner>
+                      </div>
+                      
                     <ng-container *ngIf="!filterProperty.length; else elseTemplate">
                       <div
                         *ngFor="let lands of propertiesclone | slice:pointStart:pointEnd | propertyFilter : searchTerm | provinceFilter : searchPro | amphurFilter : searchAmphur | districtFilter : searchDis "
@@ -307,21 +313,21 @@
                                 [queryParams]="{page: activePage}"><img
                                   src="http://www.landvist.xyz/images/{{lands.ImageEX}}"
                                   class="img-responsive notebook-img rounded"></a>
-                              <!---->
+                              
                               <hr>
                               <ul class="specification">
                                 <li></li>
-                                <li>{{lands.PropertyType}}</li>
+                                <li>{{lands.ColorType}}</li>
                                 <li>{{lands.LandR}} / {{lands.LandG}} / {{lands.LandWA}}</li>
                                 <li>{{lands.Location}}</li>
                                 <li>{{lands.ObservationPoint}}</li>
                               </ul>
                             </div>
-                            <!---->
+                            
                             <div class="info">
                               <div class="price">
                                 ราคา
-                                <span>{{lands.SellPrice}}</span>
+                                <span>{{lands.SellPrice  | number}}</span>
                                 บาท
                               </div>
                               <ul>
@@ -329,7 +335,7 @@
                               </ul>
                             </div>
                           </div>
-                          <!---->
+                          
                         </div>
                       </div>
                     </ng-container>
@@ -351,21 +357,21 @@
                                 [queryParams]="{page: activePage}"><img
                                   src="http://www.landvist.xyz/images/{{lands.ImageEX}}"
                                   class="img-responsive notebook-img rounded"></a>
-                              <!---->
+                              
                               <hr>
                               <ul class="specification">
                                 <li></li>
-                                <li>{{lands.PropertyType}}</li>
+                                <li>{{lands.ColorType}}</li>
                                 <li>{{lands.LandR}} / {{lands.LandG}} / {{lands.LandWA}}</li>
                                 <li>{{lands.Location}}</li>
                                 <li>{{lands.ObservationPoint}}</li>
                               </ul>
                             </div>
-                            <!---->
+                            
                             <div class="info">
                               <div class="price">
                                 ราคา
-                                <span>{{lands.SellPrice}}</span>
+                                <span>{{lands.SellPrice | number}}</span>
                                 บาท
                               </div>
                               <ul>
@@ -373,7 +379,7 @@
                               </ul>
                             </div>
                           </div>
-                          <!---->
+                          
                         </div>
                       </div>
                     </ng-template>
@@ -420,6 +426,6 @@
           </div>
         </div>
       </div>
-    </div> <!-- /page-content -->
-  </div> <!-- /web-body -->
-</body>
+    </div> 
+  </div>
+</body>-->

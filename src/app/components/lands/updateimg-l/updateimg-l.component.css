@@ -1,0 +1,196 @@
+.float-right{
+    margin: auto;
+  }
+  .logo-distributed h3{
+    color:  #000000;
+    font: normal 36px 'Cookie', cursive;
+    margin: 0;
+  }
+  
+  .logo-distributed h3 span{
+    color:  #2fbd2a;
+  }
+  .container{
+    font-family: 'Poppins', 'Prompt', sans-serif;
+  }
+  
+  #breadcrumb-nav{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+  }
+  #breadcrumb-nav li{
+    /*font-family:OpenSans-Semibold;*/
+    font-weight: 600;
+    font-size: 13px;
+    color: #ff3c1f;
+  }
+  #breadcrumb-nav li::after{
+    content: "\f054";
+    font-family: FontAwesome;
+    color: #333;
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+  #breadcrumb-nav li:last-child::after{
+    content: "";
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  #breadcrumb-nav li a{
+    /*font-family:OpenSans-Regular;*/
+    font-weight: 400;
+    color: #333;
+  }
+  #product-specificate{
+    margin-bottom: 30px;
+  }
+  
+  
+  #specificate .header-blog{
+    /*font-family:OpenSans-Semibold;*/
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  #specificate .specificate-panel{
+    border: 1px solid #f3f3f3;
+    margin-bottom: 20px;
+  }
+  #specificate .specificate-panel .specificate-list{
+    display: flex;
+    /*font-family:OpenSans-Regular;*/
+    font-size: 13px;
+    color: #333;
+  }
+  #specificate .specificate-panel .specificate-list .specificate-title{
+    flex: 0 0 130px;
+    /*font-family:OpenSans-Semibold;*/
+    font-weight: 600;
+    background-color: #f3f3f3;
+    padding: 10px 10px;
+  }
+  #specificate .specificate-panel .specificate-list .specificate-info{
+    flex: 1;
+    padding: 10px 10px;
+    background-color: #FFF;
+  }
+  
+  
+  #specificate .product-ranking{
+    display: flex;
+    margin-bottom: 20px;
+  }
+  #specificate .product-ranking .now-rank{
+    flex: 0 0 120px;
+  }
+  #specificate .product-ranking .now-rank .frame{
+    border: 1px solid #ff3c1f; 
+    border-radius: 3px;
+  }
+  #specificate .product-ranking .now-rank .frame .header{
+    /*font-family:OpenSans-Semibold;*/
+    font-weight: 600;
+    font-size: 12px;
+    text-align: center;
+    color: #FFF;
+    background-color: #ff3c1f;
+    height: 30px;
+    line-height: 30px;
+  }
+  #specificate .product-ranking .now-rank .frame .rank{
+    /*font-family:OpenSans-Semibold;*/
+    font-weight: 600;
+    font-size: 36px;
+    text-align: center;
+    color: #ff3c1f;
+    height: 70px;
+    line-height: 70px;
+  }
+  #specificate .product-ranking .list-rank{
+    flex: 1;
+  }
+  #specificate .product-ranking .list-rank ul{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+  }
+  #specificate .product-ranking .list-rank ul li{
+    display: flex;
+    margin-bottom: 4px;
+  }
+  #specificate .product-ranking .list-rank ul li .title{
+    flex: 1;
+    padding: 0 20px;
+    /*font-family:OpenSans-Regular;*/
+    font-size: 11px;
+    color: #333;
+    line-height: 20px;
+  }
+  #specificate .product-ranking .list-rank ul li .percentage{
+    flex: 0 0 60px;
+    /*font-family:OpenSans-Regular;*/
+    font-size: 11px;
+    line-height: 20px;
+  }
+  #specificate .product-ranking .list-rank ul li .percentage i{
+    margin-right: 5px;
+  }
+  #specificate .product-ranking .list-rank ul li .percentage.increase{
+    color: #00a651;
+  }
+  #specificate .product-ranking .list-rank ul li .percentage.decrease{
+    color: #ff0000;
+  }
+  #specificate .product-ranking .list-rank ul li.active .title{
+    font-family:OpenSans-Semibold;
+  }
+  #specificate .product-ranking .icon-rank{
+    flex: 0 0 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #specificate .product-ranking .icon-rank ul{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+  }
+  #specificate .product-ranking .icon-rank ul li{
+    position: relative;
+    margin-bottom: 5px;
+  }
+  #specificate .product-ranking .icon-rank ul li a{
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    color: #333;
+    border: 1px solid #333;
+  }
+  #specificate .product-ranking .icon-rank ul li .icon{
+    position: absolute;
+    width: 30px;
+    top: -1px;
+    bottom: -1px;
+    left: -1px;
+    padding-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    background-color: #333;
+  }
+  #specificate .product-ranking .icon-rank ul li .caption{
+    flex: 1;
+    padding: 0 8px;
+    padding-left: 38px;
+    /*font-family:OpenSans-Semibold;*/
+    font-weight: 600;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+  }
+  

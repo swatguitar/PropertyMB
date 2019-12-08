@@ -66,6 +66,18 @@ import { AdminheaderComponent } from './components/adminLTE/adminheader/adminhea
 import { AdminmenuComponent } from './components/adminLTE/adminmenu/adminmenu.component';
 import { AdminsettingComponent } from './components/adminLTE/adminsetting/adminsetting.component';
 import { AdmindashComponent } from './components/adminLTE/admin/admindash/admindash.component';
+import { LandsupdateComponent } from './components/lands/landsupdate/landsupdate.component';
+import { LandsPDFComponent } from './components/lands/lands-pdf/lands-pdf.component';
+import { UpdateimgHComponent } from './components/houses/updateimg-h/updateimg-h.component';
+import { UpdateimgLComponent } from './components/lands/updateimg-l/updateimg-l.component';
+import { CreateGComponent } from './components/group/create-g/create-g.component';
+import { MememberlistComponent } from './components/group/mememberlist/mememberlist.component';
+import { MemberdetailsComponent } from './components/group/mememberlist/memberdetails/memberdetails.component';
+import { ItemslistComponent } from './components/group/itemslist/itemslist.component';
+import { ItemslistmemberComponent } from './components/group/itemslistmember/itemslistmember.component';
+import { EditComponent } from './components/group/itemslist/edit/edit.component';
+import { EditgroupComponent } from './components/group/grouplist/editgroup/editgroup.component';
+import { DetailComponent } from './components/detail/detail.component';
 
 
 
@@ -120,7 +132,8 @@ import { AdmindashComponent } from './components/adminLTE/admin/admindash/admind
     AdminsettingComponent,
     AdminmenuComponent,
     AdminheaderComponent, 
-    AdminfooterComponent
+    DetailComponent,
+    AdminfooterComponent, LandsupdateComponent, LandsPDFComponent, UpdateimgHComponent, UpdateimgLComponent, CreateGComponent, MememberlistComponent, MemberdetailsComponent, ItemslistComponent, ItemslistmemberComponent, EditComponent, EditgroupComponent
   ],
   imports: [
     BrowserModule,

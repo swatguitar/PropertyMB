@@ -9,7 +9,7 @@
         <div id="product-container">
           <div class="row">
             <div class="col-md-6">
-                <br>
+              <br>
               <ul id="breadcrumb-nav" typeof="BreadcrumbList">
                 <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
                     typeof="WebPage"><span property="name">หน้าแรก</span></a>
@@ -37,12 +37,17 @@
               </div>
               <br>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <button class="btn btn-warning" [routerLink]="['/lands/landUpdate',lands.ID_Lands]">
                     <i class="fas fa-edit"></i> แก้ไขข้อมูล
                   </button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <button class="btn btn-primary" [routerLink]="['/lands/updateimage',lands.ID_Lands]">
+                      <i class="far fa-images"></i> แก้ไขรูปภาพ
+                    </button>
+                  </div>
+                <div class="col-md-4">
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
                     <i class="fas fa-trash-alt"></i> ลบอสังหานี้
@@ -59,7 +64,7 @@
                         <div class="modal-body">
                           <div class="text-center">
                             <div class="col-md-6">
-                              <button type="button" class="btn btn-success" (click)="onDelete()">
+                              <button type="button" class="btn btn-success" data-dismiss="modal" (click)="onDelete()">
                                 <i class="fas fa-trash-alt"></i> ยืนยัน
                               </button>
                             </div>
@@ -87,8 +92,46 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="jumbotron">
+                    <a class="float-right" data-toggle="modal" data-target="#exampleModalCenter2"
+                    [routerLink]><i class="fas fa-edit"></i></a>
                   <div class="header-blog">สถานะการซื้อขาย</div>
                   <label>{{lands.PPStatus}}</label>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">สถานะการซื้อขาย</h5>
+                        </div>
+                        <div class="modal-body">
+
+                          <div class="col-sm-12 ">
+                            <input type="radio" id="newhouse" value="ยังไม่ขาย" name="PPStatus"
+                              (change)="PPStatus($event.target.value)" [checked]="lands.PPStatus == 'ยังไม่ขาย'">
+                            ยังไม่ขาย
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="radio" id="oldhouse" value="อยู่ระหว่างการจอง" name="PPStatus"
+                              (change)="PPStatus($event.target.value)"
+                              [checked]="lands.PPStatus == 'อยู่ระหว่างการจอง'">
+                            อยู่ระหว่างการจอง
+                          </div>
+                          <div class="col-sm-12">
+                            <input type="radio" id="oldhouse" value="ขายแล้ว" name="PPStatus"
+                              (change)="PPStatus($event.target.value)" [checked]="lands.PPStatus == 'ขายแล้ว'">
+                            ขายแล้ว
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                          <button type="button" class="btn btn-success" data-dismiss="modal"
+                            (click)="UpdateStatus()">บันทึก</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -99,7 +142,7 @@
               </div>
               <hr>
               <div class="col-md-12">
-                <button class="btn btn-success btn-lg btn-block" [routerLink]="['/landsPDF',lands.ID_Lands]">
+                <button class="btn btn-success btn-lg btn-block" [routerLink]="['/lands/DownloadPDF',lands.ID_Lands]">
                   บันทึกเป็น PDF
                 </button>
               </div>
@@ -109,11 +152,9 @@
         </div>
         <hr>
         <div id="product-specificate">
-
           <!-- Tab panes -->
           <div class="">
             <div role="tabpanel" class="tab-pane active" id="specificate">
-
               <div class="row">
                 <div class="col-xs-12">
                   <h3>ข้อมูลทั่วไป</h3>

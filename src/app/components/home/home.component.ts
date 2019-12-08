@@ -145,6 +145,8 @@ export class HomeComponent {
   emptyL: string = 'false';
   emptyP: string = 'false';
   public Groups: any;
+  public pointStartG: number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
+  public pointEndG: number = 5; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointStart: number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointEnd: number = 3; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   showSpinner: boolean = true;
@@ -160,8 +162,8 @@ export class HomeComponent {
         this.details= house
         if (this.details.length == 0) {
           this.emptyP = 'true'
-
         }
+       this.details.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
       },
         err => {
           console.error(err)
@@ -181,7 +183,7 @@ export class HomeComponent {
         if (this.results.length == 0) {
           this.emptyL = 'true'
         }
-
+        this.results.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
       },
         err => {
           console.error(err)
@@ -196,6 +198,7 @@ export class HomeComponent {
 
     this.auth.getgroup().subscribe((group) => {
       this.Groups = group;
+      this.Groups.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
     },
       err => {
         console.error(err)
@@ -204,19 +207,5 @@ export class HomeComponent {
     )
   }
 
-  group() {
 
-    this.auth.addgroup(this.credentials).subscribe(
-      () => {
-        this.router.navigateByUrl('/group')
-      },
-      err => {
-        console.error(err)
-        alert(JSON.stringify(err.text))
-
-      }
-
-    )
-
-  }
 }

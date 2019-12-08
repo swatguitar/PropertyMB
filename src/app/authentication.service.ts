@@ -25,6 +25,12 @@ export interface UserDetails {
   exp: number
   iat: number
 }
+export interface ImageID {
+  ID_Property:string
+  ID_Lands:string
+  ID_Photo:string
+  URL:string
+}
 
 export interface locationsDetails {
   PROVINCE_ID: number
@@ -43,11 +49,114 @@ export interface locationsDetails {
 
 export interface GroupDetails {
   ID_Group: number
-  name: string
+  ID_Item: number
+  ID_Property: string
+  ID_member: number
+  ID_User: number
+  Email:string
+  ID_Folder: number
+  NameG: string
+  NameF: string
   Img: string
-  created: Date
+  Created: string
 }
+export interface PropertyH {
+  ID_Property:string
+  PropertyType:string
+  AnnounceTH:string
+  CodeDeed:string
+  SellPrice:string
+  Costestimate:string
+  CostestimateB:string
+  MarketPrice:string
+  BathRoom: string
+  BedRoom: string
+  CarPark: string
+  HouseArea: string
+  Floor: string
+  LandR: string
+  LandG: string
+  LandWA: string
+  LandU: string
+  HomeCondition: string
+  BuildingAge: string
+  BuildFD: string
+  BuildFM: string
+  BuildFY: string
+  Directions: string
+  RoadType: string
+  RoadWide: string
+  GroundLevel: string
+  GroundValue: string
+  MoreDetails: string
+  Latitude: number
+  Longitude: number
+  AsseStatus: string
+  ObservationPoint: string
+  Location: string
+  LProvince: string
+  LAmphur: string
+  LDistrict: string
+  LZipCode: string
+  ContactU: string
+  ContactS: string
+  ContactUo: string
+  ContactSo: string
+  ContactUt: string
+  ContactSt: string
+  Blind:number
+  Neareducation:number
+  Cenmarket:number
+  Market:number
+  River:number
+  Mainroad:number
+  Insoi:number
+  Letc:string
+  airconditioner:number
+  afan:number
+  AirPurifier:number
+  Waterheater:number
+  WIFI:number
+  TV:number
+  refrigerator:number
+  microwave:number
+  gasstove:number
+  wardrobe:number
+  TCset:number
+  sofa:number
+  bed:number
+  shelves:number
+  CCTV:number
+  Securityguard:number
+  pool:number
+  Fitness:number
+  Publicarea:number
+  ShuttleBus:number
+  WVmachine:number
+  CWmachine:number
+  Elevator:number
+  Lobby:number
+  ATM:number
+  BeautySalon:number
+  Balcony:number
+  EventR:number
+  MeetingR:number
+  LivingR:number
+  Hairsalon:number
+  Laundry:number
+  Store:number
+  Supermarket:number
+  CStore:number
+  MFee:string
+  Kitchen:number
+  LandAge:string
+  Created:string
+  PPStatus:string
+  ImageEX:string
+  Owner:string
 
+
+}
 export interface PropertyDetails {
   //----land---
   ID_Lands: string
@@ -162,7 +271,7 @@ export interface PropertyDetails {
   ContactEmail: string
   ContactLine: string
   ContactPhone: string
-
+  Created:string
 
 }
 
@@ -170,10 +279,14 @@ export interface PropertyDetails {
 interface TokenResponse {
   token: string
 }
-export interface Delete {
+export interface ID {
   ID_Lands: string
   ID_Property: string
+  PPStatus: string
 }
+
+
+
 export interface TokenPayload {
   //------user----
   ID_User: number
@@ -314,8 +427,9 @@ export interface TokenPayload {
 
 @Injectable()
 export class AuthenticationService {
-  //ROOT_URL = "https://propermbbackend.appspot.com";
-  ROOT_URL = "http://localhost:3001";
+  //ROOT_URL = "https://backend2-259314.appspot.com";
+  ROOT_URL = "https://propermbbackend.appspot.com";
+  //ROOT_URL = "http://localhost:3001";
   private token: string
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -386,8 +500,18 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public addgroup(group: TokenPayload): Observable<any> {
+  public addgroup(group: GroupDetails): Observable<any> {
     return this.http.post(this.ROOT_URL + `/users/addgroup`, group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public CreateF(group: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/createfolder`, group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public CreateList(group: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/addAnnouce`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -434,12 +558,22 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public DeleteHouse(house: Delete): Observable<any> {
+  public DeleteImageH(user: ImageID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/house/DeleteImage`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public DeleteImageL(user: ImageID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/land/DeleteImage`, user, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public DeleteHouse(house: ID): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/house/Delete`, house, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public DeleteLands(land: Delete): Observable<any> {
+  public DeleteLands(land: ID): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/land/Delete`, land, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
@@ -492,6 +626,56 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  public getgroupfolder(group:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder`,group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getgroupfolderID(group:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder/ID`,group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getgrouplist(group:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder/list`,group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public listAll(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/group/folder/listAll`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getgroupM(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/group/onmember`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getgroupAll(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/groupAll`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getMember(gruop:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  } 
+  public getMemberlist(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/group/member/list`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  } 
+  public getMemberAdd(gruop:GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/group/member/add`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getMemberchack(gruop:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member/chack`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
   public gethouse(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/house`, {
       headers: { Authorization: ` ${this.getToken()}` }
@@ -502,13 +686,65 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getimghouse(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/imghouse`, {
+  
+  public houseUpdate(house: ID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/houseUpdate`, house, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-   public getimgland(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/imgland`, {
+  public UpdateStatus(house: ID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/UpdateStatus`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public UpdateStatusL(land: ID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/UpdateStatusL`, land, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public DeletegroupF(group:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder/Delete`,group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public Deletegroup(group:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/Delete`,group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public DeletegroupM(group:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member/Delete`,group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public DeletegroupP(group:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/Annouce/Delete`,group, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public UpdategroupN(gruop:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/EditGroupName`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public UpdatefolderN(gruop:GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/EditFolderName`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  public landUpdate(land: ID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/landUpdate`, land, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getimghouse(house:ImageID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/imghouse`,house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+   public getimgland(land:ImageID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/imgland`,land, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }

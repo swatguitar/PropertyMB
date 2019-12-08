@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
-
 import { DomSanitizer } from '@angular/platform-browser';
 const uri = 'https://propermbbackend.appspot.com/users/upload';
 //const uri = 'http://localhost:3001/users/upload';
+//const uri = 'https://polar-fjord-21366.herokuapp.com/users/upload';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../../authentication.service';
 
 @Component({
@@ -19,7 +19,6 @@ export class UploadimgComponent implements OnInit {
   uploader: FileUploader = new FileUploader({ url: uri 
   });
   @Input() ID_Property: string
-  ID:string = 'h0471'
   constructor(private http: HttpClient, public sanitizer: DomSanitizer,private auth: AuthenticationService,) {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
@@ -29,12 +28,13 @@ export class UploadimgComponent implements OnInit {
       this.localImageUrl.push(url)
       console.log(fileItem._file.size);
     }
+
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('ID_property' , this.ID);
+      form.append('ID_property' , this.ID_Property);
      };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
-    
+      this.onFinish()
    if(response){
     console.log("response"+JSON.stringify(response));
   }

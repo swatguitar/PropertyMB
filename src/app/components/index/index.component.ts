@@ -7,8 +7,14 @@ import { Component, OnInit } from "@angular/core";
 })
 export class IndexComponent implements OnInit {
   constructor() {}
+  scroll(el: HTMLElement) {
+    el.scrollIntoView();
+}
+
+  
 
   ngOnInit() {
+    
     // Detect request animation frame
     var scroll =
       window.requestAnimationFrame ||
@@ -30,7 +36,7 @@ export class IndexComponent implements OnInit {
       scroll(loop);
     }
 
-    // เรียก loop ครั้งแรก
+    // เรียก loop
     loop();
 
     // ได้รับความช่วยเหลือจาก: http://stackoverflow.com/a/7557433/274826
@@ -52,4 +58,5 @@ export class IndexComponent implements OnInit {
       );
     }
   }
+  
 }

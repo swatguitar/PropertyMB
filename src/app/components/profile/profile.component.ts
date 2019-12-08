@@ -13,6 +13,7 @@ export class ProfileComponent  {
   propertiesclone: any;
   totalLand: any;
   totalHouse: any;
+  Profileimage: string = 'Defult/img_Profile_not.png';
 
   constructor(private auth: AuthenticationService) {}
 
@@ -30,12 +31,27 @@ export class ProfileComponent  {
     this.auth.profile().subscribe(
       user => {
         this.details = user
-        this.totalItem = this.totalLand+this.totalHouse
+       
+        this.Profileimage = user.ProfileImg
+        console.log(this.Profileimage+'5555' )
+        if(this.Profileimage == null || this.Profileimage == '' ){
+          if(user.Gender=='ชาย'){
+            this.Profileimage = 'Defult/img_Profile_men.png'
+          }else if(user.Gender=='หญิง'){
+            this.Profileimage = 'Defult/img_Profile_women.png'
+          }else{
+            this.Profileimage = 'Defult/img_Profile_not.png'
+          }
+          console.log(this.Profileimage+'5555' )
+        }
       },
       err => {
         console.error(err)
       }
     )
+    setTimeout(() => {
+      this.totalItem = this.totalLand+this.totalHouse
+    }, 1000);
   }
   
   onFinish() {

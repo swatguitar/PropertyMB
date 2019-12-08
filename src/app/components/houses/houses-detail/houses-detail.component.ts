@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { AuthenticationService, Delete, locationsDetails, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, ID, locationsDetails, PropertyDetails,ImageID } from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { count } from 'rxjs/operators';
 
@@ -42,9 +42,16 @@ export class HousesDetailComponent implements OnInit {
   IDcontact3: string
   lonnew: number;
   latnew: number;
-  credentials: Delete = {
+  credentials: ID = {
     ID_Lands: '',
-    ID_Property: ''
+    ID_Property: '',
+    PPStatus: '',
+  }
+  ImageID: ImageID = {
+    ID_Lands: '',
+    ID_Property: '',
+    ID_Photo: '',
+    URL: '',
   }
   constructor(private auth: AuthenticationService, private route: ActivatedRoute, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
@@ -52,7 +59,7 @@ export class HousesDetailComponent implements OnInit {
 
   ngOnInit() {
 
-  
+
     this.galleryOptions = [
       { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
       { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
@@ -64,7 +71,7 @@ export class HousesDetailComponent implements OnInit {
     }, 5000);
     setTimeout(() => {    //<<<---    using ()=> syntax
       this.onSetcontact()
-      this.recenter() 
+      this.recenter()
     }, 7000);
 
 
@@ -79,6 +86,7 @@ export class HousesDetailComponent implements OnInit {
           this.activePage = +data.page;
         }
       });
+      this.ImageID.ID_Property = this.postID
     this.auth.getallhouse().subscribe((house) => {
       this.details = house
       // กรณี resuponse success
@@ -103,7 +111,7 @@ export class HousesDetailComponent implements OnInit {
 
 
 
-    this.auth.getimghouse().subscribe((img) => {
+    this.auth.getimghouse(this.ImageID).subscribe((img) => {
       this.imgbox = img
       // กรณี resuponse success
 
@@ -155,19 +163,19 @@ export class HousesDetailComponent implements OnInit {
     })
 
   }
-  recenter(){
+  recenter() {
     this.latitude = 13.7348534;
     this.longitude = 100.4997134999999;
-    setTimeout(()=>{
-      
-        this.latitude = Number(this.latnew)
-        this.longitude  = Number(this.lonnew)
-        console.log(this.latnew)
-        console.log(this.lonnew)
-       this.zoom = 15
-      
-    },3000);
-    }
+    setTimeout(() => {
+
+      this.latitude = Number(this.latnew)
+      this.longitude = Number(this.lonnew)
+      console.log(this.latnew)
+      console.log(this.lonnew)
+      this.zoom = 15
+
+    }, 3000);
+  }
 
   onForeach() {
     this.results.forEach((element, index) => {
@@ -196,18 +204,39 @@ export class HousesDetailComponent implements OnInit {
       return article.ID_Contact == this.IDcontact3;
     });
   }
-  onDelete(){
+  onDelete() {
     this.credentials.ID_Property = this.postID;
     this.auth.DeleteHouse(this.credentials).subscribe(() => {
-     
+
     },
       err => {
         console.error(err)
         alert(JSON.stringify("อสังหานี้ถูกลบแล้ว"))
         this.router.navigateByUrl('/home')
-        
+
       }
     )
   }
+  PPStatus(value) {
+    this.credentials.PPStatus = value
+  }
+  UpdateStatus() {
+    this.credentials.ID_Property = this.postID;
+    this.auth.UpdateStatus(this.credentials).subscribe(() => {
+
+    },
+      err => {
+        console.error(err)
+        this.refresh()
+
+      }
+    )
+
+  
+  }
+  
+  refresh(): void {
+    window.location.reload();
+}
 
 }

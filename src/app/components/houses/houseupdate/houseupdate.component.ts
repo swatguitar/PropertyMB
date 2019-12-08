@@ -1,9 +1,10 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { AuthenticationService, TokenPayload, locationsDetails, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, ID, TokenPayload, locationsDetails,PropertyH, PropertyDetails } from '../../../authentication.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { repeat } from 'rxjs/operators';
 
 @Component({
   selector: 'app-houseupdate',
@@ -14,7 +15,7 @@ export class HouseupdateComponent implements OnInit {
   public postID: string;
   public activePage: number;
   results: PropertyDetails[];
-  public details: PropertyDetails[];
+  details: PropertyH;
   EdithouseForm: FormGroup;
   EditContactForm: FormGroup;
   EditContact2Form: FormGroup;
@@ -34,47 +35,96 @@ export class HouseupdateComponent implements OnInit {
   IDcontact3: string
   IDcon: any;
   ContactID: string;
+  UpdatedS: boolean = false; 
+  UpdatedC: boolean = false; 
+  UpdatedM: boolean = false; 
+  Updated1: boolean = false; 
+  Updated2: boolean = false;
+  Updated3: boolean = false;
+  Updated4: boolean = false;
+  Updated5: boolean = false;
+  Updated6: boolean = false;
+  Updated7: boolean = false;
+  Updated8: boolean = false;
+  Updated9: boolean = false;
+  Updated10: boolean = false;
+  Updated11: boolean = false;
+  Updated12: boolean = false;
+  Updated13: boolean = false;
+  Updated14: boolean = false;
+  Updated15: boolean = false;
+  Updated16: boolean = false;
+  Updated17: boolean = false;
+  Updated18: boolean = false;
+  Updated19: boolean = false;
+  Updated20: boolean = false;
+  Updated21: boolean = false;
+  Updated22: boolean = false;
+  Updated23: boolean = false;
+  Updated24: boolean = false;
+  Updated25: boolean = false;
+  Updated26: boolean = false;
+  Updated27: boolean = false;
+  Updated28: boolean = false;
+  Updated29: boolean = false;
+  Updated30: boolean = false;
+  Updated31: boolean = false;
+  Updated32: boolean = false;
+  Updated33: boolean = false;
+  Updated34: boolean = false;
+  Updated35: boolean = false;
+  Updated36: boolean = false;
+  Updated37: boolean = false;
+  Updated38: boolean = false;
+  Updated39: boolean = false;
+  Updated40: boolean = false;
+  Updated41: boolean = false;
+  Updated42: boolean = false;
+  Updated43: boolean = false;
+  UpdatedZ: boolean;
+
+
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone, private route: ActivatedRoute) {
     this.EdithouseForm = new FormGroup({
-      PropertyType: new FormControl('', Validators.required),
-      AnnounceTH: new FormControl('', Validators.required),
-      SellPrice: new FormControl('', Validators.required),
+      PropertyType: new FormControl(''),
+      AnnounceTH: new FormControl(''),
+      SellPrice: new FormControl(''),
       CodeDeed: new FormControl(''),
       Costestimate: new FormControl(''),
       MarketPrice: new FormControl(''),
-      HouseArea: new FormControl('', Validators.required),
-      BathRoom: new FormControl('', Validators.required),
-      BedRoom: new FormControl('', Validators.required),
-      CarPark: new FormControl('', Validators.required),
-      Floor: new FormControl('', Validators.required),
+      HouseArea: new FormControl(''),
+      BathRoom: new FormControl(''),
+      BedRoom: new FormControl(''),
+      CarPark: new FormControl(''),
+      Floor: new FormControl(''),
       MFee: new FormControl(''),
       HomeCondition: new FormControl(''),
       BuildFD: new FormControl(''),
       BuildFM: new FormControl(''),
-      BuildFY: new FormControl('', Validators.required),
-      AsseStatus: new FormControl('', Validators.required),
+      BuildFY: new FormControl(''),
+      AsseStatus: new FormControl(''),
       BuildingAge: new FormControl(''),
-      Directions: new FormControl('', Validators.required),
+      Directions: new FormControl(''),
       LandR: new FormControl(''),
       LandG: new FormControl(''),
       LandWA: new FormControl(''),
       Location: new FormControl(''),
-      Lprovince: new FormControl('', Validators.required),
-      Lamphur: new FormControl('', Validators.required),
-      Ldistrict: new FormControl('', Validators.required),
+      Lprovince: new FormControl(''),
+      Lamphur: new FormControl(''),
+      Ldistrict: new FormControl(''),
       ZIPCODE: new FormControl(''),
     });
     this.EditContactForm = new FormGroup({
-      ContactName: new FormControl('', Validators.required),
+      ContactName: new FormControl(''),
       ContactLine: new FormControl(''),
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
       allowedit: new FormControl(''),
-      ContactS: new FormControl('', Validators.required),
+      ContactS: new FormControl(''),
     });
     this.EditContact2Form = new FormGroup({
-      ContactName: new FormControl('', Validators.required),
+      ContactName: new FormControl(''),
       ContactLine: new FormControl(''),
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
@@ -82,7 +132,7 @@ export class HouseupdateComponent implements OnInit {
       ContactSt: new FormControl(''),
     });
     this.EditContact3Form = new FormGroup({
-      ContactName: new FormControl('', Validators.required),
+      ContactName: new FormControl(''),
       ContactLine: new FormControl(''),
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
@@ -90,17 +140,19 @@ export class HouseupdateComponent implements OnInit {
       ContactSo: new FormControl(''),
     });
     this.CreateContactForm = new FormGroup({
-      ContactName: new FormControl('', Validators.required),
+      ContactName: new FormControl(''),
       ContactLine: new FormControl(''),
       ContactEmail: new FormControl(''),
       ContactPhone: new FormControl(''),
     });
   }
+  EDITED: boolean = false;
   zoom: number = 5;
   latitude: number;
   longitude: number;
   NextstepCon: boolean = false
   address: string;
+  buildage:number
   province: locationsDetails;
   Lprovince: any[];
   Ldistrict: any[];
@@ -143,8 +195,13 @@ export class HouseupdateComponent implements OnInit {
   latnew: number;
   lat: number;
   lng: number;
-  @ViewChild('search', { static: true })
+  @ViewChild('search', { static: false })
   public searchElementRef: ElementRef;
+  SelectID: ID = {
+    ID_Lands: '',
+    ID_Property: '',
+    PPStatus: '',
+  }
   credentials: TokenPayload = {
     ID_User: 0,
     Firstname: '',
@@ -277,6 +334,7 @@ export class HouseupdateComponent implements OnInit {
 
   }
   ID_user: string = (this.auth.getUserDetails().ID_User).toString()
+  
   CommaFormattedS(event) {
     // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
@@ -325,7 +383,7 @@ export class HouseupdateComponent implements OnInit {
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
-    if (this.con1selected == 'false') {
+    if (this.con1selected == 'false'  && this.Name1 != '' && this.EDITED == true) {
       this.submitted = true;
       if (this.EditContactForm.invalid) {
         alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
@@ -342,7 +400,11 @@ export class HouseupdateComponent implements OnInit {
           this.IDcon = article.ID_Contact
           this.onCheckContact()
         });
-        this.credentials.ContactU = this.credentials.ID_Contact
+        while (this.credentials.ContactU == '') {
+          this.credentials.ContactU = this.credentials.ID_Contact
+          this.onCheckContact()
+         
+        }
         //console.log(this.credentials.ContactU)
         this.auth.addcontact(this.credentials).subscribe(
           () => {
@@ -352,7 +414,7 @@ export class HouseupdateComponent implements OnInit {
             console.error(err)
           }
         )
-        if (this.con2selected == 'false' && this.Name2 != '') {
+        if (this.con2selected == 'false' && this.Name2 != '' && this.EDITED == true) {
           this.credentials.ContactName = this.conName2
           this.credentials.ContactPhone = this.conPhone2
           this.credentials.ContactEmail = this.conEmail2
@@ -364,7 +426,11 @@ export class HouseupdateComponent implements OnInit {
               this.IDcon = article.ID_Contact
               this.onCheckContact()
             });
-            this.credentials.ContactUt = this.credentials.ID_Contact
+            while (this.credentials.ContactUt == '') {
+              this.credentials.ContactUt = this.credentials.ID_Contact
+              this.onCheckContact()
+              //console.log(this.credentials.ContactU+"-***")
+            }
             //console.log(this.credentials.ContactUt+"two")
             this.auth.addcontact(this.credentials).subscribe(
               () => {
@@ -373,7 +439,7 @@ export class HouseupdateComponent implements OnInit {
                 console.error(err)
               }
             )
-            if (this.con3selected == 'false' && this.Name3 != '') {
+            if (this.con3selected == 'false' && this.Name3 != '' && this.EDITED == true) {
               this.credentials.ContactName = this.conName3
               this.credentials.ContactPhone = this.conPhone3
               this.credentials.ContactEmail = this.conEmail3
@@ -385,12 +451,16 @@ export class HouseupdateComponent implements OnInit {
                   this.IDcon = article.ID_Contact
                   this.onCheckContact()
                 });
-                this.credentials.ContactUo = this.credentials.ID_Contact
+                while (this.credentials.ContactUo == '') {
+                  this.credentials.ContactUo = this.credentials.ID_Contact
+                  this.onCheckContact()
+                  //console.log(this.credentials.ContactU+"-***")
+                }
+
                // console.log(this.credentials.ContactUo+"three")
                  this.auth.addcontact(this.credentials).subscribe(
                    () => {
                      this.onUpdate()
-                     alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
                    },
                    err => {
                      console.error(err)
@@ -402,24 +472,20 @@ export class HouseupdateComponent implements OnInit {
                 }
               )
 
-            } else if (this.con2selected == 'false' && this.Name3 == '')  {
+            } else if (this.con2selected == 'false' && this.Name3 == '' && this.EDITED == true)  {
               this.credentials.ContactUo = this.credentials.ID_Contact
               // stop here if form is invalid
               if (this.EdithouseForm.invalid) {
-                alert(JSON.stringify("กรุณากรอกข้อมูล"))
                 return;
               }
               this.onUpdate()
-              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
             }else {
               // stop here if form is invalid
                if (this.EdithouseForm.invalid) {
                  console.log(this.EdithouseForm)
-                 alert(JSON.stringify("กรุณากรอกข้อมูล"))
                  return;
                }
               this.onUpdate()
-              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
             }
           },
             err => {
@@ -428,16 +494,14 @@ export class HouseupdateComponent implements OnInit {
           )
 
 
-        } else if (this.con2selected == 'false' && this.Name2 == '')  {
+        } else if (this.con2selected == 'false' && this.Name2 == ''  && this.EDITED == true)  {
           this.credentials.ContactUt = this.credentials.ID_Contact
           this.credentials.ContactUo = this.credentials.ID_Contact
           // stop here if form is invalid
            if (this.EdithouseForm.invalid) {
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
              return;
            }
           this.onUpdate()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
         }else {
           // stop here if form is invalid
            if (this.EdithouseForm.invalid) {
@@ -446,7 +510,6 @@ export class HouseupdateComponent implements OnInit {
              return;
            }
           this.onUpdate()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
         }
       },
         err => {
@@ -455,7 +518,7 @@ export class HouseupdateComponent implements OnInit {
       )
 
 
-    } else if (this.con2selected == 'false' && this.Name2 != '') {
+    } else if (this.con2selected == 'false' && this.Name2 != ''  && this.EDITED == true) {
       this.credentials.ContactName = this.conName2
       this.credentials.ContactPhone = this.conPhone2
       this.credentials.ContactEmail = this.conEmail2
@@ -469,7 +532,11 @@ export class HouseupdateComponent implements OnInit {
           this.onCheckContact()
           //console.log(this.IDcon + "----------------data")
         });
-        this.credentials.ContactUt = this.credentials.ID_Contact
+        while (this.credentials.ContactUt == '') {
+          this.credentials.ContactUt = this.credentials.ID_Contact
+          this.onCheckContact()
+          //console.log(this.credentials.ContactU+"-***")
+        }
         //console.log(this.credentials.ContactUt + " two R")
         this.auth.addcontact(this.credentials).subscribe(
           () => {
@@ -478,7 +545,7 @@ export class HouseupdateComponent implements OnInit {
             console.error(err)
           }
         )
-        if (this.con3selected == 'false' && this.Name3 != '') {
+        if (this.con3selected == 'false' && this.Name3 != ''  && this.EDITED == true) {
           this.credentials.ContactName = this.conName3
           this.credentials.ContactPhone = this.conPhone3
           this.credentials.ContactEmail = this.conEmail3
@@ -492,12 +559,16 @@ export class HouseupdateComponent implements OnInit {
               //console.log(this.IDcon + "----------------data")
               this.onCheckContact()
             });
-            this.credentials.ContactUo = this.credentials.ID_Contact
+            while (this.credentials.ContactUo == '') {
+              this.credentials.ContactUo = this.credentials.ID_Contact
+              this.onCheckContact()
+              //console.log(this.credentials.ContactU+"-***")
+            }
             //console.log(this.credentials.ContactUo + " three")
             this.auth.addcontact(this.credentials).subscribe(
               () => {
                 this.onUpdate()
-                alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+
               },
               err => {
                 console.error(err)
@@ -509,7 +580,7 @@ export class HouseupdateComponent implements OnInit {
             }
           )
 
-        } else if (this.con2selected == 'false' && this.Name3 == '')  {
+        } else if (this.con2selected == 'false' && this.Name3 == ''  && this.EDITED == true)  {
           this.credentials.ContactUo = this.credentials.ID_Contact
           // stop here if form is invalid
            if (this.EdithouseForm.invalid) {
@@ -518,7 +589,6 @@ export class HouseupdateComponent implements OnInit {
              return;
            }
           this.onUpdate()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
         }else {
           // stop here if form is invalid
            if (this.EdithouseForm.invalid) {
@@ -527,7 +597,7 @@ export class HouseupdateComponent implements OnInit {
              return;
            }
           this.onUpdate()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+       
         }
         
       },
@@ -537,7 +607,7 @@ export class HouseupdateComponent implements OnInit {
       )
 
 
-    } else if (this.con3selected == 'false' && this.Name3 != '') {
+    } else if (this.con3selected == 'false' && this.Name3 != ''  && this.EDITED == true) {
       this.credentials.ContactName = this.conName3
       this.credentials.ContactPhone = this.conPhone3
       this.credentials.ContactEmail = this.conEmail3
@@ -551,13 +621,16 @@ export class HouseupdateComponent implements OnInit {
           //console.log(this.IDcon + "----------------data")
           this.onCheckContact()
         });
-        this.credentials.ContactUo = this.credentials.ID_Contact
+        while (this.credentials.ContactUo == '') {
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          this.onCheckContact()
+        }
         //console.log(this.credentials.ContactUo + " three")
 
         this.auth.addcontact(this.credentials).subscribe(
           () => {
             this.onUpdate()
-            alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+        
           },
           err => {
             console.error(err)
@@ -577,7 +650,7 @@ export class HouseupdateComponent implements OnInit {
          return;
        }
       this.onUpdate()
-      alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
+    
     }
   }
    //*****chack ID Contact */
@@ -616,9 +689,18 @@ export class HouseupdateComponent implements OnInit {
     this.credentials.ID_Contact = this.ContactID
     console.log(this.credentials.ID_Contact)
   }
+
+  get f() { return this.EdithouseForm.controls; }
+  get E() { return this.EditContactForm.controls; }
+  get Et() { return this.EditContact2Form.controls; }
+  get Eo() { return this.EditContact3Form.controls; }
+  get C() { return this.CreateContactForm.controls; }
+
+
   ngOnInit() {
     
-    //load Places Autocomplete
+    setTimeout(() => {
+     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder;
@@ -643,23 +725,23 @@ export class HouseupdateComponent implements OnInit {
         });
       });
     });
+    }, 1000);
+    
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = params.get('id');
     }
-    this.auth.getallhouse().subscribe((house) => {
-      this.details = house
-      console.log(this.postID)
-      // กรณี resuponse success
-      this.results = this.details.filter(article => {
-
-        return article.ID_Property == this.postID;
-      });
-
-    },
-      err => {
-        console.error(err)
-      })
+    this.SelectID.ID_Property = this.postID;
+  console.log( this.credentials.ID_Property)
+      this.auth.houseUpdate(this.SelectID).subscribe((house) => {
+        this.results = house
+        this.details = house
+     
+  
+      },
+        err => {
+          console.error(err)
+        })
 
     //-------------------------------------------------
     var year = new Date().getFullYear();
@@ -929,9 +1011,12 @@ export class HouseupdateComponent implements OnInit {
     this.credentials.ContactLine = this.conLine1
   }
   onEditContactName1(value: string) {
+    this.EDITED = true
+   console.log(this.EDITED )
     this.conName1 = value
   }
   onEditContactLine1(value) {
+
     this.conLine1 = value
     //console.log(this.conLine1)
   }
@@ -952,6 +1037,7 @@ export class HouseupdateComponent implements OnInit {
     this.credentials.ContactLine = this.conLine2
   }
   onEditContactName2(value: string) {
+    this.EDITED = true
     this.conName2 = value
   }
   onEditContactLine2(value) {
@@ -973,6 +1059,7 @@ export class HouseupdateComponent implements OnInit {
     this.credentials.ContactLine = this.conLine3
   }
   onEditContactName3(value: string) {
+    this.EDITED = true
     this.conName3 = value
   }
   onEditContactLine3(value) {
@@ -993,12 +1080,15 @@ export class HouseupdateComponent implements OnInit {
     this.credentials.CodeDeed = value
   }
   onGetSell(value) {
+  this.UpdatedS = true;
     this.credentials.SellPrice = value
   }
   onGetSellB(value) {
+    this.UpdatedC = true;
     this.credentials.CostestimateB = value
   }
   onGetSellM(value) {
+    this.UpdatedM = true;
     this.credentials.MarketPrice = value
   }
   onGetHouseArea(value) {
@@ -1019,6 +1109,9 @@ export class HouseupdateComponent implements OnInit {
   onGetMFee(value) {
     this.credentials.MFee = value
   }
+  onGetHomeCondition(value) {
+    this.credentials.HomeCondition = value
+  }
   onGetAsseStatus(value) {
     this.credentials.AsseStatus = value
     console.log(this.credentials.AsseStatus)
@@ -1029,9 +1122,10 @@ export class HouseupdateComponent implements OnInit {
   onGetBuildFM(value) {
     this.credentials.BuildFM = value
   }
-  buildage: number
+  
+ 
   onGetbuildage(year) {
-    this.credentials.BuildFM = year
+    this.credentials.BuildFY = year
     var yearEN = new Date().getFullYear();
     this.buildage = ((yearEN + 543) - year);
     this.credentials.BuildingAge = this.buildage.toString()
@@ -1039,6 +1133,361 @@ export class HouseupdateComponent implements OnInit {
   onGetDirections(value) {
     this.credentials.Directions = value
   }
+  airconditioner(value) {
+    this.Updated1 = true
+    if(value == true){
+      this.credentials.airconditioner = 1
+    }else{
+      this.credentials.airconditioner = 0
+    }
+  }
+  afan(value) {
+    this.Updated2 = true
+    if(value == true){
+      this.credentials.afan = 1
+    }else{
+      this.credentials.afan = 0
+    }
+  }
+  AirPurifier(value) {
+    this.Updated3 = true
+    if(value == true){
+      this.credentials.AirPurifier = 1
+    }else{
+      this.credentials.AirPurifier = 0
+    }
+  }
+  Waterheater(value) {
+    this.Updated4 = true
+    if(value == true){
+      this.credentials.Waterheater = 1
+    }else{
+      this.credentials.Waterheater = 0
+    }
+  }
+  WIFI(value) {
+    this.Updated5 = true
+    if(value == true){
+      this.credentials.WIFI = 1
+    }else{
+      this.credentials.WIFI = 0
+    }
+  }
+  TV(value) {
+    this.Updated6 = true
+    if(value == true){
+      this.credentials.TV = 1
+    }else{
+      this.credentials.TV = 0
+    }
+  }
+  refrigerator(value) {
+    this.Updated7 = true
+    if(value == true){
+      this.credentials.refrigerator = 1
+    }else{
+      this.credentials.refrigerator = 0
+    }
+  }
+  microwave(value) {
+    this.Updated8 = true
+    if(value == true){
+      this.credentials.microwave = 1
+    }else{
+      this.credentials.microwave = 0
+    }
+  }
+  gasstove(value) {
+    this.Updated9 = true
+    if(value == true){
+      this.credentials.gasstove = 1
+    }else{
+      this.credentials.gasstove = 0
+    }
+  }
+  wardrobe(value) {
+    this.Updated10 = true
+    if(value == true){
+      this.credentials.wardrobe = 1
+    }else{
+      this.credentials.wardrobe = 0
+    }
+  }
+  TCset(value) {
+    this.Updated11 = true
+    if(value == true){
+      this.credentials.TCset = 1
+    }else{
+      this.credentials.TCset = 0
+    }
+  }
+  sofa(value) {
+    this.Updated12 = true
+    if(value == true){
+      this.credentials.sofa = 1
+    }else{
+      this.credentials.sofa = 0
+    }
+  }
+  bed(value) {
+    this.Updated13 = true
+    if(value == true){
+      this.credentials.bed = 1
+    }else{
+      this.credentials.bed = 0
+    }
+  }
+  shelves(value) {
+    this.Updated14 = true
+    if(value == true){
+      this.credentials.shelves = 1
+    }else{
+      this.credentials.shelves = 0
+    }
+  }
+  Securityguard(value) {
+    this.Updated15 = true
+    if(value == true){
+      this.credentials.Securityguard = 1
+    }else{
+      this.credentials.Securityguard = 0
+    }
+  }
+  pool(value) {
+    this.Updated16 = true
+    if(value == true){
+      this.credentials.pool = 1
+    }else{
+      this.credentials.pool = 0
+    }
+  }
+  Fitness(value) {
+    this.Updated17 =true
+    if(value == true){
+      this.credentials.Fitness = 1
+    }else{
+      this.credentials.Fitness = 0
+    }
+  }
+  Publicarea(value) {
+    this.Updated18 = true
+    if(value == true){
+      this.credentials.Publicarea = 1
+    }else{
+      this.credentials.Publicarea = 0
+    }
+  }
+  ShuttleBus(value) {
+    this.Updated19 = true
+    if(value == true){
+      this.credentials.ShuttleBus = 1
+    }else{
+      this.credentials.ShuttleBus = 0
+    }
+  }
+  WVmachine(value) {
+    this.Updated20 = true
+    if(value == true){
+      this.credentials.WVmachine = 1
+    }else{
+      this.credentials.WVmachine = 0
+    }
+  }
+  CWmachine(value) {
+    this.Updated21 = true
+    if(value == true){
+      this.credentials.CWmachine = 1
+    }else{
+      this.credentials.CWmachine = 0
+    }
+  }
+  Elevator(value) {
+     this.Updated22 = true
+    if(value == true){
+      this.credentials.Elevator = 1
+    }else{
+      this.credentials.Elevator = 0
+    }
+  }
+  Lobby(value) {
+    this.Updated23 = true
+    if(value == true){
+      this.credentials.Lobby = 1
+    }else{
+      this.credentials.Lobby = 0
+    }
+  }
+  CCTV(value) {
+    this.Updated24 = true
+    if(value == true){
+      this.credentials.CCTV = 1
+    }else{
+      this.credentials.CCTV = 0
+    }
+  }
+  Kitchen(value) {
+    this.Updated25= true
+    if(value == true){
+      this.credentials.Kitchen = 1
+    }else{
+      this.credentials.Kitchen = 0
+    }
+  }
+  LivingR(value) {
+    this.Updated26 = true
+    if(value == true){
+      this.credentials.LivingR = 1
+    }else{
+      this.credentials.LivingR = 0
+    }
+  }
+  EventR(value) {
+    this.Updated27 = true
+    if(value == true){
+      this.credentials.EventR = 1
+    }else{
+      this.credentials.EventR = 0
+    }
+  }
+  MeetingR(value) {
+    this.Updated28 = true
+    if(value == true){
+      this.credentials.MeetingR = 1
+    }else{
+      this.credentials.MeetingR = 0
+    }
+  }
+  Balcony(value) {
+    this.Updated29 = true
+    if(value == true){
+      this.credentials.Balcony = 1
+    }else{
+      this.credentials.Balcony = 0
+    }
+  }
+  ATM(value) {
+    this.Updated30 = true
+    if(value == true){
+      this.credentials.ATM = 1
+    }else{
+      this.credentials.ATM = 0
+    }
+  }
+  BeautySalon(value) {
+    this.Updated31 = true
+    if(value == true){
+      this.credentials.BeautySalon = 1
+    }else{
+      this.credentials.BeautySalon = 0
+    }
+  }
+  CStore(value) {
+    this.Updated32 = true
+    if(value == true){
+      this.credentials.CStore = 1
+    }else{
+      this.credentials.CStore = 0
+    }
+  }
+  Hairsalon(value) {
+    this.Updated33 = true
+    if(value == true){
+      this.credentials.Hairsalon = 1
+    }else{
+      this.credentials.Hairsalon = 0
+    }
+  }
+  Laundry(value) {
+    this.Updated34 = true
+    if(value == true){
+      this.credentials.Laundry = 1
+    }else{
+      this.credentials.Laundry = 0
+    }
+  }
+  Store(value) {
+    this.Updated35 = true
+    if(value == true){
+      this.credentials.Store = 1
+    }else{
+      this.credentials.Store = 0
+    }
+  }
+  Supermarket(value) {
+    this.Updated36 = true
+    if(value == true){
+      this.credentials.Supermarket = 1
+    }else{
+      this.credentials.Supermarket = 0
+    }
+  }
+  Blind(value) {
+    this.Updated37 = true
+    if(value == true){
+      this.credentials.Blind = 1
+    }else{
+      this.credentials.Blind = 0
+    }
+  }
+  Neareducation(value) {
+    this.Updated38 = true
+    if(value == true){
+      this.credentials.Neareducation = 1
+    }else{
+      this.credentials.Neareducation = 0
+    }
+  }
+  Cenmarket(value) {
+    this.Updated39 = true
+    if(value == true){
+      this.credentials.Cenmarket = 1
+    }else{
+      this.credentials.Cenmarket = 0
+    }
+  }
+  Market(value) {
+    this.Updated40 = true
+    if(value == true){
+      this.credentials.Market = 1
+    }else{
+      this.credentials.Market = 0
+    }
+  }
+  River(value) {
+    this.Updated41 = true
+    if(value == true){
+      this.credentials.River = 1
+    }else{
+      this.credentials.River = 0
+    }
+  }
+  Mainroad(value) {
+    this.Updated42 = true
+    if(value == true){
+      this.credentials.Mainroad = 1
+    }else{
+      this.credentials.Mainroad = 0
+    } 
+  }
+  Insoi(value) {
+    this.Updated43 = true
+    //-----------
+    if(value == true){
+      this.credentials.Insoi = 1
+    }else{
+      this.credentials.Insoi = 0
+    }
+  }
+  Letc(value) {
+    this.credentials.Letc = value
+  }
+  RoadType(value) {
+    this.credentials.RoadType = value
+  }
+  GroundLevel(value) {
+    this.credentials.GroundLevel = value
+  }
+
   onGetLandR(value) {
     this.credentials.LandR = value
   }
@@ -1072,13 +1521,302 @@ export class HouseupdateComponent implements OnInit {
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
+    if(this.credentials.PropertyType == ''){
+      this.credentials.PropertyType = this.details.PropertyType
+    }
+    if(this.credentials.AnnounceTH == ''){
+      this.credentials.AnnounceTH = this.details.AnnounceTH
+    }
+    if(this.credentials.CodeDeed == ''){
+      this.credentials.CodeDeed = this.details.CodeDeed
+    }
+    if(this.credentials.SellPrice == ''){
+      this.credentials.SellPrice = this.details.SellPrice
+    }
+    if(this.credentials.Costestimate == ''){
+      this.credentials.Costestimate = this.details.Costestimate
+    }
+    if(this.credentials.CostestimateB == ''){
+      this.credentials.CostestimateB = this.details.CostestimateB
+    }
+    if(this.credentials.MarketPrice == ''){
+      this.credentials.MarketPrice = this.details.MarketPrice
+    }
+    if(this.credentials.BathRoom == ''){
+      this.credentials.BathRoom = this.details.BathRoom
+    }
+    if(this.credentials.BedRoom == ''){
+      this.credentials.BedRoom = this.details.BedRoom
+    }
+    if(this.credentials.CarPark == ''){
+      this.credentials.CarPark = this.details.CarPark
+    }
+    if(this.credentials.HouseArea == ''){
+      this.credentials.HouseArea = this.details.HouseArea
+    }
+    if(this.credentials.Floor == ''){
+      this.credentials.Floor = this.details.Floor
+    }
+    if(this.credentials.LandR == ''){
+      this.credentials.LandR = this.details.LandR
+    }
+    if(this.credentials.LandG == ''){
+      this.credentials.LandG = this.details.LandG
+    }
+    if(this.credentials.LandWA == ''){
+      this.credentials.LandWA = this.details.LandWA
+    }
+    if(this.credentials.LandU == ''){
+      this.credentials.LandU = this.details.LandU
+    }
+    if(this.credentials.HomeCondition == ''){
+      this.credentials.HomeCondition = this.details.HomeCondition
+    }
+    if(this.credentials.BuildingAge == ''){
+      this.credentials.BuildingAge = this.details.BuildingAge
+    }
+    if(this.credentials.BuildFD == ''){
+      this.credentials.BuildFD = this.details.BuildFD
+    }
+    if(this.credentials.BuildFM == ''){
+      this.credentials.BuildFM = this.details.BuildFM
+    }
+    if(this.credentials.AnnounceTH == ''){
+      this.credentials.AnnounceTH = this.details.AnnounceTH
+    }
+    if(this.credentials.BuildFY == ''){
+      this.credentials.BuildFY = this.details.BuildFY
+    }
+    if(this.credentials.Directions == ''){
+      this.credentials.Directions = this.details.Directions
+    }
+    if(this.credentials.RoadType == ''){
+      this.credentials.RoadType = this.details.RoadType
+    }
+    if(this.credentials.RoadWide == ''){
+      this.credentials.RoadWide = this.details.RoadWide
+    }
+    if(this.credentials.GroundLevel == ''){
+      this.credentials.GroundLevel = this.details.GroundLevel
+    }
+    if(this.credentials.GroundValue == ''){
+      this.credentials.GroundValue = this.details.GroundValue
+    }
+    if(this.credentials.MoreDetails == ''){
+      this.credentials.MoreDetails = this.details.MoreDetails
+    }
+    if(this.credentials.Latitude == 0){
+      this.credentials.Latitude = this.details.Latitude
+    }
+    if(this.credentials.Longitude == 0){
+      this.credentials.Longitude = this.details.Longitude
+    }
+    if(this.credentials.AsseStatus == ''){
+      this.credentials.AsseStatus = this.details.AsseStatus
+    }
+    if(this.credentials.ObservationPoint == ''){
+      this.credentials.ObservationPoint = this.details.ObservationPoint
+    }
+    if(this.credentials.Location == ''){
+      this.credentials.Location = this.details.Location
+    }
+    if(this.credentials.LProvince == ''){
+      this.credentials.LProvince = this.details.LProvince
+    }
+    if(this.credentials.LAmphur == ''){
+      this.credentials.LAmphur = this.details.LAmphur
+    }
+    if(this.credentials.LDistrict == ''){
+      this.credentials.LDistrict = this.details.LDistrict
+    }
+    if(this.credentials.LZipCode == ''){
+      this.credentials.LZipCode = this.details.LZipCode
+    }
+    if(this.credentials.ContactU == ''){
+      this.credentials.ContactU = this.details.ContactU
+    }
+    if(this.credentials.ContactS == ''){
+      this.credentials.ContactS = this.details.ContactS
+    }
+    if(this.credentials.ContactUo == ''){
+      this.credentials.ContactUo = this.details.ContactUo
+    }
+    if(this.credentials.ContactSo == ''){
+      this.credentials.ContactSo = this.details.ContactSo
+    }
+    if(this.credentials.ContactUt == ''){
+      this.credentials.ContactUt = this.details.ContactUt
+    }
+    if(this.credentials.ContactSt == ''){
+      this.credentials.ContactSt = this.details.ContactSt
+    }
+    if(this.credentials.ContactSt == ''){
+      this.credentials.ContactSt = this.details.ContactSt
+    }
+    if(this.credentials.airconditioner == 0 && this.Updated1 == false){
+      this.credentials.airconditioner = this.details.airconditioner
+    }
+    if(this.credentials.afan == 0 && this.Updated2 == false){
+      this.credentials.afan = this.details.afan
+    }
+    if(this.credentials.AirPurifier == 0 && this.Updated3 == false){
+      this.credentials.AirPurifier = this.details.AirPurifier
+    }
+    if(this.credentials.Waterheater == 0 && this.Updated4 == false){
+      this.credentials.Waterheater = this.details.Waterheater
+    }
+    if(this.credentials.WIFI == 0 && this.Updated5 == false){
+      this.credentials.WIFI = this.details.WIFI
+    }
+    if(this.credentials.TV == 0 && this.Updated6 == false){
+      this.credentials.TV = this.details.TV
+    }
+    if(this.credentials.refrigerator == 0 && this.Updated7 == false){
+      this.credentials.refrigerator = this.details.refrigerator
+    }
+    if(this.credentials.microwave == 0 && this.Updated8 == false){
+      this.credentials.microwave = this.details.microwave
+    }
+    if(this.credentials.gasstove == 0 && this.Updated9 == false){
+      this.credentials.gasstove = this.details.gasstove
+    }
+    if(this.credentials.wardrobe == 0 && this.Updated10 == false){
+      this.credentials.wardrobe = this.details.wardrobe
+    }
+    if(this.credentials.TCset == 0 && this.Updated11 == false){
+      this.credentials.TCset = this.details.TCset
+    }
+    if(this.credentials.sofa == 0 && this.Updated12 == false){
+      this.credentials.sofa = this.details.sofa
+    }
+    if(this.credentials.bed == 0 && this.Updated13 == false){
+      this.credentials.bed = this.details.bed
+    }
+    if(this.credentials.shelves == 0 && this.Updated14 == false){
+      this.credentials.shelves = this.details.shelves
+    }
+    if(this.credentials.Securityguard == 0 && this.Updated15 == false){
+      this.credentials.Securityguard = this.details.Securityguard
+    }
+    if(this.credentials.pool == 0 && this.Updated16 == false){
+      this.credentials.pool = this.details.pool
+    }
+    if(this.credentials.Fitness == 0 && this.Updated17 == false){
+      this.credentials.Fitness = this.details.Fitness
+    }
+    if(this.credentials.Publicarea == 0 && this.Updated18 == false){
+      this.credentials.Publicarea = this.details.Publicarea
+    }
+    if(this.credentials.ShuttleBus == 0 && this.Updated19 == false){
+      this.credentials.ShuttleBus = this.details.ShuttleBus
+    }
+    if(this.credentials.WVmachine == 0 && this.Updated20 == false){
+      this.credentials.WVmachine = this.details.WVmachine
+    }
+    if(this.credentials.CWmachine == 0 && this.Updated21 == false){
+      this.credentials.CWmachine = this.details.CWmachine
+    }
+    if(this.credentials.Elevator == 0 && this.Updated22 == false){
+      this.credentials.Elevator = this.details.Elevator
+    }
+    if(this.credentials.Lobby == 0 && this.Updated23 == false){
+      this.credentials.Lobby = this.details.Lobby
+    }
+    if(this.credentials.CCTV == 0 && this.Updated24 == false){
+      this.credentials.CCTV = this.details.CCTV
+    }
+    if(this.credentials.Kitchen == 0 && this.Updated25 == false){
+      this.credentials.Kitchen = this.details.Kitchen
+    }
+    if(this.credentials.LivingR == 0 && this.Updated26 == false){
+      this.credentials.LivingR = this.details.LivingR
+    }
+    if(this.credentials.EventR == 0 && this.Updated27 == false){
+      this.credentials.EventR = this.details.EventR
+    }
+    if(this.credentials.MeetingR == 0 && this.Updated28 == false){
+      this.credentials.MeetingR = this.details.MeetingR
+    }
+    if(this.credentials.Balcony == 0 && this.Updated29 == false){
+      this.credentials.Balcony = this.details.Balcony
+    }
+    if(this.credentials.ATM == 0 && this.Updated30 == false){
+      this.credentials.ATM = this.details.ATM
+    }
+    if(this.credentials.BeautySalon == 0 && this.Updated31 == false){
+      this.credentials.BeautySalon = this.details.BeautySalon
+    }
+    if(this.credentials.CStore == 0 && this.Updated32 == false){
+      this.credentials.CStore = this.details.CStore
+    }
+    if(this.credentials.Hairsalon == 0 && this.Updated33 == false){
+      this.credentials.Hairsalon = this.details.Hairsalon
+    }
+    if(this.credentials.Laundry == 0 && this.Updated34 == false){
+      this.credentials.Laundry = this.details.Laundry
+    }
+    if(this.credentials.Store == 0 && this.Updated35 == false){
+      this.credentials.Store = this.details.Store
+    }
+    if(this.credentials.Supermarket == 0 && this.Updated36 == false){
+      this.credentials.Supermarket = this.details.Supermarket
+    }
+    if(this.credentials.Blind == 0 && this.Updated37 == false){
+      this.credentials.Blind = this.details.Blind
+    }
+    if(this.credentials.Neareducation == 0 && this.Updated38 == false){
+      this.credentials.Neareducation = this.details.Neareducation
+    }
+    if(this.credentials.Cenmarket == 0 && this.Updated39 == false){
+      this.credentials.Cenmarket = this.details.Cenmarket
+    }
+    if(this.credentials.Market == 0 && this.Updated40 == false){
+      this.credentials.Market = this.details.Market
+    }
+    if(this.credentials.River == 0 && this.Updated41 == false){
+      this.credentials.River = this.details.River
+    }
+    if(this.credentials.Mainroad == 0 && this.Updated42 == false){
+      this.credentials.Mainroad = this.details.Mainroad
+    }
+    if(this.credentials.Insoi == 0 && this.Updated43 == false){
+      this.credentials.Insoi = this.details.Insoi
+    }
+    if(this.credentials.MFee == ''){
+      this.credentials.MFee = this.details.MFee
+    }
+    if(this.credentials.LandAge == ''){
+      this.credentials.LandAge = this.details.LandAge
+    }
+    if(this.credentials.PPStatus == ''){
+      this.credentials.PPStatus = this.details.PPStatus
+    }
+    if(this.credentials.ImageEX == null){
+      this.credentials.ImageEX = this.details.ImageEX
+    }
+    if(this.credentials.Owner == ''){
+      this.credentials.Owner = this.details.Owner
+    }
+
+    
+    
+   
   
-  
-    this.getZipCode()
+   this.credentials.ID_Property = this.postID
+   if(this.UpdatedS == true){
     this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+   }
+   if(this.UpdatedC == true){
     this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
-    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
+   } 
+   if(this.UpdatedM == true){
     this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
+   }
+   if(this.UpdatedZ == true){
+    this.getZipCode()
+   }
+   
+  
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     this.auth.EditHouse(this.credentials).subscribe(
@@ -1086,13 +1824,16 @@ export class HouseupdateComponent implements OnInit {
 
       },
       err => {
+   
         alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
+        this.router.navigate(['/houses',this.credentials.ID_Property] );
         console.error(err)
 
       }
 
     )
   }
+  
 
 }
 

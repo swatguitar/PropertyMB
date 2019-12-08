@@ -7,6 +7,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MustMatch } from '../../register/helper/must-match.validator';
 import { Router } from '@angular/router';
 const uri = 'https://propermbbackend.appspot.com/users/uploadprofile';
+//const uri = 'http://localhost:3001/users/uploadprofile';
+//const uri = 'https://polar-fjord-21366.herokuapp.com/users/uploadprofile';
 @Component({
   selector: 'app-updateprofile',
   templateUrl: './updateprofile.component.html',
@@ -14,20 +16,28 @@ const uri = 'https://propermbbackend.appspot.com/users/uploadprofile';
 })
 
 export class UpdateprofileComponent implements OnInit {
-  
+  ID_User: number
+  showSpinner2: boolean ;
   constructor(private auth: AuthenticationService, private formBuilder: FormBuilder,private http: HttpClient, public sanitizer: DomSanitizer,private router: Router) { 
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     }
+    this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+      form.append('ID_User' , this.ID_User);
+     };
     this.uploader.onAfterAddingFile = () => {
       this.uploader.uploadAll();
-      this.onFinish()
-      alert(JSON.stringify("อัพโหลดสำเร็จ"))
-      this.refresh()
     }
     
     
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
+      this.onFinish()
+      this.showSpinner2 = true
+      setTimeout(() => {
+        this.showSpinner2 = false
+        alert(JSON.stringify("อัพโหลดสำเร็จ"))
+      }, 15000);
+    
    if(response){
     console.log("response"+JSON.stringify(response));
   }
@@ -212,13 +222,14 @@ export class UpdateprofileComponent implements OnInit {
         this.details = user
         this.UserType = user.UserType
         this.Profileimage = user.ProfileImg
-        if(this.Profileimage == ''){
+        this.ID_User = user.ID_User
+        if(this.Profileimage == null || this.Profileimage ==  ''){
           if(user.Gender=='ชาย'){
             this.Profileimage = 'Defult/img_Profile_men.png'
           }else if(user.Gender=='หญิง'){
             this.Profileimage = 'Defult/img_Profile_women.png'
           }else{
-            this.Profileimage = 'Defult/img_Profile_not.jpg'
+            this.Profileimage = 'Defult/img_Profile_not.png'
           }
           console.log(this.Profileimage+'5555' )
         }
@@ -228,6 +239,7 @@ export class UpdateprofileComponent implements OnInit {
         console.error(err)
       }
     )
+    this.onFinish()
   }
   get U() { return this.updateForm.controls; }
   get D() { return this.updateDForm.controls; }

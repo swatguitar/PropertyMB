@@ -372,6 +372,7 @@ export class AddlandsComponent {
     //------------getlocation-------
     this.auth.getProvine().subscribe((province) => {
       this.province = province;
+      this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
     },
       err => {
         console.error(err)
@@ -436,6 +437,7 @@ export class AddlandsComponent {
       this.amphur = amphur.filter(article => {
         return article.PROVINCE_ID == data.PROVINCE_ID;
       });
+      this.amphur.sort((a, b) => a.AMPHUR_NAME.localeCompare(b.AMPHUR_NAME));
     },
       err => {
         console.error(err)
@@ -450,6 +452,7 @@ export class AddlandsComponent {
       this.district = district.filter(article => {
         return article.AMPHUR_ID == data.AMPHUR_ID;
       });
+      this.district.sort((a, b) => a.DISTRICT_NAME.localeCompare(b.DISTRICT_NAME));
     },
       err => {
         console.error(err)
@@ -463,7 +466,6 @@ export class AddlandsComponent {
       this.zipcode = zipcode.filter(article => {
         return article.DISTRICT_ID == data.DISTRICT_ID;
       });
-
     },
       err => {
         console.error(err)
@@ -686,7 +688,11 @@ export class AddlandsComponent {
           this.IDcon = article.ID_Contact
           this.onCheckContact()
         });
-        this.credentials.ContactU = this.credentials.ID_Contact
+        while (this.credentials.ContactU == '') {
+          this.credentials.ContactU = this.credentials.ID_Contact
+          this.onCheckContact()
+          //console.log(this.credentials.ContactU+"-***")
+        }
         //console.log(this.credentials.ContactU)
         this.auth.addcontact(this.credentials).subscribe(
           () => {
@@ -708,8 +714,11 @@ export class AddlandsComponent {
               this.IDcon = article.ID_Contact
               this.onCheckContact()
             });
-            this.credentials.ContactUt = this.credentials.ID_Contact
-            //console.log(this.credentials.ContactUt+"two")
+            while (this.credentials.ContactUt == '') {
+              this.credentials.ContactUt = this.credentials.ID_Contact
+              this.onCheckContact()
+              //console.log(this.credentials.ContactU+"-***")
+            }
             this.auth.addcontact(this.credentials).subscribe(
               () => {
               },
@@ -729,7 +738,11 @@ export class AddlandsComponent {
                   this.IDcon = article.ID_Contact
                   this.onCheckContact()
                 });
-                this.credentials.ContactUo = this.credentials.ID_Contact
+                while (this.credentials.ContactUo == '') {
+                  this.credentials.ContactUo = this.credentials.ID_Contact
+                  this.onCheckContact()
+                  //console.log(this.credentials.ContactU+"-***")
+                }
                 // console.log(this.credentials.ContactUo+"three")
                 this.auth.addcontact(this.credentials).subscribe(
                   () => {
@@ -836,7 +849,11 @@ export class AddlandsComponent {
               //console.log(this.IDcon + "----------------data")
               this.onCheckContact()
             });
-            this.credentials.ContactUo = this.credentials.ID_Contact
+            while (this.credentials.ContactUo == '') {
+              this.credentials.ContactUo = this.credentials.ID_Contact
+              this.onCheckContact()
+              //console.log(this.credentials.ContactU+"-***")
+            }
             //console.log(this.credentials.ContactUo + " three")
             this.auth.addcontact(this.credentials).subscribe(
               () => {
@@ -895,7 +912,11 @@ export class AddlandsComponent {
           //console.log(this.IDcon + "----------------data")
           this.onCheckContact()
         });
-        this.credentials.ContactUo = this.credentials.ID_Contact
+        while (this.credentials.ContactUo == '') {
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          this.onCheckContact()
+          //console.log(this.credentials.ContactU+"-***")
+        }
         //console.log(this.credentials.ContactUo + " three")
 
         this.auth.addcontact(this.credentials).subscribe(

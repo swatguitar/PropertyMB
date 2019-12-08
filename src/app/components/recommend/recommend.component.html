@@ -1,1 +1,343 @@
-<app-commingsoon></app-commingsoon>
+<app-navbar></app-navbar>
+
+<div id="web-body">
+  <div id="page-content">
+    <!------------------------------------------------------------------------>
+    <br><br>
+    <div class="container">
+      <div id="product-container">
+        <div class="row">
+          <div class="col-md-7">
+            <ul id="breadcrumb-nav" typeof="BreadcrumbList">
+              <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
+                  typeof="WebPage"><span property="name">หน้าแรก</span></a>
+                <meta property="position" content="1">
+              </li>
+              <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/houses' ]" property="item"
+                  typeof="WebPage"><span property="name">อสังหาสิ่งปลูกสร้าง</span></a>
+                <meta property="position" content="2">
+              </li>
+            </ul>
+
+            <h1><i class="fa fa-tree" aria-hidden="true"></i>ระบบแนะนำการลงทุน <a [routerLink] data-toggle="modal"
+                data-target="#Recommend"><i class="far fa-question-circle"></i></a></h1>
+            <!-- Modal -->
+            <div class="modal fade" id="Recommend" tabindex="-1" role="dialog" aria-labelledby="Recommend"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="Recommend">แนะนำ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <label>ระบบแนะนำการลงทุน</label>
+                    <p>คือระบบ ที่จะประมวนผลข้อมูลอสังหาของคุณ โดยใช้ Machine Learnเing
+                      เพื่อจัดประเภทของการลงทุนในอสังหาฯแต่ละชนิด</p>
+                    <p>โดยจะแบงเป็น 2 ประเภท</p>
+                    <p>1. การลงทุนแบบ "ระยะสั้น" ต่ำกว่าหรือเท่ากับ 1 ปี</p>
+                    <p>2. การลงทุนแบบ "ระยะยาว" 1 ปีขึ้นไป</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <div id="content-container"><br>
+            <hr class="specification-dash-line">
+            <div id="search-body" class="d-flex">
+              <div id="modal-bg"></div>
+              <div id="search-result">
+
+                <div class="row ">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                    <button class="btn btn-success btn-lg btn-block" (click)="API()">ประมวนผล</button>
+                  </div>
+                  <div class=" row col-md-3">
+                
+                  </div>
+                </div>
+                <br>
+                <hr class="specification-dash-line">
+                <h2>ระยะสั้น</h2>
+                <label for="">ผลการค้นหาทั้งหมด {{totalItemAS}} ที่</label>
+                <hr>
+                <br>
+                <app-loading-spinner *ngIf="showSpinner==true"></app-loading-spinner>
+                <br>
+                <div class="horizontal-scroll-wrapper squares">
+                  <div class="search-grid " *ngFor="let houses of AllShortTrem ">
+                    <div class="item">
+                      <div class="box jumbotron ">
+                        <div class=""><button (click)="SelectID(houses.ID_Property)" type="button" class="compare-btn"
+                            data-toggle="modal" data-target="#Createlist"><i aria-hidden="true" class="fa fa-plus"></i>
+                            เพิ่มลงกลุ่ม
+                          </button>
+                          <div class="modal fade" id="Createlist" tabindex="-1" role="dialog"
+                            aria-labelledby="Createlist" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="Createlist">เลือกกลุ่ม</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                        class="form-control" name="selectGroup"
+                                        (change)="selectGroup($event.target.value)">
+                                        <option>กรุณาเลือกกลุ่ม</option>
+                                        <option *ngFor="let G of groupAll" value="{{G.ID_Group}}">
+                                          {{G.NameG}}
+                                        </option>
+
+                                      </select>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="credentials.ID_Group != ''">
+                                      <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                        class="form-control" name="selectGroup"
+                                        (change)="selectFolder($event.target.value)">
+                                        <option>กรุณาเลือกแฟ้ม</option>
+                                        <option *ngFor="let F of folder" value="{{F.ID_Folder}}">
+                                          {{F.NameF}}
+                                        </option>
+
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                  <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    (click)="CreateList()">เพิ่มลงกลุ่ม</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <a *ngIf="houses.ID_Property" [routerLink]="['/houses',houses.ID_Property]"
+                            [queryParams]="{page: activePage}" target="_blank">
+                            <div class="title" style="white-space: nowrap; 	
+                          overflow: hidden; text-overflow: ellipsis;">
+                              {{houses.AnnounceTH}} <br>
+                            </div>
+                          </a>
+                          <a *ngIf="houses.ID_Lands" [routerLink]="['/lands',houses.ID_Lands]"
+                            [queryParams]="{page: activePage}" target="_blank">
+                            <div class="title" style="white-space: nowrap; 	
+                        overflow: hidden; text-overflow: ellipsis;">
+
+                              {{houses.AnnounceTH}} <br>
+                            </div>
+                          </a>
+
+                          <div class=""><a *ngIf="houses.ID_Property" [routerLink]="['/houses',houses.ID_Property]"
+                              [queryParams]="{page: activePage}"><img width="100%" height="200px"
+                                src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                                class="img-responsive notebook-img rounded"></a>
+                            <a *ngIf="houses.ID_Lands" [routerLink]="['/lands',houses.ID_Lands]"
+                              [queryParams]="{page: activePage}"><img width="100%" height="200px"
+                                src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                                class="img-responsive notebook-img rounded"></a>
+
+
+                            <hr>
+                            <ul class="specification">
+                              <li *ngIf="houses.ID_Lands"><i class="fa fa-tree font-color-green"
+                                  aria-hidden="true"></i><b>
+                                  ที่ดิน</b></li>
+                              <li *ngIf="houses.PropertyType == 'บ้าน'"><i class="fa fa-home font-color-orange "
+                                  aria-hidden="true"></i><b> {{houses.PropertyType}} {{houses.PropertyType == ' '}}</b>
+                              </li>
+                              <li *ngIf="houses.PropertyType == 'คอนโด'"><i
+                                  class="fas fa-building font-color-condo"></i><b> {{houses.PropertyType}}</b></li>
+                              <li *ngIf="houses.PropertyType == 'อาคารพาณิชย์'"><i
+                                  class="fas fa-store-alt font-color-prop"></i><b> {{houses.PropertyType}}</b></li>
+                              <li><i class="fas fa-ruler-combined font-color-gold"></i><b> {{houses.LandR}} ไร่ </b> |
+                                <b> {{houses.LandG}} งาน</b> | <b> {{houses.LandWA}} ตารางวา </b></li>
+                              <li><i class="fas fa-map-marker-alt font-color-mark"></i><b> {{houses.Location}}</b></li>
+                              <li><i class="fas fa-map-marked-alt font-color-overview"></i><b>
+                                  {{houses.ObservationPoint}}</b></li>
+                            </ul>
+                          </div>
+
+                          <div class="info">
+                            <div class="price">
+                              ราคา
+                              <span>{{houses.SellPrice | number}}</span>
+                              บาท
+                            </div>
+                            <ul>
+                              <li>อัพเดทล่าสุด {{houses.Created| timeAgoThai}}</li>
+                            </ul>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br><br><br><br>
+                <br><br><br><br>
+                <br><br><br><br>
+                <br><br><br><br>
+                <br><br>
+                <hr class="specification-dash-line">
+                <h2>ระยะยาว</h2>
+                <label for="">ผลการค้นหาทั้งหมด {{totalItemAL}} ที่</label>
+                <hr>
+                <br>
+                <app-loading-spinner *ngIf="showSpinner==true"></app-loading-spinner>
+                <br>
+                <div class="horizontal-scroll-wrapper-Long squares-Long">
+                  <div class="search-grid " *ngFor="let houses of AllLongTrem ">
+                    <div class="item">
+                      <div class="box jumbotron ">
+                        <div class=""><button (click)="SelectID(houses.ID_Property)" type="button" class="compare-btn"
+                            data-toggle="modal" data-target="#Createlist"><i aria-hidden="true" class="fa fa-plus"></i>
+                            เพิ่มลงกลุ่ม
+                          </button>
+                          <div class="modal fade" id="Createlist" tabindex="-1" role="dialog"
+                            aria-labelledby="Createlist" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="Createlist">เลือกกลุ่ม</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                        class="form-control" name="selectGroup"
+                                        (change)="selectGroup($event.target.value)">
+                                        <option>กรุณาเลือกกลุ่ม</option>
+                                        <option *ngFor="let G of groupAll" value="{{G.ID_Group}}">
+                                          {{G.NameG}}
+                                        </option>
+
+                                      </select>
+                                    </div>
+                                    <div class="col-md-6" *ngIf="credentials.ID_Group != ''">
+                                      <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                        class="form-control" name="selectGroup"
+                                        (change)="selectFolder($event.target.value)">
+                                        <option>กรุณาเลือกแฟ้ม</option>
+                                        <option *ngFor="let F of folder" value="{{F.ID_Folder}}">
+                                          {{F.NameF}}
+                                        </option>
+
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                  <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    (click)="CreateList()">เพิ่มลงกลุ่ม</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <a *ngIf="houses.ID_Property" [routerLink]="['/houses',houses.ID_Property]"
+                            [queryParams]="{page: activePage}" target="_blank">
+                            <div class="title" style="white-space: nowrap; 	
+                                overflow: hidden; text-overflow: ellipsis;">
+                              {{houses.AnnounceTH}} <br>
+                            </div>
+                          </a>
+                          <a *ngIf="houses.ID_Lands" [routerLink]="['/lands',houses.ID_Lands]"
+                            [queryParams]="{page: activePage}" target="_blank">
+                            <div class="title" style="white-space: nowrap; 	
+                              overflow: hidden; text-overflow: ellipsis;">
+
+                              {{houses.AnnounceTH}} <br>
+                            </div>
+                          </a>
+
+                          <div class=""><a *ngIf="houses.ID_Property" [routerLink]="['/houses',houses.ID_Property]"
+                              [queryParams]="{page: activePage}"><img width="100%" height="200px"
+                                src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                                class="img-responsive notebook-img rounded"></a>
+                            <a *ngIf="houses.ID_Lands" [routerLink]="['/lands',houses.ID_Lands]"
+                              [queryParams]="{page: activePage}"><img width="100%" height="200px"
+                                src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                                class="img-responsive notebook-img rounded"></a>
+
+
+                            <hr>
+                            <ul class="specification">
+                              <li *ngIf="houses.ID_Lands"><i class="fa fa-tree font-color-green"
+                                  aria-hidden="true"></i><b>
+                                  ที่ดิน</b></li>
+                              <li *ngIf="houses.PropertyType == 'บ้าน'"><i class="fa fa-home font-color-orange "
+                                  aria-hidden="true"></i><b> {{houses.PropertyType}} {{houses.PropertyType == ' '}}</b>
+                              </li>
+                              <li *ngIf="houses.PropertyType == 'คอนโด'"><i
+                                  class="fas fa-building font-color-condo"></i><b> {{houses.PropertyType}}</b></li>
+                              <li *ngIf="houses.PropertyType == 'อาคารพาณิชย์'"><i
+                                  class="fas fa-store-alt font-color-prop"></i><b> {{houses.PropertyType}}</b></li>
+                              <li><i class="fas fa-ruler-combined font-color-gold"></i><b> {{houses.LandR}} ไร่ </b> |
+                                <b> {{houses.LandG}} งาน</b> | <b> {{houses.LandWA}} ตารางวา </b></li>
+                              <li><i class="fas fa-map-marker-alt font-color-mark"></i><b> {{houses.Location}}</b></li>
+                              <li><i class="fas fa-map-marked-alt font-color-overview"></i><b>
+                                  {{houses.ObservationPoint}}</b></li>
+                            </ul>
+                          </div>
+
+                          <div class="info">
+                            <div class="price">
+                              ราคา
+                              <span>{{houses.SellPrice | number}}</span>
+                              บาท
+                            </div>
+                            <ul>
+                              <li>อัพเดทล่าสุด {{houses.Created| timeAgoThai}}</li>
+                            </ul>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+                <br><br><br><br>
+                <br><br><br><br>
+                <br><br><br><br>
+                
+                <br><br><br><br>
+                <br><br>
+
+                <hr class="specification-dash-line">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- /page-content -->
+</div> <!-- /web-body -->
+<app-footer></app-footer>
