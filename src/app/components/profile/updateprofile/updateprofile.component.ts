@@ -6,7 +6,7 @@ import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 import { MustMatch } from '../../register/helper/must-match.validator';
 import { Router } from '@angular/router';
-const uri = 'https://propermbbackend.appspot.com/users/uploadprofile';
+const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadprofile';
 //const uri = 'http://localhost:3001/users/uploadprofile';
 //const uri = 'https://polar-fjord-21366.herokuapp.com/users/uploadprofile';
 @Component({

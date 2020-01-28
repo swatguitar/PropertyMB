@@ -5,7 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { } from 'googlemaps';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService, UserDetails, PropertyDetails, GroupDetails, ImageID } from '../../../../authentication.service';
-const uri = 'https://propermbbackend.appspot.com/users/uploadimagegroup';
+const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadimagegroup';
 //const uri = 'http://localhost:3001/users/upload';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { MapsAPILoader, MouseEvent } from '@agm/core';

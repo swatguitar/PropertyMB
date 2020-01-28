@@ -151,7 +151,7 @@ import { DetailComponent } from './components/detail/detail.component';
     AutocompleteLibModule,
     AutocompleteModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCtCFBEpYh6djKBD2DUzj1yxM-t-teyir8',
+      apiKey: 'AIzaSyCtHlvZUC6SiC7cWqS0xm4_PnS9Qc3gF3o',
       libraries: ['places']
     }),
     PDFExportModule,

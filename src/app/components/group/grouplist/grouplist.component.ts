@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService, UserDetails, PropertyDetails, GroupDetails } from '../../../authentication.service';
-const uri = 'https://propermbbackend.appspot.com/users/uploadG';
+const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadG';
 //const uri = 'http://localhost:3001/users/uploadG';
 
 @Component({

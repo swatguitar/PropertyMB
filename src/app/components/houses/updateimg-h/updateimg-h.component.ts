@@ -3,7 +3,7 @@ import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'https://propermbbackend.appspot.com/users/upload';
+const uri = 'https://upbeat-repeater-264507.appspot.com/users/upload';
 //const uri = 'http://localhost:3001/users/upload';
 //const uri = 'https://polar-fjord-21366.herokuapp.com/users/upload';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload,ImageID } from '../../../authentication.service';

@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'https://propermbbackend.appspot.com/users/uploadprofile';
+const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadprofile';
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',

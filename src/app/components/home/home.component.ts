@@ -150,11 +150,42 @@ export class HomeComponent {
   public pointStart: number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointEnd: number = 3; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   showSpinner: boolean = true;
+  AllProperty: any[];
+  AllShortTrem: any[];
+  AllLongTrem: any[];
+  HouseShortTerm: any;
+  HouseLongTerm: any;
+  LandShortTerm: any;
+  LandLongTerm: any;
   constructor(private auth: AuthenticationService, private router: Router, private spinner: NgxSpinnerService) { }
   ngOnInit() {
     /** spinner starts on init */
     this.spinner.show();
     this.loading = [1, 2, 3]
+    this.AllProperty = []
+    this.AllLongTrem = []
+    this.AllShortTrem = []
+    this.auth.gethouse().subscribe(house => {
+
+
+      this.HouseShortTerm = house.filter(article => {
+        return article.UserType == 'Short-Term';
+      });
+      this.HouseLongTerm = house.filter(article => {
+        return article.UserType == 'Long-Term';
+      });
+    
+    });
+    this.auth.getland().subscribe((land) => {
+      this.LandShortTerm = land.filter(article => {
+        return article.UserType == 'Short-Term';
+      });
+      this.LandLongTerm = land.filter(article => {
+        return article.UserType == 'Long-Term';
+      });
+   
+
+    })
     setTimeout(() => {
 
       this.showSpinner = false
@@ -190,9 +221,20 @@ export class HomeComponent {
 
         }
       )
+      
 
     }, 2000);
-
+    setTimeout(() => {
+      this.showSpinner = false
+      this.AllShortTrem = this.HouseShortTerm.concat(this.LandShortTerm);
+      this.AllLongTrem = this.HouseLongTerm.concat(this.LandLongTerm);
+   
+      this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      console.log(this.AllShortTrem)
+      console.log(this.AllLongTrem)
+     
+    }, 2000);
 
 
 

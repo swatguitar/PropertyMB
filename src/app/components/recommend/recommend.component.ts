@@ -351,7 +351,7 @@ export class RecommendComponent implements OnInit {
       this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
       this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
 
-      alert(JSON.stringify("ตอนนี้ยังไม่เสร็จ"))
+      
     }, 5000);
 
   }

@@ -147,55 +147,39 @@
     <div class="col-12 col-md-4 content-box">
       <header>
         อสังหาริมทรัพย์ แนะนำ<i class="fa fa-angle-right" aria-hidden="true"></i>
-        <div>แนะนำ บ้านหรือที่ดิน ที่เหมาะกับคุณ</div>
+        <div>แนะนำ รูปแบบ การลงทุนอสังหาฯ</div>
       </header>
 
       <div class="recommend-spec">
+          <label for="">ระยะยาว</label>
         <ul class="nav">
-          <li>
+          <li *ngFor="let item of AllLongTrem">
             <a class="d-flex" href="#">
               <div class="banner"><img
-                  src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg"
+                  src="http://www.landvist.xyz/images/{{item.ImageEX}}"
                   width="90" class="img-fluid"></div>
               <div class="info">
-                <div class="title">Land</div>
-                <div class="price">8000000xx</div>
+                <div class="title">{{item.AnnounceTH}}</div>
+                <div class="price">{{item.SellPrice}}</div>
               </div>
             </a>
           </li>
-          <li>
+        </ul>
+<br>
+        <label for="">ระยะสั้น</label>
+        <ul class="nav">
+          <li *ngFor="let item of AllShortTrem">
             <a class="d-flex" href="#">
               <div class="banner"><img
-                  src="https://i3.au.reastatic.net/640x480/41c56741172108bff15ae806af966a97646e62acb6846c706182e1e427160742/main.jpg"
+                src="http://www.landvist.xyz/images/{{item.ImageEX}}"
                   width="90" class="img-fluid"></div>
               <div class="info">
-                <div class="title">Land</div>
-                <div class="price">1500000xx</div>
+                <div class="title">{{item.AnnounceTH}}</div>
+                <div class="price">{{item.SellPrice}}</div>
               </div>
             </a>
           </li>
-          <li>
-            <a class="d-flex" href="#">
-              <div class="banner"><img
-                  src="https://sf.pruksa.com/cache/subdomain/passorn/images/PS79_363x227__363x227.jpg" width="90"
-                  class="img-fluid"></div>
-              <div class="info">
-                <div class="title">House</div>
-                <div class="price">750000000</div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="d-flex" href="#">
-              <div class="banner"><img
-                  src="https://sf.pruksa.com/cache/subdomain/passorn/images/PS79_363x227__363x227.jpg" width="90"
-                  class="img-fluid"></div>
-              <div class="info">
-                <div class="title">House</div>
-                <div class="price">680000000</div>
-              </div>
-            </a>
-          </li>
+         
 
 
 

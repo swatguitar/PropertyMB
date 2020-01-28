@@ -428,7 +428,7 @@ export interface TokenPayload {
 @Injectable()
 export class AuthenticationService {
   //ROOT_URL = "https://backend2-259314.appspot.com";
-  ROOT_URL = "https://propermbbackend.appspot.com";
+  ROOT_URL = "https://upbeat-repeater-264507.appspot.com";
   //ROOT_URL = "http://localhost:3001";
   private token: string
 

@@ -203,7 +203,8 @@ export class LandsDetailComponent implements OnInit {
     this.credentials.PPStatus = value
   }
   UpdateStatus() {
-    this.credentials.ID_Property = this.postID;
+    this.credentials.ID_Lands = this.postID;
+    console.log(this.credentials.ID_Lands)
     this.auth.UpdateStatusL(this.credentials).subscribe(() => {
 
     },

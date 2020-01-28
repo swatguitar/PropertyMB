@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'https://propermbbackend.appspot.com/users/uploadimageLand';
+const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadimageLand';
 //const uri = 'http://localhost:3001/users/uploadimageLand';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../../authentication.service';
 

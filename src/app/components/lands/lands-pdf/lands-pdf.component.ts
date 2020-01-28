@@ -248,7 +248,7 @@ export class LandsPDFComponent implements OnInit {
 
     //Loop and add Markers.
 
-    staticMapUrl += "&markers=color:red|"  + this.lat + "," + this.lng + "&key=AIzaSyCtCFBEpYh6djKBD2DUzj1yxM-t-teyir8";
+    staticMapUrl += "&markers=color:red|"  + this.lat + "," + this.lng + "&key=AIzaSyCtHlvZUC6SiC7cWqS0xm4_PnS9Qc3gF3o";
 
 
     //Display the Image of Google Map.
