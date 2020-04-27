@@ -163,13 +163,7 @@ export class CreateGComponent implements OnInit {
     this.CreateGroup = true
   }
   onFinish() {
-    this.auth.uploadftp().subscribe(() => {
-
-    },
-      err => {
-        console.error(err)
-      }
-    )
+  
 
   }
 

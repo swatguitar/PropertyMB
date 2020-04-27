@@ -201,6 +201,9 @@ export class HouseupdateComponent implements OnInit {
     ID_Lands: '',
     ID_Property: '',
     PPStatus: '',
+    ContactU: '',
+    ContactUo: '',
+    ContactUt: '',
   }
   credentials: TokenPayload = {
     ID_User: 0,

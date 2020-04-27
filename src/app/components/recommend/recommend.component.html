@@ -60,9 +60,17 @@
               <div id="search-result">
 
                 <div class="row ">
-                  <div class="col-md-3"></div>
+                  <div class="col-md-3">
+                    <select class="btn btn-outline-secondary dropdown-toggle" name="propertyType"
+                    (change)="selectRec($event.target.value)">
+                    <option value="000">ประเภทอสังหาฯ</option>
+                    <option value="001">อสังหาสิ่งปลูกสร้าง</option>
+                    <option value="002">ที่ดิน</option>
+
+                  </select>
+                  </div>
                   <div class="col-md-6">
-                    <button class="btn btn-success btn-lg btn-block" (click)="API()">ประมวนผล</button>
+                    <button class="btn btn-success btn-lg btn-block" (click)="API()"  [disabled]="ClickButton == false">ประมวนผล</button>
                   </div>
                   <div class=" row col-md-3">
                 
@@ -161,7 +169,7 @@
                                   aria-hidden="true"></i><b>
                                   ที่ดิน</b></li>
                               <li *ngIf="houses.PropertyType == 'บ้าน'"><i class="fa fa-home font-color-orange "
-                                  aria-hidden="true"></i><b> {{houses.PropertyType}} {{houses.PropertyType == ' '}}</b>
+                                  aria-hidden="true"></i><b> {{houses.PropertyType}} </b>
                               </li>
                               <li *ngIf="houses.PropertyType == 'คอนโด'"><i
                                   class="fas fa-building font-color-condo"></i><b> {{houses.PropertyType}}</b></li>
@@ -288,7 +296,7 @@
                                   aria-hidden="true"></i><b>
                                   ที่ดิน</b></li>
                               <li *ngIf="houses.PropertyType == 'บ้าน'"><i class="fa fa-home font-color-orange "
-                                  aria-hidden="true"></i><b> {{houses.PropertyType}} {{houses.PropertyType == ' '}}</b>
+                                  aria-hidden="true"></i><b> {{houses.PropertyType}} </b>
                               </li>
                               <li *ngIf="houses.PropertyType == 'คอนโด'"><i
                                   class="fas fa-building font-color-condo"></i><b> {{houses.PropertyType}}</b></li>

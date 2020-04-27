@@ -44,6 +44,7 @@ export class RecommendComponent implements OnInit {
   zipcode: any[];
   createID: string
   years: any[];
+  TypeREC: string;
   searchDis: string;
   searchDis1: any[];
   searchAmphur: string;
@@ -59,6 +60,7 @@ export class RecommendComponent implements OnInit {
   newCprice: number
   totalItemR: number;
   totalItemL: any;
+  ClickButton: boolean = false;
   B: [];
   D: [];
   C: [];
@@ -93,8 +95,8 @@ export class RecommendComponent implements OnInit {
   totalItemHL: any;
   AllShortTrem: PropertyDetails[];
   AllLongTrem: PropertyDetails[];
-  totalItemAS: number;
-  totalItemAL: number;
+  totalItemAS: number = 0;
+  totalItemAL: number = 0;
   showSpinner: boolean;
   constructor(private auth: AuthenticationService, private route: ActivatedRoute,
     private router: Router) { }
@@ -168,29 +170,8 @@ export class RecommendComponent implements OnInit {
     // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
 
     // ส่วนของการดึงข้อมูล
-    this.auth.gethouse().subscribe(house => {
 
-      this.A = house
-      this.HouseShortTerm = house.filter(article => {
-        return article.UserType == 'Short-Term';
-      });
-      this.HouseLongTerm = house.filter(article => {
-        return article.UserType == 'Long-Term';
-      });
-      this.totalItemHL = this.LandLongTerm.length;
-      this.totalItemHS = this.LandShortTerm.length;
-    });
-    this.auth.getland().subscribe((land) => {
-      this.LandShortTerm = land.filter(article => {
-        return article.UserType == 'Short-Term';
-      });
-      this.LandLongTerm = land.filter(article => {
-        return article.UserType == 'Long-Term';
-      });
-      this.totalItemLL = this.LandLongTerm.length;
-      this.totalItemLS = this.LandShortTerm.length;
 
-    })
     // ส่วนของการรับค่า paramMap ที่ส่งกลับมาจากหน้า รายละเอียด
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
@@ -210,11 +191,26 @@ export class RecommendComponent implements OnInit {
       }
     )
     setTimeout(() => {
-      this.B = this.A[Math.floor(Math.random() * this.A.length)];
-      this.C = this.A[Math.floor(Math.random() * this.A.length)];
-      this.D = this.A[Math.floor(Math.random() * this.A.length)];
-      console.log(this.B)
-    }, 2000);
+
+      this.auth.getgroupAll().subscribe((group) => {
+
+        for (var i = 0; i < this.GroupMs.length; i++) {
+
+          this.temp = group.filter(article => {
+
+            return article.ID_Group == this.GroupMs[i].ID_Group
+          });
+          this.GDetails = this.GDetails.concat(this.temp);
+          //this.GDetails.push([this.temp ]);
+        }
+      },
+        err => {
+          console.error(err)
+
+        }
+      )
+    }, 1000);
+
 
 
 
@@ -235,38 +231,14 @@ export class RecommendComponent implements OnInit {
       }
     )
 
+
     setTimeout(() => {
       this.showSpinner = false
-      this.AllShortTrem = this.HouseShortTerm.concat(this.LandShortTerm);
-      this.AllLongTrem = this.HouseLongTerm.concat(this.LandLongTerm);
-      this.totalItemAS = this.AllShortTrem.length
-      this.totalItemAL = this.AllLongTrem.length
-      this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      console.log(this.AllShortTrem)
-      console.log(this.AllLongTrem)
-      this.auth.getgroupAll().subscribe((group) => {
-
-        for (var i = 0; i < this.GroupMs.length; i++) {
-
-          this.temp = group.filter(article => {
-
-            return article.ID_Group == this.GroupMs[i].ID_Group
-          });
-          this.GDetails = this.GDetails.concat(this.temp);
-          //this.GDetails.push([this.temp ]);
-        }
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 1000);
-    setTimeout(() => {
       this.groupAll = this.Groups.concat(this.GDetails);
     }, 2000);
     // this.spinnerload()
+
+
   }
   selectGroup(value) {
 
@@ -338,6 +310,82 @@ export class RecommendComponent implements OnInit {
   }
   API() {
     this.showSpinner = true
+    if (this.TypeREC == "001") {
+      this.auth.recommendH().subscribe((rec) => {
+        // กรณี resuponse success
+        if (rec) {
+          console.log(rec)
+    this.auth.gethouse().subscribe(house => {
+
+      this.HouseShortTerm = house.filter(article => {
+        return article.UserType == 'Short-Term';
+      });
+      this.HouseLongTerm = house.filter(article => {
+        return article.UserType == 'Long-Term';
+      });
+      this.totalItemHL = this.LandLongTerm.length;
+      this.totalItemHS = this.LandShortTerm.length;
+      console.log(this.totalItemHL)
+      console.log(this.totalItemHS)
+    });
+
+    setTimeout(() => {
+      this.showSpinner = false
+      this.AllShortTrem = this.HouseShortTerm;
+      this.AllLongTrem = this.HouseLongTerm;
+      this.totalItemAS = this.AllShortTrem.length
+      this.totalItemAL = this.AllLongTrem.length
+      this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      console.log(this.AllShortTrem)
+      console.log(this.AllLongTrem)
+    }, 5000);
+        }
+      },
+        err => {
+          console.error(err)
+          alert(JSON.stringify("ไม่สามารถทำการประมวนผลได้ กรุณาลองใหม่อีกครั้ง"))
+        }
+      )
+    } else if (this.TypeREC == "002") {
+      this.auth.recommendL().subscribe((rec) => {
+        // กรณี resuponse success
+        if (rec) {
+          console.log(rec)
+          this.auth.getland().subscribe((land) => {
+            this.LandShortTerm = land.filter(article => {
+              return article.UserType == 'Short-Term';
+            });
+            this.LandLongTerm = land.filter(article => {
+              return article.UserType == 'Long-Term';
+            });
+            this.totalItemLL = this.LandLongTerm.length;
+            this.totalItemLS = this.LandShortTerm.length;
+
+          })
+          setTimeout(() => {
+            this.showSpinner = false
+            this.AllShortTrem = this.LandShortTerm;
+            this.AllLongTrem = this.LandLongTerm;
+            this.totalItemAS = this.AllShortTrem.length
+            this.totalItemAL = this.AllLongTrem.length
+            this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+            this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+            console.log(this.AllShortTrem)
+            console.log(this.AllLongTrem)
+
+          }, 5000);
+        }
+      },
+        err => {
+          console.error(err)
+          alert(JSON.stringify("ไม่สามารถทำการประมวนผลได้ กรุณาลองใหม่อีกครั้ง"))
+
+        }
+      )
+    }
+
+    /*this.showSpinner = true
     this.AllShortTrem.length = 0
     this.AllLongTrem.length = 0
     this.totalItemAS = this.AllShortTrem.length
@@ -352,16 +400,21 @@ export class RecommendComponent implements OnInit {
       this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
 
       
-    }, 5000);
+    }, 5000);*/
 
   }
-  Recommend() {
-    this.B = this.A[Math.floor(Math.random() * this.A.length)];
-    this.C = this.A[Math.floor(Math.random() * this.A.length)];
-    this.D = this.A[Math.floor(Math.random() * this.A.length)];
+ 
+  selectRec(value) {
+    if (value != "000") {
+      this.TypeREC = value;
+      this.ClickButton = true
+
+    } else {
+      this.ClickButton = false
+    }
+
 
   }
-
   selectamphur(data) {
     this.searchAmphur = data.AMPHUR_NAME
     this.auth.getDistrict().subscribe((district) => {

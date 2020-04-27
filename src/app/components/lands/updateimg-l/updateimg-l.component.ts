@@ -3,10 +3,9 @@ import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadimageLand';
-//const uri = 'http://localhost:3001/users/uploadimageLand';
-//const uri = 'https://polar-fjord-21366.herokuapp.com/users/uploadimageLand';
-import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload,ImageID } from '../../../authentication.service';
+//const uri = 'http://localhost:3001/users/uploadImageL';
+const uri = 'https://backendppmb.herokuapp.com/users/uploadImageL';//HUROKU
+import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload, ImageID } from '../../../authentication.service';
 
 @Component({
   selector: 'app-updateimg-l',
@@ -22,16 +21,17 @@ export class UpdateimgLComponent implements OnInit {
   localImageUrl = [];
   attachmentList: any = [];
   galleryImages: any[];
-  uploader: FileUploader = new FileUploader({ url: uri 
+  uploader: FileUploader = new FileUploader({
+    url: uri
   });
-  credentials: ImageID = {
+  ImageID: ImageID = {
     ID_Lands: '',
     ID_Property: '',
     ID_Photo: '',
     URL: '',
   }
   ID_Lands: string
-  constructor(private http: HttpClient,private route: ActivatedRoute, public sanitizer: DomSanitizer,private auth: AuthenticationService,) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, public sanitizer: DomSanitizer, private auth: AuthenticationService, ) {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     }
@@ -42,84 +42,82 @@ export class UpdateimgLComponent implements OnInit {
     }
 
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('ID_lands' , this.ID_Lands);
-     };
+      form.append('ID_lands', this.ID_Lands);
+    };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
-      this.onFinish()
-    
-   if(response){
-    console.log("response"+JSON.stringify(response));
-  }
- }
+
+      if (response) {
+        console.log("response" + JSON.stringify(response));
+      }
+    }
   }
 
+  ngOnInit() {
+    //************* แบ่งหน้า &&  get id property *************
+    let params = this.route.snapshot.paramMap;
+    if (params.has('id')) {
+      this.postID = params.get('id');
+    }
+    this.ImageID.ID_Lands = this.postID
+    this.getLand()
+    this.getImage()
+  }
+  //************* get property *************
+  getLand() {
+    this.auth.GetLandDetail(this.ImageID).subscribe((result) => {
+      if (result) {
+        this.results = result
+      }
+    },
+      err => {
+        console.error(err)
+      })
+  }
+
+  //************* get Image *************
+  getImage() {
+    this.auth.getimgland(this.ImageID).subscribe((img) => {
+      if (img) {
+        this.imgbox = img
+        console.log(this.imgbox)
+      }
+    })
+  }
+
+  //************* remove Image local *************
   onRemoveFile(url) {
     this.localImageUrl.forEach((element, index) => {
+      console.log(index)
       if (element == url) {
+        console.log(index)
         this.localImageUrl.splice(index, 1);
         this.uploader.queue.splice(index, 1);
       }
     });
   }
-  onRemoveimage(value){
-    console.log(value.ID_Photo);
-    this.credentials.ID_Photo = value.ID_Photo
-    this.imagenew.forEach((element, index) => {
+
+  //************* remove Image database *************
+  onRemoveimage(value) {
+    this.ImageID.ID_Photo = value.ID_Photo
+    this.imgbox.forEach((element, index) => {
       if (element.ID_Photo == value.ID_Photo) {
-        this.imagenew.splice(index, 1);
+        this.imgbox.splice(index, 1);
       }
     });
-    this.auth.DeleteImageL(this.credentials).subscribe(() => {
-
-    },
-      err => {
-        console.error(err)
-  
-      }
-    )
   }
-  onFinish() {
-    this.auth.uploadftp().subscribe(() => {
-    },
-      err => {
-        console.error(err)
-      }
-    )
-
-  }
-  
-  ngOnInit() {
-    let params = this.route.snapshot.paramMap;
-    if (params.has('id')) {
-      this.postID = params.get('id');
+  DELETE() {
+    if (this.ImageID.ID_Photo != '') {
+      this.auth.DeleteImageL(this.ImageID).subscribe((result) => {
+        console.log(result)
+      },
+        err => {
+          console.error(err)
+        }
+      )
     }
-    this.ID_Lands = this.postID
-    this.credentials.ID_Lands = this.postID
-    this.auth.getAllland().subscribe((land) => {
-      this.details = land
-      // กรณี resuponse success
-      this.results = this.details.filter(article => {
-        return article.ID_Lands == this.postID;
-      });
-
-    },
-      err => {
-        console.error(err)
-      })
-
-    
-    this.auth.getimgland(this.credentials).subscribe((img) => {
-      this.imagenew = img
-      // กรณี resuponse success
-     
-
-    })
-    console.log(this.localImageUrl)
   }
-  onSave(){
-
-
+  refresh(): void {
+    window.location.reload();
   }
-
 }

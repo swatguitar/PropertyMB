@@ -4,6 +4,12 @@
 .font-color-gold{
   color: #C8BD76;
 }
+.font-color-brow{
+  color: #8d4503;
+}
+.font-color-browA{
+  color: hsl(29, 89%, 40%);
+}
 .font-color-green{
   color: rgb(14, 150, 20);
 }
@@ -16,11 +22,20 @@
 .font-color-condo{
   color: rgb(32, 170, 194);
 }
+.font-color-W{
+  color: rgb(255, 255, 255);
+}
 .font-color-prop{ 
-  color: rgb(162, 32, 194);
+  color: #9855a8;
+}
+.font-color-propA{ 
+  color: rgb(116, 24, 139);
 }
 .font-color-area{ 
   color: rgb(227, 238, 73);
+}
+.font-color-red{ 
+  color:#ff0000;
 }
 .font-color-overview{ 
   color: rgb(34, 132, 243);

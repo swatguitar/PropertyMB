@@ -4,7 +4,7 @@
   <div id="product-container" *ngFor="let lands of results">
 
     <div class="row">
-      <div class="col-md-7">
+      <div class="col-md-12">
         <br>
         <ul id="breadcrumb-nav" typeof="BreadcrumbList">
           <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
@@ -19,8 +19,8 @@
                 property="name">แก้ไขรูปภาพ</span></a>
             <meta property="position" content="3">
           </li>
-          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
-                property="name">{{lands.AnnounceTH}}</span></a>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" [routerLink]="['/lands',lands.ID_Lands]"><span
+                property="name" >{{lands.AnnounceTH}}</span></a>
             <meta property="position" content="4">
           </li>
         </ul>
@@ -49,13 +49,39 @@
                     </div>
                   </div><br />
                   <div class="row">
-                    <div class="col-sm-3" *ngFor='let url of imagenew'>
+                    <div class="col-sm-3" *ngFor='let url of imgbox'>
                       <button type="button" class="btn btn-outline-light">
-                        <button id="xButton" type="button" class="close"  data-dismiss="alert" aria-label="Close"  (click)="onRemoveimage(url)"
-                       >
+                        <button id="xButton" type="button" class="close" data-toggle="modal" data-target="#exampleModalCenter" aria-label="Close" (click)="onRemoveimage(url)">
                           <span aria-hidden="true">&times;</span>
                         </button>
-                        <img class="card-img-top" src="http://www.landvist.xyz/images/{{url.URL}}" width="200px"
+                        
+                        <!-- Modal -->
+                      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">ต้องการลบรูปภาพนี้ใช่หรือไม่?</h5>
+                          </div>
+                          <div class="modal-body">
+                            <div class=" row text-center">
+                              <div class="col-md-6">
+                                <button type="button" class="btn btn-success" data-dismiss="modal"
+                                  (click)="DELETE()">
+                                  <i class="fas fa-trash-alt"></i> ยืนยัน
+                                </button>
+                              </div>
+                              <div class="col-md-6">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="refresh()">
+                                  ยกเลิก
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                        <img class="card-img-top" src="{{url.URL}}" width="200px"
                           height="150px">
 
                       </button>

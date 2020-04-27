@@ -201,6 +201,9 @@ export class LandsupdateComponent implements OnInit {
   SelectID: ID = {
     ID_Lands: '',
     ID_Property: '',
+    ContactU: '',
+    ContactUo: '',
+    ContactUt: '',
     PPStatus: '',
   }
   credentials: TokenPayload = {

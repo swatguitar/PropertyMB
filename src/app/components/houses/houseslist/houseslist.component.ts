@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { AuthenticationService, UserDetails, PropertyDetails, locationsDetails, TokenPayload, GroupDetails } from "../../../authentication.service";
+import { AuthenticationService, UserDetails, PropertyDetails, locationsDetails, TokenPayload, GroupDetails, FilterProperty } from "../../../authentication.service";
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { FormGroup } from '@angular/forms';
 
@@ -35,8 +35,8 @@ export class HouseslistComponent implements OnInit {
   // search filter
   searchTerm: string;
   filterPrice: string;
-  searchPro: string;
-  searchPro1: any[];
+  searchPro: string = "";
+  searchPro1: string = "";
   searchAmphur: string;
   searchAmphur1: any[];
   searchDis: string;
@@ -52,13 +52,12 @@ export class HouseslistComponent implements OnInit {
   propertiesclone: any[];
   address: string;
   propertyType: string
-  selectfilter1: boolean = false
-  selectfilter2: boolean = false
-  selectfilter3: boolean = false
-  selectfilter4: boolean = false
-  selectfilter5: boolean = false
-  selectfilter6: boolean = false
-  selectfilter7: boolean = false
+
+  selectfilter1: any = ""
+  selectfilter2: any = ""
+  selectfilter3: any = ""
+  selectGroupAdd: string = ""
+
   province: locationsDetails[];
   Lprovince: any[];
   Ldistrict: any[];
@@ -77,7 +76,7 @@ export class HouseslistComponent implements OnInit {
   Groups: any;
   groupAll: any;
   temp: any;
-  credentials: GroupDetails = {
+  groupdetail: GroupDetails = {
     ID_Group: 0,
     ID_Item: 0,
     ID_Property: '',
@@ -90,12 +89,22 @@ export class HouseslistComponent implements OnInit {
     Img: '',
     Created: ''
   }
+  filterHouse: FilterProperty = {
+    PropertyType: '',
+    HomeCondition: '',
+    Deed:'',
+    PriceMax: null,
+    PriceMin: null,
+    LProvince: '',
+    LAmphur: '',
+    LDistrict: ''
+  }
   folder: any;
   @Output() filtering = new EventEmitter();
   constructor(private auth: AuthenticationService, private route: ActivatedRoute, private router: Router, private spinner: NgxSpinnerService) { }
 
 
-  // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
+  //************* แบ่งหน้า *************
   changePage(page: number) {
     this.activePage = page;
     this.router.navigate(["/houses"], { queryParams: { page: page } });
@@ -124,13 +133,14 @@ export class HouseslistComponent implements OnInit {
       }
     }
   }
-  // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
 
   ngOnInit() {
-    // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
+    this.GDetails = []
+    this.groupAll = []
     this.activePage = 1;
     this.nextPage = 2;
     this.pointEnd = this.perPage * this.activePage;
+    this.showSpinner = true
 
     this.totalPage = Math.ceil(this.totalItem / this.perPage);
     if (this.totalPage > this.useShowPage) {
@@ -153,14 +163,8 @@ export class HouseslistComponent implements OnInit {
         this.pagination();
       }
     });
-    // ส่วนจัดการเกี่ยวกับการแบ่งหน้า
 
-    // ส่วนของการดึงข้อมูล
-    this.auth.gethouse().subscribe(house => {
-      this.properties = house;
-      this.totalItem = this.properties.length
 
-    });
 
     // ส่วนของการรับค่า paramMap ที่ส่งกลับมาจากหน้า รายละเอียด
     let params = this.route.snapshot.paramMap;
@@ -169,120 +173,156 @@ export class HouseslistComponent implements OnInit {
       // string แปลงเป็นตัวแปร number
       this.highlightId = +params.get("id");
     }
-
-    //------------getlocation-------
-    this.auth.getProvine().subscribe((province) => {
-      this.province = province;
-      this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.GDetails = []
-    this.groupAll = []
-    this.auth.getgroup().subscribe((group) => {
-      this.Groups = group;
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.auth.getgroupM().subscribe((group) => {
-      this.GroupMs = group;
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-
-    setTimeout(() => {
-      this.auth.getgroupAll().subscribe((group) => {
-
-        for (var i = 0; i < this.GroupMs.length; i++) {
-
-          this.temp = group.filter(article => {
-
-            return article.ID_Group == this.GroupMs[i].ID_Group
-          });
-          this.GDetails = this.GDetails.concat(this.temp);
-          //this.GDetails.push([this.temp ]);
-        }
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 1000);
-    setTimeout(() => {
-      this.groupAll = this.Groups.concat(this.GDetails);
-    }, 2000);
-    this.spinnerload()
+    this.getHouse()
+    this.getGroup()
+    this.getLocation()
   }
+
+  //************* get house  by user id *************
+  getHouse() {
+    this.auth.gethouse().subscribe(house => {
+      if (house) {
+        this.filterProperty = house;
+        this.filterProperty.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+        this.totalItem = this.filterProperty.length
+        this.showSpinner = false
+      }
+    });
+  }
+
+  //************* get group *************
+  getGroup() {
+    this.auth.getgroup().subscribe((group) => {
+      if (group) {
+        this.Groups = group;
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+    this.auth.getgroupM().subscribe((groupM) => {
+      if (groupM) {
+        this.GroupMs = groupM;
+        this.concatGroup()
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  //************* concat own group and member group *************
+  concatGroup() {
+    this.auth.getgroupAll().subscribe((group) => {
+      for (var i = 0; i < this.GroupMs.length; i++) {
+        this.temp = group.filter(article => {
+          return article.ID_Group == this.GroupMs[i].ID_Group
+        });
+        this.GDetails = this.GDetails.concat(this.temp);
+        if (this.GDetails.length != 0) {
+          this.groupAll = this.Groups.concat(this.GDetails);
+        } else {
+          this.concatGroup()
+        }
+      }
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+  //************* Filter *************
+  Filter() {
+    this.showSpinner = true
+    this.filterProperty.length = null
+
+    this.auth.filterHouse(this.filterHouse).subscribe(house => {
+      if (house) {
+        this.filterProperty = house;
+        this.filterProperty.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+        this.totalItem = this.filterProperty.length
+        this.showSpinner = false
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  //************* get province *************
+  getLocation() {
+    this.auth.getProvine().subscribe((province) => {
+      if (province) {
+        this.province = province;
+        this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  //************* select group form UI *************
   selectGroup(value) {
-  
-    this.credentials.ID_Group = value
-    console.log(value)
-    this.auth.getgroupfolder(this.credentials).subscribe((group) => {
+    this.groupdetail.ID_Group = value
+    this.auth.getgroupfolder(this.groupdetail).subscribe((group) => {
       this.folder = group
-
-
     },
       err => {
         console.error(err)
       })
-
   }
+
+  //************* select folder of group form UI *************
   selectFolder(value) {
-
-    this.credentials.ID_Folder = value
-    console.log(value)
+    this.groupdetail.ID_Folder = value
   }
+
+  //************* select ID of property form UI *************
   SelectID(ID) {
-
-    this.credentials.ID_Property = ID
-    console.log(this.credentials.ID_Property)
+    this.groupdetail.ID_Property = ID
   }
+
+  //************* Add item to folder *************
   CreateList() {
-
-    if (this.credentials.ID_Property != "") {
-      console.log(this.credentials.ID_Property+"  &"+this.credentials.ID_Folder)
-      this.auth.CreateList(this.credentials).subscribe(
-        (error) => {
-          console.log(error.error);
-          if (!error.error) {
-            alert(JSON.stringify("เพิ่มอสังหาฯลงกลุ่มสำเร็จ"))
-            this.credentials.ID_Property = ''
-            this.credentials.ID_Folder = 0
-            this.credentials.ID_Group = 0
-          } else if (error.error) {
-            alert(JSON.stringify("มีอสังหานี้ในกลุ่มแล้ว"))
-            this.credentials.ID_Property = ''
-            this.credentials.ID_Folder = 0
-            this.credentials.ID_Group = 0
-          }
-
-        },
+    if (this.groupdetail.ID_Property != "" && this.groupdetail.ID_Folder != 0 && this.groupdetail.ID_Group != 0) {
+      this.auth.CreateList(this.groupdetail).subscribe((result) => {
+        console.log(result.error);
+        if (!result.error) {
+          alert(JSON.stringify(result))
+          this.resetCriteria()
+        } else if (result.error) {
+          alert(JSON.stringify(result.error))
+          this.resetCriteria()
+        }
+      },
         err => {
           console.error(err)
           alert(JSON.stringify(err))
         }
-
       )
+    } else {
+      alert(JSON.stringify("กรุณาเลือกกลุ่ม"))
     }
-
-
   }
 
-  selectprovince(data) {
-    this.selectfilter3 = true
-    this.searchPro = data.PROVINCE_NAME
+  //************* reset criteria *************
+  resetCriteria() {
+    this.selectGroupAdd = ""
+    this.groupdetail.ID_Property = ''
+    this.groupdetail.ID_Folder = 0
+    this.groupdetail.ID_Group = 0
+  }
+
+  //************* select province *************
+  selectProvince(data) {
+    this.filterHouse.LProvince = data.PROVINCE_NAME
     this.auth.getAmphur().subscribe((amphur) => {
-      // กรณี resuponse success
       this.amphur = amphur.filter(article => {
         return article.PROVINCE_ID == data.PROVINCE_ID;
       });
@@ -293,9 +333,9 @@ export class HouseslistComponent implements OnInit {
     )
   }
 
-  selectamphur(data) {
-    this.selectfilter4 = true
-    this.searchAmphur = data.AMPHUR_NAME
+  //************* select Amphur *************
+  selectAmphur(data) {
+    this.filterHouse.LAmphur = data.AMPHUR_NAME
     this.auth.getDistrict().subscribe((district) => {
       // กรณี resuponse success
       this.district = district.filter(article => {
@@ -308,834 +348,59 @@ export class HouseslistComponent implements OnInit {
     )
   }
 
-  selectdistrict(data) {
-    this.selectfilter5 = true
-    this.searchDis = data.DISTRICT_NAME
+  //************* select district *************
+  selectDistrict(data) {
+    this.filterHouse.LDistrict = data.DISTRICT_NAME
     this.auth.getZipcode().subscribe((zipcode) => {
       // กรณี resuponse success
       this.zipcode = zipcode.filter(article => {
         return article.DISTRICT_ID == data.DISTRICT_ID;
       });
-
     },
       err => {
         console.error(err)
       }
     )
-
   }
-  spinnerload() {
-    this.showSpinner = true
-    this.filterProperty.length = 0
-    setTimeout(() => {
-      this.showSpinner = false
-
-      this.Search()
-
-    }, 1000);
-
+//************* select Filter *************
+  selectPropertyType(type) {
+    this.filterHouse.PropertyType = type
   }
-
-  selectfilterOne(type) {
-    this.selectfilter1 = true
-    this.propertyType = type
+  selectSellPrice(value) {
+    if (value == "P1") {
+      this.filterHouse.PriceMax = 1000000
+      this.filterHouse.PriceMin = 500000
+    }
+    if (value == "P2") {
+      this.filterHouse.PriceMax = 5000000
+      this.filterHouse.PriceMin = 1100000
+    }
+    if (value == "P3") {
+      this.filterHouse.PriceMax = 1000000
+      this.filterHouse.PriceMin = 5100000
+    }
+    if (value == "P4") {
+      this.filterHouse.PriceMax = null
+      this.filterHouse.PriceMin = 10000000
+    }
   }
-  selectfiltertwo(value) {
-    this.selectfilter2 = true
-    this.FilterPrice = value
-  }
-  selectfilterthree() {
-    this.selectfilter3 = true
-  }
-  selectfiltersix(H) {
-    this.selectfilter6 = true
-    this.Homecondition = H
+  selectHomeCondition(value) {
+    this.filterHouse.HomeCondition = value
   }
 
-
-  Search() {
-    //-----------------------------------Defult--------------------------------
-    if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false) {
-      this.auth.gethouse().subscribe((house) => {
-
-        this.totalItem = house.length;
-        this.filterProperty = house;
-        this.filterProperty.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      })
-    }
-   else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    ///-------------1.2
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    ///-------------1.3
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else  if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    ///-------------1.4
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 10000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    ///-------------1.5
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      console.log("555")
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 500000 && this.newprice <= 1000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 1100000 && this.newprice <= 5000000))
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 5100000 && this.newprice <= 10000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (this.newprice >= 10000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    ///-------------1.6
-    else if (this.selectfilter1 == true && this.selectfilter2 == false && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //----------1.2.6
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P1') {
-      console.log("555")
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (x.HomeCondition == this.Homecondition) && (this.newprice >= 500000 && this.newprice <= 1000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (x.HomeCondition == this.Homecondition) && (this.newprice >= 1100000 && this.newprice <= 5000000))
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (x.HomeCondition == this.Homecondition) &&  (this.newprice >= 5100000 && this.newprice <= 10000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (x.HomeCondition == this.Homecondition) && (this.newprice >= 10000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //-----------2
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else  if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //-----------2.2
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      console.log("555")
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //-----------2.3
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 10000000) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //-----------2.4
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 500000 && this.newprice <= 1000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 1100000 && this.newprice <= 5000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 5100000 && this.newprice <= 10000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 10000000) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //-----------2.5
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 500000 && this.newprice <= 1000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else  if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 1100000 && this.newprice <= 5000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 5100000 && this.newprice <= 10000000))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 10000000) )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-     //-----------2.1
-     else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 500000 && this.newprice <= 1000000) && (x.PropertyType == this.propertyType) )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else  if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 1100000 && this.newprice <= 5000000) && (x.PropertyType == this.propertyType) )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 5100000 && this.newprice <= 10000000) && (x.PropertyType == this.propertyType) )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 10000000)&& (x.PropertyType == this.propertyType) )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //-----------3
-    else if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-     //-----------1.3
-     else if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == true) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis) && (x.HomeCondition === this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-     //-----------1.3.4.
-    else if (this.selectfilter1 == true && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == true && this.selectfilter6 == false) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur) && (x.LDistrict === this.searchDis))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-     //-----------1.3.4.5
-    else if (this.selectfilter1 == true && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == true && this.selectfilter5 == false && this.selectfilter6 == false) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == true && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == false) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.PropertyType == this.propertyType) && (x.LProvince == this.searchPro))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //-----------6
-    else  if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.HomeCondition == this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    ///-------6.1
-    else  if (this.selectfilter1 == true && this.selectfilter2 == false && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.HomeCondition == this.Homecondition) && (x.PropertyType == this.propertyType) )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //------6.2
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P1') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 500000 && this.newprice <= 1000000) && (x.HomeCondition == this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P2') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 1100000 && this.newprice <= 5000000) && (x.HomeCondition == this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P3') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 5100000 && this.newprice <= 10000000) && (x.HomeCondition == this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true && this.FilterPrice == 'P4') {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((this.newprice >= 10000000) && (x.HomeCondition == this.Homecondition))
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //........6.3
-    else if (this.selectfilter1 == false && this.selectfilter2 == true && this.selectfilter3 == false && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.HomeCondition == this.Homecondition) && (x.LProvince == this.searchPro)  )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-    //--------6.3.4
-    else if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.HomeCondition == this.Homecondition) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur)  )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-     //--------6.3.4.5
-     else if (this.selectfilter1 == false && this.selectfilter2 == false && this.selectfilter3 == true && this.selectfilter4 == false && this.selectfilter5 == false && this.selectfilter6 == true) {
-      this.filterProperty = this.properties.filter(x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return ((x.HomeCondition == this.Homecondition) && (x.LProvince == this.searchPro) && (x.LAmphur === this.searchAmphur)&& (x.LDistrict === this.searchDis)  )
-
-      });
-      this.totalItem = this.filterProperty.length;
-    }
-
-    console.log("1" + this.selectfilter1)
-    console.log("2" + this.selectfilter2)
-    console.log("3" + this.selectfilter3)
-    console.log("4" + this.selectfilter4)
-    console.log("5" + this.selectfilter5)
-    console.log("6" + this.selectfilter6)
-    console.log("A" + this.FilterPrice)
-
-  }
+//************* reset Filter *************
   Reset() {
-    this.selectfilter1 = false
-    this.selectfilter2 = false
-    this.selectfilter3 = false
-    this.selectfilter4 = false
-    this.selectfilter5 = false
-    this.selectfilter6 = false
-    this.searchPro = ''
-    this.searchAmphur = ''
-    this.searchDis = ''
-    this.FilterPrice = ''
-    this.propertyType = ''
-    this.spinnerload()
+    this.selectfilter1 = ""
+    this.selectfilter2 = ""
+    this.selectfilter3 = ""
+    this.filterHouse.PropertyType = ''
+    this.filterHouse.HomeCondition = ''
+    this.filterHouse.LAmphur = ''
+    this.filterHouse.LDistrict = ''
+    this.filterHouse.LProvince = ''
+    this.filterHouse.PriceMax = null
+    this.filterHouse.PriceMin = null
+    this.getHouse()
   }
-  filterChange() {
-    this.filterProperty = this.properties.filter(
-      x =>
-        (x.PropertyType === this.propertyType && x.HomeCondition === this.drop4) ||
-        (x.PropertyType === "คอนโด" && this.propertyType == "คอนโด") ||
-        (x.PropertyType === "อาคารพาณิชย์" && this.propertyType == "อาคารพาณิชย์") ||
-        (x.HomeCondition === "ใหม่" && this.drop4 == "ใหม่") ||
-        (x.HomeCondition === "มือสอง" && this.drop4 == "มือสอง")
-    );
-    if ((this.filterProperty.length == 0 && this.propertyType == "บ้าน") || (this.filterProperty.length == 0 && this.propertyType == "คอนโด") || (this.filterProperty.length == 0 && this.propertyType == "อาคารพาณิชย์") ||
-      (this.filterProperty.length == 0 && this.drop4 == "ใหม่") || (this.filterProperty.length == 0 && this.drop4 == "มือสอง")) {
-      this.propertiesclone.length = 0
-    } else if ((this.filterProperty.length == 0 && this.propertyType == " ") || (this.filterProperty.length == 0 && this.propertyType == " ") || (this.filterProperty.length == 0 && this.propertyType == "") ||
-      (this.filterProperty.length == 0 && this.drop4 == " ") || (this.filterProperty.length == 0 && this.drop4 == " ")) {
-      this.auth.gethouse().subscribe((house) => {
-
-        this.totalItem = house.length;
-        this.propertiesclone = house;
-        this.propertiesclone.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      })
-    }
-    this.totalItem = this.filterProperty.length;
-  }
-
-  filterprice() {
-    this.filterProperty = this.properties.filter(
-      x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return (this.newprice >= 500000 && this.newprice <= 1000000 && this.filter.priceA) || (this.newprice >= 1100000 && this.newprice <= 5000000 && this.filter.priceB) || (this.newprice >= 5100000 && this.newprice <= 10000000 && this.filter.priceC) || (this.newprice >= 10000000 && this.filter.priceD)
-          || (this.newCprice >= 500000 && this.newCprice <= 1000000 && this.filter.priceE) || (this.newCprice >= 1100000 && this.newCprice <= 5000000 && this.filter.priceF) || (this.newCprice >= 5100000 && this.newCprice <= 10000000 && this.filter.priceG) || (this.newCprice >= 10000000 && this.filter.priceH)
-          || (this.newMprice >= 500000 && this.newMprice <= 1000000 && this.filter.priceI) || (this.newMprice >= 1100000 && this.newMprice <= 5000000 && this.filter.priceJ) || (this.newMprice >= 5100000 && this.newMprice <= 10000000 && this.filter.priceK) || (this.newMprice >= 10000000 && this.filter.priceL)
-      });
-    if ((this.filterProperty.length == 0 && this.filter.priceA) || (this.filterProperty.length == 0 && this.filter.priceB) || (this.filterProperty.length == 0 && this.filter.priceC) || (this.filterProperty.length == 0 && this.filter.priceD) || (this.filterProperty.length == 0 && this.filter.priceE) ||
-      (this.filterProperty.length == 0 && this.filter.priceF) || (this.filterProperty.length == 0 && this.filter.priceG) || (this.filterProperty.length == 0 && this.filter.priceH) || (this.filterProperty.length == 0 && this.filter.priceI) || (this.filterProperty.length == 0 && this.filter.priceJ) || (this.filterProperty.length == 0 && this.filter.priceK) || (this.filterProperty.length == 0 && this.filter.priceL)) {
-      this.propertiesclone.length = 0
-    } else if ((this.filterProperty.length == 0 && this.filter.priceA == false) || (this.filterProperty.length == 0 && this.filter.priceB == false) || (this.filterProperty.length == 0 && this.filter.priceC == false) || (this.filterProperty.length == 0 && this.filter.priceD == false) || (this.filterProperty.length == 0 && this.filter.priceE == false) ||
-      (this.filterProperty.length == 0 && this.filter.priceF == false) || (this.filterProperty.length == 0 && this.filter.priceG == false) || (this.filterProperty.length == 0 && this.filter.priceH == false) || (this.filterProperty.length == 0 && this.filter.priceI == false) || (this.filterProperty.length == 0 && this.filter.priceJ == false) || (this.filterProperty.length == 0 && this.filter.priceK == false) || (this.filterProperty.length == 0 && this.filter.priceL == false)) {
-      this.auth.gethouse().subscribe((house) => {
-
-        this.totalItem = house.length;
-        this.propertiesclone = house;
-        this.propertiesclone.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      })
-      this.filterProperty.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-    }
-
-    this.totalItem = this.filterProperty.length;
-
-  }
-  filterMaxMin() {
-    this.filterProperty = this.properties.filter(
-      x => {
-        this.newprice = parseInt(x.SellPrice)
-        this.newCprice = parseInt(x.CostestimateB)
-        this.newMprice = parseInt(x.MarketPrice)
-        return (this.newprice >= this.pricemin && this.newprice <= this.pricemax)
-
-      });
-    if (this.filterProperty.length == 0) {
-      this.propertiesclone.length = 0
-    }
-
-  }
-
 
 }

@@ -14,22 +14,63 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./house-pdf.component.css']
 })
 export class HousePdfComponent implements OnInit {
-  filename: any;
+ public downloadPDF() {
+    console.log("dddddd")
+    var node = document.getElementById('parentdiv');
+
+    var img;
+    var filename;
+    var newImage;
 
 
-  htmltoPDF() {
-    // parentdiv is the html element which has to be converted to PDF
-    html2canvas(document.querySelector("#parentdiv")).then(canvas => {
+    domtoimage.toPng(node, { bgcolor: '#fff' })
 
-      var pdf = new jsPDF('p', 'pt', [canvas.width, canvas.height]);
 
-      var imgData = canvas.toDataURL("image/jpeg", 1.0);
-      pdf.addImage(imgData, 0, 0, canvas.width, canvas.height);
-      pdf.save('converteddoc.pdf');
+      .then(function (dataUrl) {
 
-    });
+        img = new Image();
+        img.src = dataUrl;
+        newImage = img.src;
+
+        img.onload = function () {
+
+          var pdfWidth = img.width;
+          var pdfHeight = img.height;
+
+          // FileSaver.saveAs(dataUrl, 'my-pdfimage.png'); // Save as Image
+
+          var doc;
+
+          if (pdfWidth > pdfHeight) {
+            doc = new jsPDF('l', 'px', [pdfWidth, pdfHeight]);
+          }
+          else {
+            doc = new jsPDF('p', 'px', [pdfWidth, pdfHeight]);
+          }
+        
+
+
+    var width = doc.internal.pageSize.getWidth();
+    var height = doc.internal.pageSize.getHeight();
+
+
+    doc.addImage(newImage, 'PNG', 10, 10, width, height);
+    filename = 'PropertyMB_PDF' + '.pdf';
+    doc.save(filename);
+
+  };
+
+
+})
+      .catch (function (error) {
+
+  // Error Handling
+
+});
 
   }
+  filename: any;
+
 
 
 
@@ -68,6 +109,9 @@ export class HousePdfComponent implements OnInit {
   SelectID: ID = {
     ID_Lands: '',
     ID_Property: '',
+    ContactU: '',
+    ContactUo: '',
+    ContactUt: '',
     PPStatus: '',
   }
   ImageID: ImageID = {
@@ -258,60 +302,40 @@ export class HousePdfComponent implements OnInit {
     console.log(imgMap)
   }
 
-  downloadPDF() {
-    console.log("dddddd")
-    var node = document.getElementById('parentdiv');
-
-    var img;
-    var filename;
-    var newImage;
 
 
-    domtoimage.toPng(node, { bgcolor: '#fff' })
+htmltoPDF()
+{
+    // parentdiv is the html element which has to be converted to PDF
+    html2canvas(document.querySelector("parentdiv")).then(canvas => {
+
+      var pdf = new jsPDF('p', 'pt', [canvas.width, canvas.height]);
+
+      var imgData  = canvas.toDataURL("image/jpeg", 1.0);
+      pdf.addImage(imgData,0,0,canvas.width, canvas.height);
+      pdf.save('converteddoc.pdf');
+
+  });
+}
+  captureScreen()  
+  {  
+    var data = document.getElementById('parentdiv');  
+    html2canvas(data).then(canvas => {  
+      // Few necessary setting options  
+      var imgWidth = 208;   
+      var pageHeight = 295;    
+      var imgHeight = canvas.height * imgWidth / canvas.width;  
+      var heightLeft = imgHeight;  
+  
+      const contentDataURL = canvas.toDataURL('image/png')  
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;  
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
+      pdf.save('MYPdf.pdf'); // Generated PDF   
+    });  
+  }  
 
 
-      .then(function (dataUrl) {
-
-        img = new Image();
-        img.src = dataUrl;
-        newImage = img.src;
-
-        img.onload = function () {
-
-          var pdfWidth = img.width;
-          var pdfHeight = img.height;
-
-          // FileSaver.saveAs(dataUrl, 'my-pdfimage.png'); // Save as Image
-
-          var doc;
-
-          if (pdfWidth > pdfHeight) {
-            doc = new jsPDF('l', 'px', [pdfWidth, pdfHeight]);
-          }
-          else {
-            doc = new jsPDF('p', 'px', [pdfWidth, pdfHeight]);
-          }
-        
-
-
-    var width = doc.internal.pageSize.getWidth();
-    var height = doc.internal.pageSize.getHeight();
-
-
-    doc.addImage(newImage, 'PNG', 10, 10, width, height);
-    filename = 'PropertyMB_PDF' + '.pdf';
-    doc.save(filename);
-
-  };
-
-
-})
-      .catch (function (error) {
-
-  // Error Handling
-
-});
-
-  }
+ 
 
 }

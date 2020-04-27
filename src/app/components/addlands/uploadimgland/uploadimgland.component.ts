@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
-const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadimageLand';
-//const uri = 'http://localhost:3001/users/uploadimageLand';
+//const uri = 'http://localhost:3001/users/uploadImageL';
+const uri = 'https://backendppmb.herokuapp.com/users/uploadImageL';//HUROKU
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../../authentication.service';
 
 @Component({
@@ -33,34 +33,22 @@ export class UploadimglandComponent implements OnInit {
      };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
-      this.onFinish()
    if(response){
     console.log("response"+JSON.stringify(response));
   }
  }
   }
-
-  onRemoveFile(url) {
-    this.localImageUrl.forEach((element, index) => {
-      if (element == url) {
-        this.localImageUrl.splice(index, 1);
-        this.uploader.queue.splice(index, 1);
-      }
-    });
-  }
-  onFinish() {
-    this.auth.uploadftp().subscribe(() => {
-    },
-      err => {
-        console.error(err)
-      }
-    )
-
-  }
   ngOnInit() {
   }
-  onSave(){
-
-
-  }
+    //************* remove Image local *************
+    onRemoveFile(url) {
+      this.localImageUrl.forEach((element, index) => {
+        console.log(index)
+        if (element == url) {
+          console.log(index)
+          this.localImageUrl.splice(index, 1);
+          this.uploader.queue.splice(index, 1);
+        }
+      });
+    }
 }

@@ -39,14 +39,18 @@
                     <div class="row">
                       <div class="col-md-4">
                         <div>
-                          <label>ประเภททีดิน:<i class="reqiureinput">*</i></label>
+                          <label>ประเภทที่ดิน :<i class="reqiureinput">*</i></label>
                         </div>
                       </div>
                       <div class="col-md-8 ">
                         <div>
                           <select style="border-radius: 30px 30px 30px 30px;" id="ColorType" class="form-control"
-                            formControlName="ColorType" [(ngModel)]="credentials.ColorType"
+                            formControlName="ColorType" [(ngModel)]="credentials.ColorType" name="ColorType"
                             [ngClass]="{ 'is-invalid': submitted && f.ColorType.errors }">
+                            <option style="color:rgb(174, 180, 80)"
+                            value="" selected>
+                            กรุณาเลือก ประเภทที่ดิน
+                          </option>
                             <option style="color:rgb(174, 180, 80)"
                               value="พื้นที่สีเหลือง – ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย" selected>
                               พื้นที่สีเหลือง – ที่ดินประเภทที่อยู่อาศัยหนาแน่นน้อย
@@ -95,7 +99,7 @@
                     <div class="row">
                       <div class="col-md-4">
                         <div>
-                          <label>หัวข้อประกาศ:<i class="reqiureinput">*</i></label>
+                          <label>หัวข้อประกาศ :<i class="reqiureinput">*</i></label>
                         </div>
                       </div>
                       <div class="col-md-8 ">
@@ -197,8 +201,6 @@
                               </div>
                             </div>
                           </div>
-
-
                         </div>
                       </div>
                     </div>
@@ -294,7 +296,7 @@
                       <div class="row">
                         <div class="col-md-4">
                           <div>
-                            <label>รหัสทรัพย์สิน:</label>
+                            <label>รหัสทรัพย์สิน :</label>
                           </div>
                         </div>
                         <div class="col-md-4 ">
@@ -310,7 +312,30 @@
                       <div class="row">
                         <div class="col-md-4">
                           <div>
-                            <label>เลขโฉนด:</label>
+                            <label>ประเภทโฉนด :<i class="reqiureinput">*</i></label>
+                          </div>
+                        </div>
+                        <div class="col-md-3 ">
+                          <select style="border-radius: 30px 30px 30px 30px;" id="Deed" class="form-control"
+                            formControlName="Deed" [(ngModel)]="credentials.Deed" name="Deed"
+                            [ngClass]="{ 'is-invalid': submitted && f.Deed.errors }">
+                            <option value="">กรุณาเลือก ประเภทโฉนด</option>
+                            <option value="น.ส.4จ.">น.ส.4จ.</option>
+                            <option value="น.ส.3">น.ส.3</option>
+                            <option value="น.ส.3ก.">น.ส.3ก.</option>
+                            <option value="น.ส.2">น.ส.2</option>
+                            <option value="ส.ค.1">ส.ค.1</option>
+                          </select>
+                          <div *ngIf="submitted && f.Deed.errors" class="invalid-feedback">
+                            <div *ngIf="f.Deed.errors.required">กรุณากรอกข้อมูล</div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div>
+                            <label>เลขโฉนด :</label>
                           </div>
                         </div>
                         <div class="col-md-4 ">
@@ -330,40 +355,17 @@
                       <div class="row">
                         <div class="col-md-4">
                           <div>
-                            <label>โฉนด :<i class="reqiureinput">*</i></label>
+                            <label>สถานะทรัพย์สิน :<i class="reqiureinput">*</i></label>
                           </div>
                         </div>
-                        <div class="col-md-2 ">
-                          <select style="border-radius: 30px 30px 30px 30px;" id="Deed" class="form-control"
-                            formControlName="Deed" [(ngModel)]="credentials.Deed"
-                            [ngClass]="{ 'is-invalid': submitted && f.Deed.errors }">
+                        <div class="col-md-3 ">
 
-                            <option value="น.ส.4จ.">น.ส.4จ.</option>
-                            <option value="น.ส.3">น.ส.3</option>
-                            <option value="น.ส.3ก.">น.ส.3ก.</option>
-                            <option value="น.ส.2">น.ส.2</option>
-                            <option value="ส.ค.1">ส.ค.1</option>
-                          </select>
-                          <div *ngIf="submitted && f.Deed.errors" class="invalid-feedback">
-                            <div *ngIf="f.Deed.errors.required">กรุณากรอกข้อมูล</div>
-                          </div>
-                        </div>
-                      </div>
-                      <br>
-                      <div class="row">
-                        <div class="col-md-4">
-                          <div>
-                            <label>สถานะทรัพย์สิน :</label>
-                          </div>
-                        </div>
-                        <div class="col-md-2 ">
-
-                          <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
+                          <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" name="AsseStatus"
                             placeholder="สถานะทรัพย์สิน" class="form-control" formControlName="AsseStatus"
                             [ngClass]="{ 'is-invalid': submitted && f.AsseStatus.errors }"
                             [(ngModel)]="credentials.AsseStatus">
-                            <option value="ว่าง" selected>
-                              ว่าง</option>
+                            <option value="" selected>
+                              กรุณาเลือก สถานะทรัพย์สิน</option>
                             <option value="จำนอง" selected>
                               จำนอง</option>
                             <option value="ขายฝาก" selected>
@@ -386,7 +388,7 @@
                         <div class="col-md-2 ">
 
                           <input style="border-radius: 30px 30px 30px 30px;" type="text" id="LandAge"
-                            class="form-control" formControlName="LandAge" placeholder="(ปี)"
+                            class="form-control" formControlName="LandAge" placeholder="(ปี)" maxlength="4"
                             [(ngModel)]="credentials.LandAge">
 
                         </div>
@@ -461,9 +463,9 @@
                           <div class="col-md-6">
                             <br>
                             <label>ความกว้างถนน</label>
-                            <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control"
+                            <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control" name="RoadWide"
                               formControlName="RoadWide" [(ngModel)]="credentials.RoadWide">
-                              <option>- ความกว้างถนน -</option>
+                              <option value="">ความกว้างถนน</option>
                               <option value="ซอยแคบ">ซอยแคบ</option>
                               <option value="1 เมตร">1 เมตร</option>
                               <option value="2 เมตร">2 เมตร</option>
@@ -573,7 +575,7 @@
                             <div class="row">
                               <div class="col-md-4">
                                 <div>
-                                  <label>ที่อยู่:<i class="reqiureinput">*</i></label>
+                                  <label>ที่อยู่ :<i class="reqiureinput">*</i></label>
                                 </div>
                               </div>
                               <div class="col-md-8 ">
@@ -595,14 +597,14 @@
                               <div class="col-md-8">
                                 <div class="row">
                                   <div class="col-sm-6">
-                                    จังหวัด:<i class="reqiureinput">*</i>
+                                  <label>จังหวัด :<i class="reqiureinput">*</i></label>
                                   </div>
                                   <div class="col-sm-4">
                                     <select style="border-radius: 30px 30px 30px 30px;" id="province"
                                       class="form-control" name="Lprovince" formControlName="Lprovince"
                                       [ngClass]="{ 'is-invalid': submitted && f.Lprovince.errors }"
                                       [(ngModel)]="Lprovince" (ngModelChange)="selectprovince($event)">
-                                      <option>- จังหวัด -</option>
+                                      <option value="">กรุณาเลือก จังหวัด</option>
                                       <option *ngFor="let p of province" [ngValue]="p">
                                         {{p.PROVINCE_NAME}}
                                       </option>
@@ -619,14 +621,14 @@
                               <div class="col-md-4">
                                 <div class="row">
                                   <div class="col-sm-4">
-                                    อำเภอ:<i class="reqiureinput">*</i>
+                                  <label>อำเภอ :<i class="reqiureinput">*</i></label>
                                   </div>
                                   <div class="col-sm-8">
                                     <select style="border-radius: 30px 30px 30px 30px;" id="amphur" class="form-control"
                                       name="Lamphur" formControlName="Lamphur"
                                       [ngClass]="{ 'is-invalid': submitted && f.Lamphur.errors }" [(ngModel)]="Lamphur"
                                       (ngModelChange)="selectamphur($event)">
-                                      <option>- อำเภอ -</option>
+                                      <option value="">กรุณาเลือก อำเภอ</option>
                                       <option *ngFor="let a of amphur" [ngValue]="a">
                                         {{a.AMPHUR_NAME}}</option>
                                     </select>
@@ -643,14 +645,14 @@
                               <div class="col-md-8">
                                 <div class="row">
                                   <div class="col-sm-6">
-                                    ตำบล:<i class="reqiureinput">*</i>
+                                  <label>ตำบล :<i class="reqiureinput">*</i></label>
                                   </div>
                                   <div class="col-sm-4">
                                     <select style="border-radius: 30px 30px 30px 30px;" id="district"
                                       class="form-control" name="Ldistrict" formControlName="Ldistrict"
                                       [ngClass]="{ 'is-invalid': submitted && f.Ldistrict.errors }"
                                       [(ngModel)]="Ldistrict" (ngModelChange)="selectdistrict($event)">
-                                      <option>- ตำบล -</option>
+                                      <option value="">กรุณาเลือก ตำบล</option>
                                       <option *ngFor="let d of district" [ngValue]="d">
                                         {{d.DISTRICT_NAME}}
                                       </option>
@@ -664,10 +666,10 @@
                               </div>
                               <div class="col-md-4">
                                 <div class="row">
-                                  <div class="col-sm-4">
-                                    รหัสไปรษณี:
+                                  <div class="col-sm-5">
+                                  <label>รหัสไปรษณีย์ :</label>
                                   </div>
-                                  <div class="col-sm-8" *ngFor="let pp of zipcode">
+                                  <div class="col-sm-7" *ngFor="let pp of zipcode">
                                     <input class="form-control" type="text" style="border-radius: 30px 30px 30px 30px;"
                                       value="{{pp.ZIPCODE}}" readonly>
                                   </div>
@@ -714,7 +716,7 @@
                         <form [formGroup]="EditContactForm">
                           <div class="form-row">
                             <div class="form-group col-md-4">
-                              <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                              <label for="inputEmail4">ชื่อผู้ติดต่อ<i class="reqiureinput">*</i></label>
                               <div class="ng-autocomplete">
                                 <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name1"
                                   [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
@@ -737,11 +739,11 @@
                               </div>
                             </div>
                             <div class="form-group col-md-4">
-                              <label for="inputPassword4">สถานะ</label>
+                              <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
                               <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactS"
                                 formControlName="ContactS" [(ngModel)]="credentials.ContactS"
                                 [ngClass]="{ 'is-invalid': submitted && E.ContactS.errors }">
-                                <option value="0">เลือกผู้ติดต่อ</option>
+                                <option value="">กรุณาเลือก สถานะผู้ติดต่อ</option>
                                 <option value="เจ้าของ">เจ้าของ</option>
                                 <option value="นายหน้า">นายหน้า</option>
                               </select>
@@ -796,7 +798,7 @@
                         <form [formGroup]="EditContact2Form">
                           <div class="form-row">
                             <div class="form-group col-md-4">
-                              <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                              <label for="inputEmail4">ชื่อผู้ติดต่อ<i class="reqiureinput">*</i></label>
                               <div class="ng-autocomplete">
                                 <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name2"
                                   [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
@@ -819,11 +821,11 @@
                               </div>
                             </div>
                             <div class="form-group col-md-4">
-                              <label for="inputPassword4">สถานะ</label>
+                              <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
                               <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSt"
                                 formControlName="ContactSt" [(ngModel)]="credentials.ContactSt"
                                 [ngClass]="{ 'is-invalid': submitted && Et.ContactSt.errors }">
-                                <option value="0">เลือกผู้ติดต่อ</option>
+                                <option value="">กรุณาเลือก สถานะผู้ติดต่อ</option>
                                 <option value="เจ้าของ">เจ้าของ</option>
                                 <option value="นายหน้า">นายหน้า</option>
                               </select>
@@ -873,7 +875,7 @@
 
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                   <div class="container jumbotron">
-                    <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
+                    <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3<i class="reqiureinput">*</i></h4>
                     <div class="container">
                       <form [formGroup]="EditContact3Form">
                         <div class="form-row">
@@ -901,11 +903,11 @@
                             </div>
                           </div>
                           <div class="form-group col-md-4">
-                            <label for="inputPassword4">สถานะ</label>
+                            <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
                             <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSo"
                               formControlName="ContactSo" [(ngModel)]="credentials.ContactSo"
                               [ngClass]="{ 'is-invalid': submitted && Eo.ContactSo.errors }">
-                              <option value="0">เลือกผู้ติดต่อ</option>
+                              <option value="">กรุณาเลือก สถานะผู้ติดต่อ</option>
                               <option value="เจ้าของ">เจ้าของ</option>
                               <option value="นายหน้า">นายหน้า</option>
                             </select>
@@ -981,7 +983,7 @@
           <div class="container">
             <div class="float-left"><button type="button" class="btn btn-secondary" (click)="onBack()"
                 awPreviousStep>ย้อนกลับ</button></div>
-            <div class="float-right"><button type="button" class="btn btn-primary " (click)="onFinish()"
+            <div class="float-right"><button type="button" class="btn btn-primary " 
                 awNextStep>ถัดไป</button></div>
           </div>
         </div>

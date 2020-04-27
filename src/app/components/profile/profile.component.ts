@@ -55,12 +55,7 @@ export class ProfileComponent  {
   }
   
   onFinish() {
-    this.auth.uploadftp().subscribe(() => {
-    },
-      err => {
-        console.error(err)
-      }
-    )
+
 
   }
 

@@ -26,11 +26,23 @@ export interface UserDetails {
   iat: number
 }
 export interface ImageID {
-  ID_Property:string
-  ID_Lands:string
-  ID_Photo:string
-  URL:string
+  ID_Property: string
+  ID_Lands: string
+  ID_Photo: string
+  URL: string
 }
+
+export interface FilterProperty {
+  PropertyType: string
+  HomeCondition: string
+  Deed: string
+  PriceMax: number
+  PriceMin: number
+  LProvince: string
+  LAmphur: string
+  LDistrict: string
+}
+
 
 export interface locationsDetails {
   PROVINCE_ID: number
@@ -53,7 +65,7 @@ export interface GroupDetails {
   ID_Property: string
   ID_member: number
   ID_User: number
-  Email:string
+  Email: string
   ID_Folder: number
   NameG: string
   NameF: string
@@ -61,14 +73,14 @@ export interface GroupDetails {
   Created: string
 }
 export interface PropertyH {
-  ID_Property:string
-  PropertyType:string
-  AnnounceTH:string
-  CodeDeed:string
-  SellPrice:string
-  Costestimate:string
-  CostestimateB:string
-  MarketPrice:string
+  ID_Property: string
+  PropertyType: string
+  AnnounceTH: string
+  CodeDeed: string
+  SellPrice: string
+  Costestimate: string
+  CostestimateB: string
+  MarketPrice: string
   BathRoom: string
   BedRoom: string
   CarPark: string
@@ -104,56 +116,56 @@ export interface PropertyH {
   ContactSo: string
   ContactUt: string
   ContactSt: string
-  Blind:number
-  Neareducation:number
-  Cenmarket:number
-  Market:number
-  River:number
-  Mainroad:number
-  Insoi:number
-  Letc:string
-  airconditioner:number
-  afan:number
-  AirPurifier:number
-  Waterheater:number
-  WIFI:number
-  TV:number
-  refrigerator:number
-  microwave:number
-  gasstove:number
-  wardrobe:number
-  TCset:number
-  sofa:number
-  bed:number
-  shelves:number
-  CCTV:number
-  Securityguard:number
-  pool:number
-  Fitness:number
-  Publicarea:number
-  ShuttleBus:number
-  WVmachine:number
-  CWmachine:number
-  Elevator:number
-  Lobby:number
-  ATM:number
-  BeautySalon:number
-  Balcony:number
-  EventR:number
-  MeetingR:number
-  LivingR:number
-  Hairsalon:number
-  Laundry:number
-  Store:number
-  Supermarket:number
-  CStore:number
-  MFee:string
-  Kitchen:number
-  LandAge:string
-  Created:string
-  PPStatus:string
-  ImageEX:string
-  Owner:string
+  Blind: number
+  Neareducation: number
+  Cenmarket: number
+  Market: number
+  River: number
+  Mainroad: number
+  Insoi: number
+  Letc: string
+  airconditioner: number
+  afan: number
+  AirPurifier: number
+  Waterheater: number
+  WIFI: number
+  TV: number
+  refrigerator: number
+  microwave: number
+  gasstove: number
+  wardrobe: number
+  TCset: number
+  sofa: number
+  bed: number
+  shelves: number
+  CCTV: number
+  Securityguard: number
+  pool: number
+  Fitness: number
+  Publicarea: number
+  ShuttleBus: number
+  WVmachine: number
+  CWmachine: number
+  Elevator: number
+  Lobby: number
+  ATM: number
+  BeautySalon: number
+  Balcony: number
+  EventR: number
+  MeetingR: number
+  LivingR: number
+  Hairsalon: number
+  Laundry: number
+  Store: number
+  Supermarket: number
+  CStore: number
+  MFee: string
+  Kitchen: number
+  LandAge: string
+  Created: string
+  PPStatus: string
+  ImageEX: string
+  Owner: string
 
 
 }
@@ -271,7 +283,7 @@ export interface PropertyDetails {
   ContactEmail: string
   ContactLine: string
   ContactPhone: string
-  Created:string
+  Created: string
 
 }
 
@@ -283,6 +295,9 @@ export interface ID {
   ID_Lands: string
   ID_Property: string
   PPStatus: string
+  ContactU: string
+  ContactUo: string
+  ContactUt: string
 }
 
 
@@ -400,7 +415,7 @@ export interface TokenPayload {
   Balcony: number
   MeetingR: number
   EventR: number
-  Kitchen:number
+  Kitchen: number
   LivingR: number
   Supermarket: number
   CStore: number
@@ -420,15 +435,14 @@ export interface TokenPayload {
   ContactEmail: string
   ContactLine: string
   ContactPhone: string
-  
 
- 
+
+
 }
 
 @Injectable()
 export class AuthenticationService {
-  //ROOT_URL = "https://backend2-259314.appspot.com";
-  ROOT_URL = "https://upbeat-repeater-264507.appspot.com";
+  ROOT_URL = "https://backendppmb.herokuapp.com";//HUROKU
   //ROOT_URL = "http://localhost:3001";
   private token: string
 
@@ -451,7 +465,7 @@ export class AuthenticationService {
     let payload
     if (token) {
       payload = token.split('.')[1]
-      payload = window.atob(payload.replace (/-/g, '+').replace(/_/g, '/'))
+      payload = window.atob(payload.replace(/-/g, '+').replace(/_/g, '/'))
       return JSON.parse(payload)
     } else {
       return null
@@ -466,7 +480,7 @@ export class AuthenticationService {
       return false
     }
   }
-//-----------Post Put----------
+  //-----------Post Put----------
   public register(user: TokenPayload): Observable<any> {
     return this.http.post(this.ROOT_URL + `/users/register`, user)
   }
@@ -552,7 +566,7 @@ export class AuthenticationService {
     })
   }
 
-  //-----------Delete----------
+   //************************ DELETE************************* */
   public removeimgProfile(user: TokenPayload): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/removeimg`, user, {
       headers: { Authorization: ` ${this.getToken()}` }
@@ -579,6 +593,7 @@ export class AuthenticationService {
     })
   }
 
+  
   //-----------Select----------
 
   public login(user: TokenPayload): Observable<any> {
@@ -601,18 +616,18 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  public recommendH(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/recommendHouse`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public recommendL(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/recommendLand`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
   public getland(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/land`, {
-      headers: { Authorization: ` ${this.getToken()}` }
-    })
-  }
-  public getContact(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/contact`, {
-      headers: { Authorization: ` ${this.getToken()}` }
-    })
-  }
-  public uploadftp(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/uploadftp`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -626,18 +641,18 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getgroupfolder(group:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/folder`,group, {
+  public getgroupfolder(group: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getgroupfolderID(group:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/folder/ID`,group, {
+  public getgroupfolderID(group: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder/ID`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getgrouplist(group:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/folder/list`,group, {
+  public getgrouplist(group: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder/list`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -656,23 +671,23 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getMember(gruop:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/member`,gruop, {
+  public getMember(gruop: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member`, gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
-  } 
+  }
   public getMemberlist(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/group/member/list`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
-  } 
-  public getMemberAdd(gruop:GroupDetails): Observable<any> {
-    return this.http.post(this.ROOT_URL + `/users/group/member/add`,gruop, {
+  }
+  public getMemberAdd(gruop: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/group/member/add`, gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getMemberchack(gruop:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/member/chack`,gruop, {
+  public getMemberchack(gruop: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member/chack`, gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -686,12 +701,20 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  
+
+  //************************ Update  ************************* */
   public houseUpdate(house: ID): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/houseUpdate`, house, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  public landUpdate(land: ID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/landUpdate`, land, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  //************************ Update status ************************* */
   public UpdateStatus(house: ID): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/UpdateStatus`, house, {
       headers: { Authorization: ` ${this.getToken()}` }
@@ -702,73 +725,115 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public DeletegroupF(group:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/folder/Delete`,group, {
+
+
+  public DeletegroupF(group: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/folder/Delete`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public Deletegroup(group:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/Delete`,group, {
+  public Deletegroup(group: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/Delete`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public DeletegroupM(group:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/member/Delete`,group, {
+  public DeletegroupM(group: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member/Delete`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public DeletegroupP(group:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/group/Annouce/Delete`,group, {
+  public DeletegroupP(group: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/Annouce/Delete`, group, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public UpdategroupN(gruop:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/EditGroupName`,gruop, {
+  public UpdategroupN(gruop: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/EditGroupName`, gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public UpdatefolderN(gruop:GroupDetails): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/EditFolderName`,gruop, {
+  public UpdatefolderN(gruop: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/EditFolderName`, gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
 
-  public landUpdate(land: ID): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/landUpdate`, land, {
-      headers: { Authorization: ` ${this.getToken()}` }
-    })
-  }
-  public getimghouse(house:ImageID): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/imghouse`,house, {
-      headers: { Authorization: ` ${this.getToken()}` }
-    })
-  }
-   public getimgland(land:ImageID): Observable<any> {
-    return this.http.put(this.ROOT_URL + `/users/imgland`,land, {
-      headers: { Authorization: ` ${this.getToken()}` }
-    })
-  }
 
+ //************************ GET LOCATION ************************* */
   public getProvine(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/Province`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-
   public getAmphur(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/Amphur`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-
   public getDistrict(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/District`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-
   public getZipcode(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/Zipcode`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+
+
+  //************************ Filter *********************** House Details **** */
+  public filterHouse(house): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/filterHouse`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public filterLand(land): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/filterLand`, land, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  //************************ get house by property id *********************** House Details **** */
+  public GetHouseDetail(house): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/houseDetail`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getimghouse(house: ImageID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/imghouse`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  //************************ get CONTACT ***********************  **** */
+  public getContactDetail(contact: ID): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/contactDetail`, contact, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  public getContact(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/contact`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  public getContactDuplicate(contact: ID): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/contactDuplicate`, contact, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  //************************ get land by land id *********************** Land Details **** */
+  public GetLandDetail(land): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/landDetail`, land, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getimgland(land: ImageID): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/imgland`, land, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }

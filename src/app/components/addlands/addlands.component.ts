@@ -1,7 +1,7 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { } from 'googlemaps';
-import { AuthenticationService, TokenPayload, locationsDetails } from '../../authentication.service'
+import { AuthenticationService, TokenPayload, locationsDetails ,ID} from '../../authentication.service'
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import * as $ from "jquery";
@@ -23,9 +23,9 @@ export class AddlandsComponent {
   PA: locationsDetails;
   district: any[];
   zipcode: any[];
-  Lprovince: any[];
-  Ldistrict: any[];
-  Lamphur: any[];
+  Lprovince: string = "";
+  Ldistrict: string = "";
+  Lamphur: string = "";
   private geoCoder;
   public details: any;
   createID: string
@@ -276,48 +276,56 @@ export class AddlandsComponent {
   CreateContactForm: FormGroup;
   submitted = false;
   SellP: string
+  ID: ID = {
+    ID_Lands: '',
+    ID_Property: '',
+    ContactU: '',
+    ContactUo: '',
+    ContactUt: '',
+    PPStatus: '',
+  }
 
+
+  ngOnInit() {
+
+    this.credentials.LandR = '0'
+    this.credentials.LandG = '0'
+    this.credentials.LandWA = '0'
+    this.LoadMap();
+    this.GetProvince();
+    this.GetNowYear();
+    this.GetContact()
+  }
+
+  //************* Check "," and number *************
   CommaFormattedS(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
     if (this.credentials.SellPrice) {
       this.credentials.SellPrice = this.credentials.SellPrice.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
   CommaFormattedB(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
     if (this.credentials.CostestimateB) {
       this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
   CommaFormattedC(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
     if (this.credentials.Costestimate) {
       this.credentials.Costestimate = this.credentials.Costestimate.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
   CommaFormattedM(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
     if (this.credentials.MarketPrice) {
       this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
-
   numberCheck(args) {
     if (args.key === 'e' || args.key === '+' || args.key === '-') {
       return false;
@@ -326,16 +334,12 @@ export class AddlandsComponent {
     }
   }
 
-  ngOnInit() {
-
-    this.credentials.LandR = '0'
-    this.credentials.LandG = '0'
-    this.credentials.LandWA = '0'
+  //************* Set Map from google *************
+  LoadMap() {
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder;
-
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: [], componentRestrictions: { 'country': 'TH' }
       });
@@ -343,12 +347,10 @@ export class AddlandsComponent {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
@@ -356,8 +358,24 @@ export class AddlandsComponent {
         });
       });
     });
+  }
 
-    //-------------------------------------------------
+  //************* get province *************
+  GetProvince() {
+    this.auth.getProvine().subscribe((province) => {
+      if (province) {
+        this.province = province;
+        this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  //************* get present year *************
+  GetNowYear() {
     var year = new Date().getFullYear();
     var yearth = year + 543
     var range = [];
@@ -367,32 +385,118 @@ export class AddlandsComponent {
 
     }
     this.years = range;
-
-
-    //------------getlocation-------
-    this.auth.getProvine().subscribe((province) => {
-      this.province = province;
-      this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-
-    this.onResiveContact()
   }
-  get f() { return this.addlandForm.controls; }
+
 
   calPWA() {
     //---------------calulate p/wa-----
     this.SellP = this.credentials.SellPrice.replace(/,/g, "");
-   
-  
     this.cal = parseInt(this.SellP) / ((parseInt(this.credentials.LandR) * 400) + (parseInt(this.credentials.LandG) * 100) + parseInt(this.credentials.LandWA));
     this.credentials.PriceWA = this.cal.toString()
   }
-  // Get Current Location Coordinates
+  get f() { return this.addlandForm.controls; }
+  get E() { return this.EditContactForm.controls; }
+  get Et() { return this.EditContact2Form.controls; }
+  get Eo() { return this.EditContact3Form.controls; }
+  get C() { return this.CreateContactForm.controls; }
+
+  //************* Check data before insert *************
+  onGo() {
+    this.submitted = true;
+    if (this.addlandForm.invalid) {
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
+    }
+    if (this.con1selected == 'false') {//***************************************IF contact 1 not select */
+      this.submitted = true;
+      if (this.EditContactForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
+        return;
+      }
+      this.setDataContactA()
+      this.CheckDuplicateIDContact()
+      this.credentials.ContactU = this.credentials.ID_Contact
+
+      if (this.con2selected == 'false' && this.Name2 != '') {//***************************************IF contact 2/1 not select */
+        this.setDataContactB()
+        this.CheckDuplicateIDContact()
+        this.credentials.ContactUo = this.credentials.ID_Contact
+
+        if (this.con3selected == 'false' && this.Name3 != '') {//***************************************IF contact 3/1 not select */
+          this.setDataContactC()
+          this.CheckDuplicateIDContact()
+          this.credentials.ContactUt = this.credentials.ID_Contact
+
+        } else if (this.con2selected == 'false' && this.Name3 == '') {//***************************************IF contact 3/2 not select */
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          if (this.addlandForm.invalid) {
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
+          this.onFirststep()
+        } else {///***************************************IF contact 3/3 not select */
+          if (this.addlandForm.invalid) {
+            console.log(this.addlandForm)
+            alert(JSON.stringify("กรุณากรอกข้อมูล"))
+            return;
+          }
+          this.onFirststep()
+        }
+
+      } else if (this.con2selected == 'false' && this.Name2 == '') {//***************************************IF contact 2/2 not select */
+        this.credentials.ContactUt = this.credentials.ID_Contact
+        this.credentials.ContactUo = this.credentials.ID_Contact
+        if (this.addlandForm.invalid) {
+          alert(JSON.stringify("กรุณากรอกข้อมูล"))
+          return;
+        }
+        this.onFirststep()
+      } else {//***************************************IF contact 2/3 not select */
+        if (this.addlandForm.invalid) {
+          alert(JSON.stringify("กรุณากรอกข้อมูล"))
+          return;
+        }
+        this.onFirststep()
+      }
+    } else if (this.con2selected == 'false' && this.Name2 != '') {//***************************************IF contact 1/2 not select */
+      this.setDataContactB()
+      this.CheckDuplicateIDContact()
+      this.credentials.ContactUt = this.credentials.ID_Contact
+      if (this.con3selected == 'false' && this.Name3 != '') {
+        this.setDataContactC()
+        this.CheckDuplicateIDContact()
+        this.credentials.ContactUo = this.credentials.ID_Contact
+        this.onFirststep()
+      } else if (this.con2selected == 'false' && this.Name3 == '') {
+        this.credentials.ContactUo = this.credentials.ID_Contact
+        if (this.addlandForm.invalid) {
+          alert(JSON.stringify("กรุณากรอกข้อมูล"))
+          return;
+        }
+        this.onFirststep()
+      } else {
+        if (this.addlandForm.invalid) {
+          console.log(this.addlandForm)
+          alert(JSON.stringify("กรุณากรอกข้อมูล"))
+          return;
+        }
+        this.onFirststep()
+      }
+    } else if (this.con3selected == 'false' && this.Name3 != '') {//***************************************IF contact 1/3 not select */
+      this.setDataContactC()
+      this.CheckDuplicateIDContact()
+      this.credentials.ContactUo = this.credentials.ID_Contact
+      this.onFirststep()
+    } else {//***************************************IF contact 1/4 not select */
+      if (this.addlandForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูล"))
+        return;
+      }
+      this.onFirststep()
+    }
+  }
+
+  //************* Get Current Location Coordinates *************
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -403,15 +507,12 @@ export class AddlandsComponent {
       });
     }
   }
-
-
   markerDragEnd($event: MouseEvent) {
     console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.getAddress(this.latitude, this.longitude);
   }
-
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
       console.log(results);
@@ -426,14 +527,14 @@ export class AddlandsComponent {
       } else {
         console.log('Geocoder failed due to: ' + status);
       }
-
     });
-
   }
+
+  //************* get ADDRESS  *************
+  PROVINCE_NAME: string
   selectprovince(data) {
     this.credentials.LProvince = data.PROVINCE_NAME
     this.auth.getAmphur().subscribe((amphur) => {
-      // กรณี resuponse success
       this.amphur = amphur.filter(article => {
         return article.PROVINCE_ID == data.PROVINCE_ID;
       });
@@ -441,14 +542,11 @@ export class AddlandsComponent {
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
-
   selectamphur(data) {
     this.credentials.LAmphur = data.AMPHUR_NAME
     this.auth.getDistrict().subscribe((district) => {
-      // กรณี resuponse success
       this.district = district.filter(article => {
         return article.AMPHUR_ID == data.AMPHUR_ID;
       });
@@ -456,106 +554,161 @@ export class AddlandsComponent {
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
   selectdistrict(data) {
     this.credentials.LDistrict = data.DISTRICT_NAME
     this.auth.getZipcode().subscribe((zipcode) => {
-      // กรณี resuponse success
       this.zipcode = zipcode.filter(article => {
         return article.DISTRICT_ID == data.DISTRICT_ID;
       });
     },
       err => {
         console.error(err)
-      }
-    )
-
+      })
   }
   getZipCode() {
     this.zipcode.forEach((element, index) => {
       this.credentials.LZipCode = element.ZIPCODE
     });
-
   }
 
-  onFinish() {
-    this.auth.uploadftp().subscribe(() => {
+  propType: string = null;
+  //************* The first step before insert data *************
+  onFirststep() {
+    this.onBack()
+    this.SetValue()
+      this.onRandom()
+      if (this.ID.ID_Lands != '') {
+        this.CheckDuplicateID()
+      } else {
+        this.onFirststep()
+      }
+  }
+  SetValue() {
+    this.getZipCode()
+    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
+    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
+    this.credentials.Latitude = this.latitude
+    this.credentials.Longitude = this.longitude
+  
+  }
+
+  //************* Random ID property *************
+  onRandom() {
+    var max = 9;
+    var min = 0;
+    var r = Math.floor(Math.random() * (max - min + 1) + min);
+    var x = Math.floor(Math.random() * (max - min + 1) + min);
+    var y = Math.floor(Math.random() * (max - min + 1) + min);
+    var z = Math.floor(Math.random() * (max - min + 1) + min);
+    this.ID.ID_Lands = "l" + r + x + y + z;
+  }
+
+  //************* Check Duplicate ID property *************
+  CheckDuplicateID() {
+    this.auth.GetLandDetail(this.ID).subscribe((land) => {
+      if (land.length != 0) {
+        this.onRandom()
+        this.CheckDuplicateID()
+      }
+      else {
+        this.credentials.ID_Lands = this.ID.ID_Lands
+        console.log(this.credentials.ID_Lands)
+        this.InsertData()
+      }
     },
       err => {
         console.error(err)
-      }
-    )
-
+      })
   }
-  get E() { return this.EditContactForm.controls; }
-  get Et() { return this.EditContact2Form.controls; }
-  get Eo() { return this.EditContact3Form.controls; }
-  get C() { return this.CreateContactForm.controls; }
-  onResiveContact() {
-    //-------- get contact ----
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
+
+  //************* Insert data into database *************
+  InsertData() {
+    this.auth.addland(this.credentials).subscribe((result) => {
+      alert(JSON.stringify(result))
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
-  Save: string = 'true'
-  onCreateContact() {
+
+  //************* Update data land  *************
+  onUpdate() {
     this.submitted = true;
-    if (this.CreateContactForm.invalid) {
+    if (this.addlandForm.invalid) {
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
-
-    this.auth.addcontact(this.credentials).subscribe(() => {
-      this.onResiveContact()
-      this.Save = 'false'
-      alert(JSON.stringify("บันทึกสำเร็จ"))
+    this.SetValue()
+    this.auth.EditLand(this.credentials).subscribe((result) => {
+      alert(JSON.stringify(result))
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
 
-  onEditContact() {
-    this.submitted = true;
-    if (this.EditContactForm.invalid) {
-      return;
-    }
+  //************* Go to home page *************
+  onSave() {
+    this.router.navigateByUrl('/home')
+  }
+
+  //************* If user click back button then change statut to update *************
+  onBack() {
+    this.back = "true"
+  }
+
+  //************* get contact that owner *************
+  GetContact() {
+    this.auth.getContact().subscribe((contactUser) => {
+      if (contactUser) {
+        this.contactUser = contactUser;
+        console.log(contactUser)
+      }
+    },
+      err => {
+        console.error(err)
+      })
+  }
+
+  onEditContact1() {
 
     this.auth.EditContact(this.credentials).subscribe(() => {
     },
       err => {
         alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.onResiveContact()
+        this.GetContact()
         console.error(err)
       }
     )
   }
-  onEditContactID(value) {
-    this.credentials.ID_Contact = value
+  onEditContact2() {
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.GetContact()
+        console.error(err)
+      }
+    )
   }
-  onEditContactName(value) {
-    this.credentials.ContactName = value
-  }
-  onEditContactLine(value) {
-    this.credentials.ContactLine = value
-  }
-  onEditContactPhone(value) {
-    this.credentials.ContactPhone = value
-  }
-  onEditContactEmail(value) {
-    this.credentials.ContactEmail = value
+  onEditContact3() {
+    this.auth.EditContact(this.credentials).subscribe(() => {
+    },
+      err => {
+        alert(JSON.stringify("บันทึกสำเร็จ"))
+        this.GetContact()
+        console.error(err)
+      }
+    )
   }
 
   onGetContact(item) {
     this.con1selected = 'true'
-    // console.log(this.credentials.ContactName)
+    console.log(this.credentials.ContactName)
     this.conID1 = item.ID_Contact
     this.conName1 = item.Name
     this.conEmail1 = item.Email
@@ -567,8 +720,7 @@ export class AddlandsComponent {
   }
   onGetContact2(item) {
     this.con2selected = 'true'
-    this.Name2 = 'true'
-    //console.log(this.credentials.ContactName)
+    console.log(this.credentials.ContactName)
     this.conID2 = item.ID_Contact
     this.conName2 = item.Name
     this.conEmail2 = item.Email
@@ -580,18 +732,13 @@ export class AddlandsComponent {
   }
   onGetContact3(item) {
     this.con3selected = 'true'
-    this.Name3 = 'true'
-    //console.log(this.credentials.ContactName)
+    console.log(this.credentials.ContactName)
     this.conID3 = item.ID_Contact
     this.conName3 = item.Name
     this.conEmail3 = item.Email
     this.conPhone3 = item.Phone
     this.conLine3 = item.Line
     this.credentials.ContactUo = item.ID_Contact
-  }
-  onChangeSearch(val: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
   }
 
   onFocused(e) {
@@ -606,7 +753,6 @@ export class AddlandsComponent {
   }
   onEditContactName1(value: string) {
     this.conName1 = value
-    //console.log(this.conName1)
   }
   onEditContactLine1(value) {
     this.conLine1 = value
@@ -618,17 +764,16 @@ export class AddlandsComponent {
   }
   onEditContactEmail1(value) {
     this.conEmail1 = value
-    // console.log(this.conEmail1)
+    //console.log(this.conEmail1)
   }
-
   onEditContactID2(value) {
     this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName1
-    this.credentials.ContactPhone = this.conPhone1
-    this.credentials.ContactEmail = this.conEmail1
-    this.credentials.ContactLine = this.conLine1
+    this.credentials.ContactName = this.conName2
+    this.credentials.ContactPhone = this.conPhone2
+    this.credentials.ContactEmail = this.conEmail2
+    this.credentials.ContactLine = this.conLine2
   }
-  onEditContactName2(value) {
+  onEditContactName2(value: string) {
     this.conName2 = value
   }
   onEditContactLine2(value) {
@@ -640,8 +785,6 @@ export class AddlandsComponent {
   onEditContactEmail2(value) {
     this.conEmail2 = value
   }
-
-
   onEditContactID3(value) {
     this.credentials.ID_Contact = value
     this.credentials.ContactName = this.conName3
@@ -649,7 +792,7 @@ export class AddlandsComponent {
     this.credentials.ContactEmail = this.conEmail3
     this.credentials.ContactLine = this.conLine3
   }
-  onEditContactName3(value) {
+  onEditContactName3(value: string) {
     this.conName3 = value
   }
   onEditContactLine3(value) {
@@ -661,373 +804,30 @@ export class AddlandsComponent {
   onEditContactEmail3(value) {
     this.conEmail3 = value
   }
-
-
-  onGo() {
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.addlandForm.invalid) {
-      //console.log(this.addlandForm)
-      alert(JSON.stringify("กรุณากรอกข้อมูล"))
-      return;
-    }
-    if (this.con1selected == 'false') {
-      this.submitted = true;
-      if (this.EditContactForm.invalid) {
-        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
-        return;
-      }
-      this.credentials.ContactName = this.conName1
-      this.credentials.ContactPhone = this.conPhone1
-      this.credentials.ContactEmail = this.conEmail1
-      this.credentials.ContactLine = this.conLine1
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          this.onCheckContact()
-        });
-        while (this.credentials.ContactU == '') {
-          this.credentials.ContactU = this.credentials.ID_Contact
-          this.onCheckContact()
-          //console.log(this.credentials.ContactU+"-***")
-        }
-        //console.log(this.credentials.ContactU)
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-
-          },
-          err => {
-            console.error(err)
-          }
-        )
-        if (this.con2selected == 'false' && this.Name2 != '') {
-          this.credentials.ContactName = this.conName2
-          this.credentials.ContactPhone = this.conPhone2
-          this.credentials.ContactEmail = this.conEmail2
-          this.credentials.ContactLine = this.conLine2
-          this.onRandomcontact()
-          this.auth.getContact().subscribe((con) => {
-            this.contactUser = con
-            this.contactUser.filter(article => {
-              this.IDcon = article.ID_Contact
-              this.onCheckContact()
-            });
-            while (this.credentials.ContactUt == '') {
-              this.credentials.ContactUt = this.credentials.ID_Contact
-              this.onCheckContact()
-              //console.log(this.credentials.ContactU+"-***")
-            }
-            this.auth.addcontact(this.credentials).subscribe(
-              () => {
-              },
-              err => {
-                console.error(err)
-              }
-            )
-            if (this.con3selected == 'false' && this.Name3 != '') {
-              this.credentials.ContactName = this.conName3
-              this.credentials.ContactPhone = this.conPhone3
-              this.credentials.ContactEmail = this.conEmail3
-              this.credentials.ContactLine = this.conLine3
-              this.onRandomcontact()
-              this.auth.getContact().subscribe((con) => {
-                this.contactUser = con
-                this.contactUser.filter(article => {
-                  this.IDcon = article.ID_Contact
-                  this.onCheckContact()
-                });
-                while (this.credentials.ContactUo == '') {
-                  this.credentials.ContactUo = this.credentials.ID_Contact
-                  this.onCheckContact()
-                  //console.log(this.credentials.ContactU+"-***")
-                }
-                // console.log(this.credentials.ContactUo+"three")
-                this.auth.addcontact(this.credentials).subscribe(
-                  () => {
-                    this.onFirststep()
-                    alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-                  },
-                  err => {
-                    console.error(err)
-                  }
-                )
-              },
-                err => {
-                  console.error(err)
-                }
-              )
-
-            } else if (this.con2selected == 'false' && this.Name3 == '') {
-              this.credentials.ContactUo = this.credentials.ID_Contact
-              // stop here if form is invalid
-              if (this.addlandForm.invalid) {
-                alert(JSON.stringify("กรุณากรอกข้อมูล"))
-                return;
-              }
-              this.onFirststep()
-              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-            } else {
-              // stop here if form is invalid
-              if (this.addlandForm.invalid) {
-                console.log(this.addlandForm)
-                alert(JSON.stringify("กรุณากรอกข้อมูล"))
-                return;
-              }
-              this.onFirststep()
-              alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-            }
-          },
-            err => {
-              console.error(err)
-            }
-          )
-
-
-        } else if (this.con2selected == 'false' && this.Name2 == '') {
-          this.credentials.ContactUt = this.credentials.ID_Contact
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          // stop here if form is invalid
-          if (this.addlandForm.invalid) {
-            alert(JSON.stringify("กรุณากรอกข้อมูล"))
-            return;
-          }
-          this.onFirststep()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-        } else {
-          // stop here if form is invalid
-          if (this.addlandForm.invalid) {
-            //console.log(this.addlandForm)
-            alert(JSON.stringify("กรุณากรอกข้อมูล"))
-            return;
-          }
-          this.onFirststep()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-        }
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-
-    } else if (this.con2selected == 'false' && this.Name2 != '') {
-      this.credentials.ContactName = this.conName2
-      this.credentials.ContactPhone = this.conPhone2
-      this.credentials.ContactEmail = this.conEmail2
-      this.credentials.ContactLine = this.conLine2
-
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          this.onCheckContact()
-          //console.log(this.IDcon + "----------------data")
-        });
-        this.credentials.ContactUt = this.credentials.ID_Contact
-        //console.log(this.credentials.ContactUt + " two R")
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-          },
-          err => {
-            console.error(err)
-          }
-        )
-        if (this.con3selected == 'false' && this.Name3 != '') {
-          this.credentials.ContactName = this.conName3
-          this.credentials.ContactPhone = this.conPhone3
-          this.credentials.ContactEmail = this.conEmail3
-          this.credentials.ContactLine = this.conLine3
-          //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
-          this.onRandomcontact()
-          this.auth.getContact().subscribe((con) => {
-            this.contactUser = con
-            this.contactUser.filter(article => {
-              this.IDcon = article.ID_Contact
-              //console.log(this.IDcon + "----------------data")
-              this.onCheckContact()
-            });
-            while (this.credentials.ContactUo == '') {
-              this.credentials.ContactUo = this.credentials.ID_Contact
-              this.onCheckContact()
-              //console.log(this.credentials.ContactU+"-***")
-            }
-            //console.log(this.credentials.ContactUo + " three")
-            this.auth.addcontact(this.credentials).subscribe(
-              () => {
-                this.onFirststep()
-                alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-              },
-              err => {
-                console.error(err)
-              }
-            )
-          },
-            err => {
-              console.error(err)
-            }
-          )
-
-        } else if (this.con2selected == 'false' && this.Name3 == '') {
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          // stop here if form is invalid
-          if (this.addlandForm.invalid) {
-            //console.log(this.addlandForm)
-            alert(JSON.stringify("กรุณากรอกข้อมูล"))
-            return;
-          }
-          this.onFirststep()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-        } else {
-          // stop here if form is invalid
-          if (this.addlandForm.invalid) {
-            console.log(this.addlandForm)
-            alert(JSON.stringify("กรุณากรอกข้อมูล"))
-            return;
-          }
-          this.onFirststep()
-          alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-        }
-
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-
-    } else if (this.con3selected == 'false' && this.Name3 != '') {
-      this.credentials.ContactName = this.conName3
-      this.credentials.ContactPhone = this.conPhone3
-      this.credentials.ContactEmail = this.conEmail3
-      this.credentials.ContactLine = this.conLine3
-      //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          //console.log(this.IDcon + "----------------data")
-          this.onCheckContact()
-        });
-        while (this.credentials.ContactUo == '') {
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          this.onCheckContact()
-          //console.log(this.credentials.ContactU+"-***")
-        }
-        //console.log(this.credentials.ContactUo + " three")
-
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-            this.onFirststep()
-            alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-          },
-          err => {
-            console.error(err)
-          }
-        )
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-    } else {
-      // stop here if form is invalid
-      if (this.addlandForm.invalid) {
-        //console.log(this.addlandForm)
-        alert(JSON.stringify("กรุณากรอกข้อมูล"))
-        return;
-      }
-      this.onFirststep()
-      alert(JSON.stringify("บันทึกสำเร็จ กดปุ่ม 'ถัดไป'"))
-    }
-
-
-
+  //************* set data contact  1 *************
+  setDataContactA() {
+    this.credentials.ContactName = this.conName1
+    this.credentials.ContactPhone = this.conPhone1
+    this.credentials.ContactEmail = this.conEmail1
+    this.credentials.ContactLine = this.conLine1
   }
-  onUpdate() {
-    this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.addlandForm.invalid) {
-      alert(JSON.stringify("กรุณากรอกข้อมูล"))
-      return;
-    }
-    this.getZipCode()
-    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
-    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
-    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
-    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
-    this.credentials.Latitude = this.latitude
-    this.credentials.Longitude = this.longitude
-    this.auth.EditLand(this.credentials).subscribe(
-      () => {
-
-      },
-      err => {
-        alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
-        console.error(err)
-
-      }
-
-    )
+  //************* set data contact  2 *************
+  setDataContactB() {
+    this.credentials.ContactName = this.conName2
+    this.credentials.ContactPhone = this.conPhone2
+    this.credentials.ContactEmail = this.conEmail2
+    this.credentials.ContactLine = this.conLine2
   }
-  onBack() {
-    this.back = "true"
-
+  //************* set data contact  3 *************
+  setDataContactC() {
+    this.credentials.ContactName = this.conName3
+    this.credentials.ContactPhone = this.conPhone3
+    this.credentials.ContactEmail = this.conEmail3
+    this.credentials.ContactLine = this.conLine3
   }
-  propType: string;
-  IDprop: string;
-  onFirststep() {
-    this.back = "true"
-    this.getZipCode()
-    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
-    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
-    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
-    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
-    this.credentials.Latitude = this.latitude
-    this.credentials.Longitude = this.longitude
-
-    this.onRandom()
-    this.auth.getAllland().subscribe((land) => {
-      this.details = land
-
-      this.details.filter(article => {
-        this.IDprop = article.ID_Lands
-        //console.log(this.IDprop + "----------------data")
-        this.onCheckTwo()
-      });
-      //console.log("..........." + this.credentials.ID_Lands + " END")
-
-      this.auth.addland(this.credentials).subscribe(
-        () => {
-
-        },
-        err => {
-          console.error(err)
-
-        }
-
-      )
-    },
-      err => {
-        console.error(err)
-      }
-    )
 
 
-
-
-
-  }
-  onSave() {
-
-    this.router.navigateByUrl('/home')
-  }
-  //*****chack ID Contact */
+  //************* Random ID contact *************
   onRandomcontact() {
     var max = 9;
     var min = 0;
@@ -1035,73 +835,40 @@ export class AddlandsComponent {
     var x = Math.floor(Math.random() * (max - min + 1) + min);
     var y = Math.floor(Math.random() * (max - min + 1) + min);
     var z = Math.floor(Math.random() * (max - min + 1) + min);
-    this.ContactID = this.ID_user + r + x + y + z;
+    this.ID.ContactU = this.ID_user + r + x + y + z;
 
   }
 
-  loopChackcontact() {
+  //************* Check Duplicate ID contact *************
+  CheckDuplicateIDContact() {
     this.onRandomcontact()
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
-
-      this.contactUser.filter(article => {
-        this.IDcon = article.ID_Contact
-        // console.log(this.IDcon + "-------Contact222 ")
-        this.onCheckContact()
-      });
+    this.auth.getContactDuplicate(this.ID).subscribe((contact) => {
+      if (contact.length != 0) {
+        this.onRandomcontact()
+        this.CheckDuplicateIDContact()
+      }
+      else {
+        this.credentials.ID_Contact = this.ID.ContactU
+        if (this.credentials.ID_Contact != '') {
+          this.CreateContact()
+        }
+      }
     },
+      err => {
+        console.error(err)
+      })
+  }
+
+  //************* CreateContact *************
+  CreateContact() {
+    this.auth.addcontact(this.credentials).subscribe(
+      () => {
+
+      },
       err => {
         console.error(err)
       }
     )
   }
-  onCheckContact() {
-    //console.log(this.ContactID + "FIrst ")
-    while (this.IDcon == this.ContactID) {
-      this.loopChackcontact()
-    }
-    this.credentials.ID_Contact = this.ContactID
-    console.log(this.credentials.ID_Contact)
-  }
-  //*****chack ID property */
-  onRandom() {
-    var max = 9;
-    var min = 0;
-    var r = Math.floor(Math.random() * (max - min + 1) + min);
-    var x = Math.floor(Math.random() * (max - min + 1) + min);
-    var y = Math.floor(Math.random() * (max - min + 1) + min);
-    var z = Math.floor(Math.random() * (max - min + 1) + min);
-    this.createID = "l" + r + x + y + z;
-
-  }
-  loopChack() {
-    this.onRandom()
-    this.auth.getAllland().subscribe((land) => {
-      this.details = land
-
-      this.details.filter(article => {
-        this.IDprop = article.ID_Lands
-        // console.log(this.IDprop + "-------data2222 ")
-        this.onCheckTwo()
-      });
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
-  onCheckTwo() {
-    //console.log(this.createID + "FIrst ")
-    while (this.IDprop == this.createID) {
-      this.loopChack()
-    }
-    this.credentials.ID_Lands = this.createID
-    // console.log(this.credentials.ID_Lands)
-
-
-  }
-
-
-
 
 }

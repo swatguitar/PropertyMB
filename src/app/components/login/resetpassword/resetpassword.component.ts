@@ -120,7 +120,7 @@ export class ResetpasswordComponent implements OnInit {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
-    Kitchen:0,
+    Kitchen: 0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -164,21 +164,12 @@ export class ResetpasswordComponent implements OnInit {
     }, {
       validator: MustMatch('password', 'confirmPassword')
     });
-
-
-
-
-
-
   }
-
-  // convenience getter for easy access to form fields
   get f() { return this.resetForm.controls }
   get E() { return this.getEmailForm.controls }
   get Q() { return this.getTokenForm.controls }
 
-
-
+  //**************** check email and send massage to reset password **********/
   GetEmail() {
     this.submitted = true;
     // stop here if form is invalid
@@ -190,21 +181,20 @@ export class ResetpasswordComponent implements OnInit {
       if (!user.error) {
         this.details = user;
         this.credentials.Email = user.Email
-        setTimeout(() => {
-          this.auth.sendEmail(this.credentials).subscribe(() => {
+        this.auth.sendEmail(this.credentials).subscribe((response) => {
+          if (response) {
             this.next = true
-
-            alert(JSON.stringify("กรุณาตรวจสอบอีเมลของท่าน เราได้รีเซ็ตรหัสไปยังอีเมลที่ท่านเคยลงทะเบียนไว้ "))
-          },
-            err => {
-              console.error(err)
-            }
-          )
-          this.loading = false
-        }, 2000);
+            this.loading = false
+            alert(JSON.stringify(response))
+          }
+        },
+          err => {
+            console.error(err)
+          }
+        )
       } else if (user.error) {
         this.loading = false
-        alert(JSON.stringify("ไม่พบอีเมลนี้"))
+        alert(JSON.stringify(user.error))
       }
     },
       err => {
@@ -213,7 +203,7 @@ export class ResetpasswordComponent implements OnInit {
     )
 
   }
-
+  //**************** compare code form email ****************/
   onCompareP() {
     this.submitted = true;
     // stop here if form is invalid
@@ -222,15 +212,13 @@ export class ResetpasswordComponent implements OnInit {
     }
     this.loading = true
     this.auth.compareToken(this.credentials).subscribe((error) => {
-      setTimeout(() => {
-      if(!error.error){
-        this.loading = false
-        this.nexttwo = true
-      }else{
-        this.loading = false
-        alert(JSON.stringify(error.error))
-      }     
-    }, 2000);
+        if (!error.error) {
+          this.loading = false
+          this.nexttwo = true
+        } else {
+          this.loading = false
+          alert(JSON.stringify(error.error))
+        }
     },
       err => {
         console.error(err)

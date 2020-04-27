@@ -18,10 +18,10 @@ body {
 .horizontal-scroll-wrapper{
   position:absolute;
   display:block;
-  top:110px;
+  top:150px;
   left:0;
   right: 80px;
-  width:250px;
+  width:160px;
   max-height:700px;
   margin:0;
 

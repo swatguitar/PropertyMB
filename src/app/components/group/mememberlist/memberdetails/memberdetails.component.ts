@@ -421,13 +421,7 @@ export class MemberdetailsComponent implements OnInit {
     this.CreateGroup = true
   }
   onFinish() {
-    this.auth.uploadftp().subscribe(() => {
 
-    },
-      err => {
-        console.error(err)
-      }
-    )
 
   }
   reload() {

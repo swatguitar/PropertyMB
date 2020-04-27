@@ -46,6 +46,8 @@
                               formControlName="PropertyType"
                               [ngClass]="{ 'is-invalid': submitted && f.PropertyType.errors }"
                               [(ngModel)]="credentials.PropertyType">
+                              <option value="" selected>
+                                กรุณาเลือก ประเภทอสังหา</option>
                               <option value="บ้าน" selected>
                                 บ้าน</option>
                               <option value="อาคารพาณิชย์" selected>
@@ -150,10 +152,9 @@
                                       พื้นที่ใช้สอย (ตร.ม.)<i class="reqiureinput">*</i>
                                     </div>
                                     <div class="col-sm-10">
-                                      <input style="border-radius: 30px 30px 30px 30px;"
-                                        type="number" id="HouseArea" class="form-control"
-                                        placeholder="พื้นที่ใช้สอย (ตร.ม.)" formControlName="HouseArea" required
-                                        [(ngModel)]="credentials.HouseArea"
+                                      <input style="border-radius: 30px 30px 30px 30px;" type="number" id="HouseArea"
+                                        class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)"
+                                        formControlName="HouseArea" required [(ngModel)]="credentials.HouseArea"
                                         [ngClass]="{ 'is-invalid': submitted && f.HouseArea.errors }">
                                       <div *ngIf="submitted && f.HouseArea.errors" class="invalid-feedback">
                                         <div *ngIf="f.HouseArea.errors.required">
@@ -285,14 +286,13 @@
                               <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">*</i>
                             </div>
                           </div>
-                          <div class="col-md-2 ">
-                            <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
+                          <div class="col-md-3 ">
+                            <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus" name="AsseStatus"
                               placeholder="สถานะทรัพย์สิน" class="form-control" formControlName="AsseStatus"
                               [(ngModel)]="credentials.AsseStatus"
                               [ngClass]="{ 'is-invalid': submitted && f.AsseStatus.errors }">
-
-                              <option value="ว่าง" selected>
-                                ว่าง</option>
+                              <option value="" selected>
+                                กรุณาเลือก สถานะทรัพย์สิน</option>                     
                               <option value="จำนอง" selected>
                                 จำนอง</option>
                               <option value="ขายฝาก" selected>
@@ -320,7 +320,7 @@
                               <div class="col-md-3">
                                 <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
                                   formControlName="BuildFD" [(ngModel)]="credentials.BuildFD">
-                                  <option>- วัน-</option>
+                                  <option value="">วันที่</option>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
@@ -357,7 +357,7 @@
                               <div class="col-md-3">
                                 <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
                                   formControlName="BuildFM" [(ngModel)]="credentials.BuildFM">
-                                  <option>- เดือน -</option>
+                                  <option value="">เดือน</option>
                                   <option value="มกราคม">มกราคม</option>
                                   <option value="กุมภาพัน">กุมภาพัน</option>
                                   <option value="มีนาคม">มีนาคม</option>
@@ -377,7 +377,7 @@
                                   formControlName="BuildFY" (change)="onGetbuildage($event.target.value)"
                                   [(ngModel)]="credentials.BuildFY"
                                   [ngClass]="{ 'is-invalid': submitted && f.BuildFY.errors }">
-                                  <option>- ปี -</option>
+                                  <option value="">กรุณาเลือก ปี </option>
                                   <option *ngFor="let year of years" value="{{year}}">
                                     {{year}}
                                   </option>
@@ -411,8 +411,8 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div>
-                              <i class="fas fa-compass"></i>
-                              ทิฺศของด้านหน้าอาคาร:
+                              <label><i class="fas fa-compass"></i>
+                                ทิศของด้านหน้าอาคาร :<i class="reqiureinput">*</i></label>
                             </div>
                           </div>
                           <div class="col-md-4 ">
@@ -421,7 +421,7 @@
                                 formControlName="Directions"
                                 [ngClass]="{ 'is-invalid': submitted && f.Directions.errors }"
                                 [(ngModel)]="credentials.Directions">
-                                <option>- ทิฺศ -</option>
+                                <option value="">ทิฺศ</option>
                                 <option value="ทิศเหนือ">ทิศเหนือ</option>
                                 <option value="ทิศใต้">ทิศใต้</option>
                                 <option value="ทิศตะวันออก">ทิศตะวันออก</option>
@@ -592,14 +592,14 @@
                               <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">*</i>
                             </div>
                           </div>
-                          <div class="col-md-2 ">
+                          <div class="col-md-3 ">
 
                             <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
                               placeholder="สถานะทรัพย์สิน" class="form-control" formControlName="AsseStatus"
                               [(ngModel)]="credentials.AsseStatus"
                               [ngClass]="{ 'is-invalid': submitted && f.AsseStatus.errors }">
-                              <option value="ว่าง" selected>
-                                ว่าง</option>
+                              <option value="" selected>
+                                กรุณาเลือก สถานะทรัพย์สิน</option>
                               <option value="จำนอง" selected>
                                 จำนอง</option>
                               <option value="ขายฝาก" selected>
@@ -626,7 +626,7 @@
                               <div class="col-md-3">
                                 <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
                                   formControlName="BuildFD" [(ngModel)]="credentials.BuildFD">
-                                  <option>- วัน-</option>
+                                  <option value="">วัน</option>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
@@ -663,7 +663,7 @@
                               <div class="col-md-3">
                                 <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
                                   formControlName="BuildFM" [(ngModel)]="credentials.BuildFM">
-                                  <option>- เดือน -</option>
+                                  <option value="">เดือน</option>
                                   <option value="มกราคม">มกราคม</option>
                                   <option value="กุมภาพัน">กุมภาพัน</option>
                                   <option value="มีนาคม">มีนาคม</option>
@@ -683,7 +683,7 @@
                                   formControlName="BuildFY" (change)="onGetbuildage($event.target.value)"
                                   [(ngModel)]="credentials.BuildFY"
                                   [ngClass]="{ 'is-invalid': submitted && f.BuildFY.errors }">
-                                  <option>- ปี -</option>
+                                  <option value="">กรุณาเลือก ปี</option>
                                   <option *ngFor="let year of years" value="{{year}}">
                                     {{year}}
                                   </option>
@@ -717,8 +717,8 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div>
-                              <i class="fas fa-compass"></i>
-                              ทิฺศของด้านหน้าคอนโด :<i class="reqiureinput">*</i>
+                              <label><i class="fas fa-compass"></i>
+                                ทิศของด้านหน้าคอนโด :<i class="reqiureinput">*</i></label>
                             </div>
                           </div>
                           <div class="col-md-4 ">
@@ -727,7 +727,7 @@
                                 formControlName="Directions"
                                 [ngClass]="{ 'is-invalid': submitted && f.Directions.errors }"
                                 [(ngModel)]="credentials.Directions">
-                                <option>- ทิฺศ -</option>
+                                <option value="">ทิฺศ</option>
                                 <option value="ทิศเหนือ">ทิศเหนือ</option>
                                 <option value="ทิศใต้">ทิศใต้</option>
                                 <option value="ทิศตะวันออก">ทิศตะวันออก</option>
@@ -931,14 +931,14 @@
                               <label>สถานะทรัพย์สิน :</label><i class="reqiureinput">*</i>
                             </div>
                           </div>
-                          <div class="col-md-2 ">
+                          <div class="col-md-3 ">
 
                             <select style="border-radius: 30px 30px 30px 30px;" id="AsseStatus"
                               placeholder="สถานะทรัพย์สิน" class="form-control" formControlName="AsseStatus"
                               [(ngModel)]="credentials.AsseStatus"
                               [ngClass]="{ 'is-invalid': submitted && f.AsseStatus.errors }">
-                              <option value="ว่าง" selected>
-                                ว่าง</option>
+                              <option value="" selected>
+                                กรุณาเลือก สถานะทรัพย์สิน</option>
                               <option value="จำนอง" selected>
                                 จำนอง</option>
                               <option value="ขายฝาก" selected>
@@ -965,7 +965,7 @@
                               <div class="col-md-3">
                                 <select style="border-radius: 30px 30px 30px 30px;" id="BuildFD" class="form-control"
                                   formControlName="BuildFD" [(ngModel)]="credentials.BuildFD">
-                                  <option>- วัน-</option>
+                                  <option value="">วัน</option>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
@@ -1002,7 +1002,7 @@
                               <div class="col-md-3">
                                 <select style="border-radius: 30px 30px 30px 30px;" id="BuildFM" class="form-control"
                                   formControlName="BuildFM" [(ngModel)]="credentials.BuildFM">
-                                  <option>- เดือน -</option>
+                                  <option value="">เดือน</option>
                                   <option value="มกราคม">มกราคม</option>
                                   <option value="กุมภาพัน">กุมภาพัน</option>
                                   <option value="มีนาคม">มีนาคม</option>
@@ -1022,7 +1022,7 @@
                                   formControlName="BuildFY" (change)="onGetbuildage($event.target.value)"
                                   [(ngModel)]="credentials.BuildFY"
                                   [ngClass]="{ 'is-invalid': submitted && f.BuildFY.errors }">
-                                  <option>- ปี -</option>
+                                  <option value="">กรุณาเลือก ปี</option>
                                   <option *ngFor="let year of years" value="{{year}}">
                                     {{year}}
                                   </option>
@@ -1056,8 +1056,8 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div>
-                              <i class="fas fa-compass"></i>
-                              ทิฺศของประตูบ้าน :<i class="reqiureinput">*</i>
+                              <label><i class="fas fa-compass"></i>
+                                ทิศของประตูบ้าน :<i class="reqiureinput">*</i></label>
                             </div>
                           </div>
                           <div class="col-md-4 ">
@@ -1066,7 +1066,7 @@
                                 formControlName="Directions"
                                 [ngClass]="{ 'is-invalid': submitted && f.Directions.errors }"
                                 [(ngModel)]="credentials.Directions">
-                                <option>- ทิฺศ -</option>
+                                <option value="">ทิฺศ</option>
                                 <option value="ทิศเหนือ">ทิศเหนือ</option>
                                 <option value="ทิศใต้">ทิศใต้</option>
                                 <option value="ทิศตะวันออก">ทิศตะวันออก</option>
@@ -1343,7 +1343,8 @@
                         </div>
                         <h4>สถานะถนน</h4>
                         <div class="col-sm-12">
-                          <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType"> โคลน
+                          <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType">
+                          โคลน
                         </div>
                         <div class="col-sm-12">
                           <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
@@ -1367,7 +1368,7 @@
                           <label>ความกว้างถนน</label>
                           <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control"
                             [(ngModel)]="credentials.RoadWide">
-                            <option>- ความกว้างถนน -</option>
+                            <option value="">ความกว้างถนน</option>
                             <option value="ซอยแคบ">ซอยแคบ</option>
                             <option value="1 เมตร">1 เมตร</option>
                             <option value="2 เมตร">2 เมตร</option>
@@ -1537,18 +1538,19 @@
                             [(ngModel)]="credentials.Neareducation"> ใกล้สถานศึกษา
                         </div>
                         <div class="col-sm-12">
-                          <input type="checkbox" id="" value="1" name="Cenmarket"
-                            [(ngModel)]="credentials.Cenmarket"> ใกล้ศูนย์การค้า
+                          <input type="checkbox" id="" value="1" name="Cenmarket" [(ngModel)]="credentials.Cenmarket">
+                          ใกล้ศูนย์การค้า
                         </div>
                         <div class="col-sm-12">
-                          <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market"> ใกล้ตลาด
+                          <input type="checkbox" id="" value="1" name="Market" [(ngModel)]="credentials.Market">
+                          ใกล้ตลาด
                         </div>
                         <div class="col-sm-12">
                           <input type="checkbox" id="" value="1" name="River" [(ngModel)]="credentials.River"> ติดแม่น้ำ
                         </div>
                         <div class="col-sm-12">
-                          <input type="checkbox" id="" value="1" name="Mainroad"
-                            [(ngModel)]="credentials.Mainroad"> ติดถนน
+                          <input type="checkbox" id="" value="1" name="Mainroad" [(ngModel)]="credentials.Mainroad">
+                          ติดถนน
                         </div>
                         <div class="col-sm-12">
                           <input type="checkbox" id="" value="1" name="Insoi" [(ngModel)]="credentials.Insoi"> อยู่ในซอย
@@ -1562,15 +1564,16 @@
                         </div>
                         <h4>สถานะถนน</h4>
                         <div class="col-sm-12">
-                          <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType"> โคลน
+                          <input type="radio" id="" value="โคลน" name="RoadType" [(ngModel)]="credentials.RoadType">
+                          โคลน
                         </div>
                         <div class="col-sm-12">
-                          <input type="radio" id="" value="ยางมะตอย" name="RoadType"
-                            [(ngModel)]="credentials.RoadType"> ยางมะตอย
+                          <input type="radio" id="" value="ยางมะตอย" name="RoadType" [(ngModel)]="credentials.RoadType">
+                          ยางมะตอย
                         </div>
                         <div class="col-sm-12">
-                          <input type="radio" id="" value="คอนกรีต" name="RoadType"
-                            [(ngModel)]="credentials.RoadType"> คอนกรีต
+                          <input type="radio" id="" value="คอนกรีต" name="RoadType" [(ngModel)]="credentials.RoadType">
+                          คอนกรีต
                         </div>
                         <div class="col-sm-12">
                           <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
@@ -1586,7 +1589,7 @@
                           <label>ความกว้างถนน</label>
                           <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control"
                             [(ngModel)]="credentials.RoadWide">
-                            <option>- ความกว้างถนน -</option>
+                            <option value="">ความกว้างถนน</option>
                             <option value="ซอยแคบ">ซอยแคบ</option>
                             <option value="1 เมตร">1 เมตร</option>
                             <option value="2 เมตร">2 เมตร</option>
@@ -1811,7 +1814,7 @@
                           <label>ความกว้างถนน</label>
                           <select style="border-radius: 30px 30px 30px 30px;" id="RoadWide" class="form-control"
                             [(ngModel)]="credentials.RoadWide">
-                            <option>- ความกว้างถนน -</option>
+                            <option value="">ความกว้างถนน</option>
                             <option value="ซอยแคบ">ซอยแคบ</option>
                             <option value="1 เมตร">1 เมตร</option>
                             <option value="2 เมตร">2 เมตร</option>
@@ -1888,9 +1891,9 @@
                           </agm-map>
                         </div>
                         <div class="row">
-                          <div class="col-sm-3">ละติจูต: <input class="form-control" readonly type="text" id="latitude"
+                          <div class="col-sm-3">ละติจูต : <input class="form-control" readonly type="text" id="latitude"
                               [(ngModel)]="credentials.Latitude" value='{{latitude}}' name="latitude"> </div>
-                          <div class="col-sm-3">ลองจิจูต: <input class="form-control" readonly type="text"
+                          <div class="col-sm-3">ลองจิจูต : <input class="form-control" readonly type="text"
                               id="longitude" [(ngModel)]="credentials.Longitude" value='{{longitude}}' name="longitude">
                           </div>
                         </div>
@@ -1921,7 +1924,7 @@
                               <div class="row">
                                 <div class="col-md-4">
                                   <div>
-                                    <label>ที่อยู่:<i class="reqiureinput">*</i></label>
+                                    <label>ที่อยู่ :<i class="reqiureinput">*</i></label>
                                   </div>
                                 </div>
                                 <div class="col-md-8 ">
@@ -1943,16 +1946,16 @@
                                 <div class="col-md-8">
                                   <div class="row">
                                     <div class="col-sm-6">
-                                      จังหวัด:<i class="reqiureinput">*</i>
+                                      <label>จังหวัด :<i class="reqiureinput">*</i></label>
                                     </div>
                                     <div class="col-sm-4">
                                       <select style="border-radius: 30px 30px 30px 30px;" id="province"
                                         class="form-control" name="Lprovince" formControlName="Lprovince"
                                         [ngClass]="{ 'is-invalid': submitted && f.Lprovince.errors }"
                                         [(ngModel)]="Lprovince" (ngModelChange)="selectprovince($event)">
-                                        <option>- จังหวัด -</option>
+                                        <option value="">กรุณาเลือก จังหวัด</option>
                                         <option *ngFor="let p of province" [ngValue]="p">
-                                          {{p?.PROVINCE_NAME}}
+                                          {{p.PROVINCE_NAME}}
                                         </option>
 
                                       </select>
@@ -1967,16 +1970,16 @@
                                 <div class="col-md-4">
                                   <div class="row">
                                     <div class="col-sm-4">
-                                      อำเภอ:<i class="reqiureinput">*</i>
+                                      <label>อำเภอ :<i class="reqiureinput">*</i></label>
                                     </div>
                                     <div class="col-sm-8">
                                       <select style="border-radius: 30px 30px 30px 30px;" id="amphur"
                                         class="form-control" name="Lamphur" formControlName="Lamphur"
                                         [ngClass]="{ 'is-invalid': submitted && f.Lamphur.errors }"
                                         [(ngModel)]="Lamphur" (ngModelChange)="selectamphur($event)">
-                                        <option>- อำเภอ -</option>
+                                        <option value="">กรุณาเลือก อำเภอ</option>
                                         <option *ngFor="let a of amphur" [ngValue]="a">
-                                          {{a?.AMPHUR_NAME}}</option>
+                                          {{a.AMPHUR_NAME}}</option>
                                       </select>
                                       <div *ngIf="submitted && f.Lamphur.errors" class="invalid-feedback">
                                         <div *ngIf="f.Lamphur.errors.required">
@@ -1991,16 +1994,16 @@
                                 <div class="col-md-8">
                                   <div class="row">
                                     <div class="col-sm-6">
-                                      ตำบล:<i class="reqiureinput">*</i>
+                                      <label>ตำบล :<i class="reqiureinput">*</i></label>
                                     </div>
                                     <div class="col-sm-4">
                                       <select style="border-radius: 30px 30px 30px 30px;" id="district"
                                         class="form-control" name="Ldistrict" formControlName="Ldistrict"
                                         [ngClass]="{ 'is-invalid': submitted && f.Ldistrict.errors }"
                                         [(ngModel)]="Ldistrict" (ngModelChange)="selectdistrict($event)">
-                                        <option>- ตำบล -</option>
+                                        <option value="">กรุณาเลือก ตำบล</option>
                                         <option *ngFor="let d of district" [ngValue]="d">
-                                          {{d?.DISTRICT_NAME}}
+                                          {{d.DISTRICT_NAME}}
                                         </option>
                                       </select>
                                       <div *ngIf="submitted && f.Ldistrict.errors" class="invalid-feedback">
@@ -2012,10 +2015,10 @@
                                 </div>
                                 <div class="col-md-4">
                                   <div class="row">
-                                    <div class="col-sm-4">
-                                      รหัสไปรษณี:
+                                    <div class="col-sm-5">
+                                      <label>รหัสไปรษณีย์ :</label>
                                     </div>
-                                    <div class="col-sm-8" *ngFor="let pp of zipcode">
+                                    <div class="col-sm-7" *ngFor="let pp of zipcode">
                                       <input class="form-control" type="text"
                                         style="border-radius: 30px 30px 30px 30px;" value="{{pp.ZIPCODE}}" readonly>
                                     </div>
@@ -2062,7 +2065,7 @@
                           <form [formGroup]="EditContactForm">
                             <div class="form-row">
                               <div class="form-group col-md-4">
-                                <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                <label for="inputEmail4">ชื่อผู้ติดต่อ<i class="reqiureinput">*</i></label>
                                 <div class="ng-autocomplete">
                                   <ng-autocomplete [data]="contactUser" formControlName="ContactName"
                                     [(ngModel)]="Name1" [searchKeyword]="keyword" [initialValue]=""
@@ -2086,11 +2089,11 @@
                                 </div>
                               </div>
                               <div class="form-group col-md-4">
-                                <label for="inputPassword4">สถานะ</label>
+                                <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
                                 <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactS"
                                   formControlName="ContactS" [(ngModel)]="credentials.ContactS"
                                   [ngClass]="{ 'is-invalid': submitted && E.ContactS.errors }">
-                                  <option value="0">เลือกผู้ติดต่อ</option>
+                                  <option value="">กรุณาเลือก สถานะ</option>
                                   <option value="เจ้าของ">เจ้าของ</option>
                                   <option value="นายหน้า">นายหน้า</option>
                                 </select>
@@ -2146,7 +2149,7 @@
                           <form [formGroup]="EditContact2Form">
                             <div class="form-row">
                               <div class="form-group col-md-4">
-                                <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                                <label for="inputEmail4">ชื่อผู้ติดต่อ<i class="reqiureinput">*</i></label>
                                 <div class="ng-autocomplete">
                                   <ng-autocomplete [data]="contactUser" formControlName="ContactName"
                                     [(ngModel)]="Name2" [searchKeyword]="keyword" [initialValue]=""
@@ -2170,11 +2173,11 @@
                                 </div>
                               </div>
                               <div class="form-group col-md-4">
-                                <label for="inputPassword4">สถานะ</label>
+                                <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
                                 <select style="border-radius: 30px 30px 30px 30px;" class="form-control"
                                   name="ContactSt" formControlName="ContactSt" [(ngModel)]="credentials.ContactSt"
                                   [ngClass]="{ 'is-invalid': submitted && Et.ContactSt.errors }">
-                                  <option value="0">เลือกผู้ติดต่อ</option>
+                                  <option value="">กรุณาเลือก สถานะ</option>
                                   <option value="เจ้าของ">เจ้าของ</option>
                                   <option value="นายหน้า">นายหน้า</option>
                                 </select>
@@ -2230,7 +2233,7 @@
                         <form [formGroup]="EditContact3Form">
                           <div class="form-row">
                             <div class="form-group col-md-4">
-                              <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
+                              <label for="inputEmail4">ชื่อผู้ติดต่อ<i class="reqiureinput">*</i></label>
                               <div class="ng-autocomplete">
                                 <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name3"
                                   [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
@@ -2253,11 +2256,11 @@
                               </div>
                             </div>
                             <div class="form-group col-md-4">
-                              <label for="inputPassword4">สถานะ</label>
+                              <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
                               <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSo"
                                 formControlName="ContactSo" [(ngModel)]="credentials.ContactSo"
                                 [ngClass]="{ 'is-invalid': submitted && Eo.ContactSo.errors }">
-                                <option value="0">เลือกผู้ติดต่อ</option>
+                                <option value="">กรุณาเลือก สถานะ</option>
                                 <option value="เจ้าของ">เจ้าของ</option>
                                 <option value="นายหน้า">นายหน้า</option>
                               </select>
@@ -2340,7 +2343,7 @@
           <div class="container">
             <div class="float-left"><button type="button" class="btn btn-secondary" (click)="onBack()"
                 awPreviousStep>ย้อนกลับ</button></div>
-            <div class="float-right"><button type="button" class="btn btn-primary " (click)="onFinish()"
+            <div class="float-right"><button type="button" class="btn btn-primary " 
                 awNextStep>ถัดไป</button></div>
           </div>
         </div>

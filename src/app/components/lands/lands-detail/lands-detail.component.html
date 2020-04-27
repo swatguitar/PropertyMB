@@ -19,7 +19,7 @@
                     typeof="WebPage"><span property="name">ที่ดิน</span></a>
                   <meta property="position" content="2">
                 </li>
-                <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
+                <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" [routerLink]="['/lands',lands.ID_Lands]"><span
                       property="name">{{ lands.AnnounceTH }}</span></a>
                   <meta property="position" content="2">
                 </li>
@@ -450,7 +450,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-                    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
                   </agm-map>
                 </div>
               </div>

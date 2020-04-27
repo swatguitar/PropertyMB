@@ -41,9 +41,12 @@ export class LandsDetailComponent implements OnInit {
   credentials: ID = {
     ID_Lands: '',
     ID_Property: '',
+    ContactU: '',
+    ContactUo: '',
+    ContactUt: '',
     PPStatus: '',
   }
-  imageID: ImageID = {
+  ImageID: ImageID = {
     ID_Lands: '',
     ID_Property: '',
     ID_Photo: '',
@@ -53,172 +56,160 @@ export class LandsDetailComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-
+ //************* set show image *************
     this.galleryOptions = [
       { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
       { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
       { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
     ]
 
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onForeach()
-    }, 3000);
+ //************* แบ่งหน้า &&  get id property *************
+ let params = this.route.snapshot.paramMap;
+ if (params.has('id')) {
+   this.postID = params.get('id');
+ }
+ this.route
+   .queryParams
+   .subscribe((data: { page: any }) => {
+     if (data != null && data.page != null) {
+       this.activePage = +data.page;
+     }
+   });
 
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onSetcontact()
-      this.recenter()
-    }, 5000);
-
-    let params = this.route.snapshot.paramMap;
-    if (params.has('id')) {
-      this.postID = params.get('id');
-    }
-    this.imageID.ID_Lands = this.postID
-    this.route
-      .queryParams
-      .subscribe((data: { page: any }) => {
-        if (data != null && data.page != null) {
-          this.activePage = +data.page;
-        }
-      });
-    this.auth.getland().subscribe((land) => {
-      this.details = land
-      // กรณี resuponse success
-      this.results = this.details.filter(article => {
-        return article.ID_Lands == this.postID;
-
-      });
-
-    })
-    //-------- get contact ----
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
-    },
-      err => {
-        console.error(err)
-      }
-    )
-    this.auth.getimgland(this.imageID).subscribe((img) => {
-      this.imagenew = img
-      // กรณี resuponse success
-      console.log( this.imagenew)
-      if (this.imagenew.length == 0) {
-        this.galleryImages = [
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-        ]
-
-      } else {
-        this.galleryImages = this.imagenew.map(item => {
-
-          return {
-            small: 'http://www.landvist.xyz/images/' + item.URL,
-            medium: 'http://www.landvist.xyz/images/' + item.URL,
-            big: 'http://www.landvist.xyz/images/' + item.URL
-          };
-
-        });
-      }
-
-    })
+ this.ImageID.ID_Lands = this.postID
+ this.credentials.ID_Lands = this.postID;
+ this.getLand()
+ this.getImage()
   }
 
-  recenter() {
-    setTimeout(() => {
-
-      this.latitude = Number(this.latnew)
-      this.longitude = Number(this.lonnew)
-      console.log(this.latnew)
-      console.log(this.lonnew)
+ //************* get property *************
+ getLand() {
+  this.auth.GetLandDetail(this.credentials).subscribe((land) => {
+    if (land) {
+      this.results = land
+      this.credentials.ContactU = land[0].ContactU
+      this.credentials.ContactUt = land[0].ContactUt
+      this.credentials.ContactUo = land[0].ContactUo
+      this.conS1 = land[0].ContactS
+      this.conS2 = land[0].ContactSt
+      this.conS3 = land[0].ContactSo
+      this.latitude = Number(land[0].Latitude)
+      this.longitude = Number(land[0].Longitude)
       this.zoom = 15
-
-    }, 3000);
-  }
-
-  onForeach() {
-    this.results.forEach((element, index) => {
-      console.log(this.latitude)
-      this.latnew = element.Latitude
-      this.lonnew = element.Longitude
-      this.lat = element.Latitude
-      this.lng = element.Longitude
-      this.conS1 = element.ContactS
-      this.conS2 = element.ContactSt
-      this.conS3 = element.ContactSo
-      this.IDcontact1 = element.ContactU
-      this.IDcontact2 = element.ContactUt
-      this.IDcontact3 = element.ContactUo
-      console.log(this.latitude)
-    });
-  }
-  onSetcontact() {
-    console.log("555")
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact1;
-    });
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact2;
-    });
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact3;
-    });
-  }
-
-  onDelete(){
-    this.credentials.ID_Lands = this.postID;
-    this.auth.DeleteLands(this.credentials).subscribe(() => {
-     
-    },
-      err => {
-        console.error(err)
-        alert(JSON.stringify("อสังหานี้ถูกลบแล้ว"))
-        this.router.navigateByUrl('/home')
-      }
-    )
-  }
-  PPStatus(value) {
-    this.credentials.PPStatus = value
-  }
-  UpdateStatus() {
-    this.credentials.ID_Lands = this.postID;
-    console.log(this.credentials.ID_Lands)
-    this.auth.UpdateStatusL(this.credentials).subscribe(() => {
-
-    },
-      err => {
-        console.error(err)
-        this.refresh()
-
-      }
-    )
-
-  
-  }
-  
-  refresh(): void {
-    window.location.reload();
+      this.getContact()
+    }
+  },
+    err => {
+      console.error(err)
+    })
 }
+
+//************* get Image *************
+getImage() {
+  this.auth.getimgland(this.ImageID).subscribe((img) => {
+    if (img) {
+      this.imgbox = img
+    }
+    if (img.length == 0) {
+      this.galleryImages = [
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+      ]
+    } else {
+      this.galleryImages = this.imgbox.map(item => {
+        return {
+          small: item.URL,
+          medium: item.URL,
+          big: item.URL
+        };
+      });
+    }
+  })
+}
+
+//************* get contact *************
+getContact() {
+  this.selectContact = []
+  this.selectContact2 = []
+  this.selectContact3 = []
+  this.auth.getContactDetail(this.credentials).subscribe((contactUser) => {
+    if (contactUser) {
+      this.contactUser = contactUser;
+      this.selectContact.push(this.contactUser[0])
+      if (contactUser.length == 2) {
+        this.selectContact2.push(this.contactUser[1])
+      } else if (contactUser.length == 3) {
+        this.selectContact3.push(this.contactUser[2])
+        this.selectContact2.push(this.contactUser[1])
+      }
+    }
+  },
+    err => {
+      console.error(err)
+    }
+  )
+}
+
+//************* Delete house *************
+onDelete() {
+  this.auth.DeleteLands(this.credentials).subscribe((results) => {
+    if (!results.error) {
+      alert(JSON.stringify("อสังหานี้ถูกลบแล้ว"))
+      this.router.navigateByUrl('/home')
+    } else {
+      alert(JSON.stringify("ไม่สามารถลบอสังหาฯนี้ได้ กรุณาลองใหม่ภายหลัง"))
+      console.log(results.error)
+    }
+  },
+    err => {
+      console.error(err)
+    }
+  )
+}
+
+//************* Update PPStatus house *************
+PPStatus(value) {
+  this.credentials.PPStatus = value
+}
+UpdateStatus() {
+  this.auth.UpdateStatusL(this.credentials).subscribe((result) => {
+    if(!result.error){
+      this.refresh()
+    }else{
+      console.log(result.error)
+    }
+  },
+    err => {
+      console.error(err)
+     
+    }
+  )
+}
+refresh(): void {
+  window.location.reload();
+}
+
 }

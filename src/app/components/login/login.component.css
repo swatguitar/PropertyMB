@@ -1,14 +1,19 @@
-.f{
-    font-size: 13px;
+.f {
+  font-size: 13px;
 }
 
-input
-    {
-        border-radius: 30px 30px 30px 30px;
-        padding: 20px; 
-        width: 300px;
-        height: 40px; 
-    }
-.PMB{
-        font-family: 'Poppins', 'Prompt', sans-serif;
-    }
+input {
+  border-radius: 30px 30px 30px 30px;
+  padding: 20px;
+  width: 300px;
+  height: 40px;
+}
+.showpass {
+    border-radius: 0px 30px 30px 0px;
+    height: 42px;
+}
+.PMB {
+  font-family: 'Poppins', 'Prompt', sans-serif;
+}
+
+

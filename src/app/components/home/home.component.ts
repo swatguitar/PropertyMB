@@ -16,8 +16,8 @@ export class HomeComponent {
     Lastname: '',
     UserType: '',
     Email: '',
-    Token:  '',
-    Answer:  '',
+    Token: '',
+    Answer: '',
     OldPassword: '',
     Password: '',
     Birthday: '',
@@ -72,7 +72,7 @@ export class HomeComponent {
     ContactSt: '',
     LandAge: '',
     PPStatus: '',
-    ImageEX : '',
+    ImageEX: '',
     TypeCode: '',
     PriceWA: '',
     WxD: '',
@@ -120,7 +120,7 @@ export class HomeComponent {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
-    Kitchen:0,
+    Kitchen: 0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -132,12 +132,12 @@ export class HomeComponent {
     Deed: '',
     Place: '',
     imgProperty: null,
-     //------ contact ------
-     ID_Contact: '',
-     ContactName: " ",
-     ContactEmail: " ",
-     ContactLine: " ",
-     ContactPhone: " ",
+    //------ contact ------
+    ID_Contact: '',
+    ContactName: " ",
+    ContactEmail: " ",
+    ContactLine: " ",
+    ContactPhone: " ",
   }
   public details: any[];
   public results: any[];
@@ -165,89 +165,82 @@ export class HomeComponent {
     this.AllProperty = []
     this.AllLongTrem = []
     this.AllShortTrem = []
-    this.auth.gethouse().subscribe(house => {
+    this.getHouse()
+    this.getLand()
+    this.getGroup()
 
+ 
+  }
 
-      this.HouseShortTerm = house.filter(article => {
-        return article.UserType == 'Short-Term';
-      });
-      this.HouseLongTerm = house.filter(article => {
-        return article.UserType == 'Long-Term';
-      });
-    
-    });
-    this.auth.getland().subscribe((land) => {
-      this.LandShortTerm = land.filter(article => {
-        return article.UserType == 'Short-Term';
-      });
-      this.LandLongTerm = land.filter(article => {
-        return article.UserType == 'Long-Term';
-      });
-   
-
-    })
-    setTimeout(() => {
-
-      this.showSpinner = false
-      this.auth.gethouse().subscribe((house) => {
-        this.details= house
-        if (this.details.length == 0) {
-          this.emptyP = 'true'
-        }
-       this.details.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-    }, 2000);
-
-
-    setTimeout(() => {
-      /** spinner ends after 5 seconds */
-      this.showSpinner = false
-      this.auth.getland().subscribe((land) => {
-
-        this.results = land;
-        
-        if (this.results.length == 0) {
-          this.emptyL = 'true'
-        }
-        this.results.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-      
-
-    }, 2000);
-    setTimeout(() => {
-      this.showSpinner = false
-      this.AllShortTrem = this.HouseShortTerm.concat(this.LandShortTerm);
-      this.AllLongTrem = this.HouseLongTerm.concat(this.LandLongTerm);
-   
-      this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      console.log(this.AllShortTrem)
-      console.log(this.AllLongTrem)
-     
-    }, 2000);
-
-
-
-    this.auth.getgroup().subscribe((group) => {
-      this.Groups = group;
-      this.Groups.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+  //************* get house that new edit or add *************
+  getHouse() {
+    this.auth.gethouse().subscribe((house) => {
+      if (house.length != 0) {
+        this.details = house
+        this.HouseShortTerm = house.filter(article => {
+          return article.UserType == 'Short-Term';
+        });
+        this.HouseLongTerm = house.filter(article => {
+          return article.UserType == 'Long-Term';
+        });
+        this.details.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+        this.showSpinner = false
+      }
+      else {
+        this.emptyP = 'true'
+      }
     },
       err => {
         console.error(err)
-
       }
     )
   }
 
+  //************* get land that new edit or add *************
+  getLand() {
+    this.auth.getland().subscribe((land) => {
+      if (land) {
+        this.results = land;
+        this.LandShortTerm = land.filter(article => {
+          return article.UserType == 'Short-Term';
+        });
+        this.LandLongTerm = land.filter(article => {
+          return article.UserType == 'Long-Term';
+        });
+        this.results.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+        this.concatProperty()
+        this.showSpinner = false
+      }
+      else {
+        this.emptyL = 'true'
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    ) 
+  }
 
+//************* concat house and land *************
+  concatProperty() {
+    this.AllShortTrem = this.HouseShortTerm.concat(this.LandShortTerm);
+    this.AllLongTrem = this.HouseLongTerm.concat(this.LandLongTerm);
+    this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+    this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+  }
+
+ //************* get group  *************
+  getGroup(){
+    this.auth.getgroup().subscribe((group) => {
+      if(group){
+        this.Groups = group;
+        this.Groups.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
 }
+

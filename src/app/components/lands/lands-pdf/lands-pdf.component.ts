@@ -68,6 +68,9 @@ export class LandsPDFComponent implements OnInit {
   SelectID: ID = {
     ID_Lands: '',
     ID_Property: '',
+    ContactU: '',
+    ContactUo: '',
+    ContactUt: '',
     PPStatus: '',
   }
   imageID: ImageID = {

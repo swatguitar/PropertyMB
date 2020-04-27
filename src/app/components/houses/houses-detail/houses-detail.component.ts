@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { AuthenticationService, ID, locationsDetails, PropertyDetails,ImageID } from '../../../authentication.service'
+import { AuthenticationService, ID, locationsDetails, PropertyDetails, ImageID } from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { count } from 'rxjs/operators';
 
@@ -16,9 +16,9 @@ export class HousesDetailComponent implements OnInit {
   details: PropertyDetails[];
   imgbox: any[];
   imagenew: any[];
-  public postID: string;
-  public activePage: number;
-  public results: PropertyDetails[];
+  postID: string;
+  activePage: number;
+  results: any[];
   zoom: number = 5;
   latitude: number = 13.7348534;
   longitude: number = 100.4997134999999;
@@ -45,6 +45,9 @@ export class HousesDetailComponent implements OnInit {
   credentials: ID = {
     ID_Lands: '',
     ID_Property: '',
+    ContactU: '',
+    ContactUo: '',
+    ContactUt: '',
     PPStatus: '',
   }
   ImageID: ImageID = {
@@ -58,23 +61,14 @@ export class HousesDetailComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-
-
+    //************* set show image *************
     this.galleryOptions = [
       { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
       { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
       { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
     ]
 
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onForeach()
-    }, 5000);
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onSetcontact()
-      this.recenter()
-    }, 7000);
-
-
+    //************* แบ่งหน้า &&  get id property *************
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = params.get('id');
@@ -86,157 +80,141 @@ export class HousesDetailComponent implements OnInit {
           this.activePage = +data.page;
         }
       });
-      this.ImageID.ID_Property = this.postID
-    this.auth.getallhouse().subscribe((house) => {
-      this.details = house
-      // กรณี resuponse success
-      this.results = this.details.filter(article => {
-        return article.ID_Property == this.postID;
-      });
 
+    this.ImageID.ID_Property = this.postID
+    this.credentials.ID_Property = this.postID;
+    this.getHouse()
+    this.getImage()
+
+  }
+  //************* get property *************
+  getHouse() {
+    this.auth.GetHouseDetail(this.credentials).subscribe((house) => {
+      if (house) {
+        this.results = house
+        this.credentials.ContactU = house[0].ContactU
+        this.credentials.ContactUt = house[0].ContactUt
+        this.credentials.ContactUo = house[0].ContactUo
+        this.conS1 = house[0].ContactS
+        this.conS2 = house[0].ContactSt
+        this.conS3 = house[0].ContactSo
+        this.latitude = Number(house[0].Latitude)
+        this.longitude = Number(house[0].Longitude)
+        this.zoom = 15
+        this.getContact()
+      }
     },
       err => {
         console.error(err)
       })
+  }
 
-    //-------- get contact ----
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
-    },
-      err => {
-        console.error(err)
-      }
-    )
-
-
-
-
+  //************* get Image *************
+  getImage() {
     this.auth.getimghouse(this.ImageID).subscribe((img) => {
-      this.imgbox = img
-      // กรณี resuponse success
-
-      this.imagenew = this.imgbox.filter(article => {
-        return article.ID_property == this.postID;
-
-      });
-      if (this.imagenew.length == 0) {
+      if (img) {
+        this.imgbox = img
+      }
+      if (img.length == 0) {
         this.galleryImages = [
           {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
+            small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
           },
           {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
+            small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
           },
           {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
+            small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
           },
           {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
+            small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
           },
           {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
+            small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+            big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
           },
         ]
-
       } else {
-        this.galleryImages = this.imagenew.map(item => {
-
+        this.galleryImages = this.imgbox.map(item => {
           return {
-            small: 'http://www.landvist.xyz/images/' + item.URL,
-            medium: 'http://www.landvist.xyz/images/' + item.URL,
-            big: 'http://www.landvist.xyz/images/' + item.URL
+            small: item.URL,
+            medium: item.URL,
+            big: item.URL
           };
-
         });
       }
-
     })
-
-  }
-  recenter() {
-    this.latitude = 13.7348534;
-    this.longitude = 100.4997134999999;
-    setTimeout(() => {
-
-      this.latitude = Number(this.latnew)
-      this.longitude = Number(this.lonnew)
-      console.log(this.latnew)
-      console.log(this.lonnew)
-      this.zoom = 15
-
-    }, 3000);
   }
 
-  onForeach() {
-    this.results.forEach((element, index) => {
-      console.log(this.latitude)
-      this.latnew = element.Latitude
-      this.lonnew = element.Longitude
-      this.lat = element.Latitude
-      this.lng = element.Longitude
-      this.conS1 = element.ContactS
-      this.conS2 = element.ContactSt
-      this.conS3 = element.ContactSo
-      this.IDcontact1 = element.ContactU
-      this.IDcontact2 = element.ContactUt
-      this.IDcontact3 = element.ContactUo
-      console.log(this.latitude)
-    });
-  }
-  onSetcontact() {
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact1;
-    });
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact2;
-    });
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact3;
-    });
-  }
-  onDelete() {
-    this.credentials.ID_Property = this.postID;
-    this.auth.DeleteHouse(this.credentials).subscribe(() => {
-
+  //************* get contact *************
+  getContact() {
+    this.selectContact = []
+    this.selectContact2 = []
+    this.selectContact3 = []
+    this.auth.getContactDetail(this.credentials).subscribe((contactUser) => {
+      if (contactUser) {
+        this.contactUser = contactUser;
+        this.selectContact.push(this.contactUser[0])
+        if (contactUser.length == 2) {
+          this.selectContact2.push(this.contactUser[1])
+        } else if (contactUser.length == 3) {
+          this.selectContact3.push(this.contactUser[2])
+          this.selectContact2.push(this.contactUser[1])
+        }
+      }
     },
       err => {
         console.error(err)
-        alert(JSON.stringify("อสังหานี้ถูกลบแล้ว"))
-        this.router.navigateByUrl('/home')
-
       }
     )
   }
+
+  //************* Delete house *************
+  onDelete() {
+    this.auth.DeleteHouse(this.credentials).subscribe((results) => {
+      if (!results.error) {
+        alert(JSON.stringify("อสังหานี้ถูกลบแล้ว"))
+        this.router.navigateByUrl('/home')
+      } else {
+        alert(JSON.stringify("ไม่สามารถลบอสังหาฯนี้ได้ กรุณาลองใหม่ภายหลัง"))
+        console.log(results.error)
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  //************* Update PPStatus house *************
   PPStatus(value) {
     this.credentials.PPStatus = value
   }
   UpdateStatus() {
-    this.credentials.ID_Property = this.postID;
-    this.auth.UpdateStatus(this.credentials).subscribe(() => {
-
+    this.auth.UpdateStatus(this.credentials).subscribe((result) => {
+      if(!result.error){
+        this.refresh()
+      }else{
+        console.log(result.error)
+      }
     },
       err => {
         console.error(err)
-        this.refresh()
-
+       
       }
     )
-
-  
   }
-  
   refresh(): void {
     window.location.reload();
-}
+  }
 
 }

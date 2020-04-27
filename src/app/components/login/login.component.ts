@@ -148,25 +148,35 @@ export class LoginComponent {
 
   constructor(private auth: AuthenticationService, private router: Router) { }
   ngOnInit() {
+      //************* show password *************
+    $(document).ready(function() {
+      $("#show_hide_password button").on('click', function(event) {
+          event.preventDefault();
+          if($('#show_hide_password input').attr("type") == "text"){
+              $('#show_hide_password input').attr('type', 'password');
+              $('#Showpass').addClass( "fa-eye-slash" );
+              $('#Showpass').removeClass( "fa-eye" );
+          }else if($('#show_hide_password input').attr("type") == "password"){
+              $('#show_hide_password input').attr('type', 'text');
+              $('#Showpass').removeClass( "fa-eye-slash" );
+              $('#Showpass').addClass( "fa-eye" );
+          }
+      });
+  });
+
+    //************* validate form *************
   this.form = new FormGroup ({
     Email: new FormControl ('', [Validators.required,Validators.email]),
     Password: new FormControl ('', Validators.required),
   });
 }
-
   get f() { return this.form.controls; }
-
-
-
   login() {
-
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.form.invalid) {
       return;
     }
-    
     this.auth.login(this.credentials).subscribe(
       () => {
         this.loading = false;
@@ -174,9 +184,6 @@ export class LoginComponent {
         setTimeout(() => {
           this.router.navigateByUrl('/home')
         }, 2000);
-
-
-
       },
       err => {
         this.logedin = "fail";
@@ -184,10 +191,9 @@ export class LoginComponent {
         //alert(JSON.stringify(err.text))
         this.loading = true;
       }
-
     )
-
   }
+  
 
 
 

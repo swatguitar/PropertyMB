@@ -16,13 +16,10 @@
                 <meta property="position" content="2">
               </li>
             </ul>
-
             <h1><i class="fa fa-tree" aria-hidden="true"></i>อสังหาสิ่งปลูกสร้างของคุณ</h1>
           </div>
-
         </div>
       </div>
-
       <div>
         <div>
           <div id="content-container"><br>
@@ -30,98 +27,76 @@
             <div id="search-body" class="d-flex">
               <div id="modal-bg"></div>
               <div id="search-result">
-
                 <div class="row ">
-                  <div class="col-md-2"></div>
-                  <div class="col-md-7">
-                    <div class="input-group mb-3">
-
-                      <!-- Basic dropdown -->
-                      <select class="btn btn-outline-secondary dropdown-toggle" name="propertyType"
-                        (change)="selectfilterOne($event.target.value)">
-                        <option>ประเภทอสังหาฯ</option>
-                        <option value="บ้าน">บ้าน</option>
-                        <option value="คอนโด">คอนโด</option>
-                        <option value="อาคารพาณิชย์">อาคารพาณิชย์</option>
-
-                      </select>
-                      <!-- Basic dropdown -->
-                      <select class="btn btn-outline-secondary dropdown-toggle" name="FilterPrice"
-                      (change)="selectfiltertwo($event.target.value)">
-                      <option>ช่วงราคา</option>
-                      <option value="P1">500,000 - 1,000,000 บาท</option>
-                      <option value="P2">1,100,000 - 5,000,000 บาท</option>
-                      <option value="P3">5,100,000 - 10,000,000 บาท</option>
-                      <option value="P4">มากกว่า 10,000,000 บาท</option>
-
-                    </select>
-                      <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">ที่อยู่</button>
-                        <div class="dropdown-content">
-                          <p>จังหวัด</p>
-                          <div class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                              placeholder="ค้นหา" class="form-control" [(ngModel)]="searchPro1"
-                              (ngModelChange)="selectprovince($event)">
-                              <option>- จังหวัด -</option>
-                              <option *ngFor="let p of province" [ngValue]="p">
-                                {{p.PROVINCE_NAME}}
-                              </option>
-
-                            </select></div>
-                          <p>อำเภอ</p>
-                          <div class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                              placeholder="ค้นหา" class="form-control" [(ngModel)]="searchAmphur1"
-                              (ngModelChange)="selectamphur($event)">
-                              <option>- อำเภอ -</option>
-                              <option *ngFor="let a of amphur" [ngValue]="a">
-                                {{a.AMPHUR_NAME}}</option>
-                            </select></div>
-                          <p>ตำบล</p>
-                          <div class="filter-search"><select type="text" style="border-radius: 30px 30px 30px 30px;"
-                              placeholder="ค้นหา" class="form-control" [(ngModel)]="searchDis1"
-                              (ngModelChange)="selectdistrict($event)">
-                              <option>- ตำบล -</option>
-                              <option *ngFor="let d of district" [ngValue]="d">
-                                {{d.DISTRICT_NAME}}</option>
-                            </select></div>
+                  <div class="col-md-1" ></div>
+                  <div class="col-md-10">
+                    <form>
+                      <div class="row">
+                        <div class="col-md-3">   
+                          <select id="inputState" class="btn dropdown-toggle btn-outline-secondary" name="propertyType" [(ngModel)]="selectfilter1"
+                            (change)="selectPropertyType($event.target.value)">
+                            <option value="">ประเภทอสังหาฯ</option>
+                            <option value="บ้าน">บ้าน</option>
+                            <option value="คอนโด">คอนโด</option>
+                            <option value="อาคารพาณิชย์">อาคารพาณิชย์</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <select id="inputState" class="btn dropdown-toggle btn-outline-secondary" name="FilterPrice" [(ngModel)]="selectfilter2"
+                            (change)="selectSellPrice($event.target.value)">
+                            <option value="">ช่วงราคา</option>
+                            <option value="P1">500,000 - 1,000,000 บาท</option>
+                            <option value="P2">1,100,000 - 5,000,000 บาท</option>
+                            <option value="P3">5,100,000 - 10,000,000 บาท</option>
+                            <option value="P4">มากกว่า 10,000,000 บาท</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3">
+                          <select id="inputState" class="btn dropdown-toggle btn-outline-secondary" name="searchPro1" [(ngModel)]="searchPro1"
+                            (ngModelChange)="selectProvince($event)">
+                            <option value="" >จังหวัด</option>
+                            <option *ngFor="let p of province" [ngValue]="p">
+                              {{p.PROVINCE_NAME}}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <select id="inputState" class="btn dropdown-toggle btn-outline-secondary" name="selectfilter3" [(ngModel)]="selectfilter3"
+                            (change)="selectHomeCondition($event.target.value)">
+                            <option value="">สภาพอสังหาฯ</option>
+                            <option value="ใหม่">ใหม่</option>
+                            <option value="มือสอง">มือสอง</option>
+                          </select>
                         </div>
                       </div>
-                      <select class="btn btn-outline-secondary dropdown-toggle"
-                        (change)="selectfiltersix($event.target.value)">
-                        <option>สภาพอสังหาฯ</option>
-                        <option value="ใหม่">ใหม่</option>
-                        <option value="มือสอง">มือสอง</option>
-                      </select>
-                    </div>
+                    </form>
                   </div>
-                  <div class=" row col-md-3">
-                    <div>
-                      <button class="btn btn-success" (click)="spinnerload()">ค้นหา</button>
-                    </div>
-                    <div class="col-md-2">
-                      <button class="btn btn-warning" (click)="Reset()">รีเซ็ท</button>
+                  <div class="col-mb-2">
+                    
+                  </div>
+                </div>
+                <div class="container">
+                  <div class="row">
+                    <div class="col text-center">
+                      <br>
+                      <div class="col-md-3"></div>
+                      <div class="col-md-6"> <button type="button" class="btn btn-success btn-lg btn-block " (click)="Filter()">ค้นหา</button></div>
+                      <div class="col-md-3"><button type="button" class="btn btn-warning btn-lg" (click)="Reset()">รีเซ็ท</button></div>
                     </div>
                   </div>
                 </div>
                 <br>
                 <hr class="specification-dash-line">
-
                 <label for="">ผลการค้นหาทั้งหมด {{totalItem}} ที่</label>
                 <br>
                 <app-loading-spinner *ngIf="showSpinner==true"></app-loading-spinner>
                 <br>
                 <div class="search-grid row col-eq">
-
-
-
-
-
                   <div *ngFor="let houses of filterProperty   | slice:pointStart:pointEnd "
                     class="col-xs-12 col-sm-6 col-lg-3 item">
                     <div class="box jumbotron ">
-                      <div class=""><button (click)="SelectID(houses.ID_Property)" type="button" class="compare-btn" data-toggle="modal"
-                          data-target="#Createlist"><i aria-hidden="true" class="fa fa-plus"></i>
+                      <div class=""><button (click)="SelectID(houses.ID_Property)" type="button" class="compare-btn"
+                          data-toggle="modal" data-target="#Createlist"><i aria-hidden="true" class="fa fa-plus"></i>
                           เพิ่มลงกลุ่ม
                         </button>
                         <!-- Modal -->
@@ -136,33 +111,33 @@
                                 </button>
                               </div>
                               <div class="modal-body">
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      <select style="border-radius: 30px 30px 30px 30px;" id="province"
-                                        class="form-control" name="selectGroup" 
-                                        (change)="selectGroup($event.target.value)">
-                                        <option>กรุณาเลือกกลุ่ม</option>
-                                        <option *ngFor="let G of groupAll" value="{{G.ID_Group}}">
-                                          {{G.NameG}}
-                                        </option>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                      class="form-control" name="selectGroupAdd" [(ngModel)]="selectGroupAdd"
+                                      (change)="selectGroup($event.target.value)">
+                                      <option value="">กรุณาเลือกกลุ่ม</option>
+                                      <option *ngFor="let G of groupAll" value="{{G.ID_Group}}">
+                                        {{G.NameG}}
+                                      </option>
 
-                                      </select>
-                                    </div>
-                                    <div class="col-md-6" *ngIf="credentials.ID_Group != ''">
-                                      <select style="border-radius: 30px 30px 30px 30px;" id="province"
-                                        class="form-control" name="selectGroup" 
-                                        (change)="selectFolder($event.target.value)">
-                                        <option>กรุณาเลือกแฟ้ม</option>
-                                        <option *ngFor="let F of folder" value="{{F.ID_Folder}}">
-                                          {{F.NameF}}
-                                        </option>
-
-                                      </select>
-                                    </div>
+                                    </select>
                                   </div>
+                                  <div class="col-md-6" *ngIf="groupdetail.ID_Group != ''">
+                                    <select style="border-radius: 30px 30px 30px 30px;" id="province"
+                                      class="form-control" name="selectGroup"
+                                      (change)="selectFolder($event.target.value)">
+                                      <option>กรุณาเลือกแฟ้ม</option>
+                                      <option *ngFor="let F of folder" value="{{F.ID_Folder}}">
+                                        {{F.NameF}}
+                                      </option>
+
+                                    </select>
+                                  </div>
+                                </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetCriteria()">ยกเลิก</button>
                                 <button type="button" class="btn btn-primary" data-dismiss="modal"
                                   (click)="CreateList()">เพิ่มลงกลุ่ม</button>
                               </div>
@@ -179,7 +154,7 @@
                         </a>
                         <div class=""><a [routerLink]="['/houses',houses.ID_Property]"
                             [queryParams]="{page: activePage}"><img width="180" height="50"
-                              src="http://www.landvist.xyz/images/{{houses.ImageEX}}"
+                              src="{{houses.ImageEX}}"
                               class="img-responsive notebook-img rounded"></a>
                           <!---->
                           <hr>
@@ -212,13 +187,7 @@
                       <!---->
                     </div>
                   </div>
-
-
-
-
-
                 </div>
-
                 <nav aria-label="Page navigation" class="text-center">
                   <ul class="pagination ">
                     <li class="page-item">
@@ -244,17 +213,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div id="compare-box" class="">
-          <ul class="compare-list"></ul>
-          <ul class="compare-button-box">
-            <li><a href="#" target="_blank"><button id="compare-submmit" type="button"><i
-                    class="fa fa-plus"></i>เปรียบเทียบ (<span>0</span>)
-                </button></a></li>
-            <li><button id="clear-compare" type="button"><i class="fa fa-times"></i>
-                ล้างตัวเลือก
-              </button></li>
-          </ul>
         </div>
       </div>
     </div>
