@@ -28,7 +28,7 @@ export class CreateGComponent implements OnInit {
   }
   public postID: number;
   localImageUrl = [];
-  Email:string
+  Email: string
   CreateGroup: boolean = false
   Groups: any[];
   uploader: FileUploader = new FileUploader({ url: uri });
@@ -38,7 +38,7 @@ export class CreateGComponent implements OnInit {
   temp: any;
   GDetails: any;
   renew: boolean = true;
-  constructor(private http: HttpClient, private route: ActivatedRoute, public sanitizer: DomSanitizer, public auth: AuthenticationService, ) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, public sanitizer: DomSanitizer, public auth: AuthenticationService,private router: Router ) {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     }
@@ -54,7 +54,6 @@ export class CreateGComponent implements OnInit {
     };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
-      this.onFinish()
       if (response) {
         console.log("response" + JSON.stringify(response));
       }
@@ -69,22 +68,21 @@ export class CreateGComponent implements OnInit {
       }
     });
   }
+
   ngOnInit() {
     this.GDetails = []
+    //************* get id *************
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = +params.get('id');
     }
     this.credentials.ID_Group = this.postID
-    this.auth.getgroupfolder(this.credentials).subscribe((group) => {
-      this.folder = group
-      console.log(this.folder)
-
-    },
-      err => {
-        console.error(err)
-      })
-
+    this.getGroupDetailMember()
+    this.getGroup()
+  }
+  
+  //************* get group by owner id *************
+  getGroup() {
     this.auth.getgroup().subscribe((group) => {
       this.Groups = group;
     },
@@ -93,6 +91,21 @@ export class CreateGComponent implements OnInit {
 
       }
     )
+  }
+
+  //************* get folder of group  *************
+  getGroupFolder() {
+    this.auth.getgroupfolder(this.credentials).subscribe((group) => {
+      this.folder = group
+      console.log(this.folder)
+    },
+      err => {
+        console.error(err)
+      })
+  }
+  
+//************* get group that you are member  *************
+  getGroupMember() {
     this.auth.getgroupM().subscribe((group) => {
       this.GroupMs = group;
     },
@@ -101,26 +114,19 @@ export class CreateGComponent implements OnInit {
 
       }
     )
+  }
 
-    setTimeout(() => {
-      this.auth.getgroupAll().subscribe((group) => {
-        this.groupAll = group
-        for (var i = 0; i < this.GroupMs.length; i++) {
-    
-         this.temp = group.filter(article => {
-       
-            return article.ID_Group == this.GroupMs[i].ID_Group
-          });
-          this.GDetails = this.GDetails.concat(this.temp);
-          //this.GDetails.push([this.temp ]);
+//************* get group that you are member  *************
+  getGroupDetailMember() {
+    this.auth.getGroupDetailMember().subscribe((group) => {
+      this.GDetails = group;
+      console.log(this.GDetails)
+    },
+      err => {
+        console.error(err)
+
       }
-      },
-        err => {
-          console.error(err)
-    
-        }
-      )
-    }, 1000);
+    )
   }
 
   onCreateG() {
@@ -128,17 +134,15 @@ export class CreateGComponent implements OnInit {
     this.auth.addgroup(this.credentials).subscribe(
       (r) => {
         console.log(r)
+        this.router.navigateByUrl('/groups');
       },
       err => {
         console.error(err)
         alert(JSON.stringify(err.text))
-
-      }
-
-    )
-
+      })
   }
-  Chackmember(){
+
+  Chackmember() {
 
     this.auth.getMemberchack(this.credentials).subscribe(
       (r) => {
@@ -148,12 +152,10 @@ export class CreateGComponent implements OnInit {
         console.error(err)
         alert(JSON.stringify(err))
       })
-
   }
-  addmember(){
 
+ 
 
-  }
   onFinishedG() {
     setTimeout(() => {
       this.refresh()
@@ -162,11 +164,8 @@ export class CreateGComponent implements OnInit {
   createG() {
     this.CreateGroup = true
   }
-  onFinish() {
-  
 
-  }
-
+ 
   refresh(): void {
     window.location.reload();
   }

@@ -224,7 +224,7 @@
                                 <div class="col-md-3">
                                   <div class="row">
                                     <div class="col-sm-6">
-                                      <i class="fas fa-bath"></i>
+                                      <i class="fas fa-home"></i>
                                       จำนวนชั้น<i class="reqiureinput">*</i>
                                     </div>
                                     <div class="col-sm-10">
@@ -292,7 +292,7 @@
                               [(ngModel)]="credentials.AsseStatus"
                               [ngClass]="{ 'is-invalid': submitted && f.AsseStatus.errors }">
                               <option value="" selected>
-                                กรุณาเลือก สถานะทรัพย์สิน</option>                     
+                                กรุณาเลือก สถานะทรัพย์สิน</option>
                               <option value="จำนอง" selected>
                                 จำนอง</option>
                               <option value="ขายฝาก" selected>
@@ -460,7 +460,7 @@
                                       พื้นที่ใช้สอย (ตร.ม.)<i class="reqiureinput">*</i>
                                     </div>
                                     <div class="col-sm-10">
-                                      <input style="border-radius: 30px 30px 30px 30px;" type="text" id="HouseArea"
+                                      <input style="border-radius: 30px 30px 30px 30px;" type="number" id="HouseArea"
                                         class="form-control" placeholder="พื้นที่ใช้สอย (ตร.ม.)"
                                         formControlName="HouseArea" required [(ngModel)]="credentials.HouseArea"
                                         [ngClass]="{ 'is-invalid': submitted && f.HouseArea.errors }">
@@ -1354,14 +1354,7 @@
                           <input type="radio" id="" value="คอนกรีต" checked name="RoadType"
                             [(ngModel)]="credentials.RoadType"> คอนกรีต
                         </div>
-                        <div class="col-sm-12">
-                          <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
-                        </div>
-                        <div *ngIf="Ronther " class="col-sm-12">
-                          <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType"
-                            class="form-control" placeholder="โปรดระบุ" name="RoadType"
-                            [(ngModel)]="credentials.RoadType">
-                        </div>
+                      
 
                         <div class="col-sm-12">
                           <br>
@@ -1575,14 +1568,7 @@
                           <input type="radio" id="" value="คอนกรีต" name="RoadType" [(ngModel)]="credentials.RoadType">
                           คอนกรีต
                         </div>
-                        <div class="col-sm-12">
-                          <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
-                        </div>
-                        <div *ngIf="Ronther " class="col-sm-12">
-                          <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType"
-                            class="form-control" placeholder="โปรดระบุ" name="RoadType"
-                            [(ngModel)]="credentials.RoadType">
-                        </div>
+                        
 
                         <div class="col-sm-12">
                           <br>
@@ -1800,14 +1786,7 @@
                           <input type="radio" id="" value="คอนกรีต" name="RoadType" [(ngModel)]="credentials.RoadType">
                           คอนกรีต
                         </div>
-                        <div class="col-sm-12">
-                          <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
-                        </div>
-                        <div *ngIf="Ronther " class="col-sm-12">
-                          <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType"
-                            class="form-control" placeholder="โปรดระบุ" name="RoadType"
-                            [(ngModel)]="credentials.RoadType">
-                        </div>
+                      
 
                         <div class="col-sm-12">
                           <br>
@@ -1879,9 +1858,20 @@
                           <div class="text-right text-danger">
                             *ท่านสามารถเลือนจุดไปยังสถานที่ที่ท่านต้องการได้
                           </div>
-                          <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
-                            placeholder="ค้นหาอยู่ของอสังหา" autocorrect="off" autocapitalize="off" spellcheck="off"
-                            type="text" #search>
+                          <div class="row">
+                            <div class="col-md-10">
+                              <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+                              placeholder="ค้นหาอยู่ของอสังหา" autocorrect="off" autocapitalize="off" spellcheck="off"
+                              type="text" #search value="{{address}}" name="address">
+                            </div>
+                            <div class="col-md-2">
+                              <button type="button" class="btn btn-warning btn-s" (click)="setCurrentLocation()"
+                              ><i class="far fa-compass"></i> ที่อยู่ปัจจุบัน
+                            </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
                         </div>
                         <div>
                           <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
@@ -2036,31 +2026,12 @@
             </div>
             <div class="row">
               <div class="col-md-12  ">
-                <h3><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                      aria-controls="home" aria-selected="true">ผู้ติดต่อบุคคลที่
-                      1<i class="reqiureinput">*</i></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                      aria-controls="profile" aria-selected="false">ผู้ติดต่อบุคคลที่
-                      2</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
-                      aria-controls="contact" aria-selected="false">ผู้ติดต่อบุคคลที่
-                      3</a>
-                  </li>
-                </ul>
+                <h3 ><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div>
                       <div class="container jumbotron">
-
                         <hr>
-                        <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 1</h4>
                         <div class="container">
                           <form [formGroup]="EditContactForm">
                             <div class="form-row">
@@ -2074,11 +2045,9 @@
                                     historyIdentifier="contactUser" [itemTemplate]="itemTemplate"
                                     [notFoundTemplate]="notFoundTemplate">
                                   </ng-autocomplete>
-
                                   <ng-template #itemTemplate let-item>
                                     <a [innerHTML]="item.Name"></a>
                                   </ng-template>
-
                                   <ng-template #notFoundTemplate let-notFound>
                                     <div>ไม่พบผู้ติดต่อ</div>
                                   </ng-template>
@@ -2107,31 +2076,61 @@
                             <div class="form-row">
                               <div class="form-group col-md-4">
                                 <label for="inputCity">อีเมล</label>
-                                <input type="text" class="form-control"
+                                <input type="text" class="form-control"[disabled]="EditC"
                                   (change)="onEditContactEmail1($event.target.value)" value="{{conEmail1}}"
                                   id="inputCity" style="border-radius: 30px 30px 30px 30px;">
                               </div>
                               <div class="form-group col-md-4">
                                 <label for="inputZip">เบอร์โทร</label>
                                 <input type="text" class="form-control"
-                                  (change)="onEditContactPhone1($event.target.value)"
+                                  (change)="onEditContactPhone1($event.target.value)" [disabled]="EditC"
                                   style="border-radius: 30px 30px 30px 30px;" value="{{conPhone1}}">
                               </div>
                               <div class="form-group col-md-4">
                                 <label for="inputZip">ไลน์</label>
                                 <input type="text" class="form-control"
-                                  (change)="onEditContactLine1($event.target.value)"
+                                  (change)="onEditContactLine1($event.target.value)" [disabled]="EditC"
                                   style="border-radius: 30px 30px 30px 30px;" value="{{conLine1}}">
                               </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" *ngIf="SelectContact == true">
                               <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="gridCheck"
-                                  (change)="onEditContactID1($event.target.value)" [(ngModel)]="allowedit"
+                                  (change)="onEditContactID1($event.target.value)" [(ngModel)]="allowedit" 
                                   formControlName="allowedit" name="allowedit" value="{{conID1}}">
                                 <label class="form-check-label" for="gridCheck">
                                   แก้ไข ข้อมูลผู้ติดต่อ
-                                </label>
+                                </label><a [routerLink] data-toggle="modal" data-target="#Contact1"> <i
+                                    class="far fa-question-circle"> </i></a>
+                                <!-- Modal -->
+                                <div class="modal fade" id="Contact1" tabindex="-1" role="dialog"
+                                  aria-labelledby="Contact1" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="Contact1">แก้ไขข้อมูล ผู้ติดต่อ</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <label>1.แก้ไขผู้ติดต่อคนเดิม</label>
+                                        <p> ทำเครืองหมาย <i class="fas fa-check"></i>
+                                          ในช่องว่างหากต้องการแก้ไขข้อมูลผู้ติดต่อคนเดิม จากนั้น แก้ไขข้อมูลที่ต้องการ</p>
+                                            <p>เมื่อเสร็จแล้ว กดปุ่ม <i style="color: orange;">"บันทึก"</i></p>
+                                        <label>2.เพิ่มผู้ติดต่อใหม่ </label>
+                                        <p>หากต้องการเพิ่มผู้ติดต่อคนใหม่ <i style="color: orangered;">ไม่ต้อง</i>
+                                          ทำเครื่องหมาย <i class="fas fa-check"></i> ในช่องว่าง ท่านสามารถ
+                                          กรอกข้อมูลในช่องว่าง จากนั้นกดปุ่ม <i
+                                            style="color: #519b06;">"บันทึกข้อมูล"</i> </p>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                          data-dismiss="modal">ปิด</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                             <button *ngIf="allowedit" type="button" (click)="onEditContact1()"
@@ -2141,193 +2140,25 @@
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <div>
-                      <div class="container jumbotron">
-                        <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 2</h4>
-                        <div class="container">
-                          <form [formGroup]="EditContact2Form">
-                            <div class="form-row">
-                              <div class="form-group col-md-4">
-                                <label for="inputEmail4">ชื่อผู้ติดต่อ<i class="reqiureinput">*</i></label>
-                                <div class="ng-autocomplete">
-                                  <ng-autocomplete [data]="contactUser" formControlName="ContactName"
-                                    [(ngModel)]="Name2" [searchKeyword]="keyword" [initialValue]=""
-                                    placeHolder="กรุณากรอกข้อมูล" (selected)='onGetContact2($event)'
-                                    (inputChanged)='onEditContactName2($event)' (inputFocused)='onFocused($event)'
-                                    historyIdentifier="contactUser" [itemTemplate]="itemTemplate"
-                                    [notFoundTemplate]="notFoundTemplate">
-                                  </ng-autocomplete>
-
-                                  <ng-template #itemTemplate let-item>
-                                    <a [innerHTML]="item.Name"></a>
-                                  </ng-template>
-
-                                  <ng-template #notFoundTemplate let-notFound>
-                                    <div [innerHTML]="notFound"></div>
-                                  </ng-template>
-                                  <div *ngIf="submitted && Et.ContactName.errors" class="invalid-feedback">
-                                    <div *ngIf="Et.ContactName.errors.required">
-                                      กรุณากรอกข้อมูล</div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group col-md-4">
-                                <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
-                                <select style="border-radius: 30px 30px 30px 30px;" class="form-control"
-                                  name="ContactSt" formControlName="ContactSt" [(ngModel)]="credentials.ContactSt"
-                                  [ngClass]="{ 'is-invalid': submitted && Et.ContactSt.errors }">
-                                  <option value="">กรุณาเลือก สถานะ</option>
-                                  <option value="เจ้าของ">เจ้าของ</option>
-                                  <option value="นายหน้า">นายหน้า</option>
-                                </select>
-                                <div *ngIf="submitted && Et.ContactSt.errors" class="invalid-feedback">
-                                  <div *ngIf="Et.ContactSt.errors.required">
-                                    กรุณากรอกข้อมูล</div>
-                                </div>
-
-                              </div>
-                            </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-4">
-                                <label for="inputCity">อีเมล</label>
-                                <input type="text" class="form-control"
-                                  (change)="onEditContactEmail2($event.target.value)" value="{{conEmail2}}"
-                                  id="inputCity" style="border-radius: 30px 30px 30px 30px;">
-                              </div>
-                              <div class="form-group col-md-4">
-                                <label for="inputZip">เบอร์โทร</label>
-                                <input type="text" class="form-control"
-                                  (change)="onEditContactPhone2($event.target.value)"
-                                  style="border-radius: 30px 30px 30px 30px;" value="{{conPhone2}}">
-                              </div>
-                              <div class="form-group col-md-4">
-                                <label for="inputZip">ไลน์</label>
-                                <input type="text" class="form-control"
-                                  (change)="onEditContactLine2($event.target.value)"
-                                  style="border-radius: 30px 30px 30px 30px;" value="{{conLine2}}">
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck"
-                                  (change)="onEditContactID2($event.target.value)" [(ngModel)]="allowedit2"
-                                  formControlName="allowedit2" name="allowedit2" value="{{conID2}}">
-                                <label class="form-check-label" for="gridCheck">
-                                  แก้ไข ข้อมูลผู้ติดต่อ
-                                </label>
-                              </div>
-                            </div>
-                            <button *ngIf="allowedit2" type="submit" (click)="onEditContact()"
-                              class="btn btn-warning">บันทึก</button>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                    <div class="container jumbotron">
-                      <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
-                      <div class="container">
-                        <form [formGroup]="EditContact3Form">
-                          <div class="form-row">
-                            <div class="form-group col-md-4">
-                              <label for="inputEmail4">ชื่อผู้ติดต่อ<i class="reqiureinput">*</i></label>
-                              <div class="ng-autocomplete">
-                                <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name3"
-                                  [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
-                                  (selected)='onGetContact3($event)' (inputChanged)='onEditContactName3($event)'
-                                  (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
-                                  [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
-                                </ng-autocomplete>
-
-                                <ng-template #itemTemplate let-item>
-                                  <a [innerHTML]="item.Name"></a>
-                                </ng-template>
-
-                                <ng-template #notFoundTemplate let-notFound>
-                                  <div [innerHTML]="notFound"></div>
-                                </ng-template>
-                                <div *ngIf="submitted && Eo.ContactName.errors" class="invalid-feedback">
-                                  <div *ngIf="Eo.ContactName.errors.required">
-                                    กรุณากรอกข้อมูล</div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group col-md-4">
-                              <label for="inputPassword4">สถานะ<i class="reqiureinput">*</i></label>
-                              <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSo"
-                                formControlName="ContactSo" [(ngModel)]="credentials.ContactSo"
-                                [ngClass]="{ 'is-invalid': submitted && Eo.ContactSo.errors }">
-                                <option value="">กรุณาเลือก สถานะ</option>
-                                <option value="เจ้าของ">เจ้าของ</option>
-                                <option value="นายหน้า">นายหน้า</option>
-                              </select>
-                              <div *ngIf="submitted && Eo.ContactSo.errors" class="invalid-feedback">
-                                <div *ngIf="Eo.ContactSo.errors.required">
-                                  กรุณากรอกข้อมูล</div>
-                              </div>
-
-                            </div>
-                          </div>
-                          <div class="form-row">
-                            <div class="form-group col-md-4">
-                              <label for="inputCity">อีเมล</label>
-                              <input type="text" class="form-control"
-                                (change)="onEditContactEmail3($event.target.value)" value="{{conEmail3}}" id="inputCity"
-                                style="border-radius: 30px 30px 30px 30px;">
-                            </div>
-                            <div class="form-group col-md-4">
-                              <label for="inputZip">เบอร์โทร</label>
-                              <input type="text" class="form-control"
-                                (change)="onEditContactPhone3($event.target.value)"
-                                style="border-radius: 30px 30px 30px 30px;" value="{{conPhone3}}">
-                            </div>
-                            <div class="form-group col-md-4">
-                              <label for="inputZip">ไลน์</label>
-                              <input type="text" class="form-control" (change)="onEditContactLine3($event.target.value)"
-                                style="border-radius: 30px 30px 30px 30px;" value="{{conLine3}}">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <div class="form-check">
-                              <input class="form-check-input" type="checkbox" id="gridCheck"
-                                (change)="onEditContactID3($event.target.value)" [(ngModel)]="allowedit3"
-                                formControlName="allowedit3" name="allowedit3" value="{{conID3}}">
-                              <label class="form-check-label" for="gridCheck">
-                                แก้ไข ข้อมูลผู้ติดต่อ
-                              </label>
-                            </div>
-                          </div>
-                          <button *ngIf="allowedit3" type="submit" (click)="onEditContact()"
-                            class="btn btn-warning">บันทึก</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-md-12 ">
-            <div class="row ">
-              <div class="col-md-6 ">
-                <button class="btn btn-success float-right" type="submit" (click)="onUpdate()" *ngIf=" back=='true'">
+            <div class="row">
+              <div class="col text-center">
+                <button class="btn btn-success " type="submit" (click)="onUpdate()" *ngIf=" back=='true'">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
                 </button>
-                <button class="btn btn-success float-right" type="submit" *ngIf=" back=='false'" (click)="onGo()">
+                <button class="btn btn-success " type="submit" *ngIf=" back=='false'" (click)="onGo()">
                   <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
                 </button>
-
               </div>
-              <div class="col-md-6 ">
-                <div class="container">
-                  <button class="btn btn-primary float-right" type="button" awNextStep
-                    [disabled]="credentials.ID_Property == ''">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ถัดไป
-                  </button>
-                </div>
+              <div class="col">
+                <button class="btn btn-primary float-right" type="button" awNextStep
+                  [disabled]="credentials.ID_Property == ''">
+                  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ถัดไป
+                </button>
               </div>
             </div>
           </div>
@@ -2343,8 +2174,7 @@
           <div class="container">
             <div class="float-left"><button type="button" class="btn btn-secondary" (click)="onBack()"
                 awPreviousStep>ย้อนกลับ</button></div>
-            <div class="float-right"><button type="button" class="btn btn-primary " 
-                awNextStep>ถัดไป</button></div>
+            <div class="float-right"><button type="button" class="btn btn-primary " awNextStep>ถัดไป</button></div>
           </div>
         </div>
       </aw-wizard-step>
@@ -2387,16 +2217,16 @@
                       <div class="specificate-panel">
                         <div class="specificate-list">
                           <div class="specificate-title">ราคาขาย</div>
-                          <div class="specificate-info">{{ credentials.SellPrice | number}} บาท</div>
+                          <div class="specificate-info">{{ credentials.SellPrice }} บาท</div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ราคาประเมิน</div>
-                          <div class="specificate-info">{{ credentials.CostestimateB | number}} บาท
+                          <div class="specificate-info">{{ credentials.CostestimateB}} บาท
                           </div>
                         </div>
                         <div class="specificate-list">
                           <div class="specificate-title">ราคาตลาด</div>
-                          <div class="specificate-info">{{ credentials.MarketPrice | number}} บาท</div>
+                          <div class="specificate-info">{{ credentials.MarketPrice}} บาท</div>
                         </div>
                       </div>
                     </div>
@@ -2434,7 +2264,7 @@
                               </li>
                               <li
                                 *ngIf="credentials.PropertyType == 'บ้าน' || credentials.PropertyType =='อาคารพาณิชย์'">
-                                <div><i class="fas fa-ruler"></i> จำนวนชั้น
+                                <div><i class="fas fa-home"></i> จำนวนชั้น
                                   {{credentials.Floor}} ชั้น</div>
 
                               </li>
@@ -2655,7 +2485,7 @@
                               (Wi-Fi)</div>
                             <div class="specificate-info" [ngStyle]="{'color': credentials.WIFI  == '0'?'red':'green'}">
                               <div *ngIf="credentials.WIFI  != 0"><i class="fas fa-check"></i></div>
-                              <div *ngIf="credentials.WIFI  == 0"><i class="fas fa-times"></i></div>>
+                              <div *ngIf="credentials.WIFI  == 0"><i class="fas fa-times"></i></div>
                             </div>
                           </div>
                           <div class="specificate-list">
@@ -2693,8 +2523,8 @@
                             <div class="specificate-title">ชุดโต๊ะเก้าอี้</div>
                             <div class="specificate-info"
                               [ngStyle]="{'color': credentials.TCset  == '0'?'red':'green'}">
-                              <div *ngIf="credentials.Insoi  != 0"><i class="fas fa-check"></i></div>
-                              <div *ngIf="credentials.Insoi  == 0"><i class="fas fa-times"></i></div>
+                              <div *ngIf="credentials.TCset  != 0"><i class="fas fa-check"></i></div>
+                              <div *ngIf="credentials.TCset  == 0"><i class="fas fa-times"></i></div>
                             </div>
                           </div>
                           <div class="specificate-list">
@@ -2943,8 +2773,8 @@
                             <div class="specificate-title">ชุดโต๊ะเก้าอี้</div>
                             <div class="specificate-info"
                               [ngStyle]="{'color': credentials.TCset  == '0'?'red':'green'}">
-                              <div *ngIf="credentials.Insoi  != 0"><i class="fas fa-check"></i></div>
-                              <div *ngIf="credentials.Insoi  == 0"><i class="fas fa-times"></i></div>
+                              <div *ngIf="credentials.TCset  != 0"><i class="fas fa-check"></i></div>
+                              <div *ngIf="credentials.TCset  == 0"><i class="fas fa-times"></i></div>
                             </div>
                           </div>
                           <div class="specificate-list">

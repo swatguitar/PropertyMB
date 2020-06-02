@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild,ElementRef } from '@angular/core';
 import { AuthenticationService, UserDetails, PropertyDetails, TokenPayload } from '../../authentication.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -38,7 +38,7 @@ export class HomeComponent {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -146,7 +146,7 @@ export class HomeComponent {
   emptyP: string = 'false';
   public Groups: any;
   public pointStartG: number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
-  public pointEndG: number = 5; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
+  public pointEndR: number = 5; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointStart: number = 0; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   public pointEnd: number = 3; // ค่าส่วนนี้ใช้การกำหนดการแสดงข้อมูล
   showSpinner: boolean = true;
@@ -157,26 +157,58 @@ export class HomeComponent {
   HouseLongTerm: any;
   LandShortTerm: any;
   LandLongTerm: any;
+  showSpinnerR: boolean = true;
+  TotalRS: number;
+  TotalRL: number;
   constructor(private auth: AuthenticationService, private router: Router, private spinner: NgxSpinnerService) { }
+  @ViewChild('widgetsContent', { static: true }) public widgetsContent: ElementRef<any>;
   ngOnInit() {
     /** spinner starts on init */
     this.spinner.show();
     this.loading = [1, 2, 3]
     this.AllProperty = []
+    this.HouseShortTerm = []
+    this.HouseLongTerm = []
+    this.LandShortTerm = []
+    this.LandLongTerm = []
     this.AllLongTrem = []
     this.AllShortTrem = []
     this.getHouse()
     this.getLand()
     this.getGroup()
-
- 
+    setTimeout(() => {
+     this.concatHouse()
+     this.concatLand()
+     
+    }, 5000)
   }
+  mousewheel(event: WheelEvent) {
+    var item = document.getElementsByTagName('MAIN')[0];
+    console.log(item)
+    if (event.deltaY > 0) {
+      this.scrollRight()
+    } else {
+      this.scrollLeft()
+    }
+}
+public scrollRight(): void {
+  this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft + 150), behavior: 'smooth' });
+}
+
+public scrollLeft(): void {
+  this.widgetsContent.nativeElement.scrollTo({ left: (this.widgetsContent.nativeElement.scrollLeft - 150), behavior: 'smooth' });
+}
 
   //************* get house that new edit or add *************
   getHouse() {
     this.auth.gethouse().subscribe((house) => {
       if (house.length != 0) {
+        console.log(house)
         this.details = house
+
+
+        
+        console.log("......."+this.details)
         this.HouseShortTerm = house.filter(article => {
           return article.UserType == 'Short-Term';
         });
@@ -184,9 +216,11 @@ export class HomeComponent {
           return article.UserType == 'Long-Term';
         });
         this.details.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+        //this.concatHouse()
         this.showSpinner = false
       }
       else {
+        this.showSpinner = false
         this.emptyP = 'true'
       }
     },
@@ -199,7 +233,7 @@ export class HomeComponent {
   //************* get land that new edit or add *************
   getLand() {
     this.auth.getland().subscribe((land) => {
-      if (land) {
+      if (land.length != 0) {
         this.results = land;
         this.LandShortTerm = land.filter(article => {
           return article.UserType == 'Short-Term';
@@ -208,11 +242,12 @@ export class HomeComponent {
           return article.UserType == 'Long-Term';
         });
         this.results.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-        this.concatProperty()
+        //this.concatLand()
         this.showSpinner = false
       }
       else {
-        this.emptyL = 'true'
+        this.showSpinner = false
+        this.emptyL = 'true'  
       }
     },
       err => {
@@ -222,11 +257,19 @@ export class HomeComponent {
   }
 
 //************* concat house and land *************
-  concatProperty() {
-    this.AllShortTrem = this.HouseShortTerm.concat(this.LandShortTerm);
-    this.AllLongTrem = this.HouseLongTerm.concat(this.LandLongTerm);
-    this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-    this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+  concatHouse() {
+      this.AllShortTrem = this.HouseShortTerm.concat(this.LandShortTerm);
+      this.AllShortTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      this.TotalRS = this.AllShortTrem.length
+      console.log(this.TotalRS)
+      this.showSpinnerR = false
+  }
+  concatLand() {
+      this.AllLongTrem = this.HouseLongTerm.concat(this.LandLongTerm);
+      this.AllLongTrem.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      this.TotalRL = this.AllLongTrem.length
+      console.log(this.TotalRL)
+      this.showSpinnerR = false
   }
 
  //************* get group  *************
@@ -242,5 +285,7 @@ export class HomeComponent {
       }
     )
   }
+
+  
 }
 

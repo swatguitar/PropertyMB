@@ -1,4 +1,3 @@
-
 <app-navbar></app-navbar>
 <img src="../../../assets/Home.jpg" class="img-fluid" alt="Responsive image" style="width:100%;">
 <div class="container">
@@ -6,28 +5,22 @@
 </div>
 <section class="container">
   <div class="row">
-    <div class="col-12 col-md-8 content-box ">
+    <div class="col-sm-12 col-md-12 col-lg-8 content-box ">
       <div class="d-flex">
         <header>
-          <a [routerLink]="[ '/groups']" >กลุ่ม แชร์สำหรับฉัน<i class="fa fa-angle-right"
-              aria-hidden="true"></i></a>
+          <a [routerLink]="[ '/groups']">กลุ่ม แชร์สำหรับฉัน<i class="fa fa-angle-right" aria-hidden="true"></i></a>
           <div>กลุ่มของคุณ</div>
         </header>
       </div>
-    <br>
-    <br>
-    <br>
-      <div class="horizontal-scroll-wrapper  squares">
-        <div >
+      <div class="horizontal-scroll-wrapper " >
+        <div class="itemG">
           <button type="button" class="btn btn-default btn-circle btn-xl border border-dark"
             [routerLink]="['/groups/creategroup']"><i class="fa fa-plus"></i></button>
           <div class="">สร้างกลุ่ม</div>
         </div>
-        
-        <div *ngFor="let group of Groups" >
-          <a class="" [routerLink]="['/groups/groupfolder',group.ID_Group]"><img
-              src="{{group.Img}}" class="img-circle " alt="User Image" width="70px"
-              height="70px"></a>
+        <div *ngFor="let group of Groups" class="itemG">
+          <a class="" [routerLink]="['/groups/groupfolder',group.ID_Group]" title="กด Shift + Sroll เพื่อเลื่อน"><img src="{{group.Img}}" class="img-circle "
+              alt="User Image" width="70px" height="70px"></a>
           <div class="">{{group.NameG}} </div>
         </div>
       </div>
@@ -40,10 +33,10 @@
         </header>
       </div>
 
-      <div class="list-table">
+      <div class="list-table page-content">
         <ul *ngIf="emptyP == 'true'" class="d-flex nav product-list">
           <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
-            class="col-sm-4 col-6 d-flex justify-content-center">
+            class="col-sm-12 col-lg-4 col-md-4  d-flex justify-content-center">
             <a [routerLink]="['/addhouse']">
               <div class="item">
                 <i class="fas fa-plus-circle"></i>
@@ -57,16 +50,15 @@
         </ul>
         <ul class="d-flex nav product-list">
           <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
-            class="col-sm-4 col-6 d-flex justify-content-center">
+            class="col-sm-12 col-lg-4 col-md-4 d-flex justify-content-center">
             <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
           </li>
           <li *ngFor="let house of details| slice:pointStart:pointEnd;let i=index "
-            class="col-sm-4 col-6 d-flex justify-content-center">
+            class="col-sm-12 col-lg-4 col-md-4 d-flex justify-content-center">
 
             <a [routerLink]="['/houses',house.ID_Property]">
               <div class="item">
-                <img src="{{house.ImageEX}}" width="80%" height="80%"
-                  class="img-fluid rounded ">
+                <img src="{{house.ImageEX}}" width="80%" height="80%" class="img-fluid rounded ">
                 <div class="info">
                   <header>{{house.AnnounceTH}}</header>
                   <div class="price">ราคา <span>{{house.SellPrice | number}}</span> บาท</div>
@@ -78,9 +70,6 @@
 
         </ul>
       </div>
-
-
-
       <hr>
       <div class="d-flex">
         <header>
@@ -89,36 +78,27 @@
           <div>ที่ดินที่ถูกเพิ่มล่าสุด</div>
         </header>
       </div>
-      <div class="list-table">
+      <div class="list-table page-content">
         <ul *ngIf="emptyL == 'true'" class="d-flex nav product-list">
           <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
-            class="col-sm-4 col-6 d-flex justify-content-center">
+            class="col-sm-12 col-lg-4 col-md-4 d-flex justify-content-center">
             <a [routerLink]="['/addlands']">
               <div class="item">
                 <i class="fas fa-plus-circle"></i>
                 <div class="info">
                   <header>เพิ่มข้อมูลที่ดินของคุณ</header>
-
                 </div>
               </div>
             </a>
           </li>
         </ul>
-
         <ul class="d-flex nav product-list">
-
           <li *ngFor="let item of loading| slice:pointStart:pointEnd;"
-            class="col-sm-4 col-6 d-flex justify-content-center">
+            class="col-sm-12 col-lg-4 col-md-4 d-flex justify-content-center">
             <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
           </li>
-
-
-
-
-
           <li *ngFor="let lands of results| slice:pointStart:pointEnd;"
-            class="col-sm-4 col-6 d-flex justify-content-center">
-
+            class="col-sm-12 col-lg-4 col-md-4 d-flex justify-content-center">
             <a [routerLink]="['/lands',lands.ID_Lands]" [queryParams]="{page: activePage}">
               <div class="item">
                 <img src="{{lands.ImageEX}}" width="180" class="img-fluid  rounded">
@@ -130,34 +110,43 @@
               </div>
             </a>
           </li>
-
-
         </ul>
-
-
-
-
-
       </div>
     </div>
-
-
     <hr>
-
     <div class="col-12 col-md-4 content-box">
       <header>
-       <a [routerLink]="['/recommend']" > อสังหาริมทรัพย์ แนะนำ<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        <a [routerLink]="['/recommend']"> อสังหาริมทรัพย์ แนะนำ<i class="fa fa-angle-right" aria-hidden="true"></i></a>
         <div>แนะนำ รูปแบบ การลงทุนอสังหาฯ</div>
       </header>
-
       <div class="recommend-spec">
-          <label for="">ระยะยาว</label>
-        <ul class="nav">
-          <li *ngFor="let item of AllLongTrem">
-            <a class="d-flex" href="#">
-              <div class="banner"><img
-                  src="http://www.landvist.xyz/images/{{item.ImageEX}}"
-                  width="90" class="img-fluid"></div>
+        <label for="">แนะนำให้ลงทุนแบบ ระยะยาว</label>
+        <app-loading-spinner *ngIf="showSpinnerR"></app-loading-spinner>
+        <ul *ngIf="!showSpinnerR && TotalRL == 0" class="nav">
+          <li >
+            <a class="d-flex" [routerLink]="['/recommend']">
+              <div class="banner"><i class="fas fa-ban" style="color:red "></i>
+              </div>
+              <div class="info">
+                <div class="title">ไม่พบข้อมูลอสังหาฯ</div>
+                <div class="price">กรุณาเพิ่มข้อมูลอสังหาฯ</div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <ul *ngIf="!showSpinnerR" class="nav">
+          <li *ngFor="let item of AllLongTrem | slice:pointStart:pointEndR;">
+            <a class="d-flex" [routerLink]="['/houses',item.ID_Property]" *ngIf="item.ID_Property">
+              <div class="banner"><img src="{{item.ImageEX}}" width="90" class="img-fluid">
+              </div>
+              <div class="info">
+                <div class="title">{{item.AnnounceTH}}</div>
+                <div class="price">{{item.SellPrice}}</div>
+              </div>
+            </a>
+            <a class="d-flex" [routerLink]="['/lands',item.ID_Lands]" *ngIf="item.ID_Lands">
+              <div class="banner"><img src="{{item.ImageEX}}" width="90" class="img-fluid">
+              </div>
               <div class="info">
                 <div class="title">{{item.AnnounceTH}}</div>
                 <div class="price">{{item.SellPrice}}</div>
@@ -165,43 +154,43 @@
             </a>
           </li>
         </ul>
-<br>
-        <label for="">ระยะสั้น</label>
-        <ul class="nav">
-          <li *ngFor="let item of AllShortTrem">
-            <a class="d-flex" href="#">
-              <div class="banner"><img
-                src="http://www.landvist.xyz/images/{{item.ImageEX}}"
-                  width="90" class="img-fluid"></div>
+        <br>
+        <label for="">แนะนำให้ลงทุนแบบ ระยะสั้น</label>
+        <app-loading-spinner *ngIf="showSpinnerR"></app-loading-spinner>
+        <ul *ngIf="!showSpinnerR && TotalRS == 0" class="nav">
+          <li >
+            <a class="d-flex" [routerLink]="['/recommend']">
+              <div class="banner"><i class="fas fa-ban" style="color:red "></i>
+              </div>
+              <div class="info">
+                <div class="title">ไม่พบข้อมูลอสังหาฯ</div>
+                <div class="price">กรุณาเพิ่มข้อมูลอสังหาฯ</div>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <ul *ngIf="!showSpinnerR" class="nav">
+          <li *ngFor="let item of AllShortTrem | slice:pointStart:pointEndR;">
+            <a class="d-flex" [routerLink]="['/houses',item.ID_Property]" *ngIf="item.ID_Property">
+              <div class="banner"><img src="{{item.ImageEX}}" width="90" class="img-fluid">
+              </div>
+              <div class="info">
+                <div class="title">{{item.AnnounceTH}}</div>
+                <div class="price">{{item.SellPrice}}</div>
+              </div>
+            </a>
+            <a class="d-flex" [routerLink]="['/lands',item.ID_Lands]" *ngIf="item.ID_Lands">
+              <div class="banner"><img src="{{item.ImageEX}}" width="90" class="img-fluid">
+              </div>
               <div class="info">
                 <div class="title">{{item.AnnounceTH}}</div>
                 <div class="price">{{item.SellPrice}}</div>
               </div>
             </a>
           </li>
-         
-
-
-
-
-
         </ul>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
   </div>
-
-
-
-
-
 </section>
 <app-footer></app-footer>

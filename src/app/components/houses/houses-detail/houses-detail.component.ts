@@ -56,11 +56,13 @@ export class HousesDetailComponent implements OnInit {
     ID_Photo: '',
     URL: '',
   }
+  showSpinner: boolean;
   constructor(private auth: AuthenticationService, private route: ActivatedRoute, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
     private router: Router) { }
 
   ngOnInit() {
+    this.showSpinner = true
     //************* set show image *************
     this.galleryOptions = [
       { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
@@ -102,6 +104,7 @@ export class HousesDetailComponent implements OnInit {
         this.longitude = Number(house[0].Longitude)
         this.zoom = 15
         this.getContact()
+        this.showSpinner = false
       }
     },
       err => {
@@ -157,19 +160,9 @@ export class HousesDetailComponent implements OnInit {
 
   //************* get contact *************
   getContact() {
-    this.selectContact = []
-    this.selectContact2 = []
-    this.selectContact3 = []
     this.auth.getContactDetail(this.credentials).subscribe((contactUser) => {
       if (contactUser) {
         this.contactUser = contactUser;
-        this.selectContact.push(this.contactUser[0])
-        if (contactUser.length == 2) {
-          this.selectContact2.push(this.contactUser[1])
-        } else if (contactUser.length == 3) {
-          this.selectContact3.push(this.contactUser[2])
-          this.selectContact2.push(this.contactUser[1])
-        }
       }
     },
       err => {

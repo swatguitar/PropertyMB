@@ -54,181 +54,146 @@ export class ItemslistmemberComponent implements OnInit {
   Userlist: any;
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, public sanitizer: DomSanitizer, public auth: AuthenticationService, ) { }
 
+  
   ngOnInit() {
     this.GDetails = []
     this.Property = []
     this.details = []
-    this.temp2 = []
-    this.temp3 = []
-    this.temp4 = []
+    this.detailsH = []
+    this.detailsL = []
     this.Land = []
+
+    //************* get id *************
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = +params.get('id');
     }
     this.credentials.ID_Folder = this.postID
-    this.auth.getgrouplist(this.credentials).subscribe((group) => {
-      this.list = group
+    this.getGroupID()
+    this.getProperty()
+    this.getLandInFolder()
+    this.getPropertyInFolder()
+
+
+    setTimeout(() => {
+
+      this.GFolders.forEach((element, index) => {
+        this.credentials.ID_Group = element.ID_Group
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      this.showSpinner = false
+    }, 2000);
+
+  }
+  //************* get property to find for add into group *************
+  getProperty() {
+    //************* House  *************
+    this.auth.gethouse().subscribe((house) => {
+      this.detailsH = house
     },
       err => {
         console.error(err)
       })
-    this.auth.getgroupfolderID(this.credentials).subscribe((folder) => {
-      this.GFolders = folder;
-
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.auth.getgroup().subscribe((group) => {
-      this.Groups = group;
-      this.GroupsDetail = group.filter(article => {
-        return article.ID_Group == this.postID
-
-      });
-
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.auth.gethouse().subscribe((house) => {
-      this.detailsH = house
-
-    },
-      err => {
-        console.error(err)
-      }
-    )
+    //************* Land  *************
     this.auth.getland().subscribe((land) => {
       this.detailsL = land
 
     },
       err => {
         console.error(err)
-      }
-    )
-    this.auth.getgroupM().subscribe((group) => {
-      this.GroupMs = group;
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.auth.getMemberlist().subscribe((member) => {
-      this.Userlist = member;
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    setTimeout(() => {
-      this.details = this.detailsH.concat(this.detailsL);
-      this.details.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
-      this.GFolders.forEach((element, index) => {
-        this.credentials.ID_Group = element.ID_Group
-      });
-
-      this.auth.getgroupAll().subscribe((group) => {
-        for (var i = 0; i < this.GroupMs.length; i++) {
-
-          this.temp = group.filter(article => {
-
-            return article.ID_Group == this.GroupMs[i].ID_Group
-          });
-          this.GDetails = this.GDetails.concat(this.temp);
-          //this.GDetails.push([this.temp ]);
-        }
-        this.groupD = group.filter(article => {
-
-          return article.ID_Group == this.credentials.ID_Group
-        });
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-
-      this.auth.getallhouse().subscribe((Prop) => {
-        for (var i = 0; i < this.list.length; i++) {
-
-          this.temp2 = Prop.filter(article => {
-            if (article.ID_Property == this.list[i].ID_Property) {
-              this.temp2.forEach((element, index) => {
-                element.Created = this.list[i].Created
-              });
-            }
-            return article.ID_Property == this.list[i].ID_Property
-          });
-          this.Property = this.Property.concat(this.temp2);
-
-        }
-        // this.Property = this.Property.concat(this.createItem);
-
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-      this.auth.getAllland().subscribe((Prop) => {
-        for (var i = 0; i < this.list.length; i++) {
-
-          this.temp3 = Prop.filter(article => {
-            if (article.ID_Lands == this.list[i].ID_Property) {
-              this.temp3.forEach((element, index) => {
-                element.Created = this.list[i].Created
-              });
-            }
-            return article.ID_Lands == this.list[i].ID_Property
-          });
-
-          this.Land = this.Land.concat(this.temp3);
-          // console.log(this.Land)
-        }
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 1000);
-    setTimeout(() => {
-      for (var i = 0; i < this.Userlist.length; i++) {
-        this.Property.forEach((element, index) => {
-          if (element.Owner == this.Userlist[i].ID_User) {
-            element.Costestimate = this.Userlist[i].Firstname +' '+ this.Userlist[i].Lastname
-          }
-
-        });
-      }
-      for (var i = 0; i < this.Userlist.length; i++) {
-        this.Land.forEach((element, index) => {
-          if (element.Owner == this.Userlist[i].ID_User) {
-            element.Place = this.Userlist[i].Firstname +' '+ this.Userlist[i].Lastname
-          }
-
-        });
-      }
-
-
-      //this.Property = this.Property.concat(this.temp4);
-
-
-      //console.log(this.Property)
-    }, 2500);
-    setTimeout(() => {
-      this.showSpinner = false
-
-    }, 2000);
-
+      })
+      setTimeout(() => {
+        this.details = this.detailsH.concat(this.detailsL);
+        this.details.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());
+      }, 2000);
   }
+  //************* get group that you are member  *************
+  getGroupById() {
+    this.auth.getGroupById(this.credentials).subscribe((group) => {
+      this.GroupsDetail = group;
+    },
+      err => {
+        console.error(err)
+      })
+  }
+
+  //************* get group by owner id *************
+  getGroup() {
+    this.auth.getgroup().subscribe((group) => {
+      this.Groups = group;
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+
+
+  //************* get detail member of group  *************
+  getGroupMember() {
+    this.auth.getMemberlist(this.credentials).subscribe((member) => {
+      this.Userlist = member
+    },
+      err => {
+        console.error(err)
+      })
+  }
+
+  //************* get group ID  *************
+  getGroupID() {
+    this.auth.getgroupfolderID(this.credentials).subscribe((folder) => {
+      this.GFolders = folder;
+      console.log("ssssssss"+folder)
+      console.log("sss"+this.GFolders)
+      this.credentials.ID_Group = folder[0].ID_Group
+      this.getGroupDetailMember()
+      this.getGroup()
+      this.getGroupById()
+      this.getGroupMember()
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+  //************* get group that you are member  *************
+  getGroupDetailMember() {
+    this.auth.getGroupDetailMember().subscribe((group) => {
+      this.GDetails = group;
+      console.log(this.GDetails)
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+
+  //************* get property in folder *************
+  getPropertyInFolder() {
+    this.auth.getPeropertyInFolder(this.credentials).subscribe((result) => {
+      this.Property = result
+    },
+      err => {
+        console.error(err)
+      })
+  }
+
+  //************* get Land in folder *************
+  getLandInFolder() {
+    this.auth.getLandInFolder(this.credentials).subscribe((result) => {
+      this.Land = result
+      console.log(this.Land)
+    },
+      err => {
+        console.error(err)
+      })
+  }
+
 
   onCreateG() {
 

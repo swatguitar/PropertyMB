@@ -13,7 +13,10 @@
   .container{
     font-family: 'Poppins', 'Prompt', sans-serif;
   }
-  
+  .page-content  {
+    max-width: 100%;
+    height: auto!important;
+  }
   #breadcrumb-nav{
     list-style: none;
     margin: 0px;

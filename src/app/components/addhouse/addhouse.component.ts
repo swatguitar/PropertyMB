@@ -1,7 +1,7 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { } from 'googlemaps';
-import { AuthenticationService, TokenPayload, locationsDetails, ID } from '../../authentication.service'
+import { AuthenticationService, TokenPayload, locationsDetails, ID, Location, UserType } from '../../authentication.service'
 import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import * as $ from "jquery";
@@ -34,8 +34,22 @@ export class AddhouseComponent implements OnInit {
   inputChanged: any = '';
   IDcon: any;
   ContactID: string;
+  SelectContact: boolean = false;
+  reset: boolean = false;
+  click: boolean = false;
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
+    if ('geolocation' in navigator) {
+      this.geoCoder = new google.maps.Geocoder;
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.longitude = +pos.coords.longitude;
+        this.latitude = +pos.coords.latitude;
+        this.zoom = 15;
+        this.getAddress(this.latitude, this.longitude);
+        console.log("1" + this.latitude)
+        console.log("1" + this.longitude)
+      });
+    }
     this.addhouseForm = new FormGroup({
       PropertyType: new FormControl('', Validators.required),
       AnnounceTH: new FormControl('', Validators.required),
@@ -133,9 +147,7 @@ export class AddhouseComponent implements OnInit {
   conLine1: string
   conLine2: string
   conLine3: string
-  allowedit: string
-  allowedit2: string
-  allowedit3: string
+  allowedit: boolean = false
   con1selected: string = "false"
   con2selected: string = "false"
   con3selected: string = "false"
@@ -169,7 +181,7 @@ export class AddhouseComponent implements OnInit {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -280,16 +292,33 @@ export class AddhouseComponent implements OnInit {
     ContactUt: '',
     PPStatus: '',
   }
-  ID_user: string = (this.auth.getUserDetails().ID_User).toString()
+  Location: Location = {
+    PROVINCE_ID: null,
+    AMPHUR_ID: null,
+    DISTRICT_ID: null,
+    ZIPCODE_ID: null
+  }
+  UserType: UserType = {
+    ID_Property: '',
+    ID_Lands: '',
+    ID_Photo: '',
+    UserType: '',
+    LProvince: '',
+    PriceMax: null,
+    PriceMin: null
+  }
 
+  ID_user: string = (this.auth.getUserDetails().ID_User).toString()
+  EditC: boolean = false;
 
   ngOnInit() {
+
     this.LoadMap();
     this.GetProvince();
     this.GetNowYear();
     this.GetContact()
   }
-  
+
   //************* Check "," and number *************
   CommaFormattedS(event) {
     if (event.which >= 37 && event.which <= 40) return;
@@ -340,6 +369,8 @@ export class AddhouseComponent implements OnInit {
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
+          console.log("2" + this.latitude)
+          console.log("2" + this.longitude)
           this.zoom = 15;
         });
       });
@@ -386,7 +417,15 @@ export class AddhouseComponent implements OnInit {
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
-    if (this.con1selected == 'false') {//***************************************IF contact 1 not select */
+    if (this.credentials.RoadType == '') {
+      alert(JSON.stringify("กรุณากรอก สถานะถนน"))
+      return;
+    }
+    if (this.credentials.HomeCondition == '') {
+      alert(JSON.stringify("กรุณากรอก สภาพอสังหาฯ"))
+      return;
+    }
+    if (this.SelectContact == false) {//***************************************IF contact 1 not select */
       this.submitted = true;
       if (this.EditContactForm.invalid) {
         alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
@@ -394,78 +433,8 @@ export class AddhouseComponent implements OnInit {
       }
       this.setDataContactA()
       this.CheckDuplicateIDContact()
-      this.credentials.ContactU = this.credentials.ID_Contact
 
-      if (this.con2selected == 'false' && this.Name2 != '') {//***************************************IF contact 2/1 not select */
-        this.setDataContactB()
-        this.CheckDuplicateIDContact()
-        this.credentials.ContactUo = this.credentials.ID_Contact
 
-        if (this.con3selected == 'false' && this.Name3 != '') {//***************************************IF contact 3/1 not select */
-          this.setDataContactC()
-          this.CheckDuplicateIDContact()
-          this.credentials.ContactUt = this.credentials.ID_Contact
-
-        } else if (this.con2selected == 'false' && this.Name3 == '') {//***************************************IF contact 3/2 not select */
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          if (this.addhouseForm.invalid) {
-            alert(JSON.stringify("กรุณากรอกข้อมูล"))
-            return;
-          }
-          this.onFirststep()
-        } else {///***************************************IF contact 3/3 not select */
-          if (this.addhouseForm.invalid) {
-            console.log(this.addhouseForm)
-            alert(JSON.stringify("กรุณากรอกข้อมูล"))
-            return;
-          }
-          this.onFirststep()
-        }
-
-      } else if (this.con2selected == 'false' && this.Name2 == '') {//***************************************IF contact 2/2 not select */
-        this.credentials.ContactUt = this.credentials.ID_Contact
-        this.credentials.ContactUo = this.credentials.ID_Contact
-        if (this.addhouseForm.invalid) {
-          alert(JSON.stringify("กรุณากรอกข้อมูล"))
-          return;
-        }
-        this.onFirststep()
-      } else {//***************************************IF contact 2/3 not select */
-        if (this.addhouseForm.invalid) {
-          alert(JSON.stringify("กรุณากรอกข้อมูล"))
-          return;
-        }
-        this.onFirststep()
-      }
-    } else if (this.con2selected == 'false' && this.Name2 != '') {//***************************************IF contact 1/2 not select */
-      this.setDataContactB()
-      this.CheckDuplicateIDContact()
-      this.credentials.ContactUt = this.credentials.ID_Contact
-      if (this.con3selected == 'false' && this.Name3 != '') {
-        this.setDataContactC()
-        this.CheckDuplicateIDContact()
-        this.credentials.ContactUo = this.credentials.ID_Contact
-        this.onFirststep()
-      } else if (this.con2selected == 'false' && this.Name3 == '') {
-        this.credentials.ContactUo = this.credentials.ID_Contact
-        if (this.addhouseForm.invalid) {
-          alert(JSON.stringify("กรุณากรอกข้อมูล"))
-          return;
-        }
-        this.onFirststep()
-      } else {
-        if (this.addhouseForm.invalid) {
-          console.log(this.addhouseForm)
-          alert(JSON.stringify("กรุณากรอกข้อมูล"))
-          return;
-        }
-        this.onFirststep()
-      }
-    } else if (this.con3selected == 'false' && this.Name3 != '') {//***************************************IF contact 1/3 not select */
-      this.setDataContactC()
-      this.CheckDuplicateIDContact()
-      this.credentials.ContactUo = this.credentials.ID_Contact
-      this.onFirststep()
     } else {//***************************************IF contact 1/4 not select */
       if (this.addhouseForm.invalid) {
         alert(JSON.stringify("กรุณากรอกข้อมูล"))
@@ -484,7 +453,7 @@ export class AddhouseComponent implements OnInit {
   }
 
   //************* Get Current Location Coordinates *************
-  private setCurrentLocation() {
+  public setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
@@ -521,10 +490,9 @@ export class AddhouseComponent implements OnInit {
   PROVINCE_NAME: string
   selectprovince(data) {
     this.credentials.LProvince = data.PROVINCE_NAME
-    this.auth.getAmphur().subscribe((amphur) => {
-      this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == data.PROVINCE_ID;
-      });
+    this.Location.PROVINCE_ID = data.PROVINCE_ID
+    this.auth.getAmphur(this.Location).subscribe((amphur) => {
+      this.amphur = amphur
       this.amphur.sort((a, b) => a.AMPHUR_NAME.localeCompare(b.AMPHUR_NAME));
     },
       err => {
@@ -533,10 +501,9 @@ export class AddhouseComponent implements OnInit {
   }
   selectamphur(data) {
     this.credentials.LAmphur = data.AMPHUR_NAME
-    this.auth.getDistrict().subscribe((district) => {
-      this.district = district.filter(article => {
-        return article.AMPHUR_ID == data.AMPHUR_ID;
-      });
+    this.Location.AMPHUR_ID = data.AMPHUR_ID
+    this.auth.getDistrict(this.Location).subscribe((district) => {
+      this.district = district
       this.district.sort((a, b) => a.DISTRICT_NAME.localeCompare(b.DISTRICT_NAME));
     },
       err => {
@@ -545,10 +512,9 @@ export class AddhouseComponent implements OnInit {
   }
   selectdistrict(data) {
     this.credentials.LDistrict = data.DISTRICT_NAME
-    this.auth.getZipcode().subscribe((zipcode) => {
-      this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == data.DISTRICT_ID;
-      });
+    this.Location.DISTRICT_ID = data.DISTRICT_ID
+    this.auth.getZipcode(this.Location).subscribe((zipcode) => {
+      this.zipcode = zipcode
     },
       err => {
         console.error(err)
@@ -613,6 +579,7 @@ export class AddhouseComponent implements OnInit {
       }
       else {
         this.credentials.ID_Property = this.ID.ID_Property
+        this.UserType.ID_Property = this.ID.ID_Property
         console.log(this.credentials.ID_Property)
         this.InsertData()
       }
@@ -626,12 +593,24 @@ export class AddhouseComponent implements OnInit {
   InsertData() {
     this.auth.addhouse(this.credentials).subscribe((result) => {
       alert(JSON.stringify(result))
+      this.Phyton()
     },
       err => {
         console.error(err)
       })
   }
+  //************* Phyton *************
+  Phyton() {
+    console.log("************* Phyton *************")
+    this.auth.PythonHouse(this.UserType).subscribe((result) => {
+      console.log(result)
+      console.log("************* Phyton  RESULT*************")
 
+    },
+      err => {
+        console.error(err)
+      })
+  }
   //************* Update data house  *************
   onUpdate() {
     this.submitted = true;
@@ -640,8 +619,10 @@ export class AddhouseComponent implements OnInit {
       return;
     }
     this.SetValue()
+    this.UserType.ID_Property = this.credentials.ID_Property
     this.auth.EditHouse(this.credentials).subscribe((result) => {
       alert(JSON.stringify(result))
+      this.Phyton()
     },
       err => {
         console.error(err)
@@ -674,39 +655,26 @@ export class AddhouseComponent implements OnInit {
   }
 
   onEditContact1() {
+    this.setDataContactA()
+    this.auth.EditContact(this.credentials).subscribe((result) => {
+      if (!result.error) {
+        alert(JSON.stringify(result))
+        this.GetContact()
+      } else {
+        alert(JSON.stringify(result.error))
+      }
+    },
+      err => {
+        console.error(err)
+        alert(JSON.stringify(err.error.error))
+      }
+    )
+  }
 
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.GetContact()
-        console.error(err)
-      }
-    )
-  }
-  onEditContact2() {
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.GetContact()
-        console.error(err)
-      }
-    )
-  }
-  onEditContact3() {
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.GetContact()
-        console.error(err)
-      }
-    )
-  }
 
   onGetContact(item) {
-    this.con1selected = 'true'
+    this.EditC = true
+    this.SelectContact = true
     console.log(this.credentials.ContactName)
     this.conID1 = item.ID_Contact
     this.conName1 = item.Name
@@ -717,41 +685,43 @@ export class AddhouseComponent implements OnInit {
     this.credentials.ContactUt = item.ID_Contact
     this.credentials.ContactUo = item.ID_Contact
   }
-  onGetContact2(item) {
-    this.con2selected = 'true'
-    console.log(this.credentials.ContactName)
-    this.conID2 = item.ID_Contact
-    this.conName2 = item.Name
-    this.conEmail2 = item.Email
-    this.conPhone2 = item.Phone
-    this.conLine2 = item.Line
-    this.credentials.ContactUt = item.ID_Contact
-    this.credentials.ContactUo = item.ID_Contact
-
-  }
-  onGetContact3(item) {
-    this.con3selected = 'true'
-    console.log(this.credentials.ContactName)
-    this.conID3 = item.ID_Contact
-    this.conName3 = item.Name
-    this.conEmail3 = item.Email
-    this.conPhone3 = item.Phone
-    this.conLine3 = item.Line
-    this.credentials.ContactUo = item.ID_Contact
-  }
 
   onFocused(e) {
     // do something when input is focused
   }
+  //************* check edit button do this *************
   onEditContactID1(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName1
-    this.credentials.ContactPhone = this.conPhone1
-    this.credentials.ContactEmail = this.conEmail1
-    this.credentials.ContactLine = this.conLine1
+    console.log("alloweditID" + this.allowedit)
+    if (this.allowedit == true) {
+      this.EditC = false
+      this.reset = false
+      this.credentials.ID_Contact = value
+    } else {
+      this.EditC = true
+      this.reset = true
+    }
   }
-  onEditContactName1(value: string) {
-    this.conName1 = value
+  //************* change name do this  *************
+  onEditContactName1(value) {
+    console.log("SelectContact :" + this.SelectContact)
+    console.log("allowedit :" + this.allowedit)
+    if (this.allowedit == false) {
+      this.EditC = false
+      this.SelectContact = false
+      this.conPhone1 = null
+      this.conEmail1 = null
+      this.conLine1 = null
+      this.conName1 = value
+      console.log("SelectContactA :" + this.SelectContact)
+      console.log("alloweditA :" + this.allowedit)
+    } else {
+      this.conName1 = value
+      this.SelectContact = true
+      this.EditC = false
+      console.log("SelectContactB :" + this.SelectContact)
+      console.log("alloweditB :" + this.allowedit)
+    }
+
   }
   onEditContactLine1(value) {
     this.conLine1 = value
@@ -765,44 +735,7 @@ export class AddhouseComponent implements OnInit {
     this.conEmail1 = value
     //console.log(this.conEmail1)
   }
-  onEditContactID2(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName2
-    this.credentials.ContactPhone = this.conPhone2
-    this.credentials.ContactEmail = this.conEmail2
-    this.credentials.ContactLine = this.conLine2
-  }
-  onEditContactName2(value: string) {
-    this.conName2 = value
-  }
-  onEditContactLine2(value) {
-    this.conLine2 = value
-  }
-  onEditContactPhone2(value) {
-    this.conPhone2 = value
-  }
-  onEditContactEmail2(value) {
-    this.conEmail2 = value
-  }
-  onEditContactID3(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName3
-    this.credentials.ContactPhone = this.conPhone3
-    this.credentials.ContactEmail = this.conEmail3
-    this.credentials.ContactLine = this.conLine3
-  }
-  onEditContactName3(value: string) {
-    this.conName3 = value
-  }
-  onEditContactLine3(value) {
-    this.conLine3 = value
-  }
-  onEditContactPhone3(value) {
-    this.conPhone3 = value
-  }
-  onEditContactEmail3(value) {
-    this.conEmail3 = value
-  }
+
   //************* set data contact  1 *************
   setDataContactA() {
     this.credentials.ContactName = this.conName1
@@ -810,20 +743,7 @@ export class AddhouseComponent implements OnInit {
     this.credentials.ContactEmail = this.conEmail1
     this.credentials.ContactLine = this.conLine1
   }
-  //************* set data contact  2 *************
-  setDataContactB() {
-    this.credentials.ContactName = this.conName2
-    this.credentials.ContactPhone = this.conPhone2
-    this.credentials.ContactEmail = this.conEmail2
-    this.credentials.ContactLine = this.conLine2
-  }
-  //************* set data contact  3 *************
-  setDataContactC() {
-    this.credentials.ContactName = this.conName3
-    this.credentials.ContactPhone = this.conPhone3
-    this.credentials.ContactEmail = this.conEmail3
-    this.credentials.ContactLine = this.conLine3
-  }
+
 
 
   //************* Random ID contact *************
@@ -861,8 +781,13 @@ export class AddhouseComponent implements OnInit {
   //************* CreateContact *************
   CreateContact() {
     this.auth.addcontact(this.credentials).subscribe(
-      () => {
-
+      (result) => {
+        if (result) {
+          this.credentials.ContactU = this.credentials.ID_Contact
+          this.credentials.ContactUt = this.credentials.ID_Contact
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          this.onFirststep()
+        }
       },
       err => {
         console.error(err)

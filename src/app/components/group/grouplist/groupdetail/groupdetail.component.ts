@@ -119,14 +119,7 @@ export class GroupdetailComponent implements OnInit {
 
       }
     )
-    this.auth.getMemberlist().subscribe((member) => {
-      this.Userlist = member;
-    },
-      err => {
-        console.error(err)
 
-      }
-    )
     setTimeout(() => {
       this.details = this.detailsH.concat(this.detailsL);
       this.details.sort((a, b) => new Date(b.Created).getTime() - new Date(a.Created).getTime());

@@ -1,5 +1,8 @@
 <app-navbar></app-navbar>
 <img src="../../../assets/Property.jpg" class="img-fluid" alt="Responsive image" style="width:100%;">
+<br>
+  <app-loading-spinner *ngIf="showSpinner==true"></app-loading-spinner>
+  <br>
 <div class="container " style="width:100%;">
   <div id="product-container" *ngFor="let house of results">
 
@@ -19,8 +22,8 @@
                 property="name">แก้ไขข้อมูล</span></a>
             <meta property="position" content="3">
           </li>
-          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage"><span
-                property="name">{{house.AnnounceTH }}</span></a>
+          <li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" [routerLink]="['/houses', house.ID_Property]"><span
+                property="name" >{{house.AnnounceTH }}</span></a>
             <meta property="position" content="4">
           </li>
         </ul>
@@ -229,12 +232,13 @@
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
                         <input type="radio" id="newhouse" value="ใหม่" formControlName="HomeCondition"
-                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'ใหม่'">
+                          (change)="onGetHomeCondition($event.target.value)" [checked]="house.HomeCondition == 'ใหม่'">
                         อาคารใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                        (change)="onGetHomeCondition($event.target.value)" [checked]="house.HomeCondition == 'มือสอง'">
+                          (change)="onGetHomeCondition($event.target.value)"
+                          [checked]="house.HomeCondition == 'มือสอง'">
                         อาคารมือสอง
                       </div>
                     </div>
@@ -493,12 +497,13 @@
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
                         <input type="radio" id="newhouse" value="ใหม่" formControlName="HomeCondition"
-                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'ใหม่'">
+                          (change)="onGetHomeCondition($event.target.value)" [checked]="house.HomeCondition == 'ใหม่'">
                         คอนโดใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'มือสอง'">
+                          (change)="onGetHomeCondition($event.target.value)"
+                          [checked]="house.HomeCondition == 'มือสอง'">
                         คอนโดมือสอง
                       </div>
                     </div>
@@ -793,12 +798,13 @@
                     <div class="col-md-8 ">
                       <div class="col-sm-4 ">
                         <input type="radio" id="newhouse" value="ใหม่" checked formControlName="HomeCondition"
-                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'ใหม่'">
+                          (change)="onGetHomeCondition($event.target.value)" [checked]="house.HomeCondition == 'ใหม่'">
                         บ้านใหม่
                       </div>
                       <div class="col-sm-4">
                         <input type="radio" id="oldhouse" value="มือสอง" formControlName="HomeCondition"
-                        (change)="onGetHomeCondition($event.target.value)"  [checked]="house.HomeCondition == 'มือสอง'">
+                          (change)="onGetHomeCondition($event.target.value)"
+                          [checked]="house.HomeCondition == 'มือสอง'">
                         บ้านมือสอง
                       </div>
                     </div>
@@ -972,62 +978,72 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="airconditioner"
-                            (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
+                              (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
                             เครื่องปรับอากาศ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="afan"(change)="afan($event.target.checked)" [checked]="house.afan == '1'">
+                            <input type="checkbox" id="" value="1" name="afan" (change)="afan($event.target.checked)"
+                              [checked]="house.afan == '1'">
                             พัดลม
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="AirPurifier"
-                            (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
+                              (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
                             เครื่องฟอกอากาศ
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Waterheater"
-                            (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
+                              (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
                             เครื่องทำน้ำอุ่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)" [checked]="house.WIFI == '1'">
+                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)"
+                              [checked]="house.WIFI == '1'">
                             มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)" [checked]="house.TV == '1'">
+                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)"
+                              [checked]="house.TV == '1'">
                             เคเบิลทีวี
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="refrigerator"
-                            (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
+                              (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
                             ตู้เย็น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="microwave" (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
+                            <input type="checkbox" id="" value="1" name="microwave"
+                              (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
                             ไมโครเวฟ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="gasstove" (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
+                            <input type="checkbox" id="" value="1" name="gasstove"
+                              (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
                             เตาแก๊ส
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="wardrobe" (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
+                            <input type="checkbox" id="" value="1" name="wardrobe"
+                              (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
                             ตู้เสื้อผ้า
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)" [checked]="house.TCset == '1'">
+                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)"
+                              [checked]="house.TCset == '1'">
                             ชุดโต๊ะเก้าอี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)" [checked]="house.sofa == '1'">
+                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)"
+                              [checked]="house.sofa == '1'">
                             โซฟา
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)" [checked]="house.bed == '1'">
+                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)"
+                              [checked]="house.bed == '1'">
                             เตียง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="shelves" (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
+                            <input type="checkbox" id="" value="1" name="shelves"
+                              (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
                             ชั้นวาง
                           </div>
 
@@ -1040,47 +1056,52 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Securityguard"
-                            (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
+                              (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
                             เจ้าหน้าที่รักษาความปลอดภัย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="pool" (change)="pool($event.target.checked)" [checked]="house.pool == '1'">
+                            <input type="checkbox" id="" value="1" name="pool" (change)="pool($event.target.checked)"
+                              [checked]="house.pool == '1'">
                             สระว่ายน้ำ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Fitness" (change)="Fitness($event.target.checked)" [checked]="house.Fitness == '1'">
+                            <input type="checkbox" id="" value="1" name="Fitness"
+                              (change)="Fitness($event.target.checked)" [checked]="house.Fitness == '1'">
                             ฟิตเนส
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Publicarea"
-                            (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
+                              (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
                             พื้นที่ส่วนกลาง
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="ShuttleBus"
-                            (change)="ShuttleBus($event.target.checked)" [checked]="house.ShuttleBus == '1'">
+                              (change)="ShuttleBus($event.target.checked)" [checked]="house.ShuttleBus == '1'">
                             รถรับส่ง
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="WVmachine"
-                            (change)="WVmachine($event.target.checked)" [checked]="house.WVmachine == '1'">
+                              (change)="WVmachine($event.target.checked)" [checked]="house.WVmachine == '1'">
                             ตู้น้ำหยอดเหรียญ
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="CWmachine"
-                            (change)="CWmachine($event.target.checked)" [checked]="house.CWmachine == '1'">
+                              (change)="CWmachine($event.target.checked)" [checked]="house.CWmachine == '1'">
                             เครื่องซักผ้าหยอดเหรียญ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Elevator" (change)="Elevator($event.target.checked)" [checked]="house.Elevator == '1'">
+                            <input type="checkbox" id="" value="1" name="Elevator"
+                              (change)="Elevator($event.target.checked)" [checked]="house.Elevator == '1'">
                             ลิฟต์
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Lobby" (change)="Lobby($event.target.checked)" [checked]="house.Lobby == '1'">
+                            <input type="checkbox" id="" value="1" name="Lobby" (change)="Lobby($event.target.checked)"
+                              [checked]="house.Lobby == '1'">
                             ล๊อบบี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)" [checked]="house.CCTV == '1'">
+                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)"
+                              [checked]="house.CCTV == '1'">
                             กล้องวงจรปิด CCTV
                           </div>
                         </div>
@@ -1091,23 +1112,28 @@
                         <div>
 
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Kitchen" (change)="Kitchen($event.target.checked)" [checked]="house.Kitchen == '1'">
+                            <input type="checkbox" id="" value="1" name="Kitchen"
+                              (change)="Kitchen($event.target.checked)" [checked]="house.Kitchen == '1'">
                             ห้องครัว
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="LivingR" (change)="LivingR($event.target.checked)" [checked]="house.LivingR == '1'">
+                            <input type="checkbox" id="" value="1" name="LivingR"
+                              (change)="LivingR($event.target.checked)" [checked]="house.LivingR == '1'">
                             ห้องนั่งเล่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="EventR" (change)="EventR($event.target.checked)" [checked]="house.EventR == '1'">
+                            <input type="checkbox" id="" value="1" name="EventR"
+                              (change)="EventR($event.target.checked)" [checked]="house.EventR == '1'">
                             ห้องจัดงาน
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="MeetingR" (change)="MeetingR($event.target.checked)" [checked]="house.MeetingR == '1'">
+                            <input type="checkbox" id="" value="1" name="MeetingR"
+                              (change)="MeetingR($event.target.checked)" [checked]="house.MeetingR == '1'">
                             ห้องประชุม
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Balcony" (change)="Balcony($event.target.checked)" [checked]="house.Balcony == '1'">
+                            <input type="checkbox" id="" value="1" name="Balcony"
+                              (change)="Balcony($event.target.checked)" [checked]="house.Balcony == '1'">
                             ระเบียง
                           </div>
                         </div>
@@ -1117,34 +1143,39 @@
                         <div>
 
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="ATM" (change)="ATM($event.target.checked)" [checked]="house.ATM == '1'">
+                            <input type="checkbox" id="" value="1" name="ATM" (change)="ATM($event.target.checked)"
+                              [checked]="house.ATM == '1'">
                             ตู้เอทีเอ็ม /
                             ธนาคาร
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="BeautySalon"
-                            (change)="BeautySalon($event.target.checked)" [checked]="house.BeautySalon == '1'">
+                              (change)="BeautySalon($event.target.checked)" [checked]="house.BeautySalon == '1'">
                             ร้านเสริมสวย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CStore" (change)="CStore($event.target.checked)" [checked]="house.CStore == '1'">
+                            <input type="checkbox" id="" value="1" name="CStore"
+                              (change)="CStore($event.target.checked)" [checked]="house.CStore == '1'">
                             ร้านสะดวกซื้อ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Hairsalon" (change)="Hairsalon($event.target.checked)" [checked]="house.Hairsalon == '1'">
+                            <input type="checkbox" id="" value="1" name="Hairsalon"
+                              (change)="Hairsalon($event.target.checked)" [checked]="house.Hairsalon == '1'">
                             ร้านทำผม
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Laundry" (change)="Laundry($event.target.checked)" [checked]="house.Laundry == '1'">
+                            <input type="checkbox" id="" value="1" name="Laundry"
+                              (change)="Laundry($event.target.checked)" [checked]="house.Laundry == '1'">
                             ร้านซักรีด/ซักแห้ง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Store" (change)="Store($event.target.checked)" [checked]="house.Store == '1'">
+                            <input type="checkbox" id="" value="1" name="Store" (change)="Store($event.target.checked)"
+                              [checked]="house.Store == '1'">
                             ร้านค้า
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Supermarket"
-                            (change)="Supermarket($event.target.checked)" [checked]="house.Supermarket == '1'">
+                              (change)="Supermarket($event.target.checked)" [checked]="house.Supermarket == '1'">
                             ซุปเปอร์มาร์เก็ต
                           </div>
                         </div>
@@ -1165,29 +1196,36 @@
                 <div class="col-md-12 ">
                   <h4>ทำเล</h4>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)" [checked]="house.Blind == '1'">
+                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)"
+                      [checked]="house.Blind == '1'">
                     ที่ตาบอด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Neareducation" (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
+                    <input type="checkbox" id="" value="1" name="Neareducation"
+                      (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
                     ใกล้สถานศึกษา
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)" [checked]="house.Cenmarket == '1'">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)"
+                      [checked]="house.Cenmarket == '1'">
                     ใกล้ศูนย์การค้า
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)" [checked]="house.Market == '1'">
+                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)"
+                      [checked]="house.Market == '1'">
                     ใกล้ตลาด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="River"(change)="River($event.target.checked)" [checked]="house.River == '1'"> ติดแม่น้ำ
+                    <input type="checkbox" id="" value="1" name="River" (change)="River($event.target.checked)"
+                      [checked]="house.River == '1'"> ติดแม่น้ำ
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id=""  name="Mainroad" (change)="Mainroad($event.target.checked)" [checked]="house.Mainroad"> ติดถนน
+                    <input type="checkbox" id="" name="Mainroad" (change)="Mainroad($event.target.checked)"
+                      [checked]="house.Mainroad"> ติดถนน
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)" [checked]="house.Insoi == '1'"> อยู่ในซอย
+                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)"
+                      [checked]="house.Insoi == '1'"> อยู่ในซอย
                   </div>
                   <div class="col-sm-12">
                     <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
@@ -1198,22 +1236,24 @@
                   </div>
                   <h4>สถานะถนน</h4>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'โคลน'"> โคลน
+                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'โคลน'"> โคลน
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'ยางมะตอย'">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'ยางมะตอย'">
                     ยางมะตอย
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="คอนกรีต"  name="RoadType"
-                    (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
+                    <input type="radio" id="" value="คอนกรีต" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
                   </div>
                   <div class="col-sm-12">
                     <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
                   </div>
                   <div *ngIf="Ronther " class="col-sm-12">
                     <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
-                      placeholder="โปรดระบุ" name="RoadType"  (change)="RoadType($event.target.value)" >
+                      placeholder="โปรดระบุ" name="RoadType" (change)="RoadType($event.target.value)">
                   </div>
 
                   <div class="col-sm-12">
@@ -1250,66 +1290,77 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="airconditioner"
-                            (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
+                              (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
                             เครื่องปรับอากาศ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="afan"(change)="afan($event.target.checked)" [checked]="house.afan == '1'">
+                            <input type="checkbox" id="" value="1" name="afan" (change)="afan($event.target.checked)"
+                              [checked]="house.afan == '1'">
                             พัดลม
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="AirPurifier"
-                            (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
+                              (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
                             เครื่องฟอกอากาศ
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Waterheater"
-                            (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
+                              (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
                             เครื่องทำน้ำอุ่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)" [checked]="house.WIFI == '1'">
+                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)"
+                              [checked]="house.WIFI == '1'">
                             มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)" [checked]="house.TV == '1'">
+                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)"
+                              [checked]="house.TV == '1'">
                             เคเบิลทีวี
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="refrigerator"
-                            (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
+                              (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
                             ตู้เย็น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="microwave" (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
+                            <input type="checkbox" id="" value="1" name="microwave"
+                              (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
                             ไมโครเวฟ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="gasstove" (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
+                            <input type="checkbox" id="" value="1" name="gasstove"
+                              (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
                             เตาแก๊ส
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="wardrobe" (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
+                            <input type="checkbox" id="" value="1" name="wardrobe"
+                              (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
                             ตู้เสื้อผ้า
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)" [checked]="house.TCset == '1'">
+                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)"
+                              [checked]="house.TCset == '1'">
                             ชุดโต๊ะเก้าอี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)" [checked]="house.sofa == '1'">
+                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)"
+                              [checked]="house.sofa == '1'">
                             โซฟา
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)" [checked]="house.bed == '1'">
+                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)"
+                              [checked]="house.bed == '1'">
                             เตียง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="shelves" (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
+                            <input type="checkbox" id="" value="1" name="shelves"
+                              (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
                             ชั้นวาง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)" [checked]="house.CCTV == '1'">
+                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)"
+                              [checked]="house.CCTV == '1'">
                             กล้องวงจรปิด CCTV
                           </div>
 
@@ -1323,43 +1374,48 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Securityguard"
-                            (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
+                              (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
                             เจ้าหน้าที่รักษาความปลอดภัย
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Publicarea"
-                            (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
+                              (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
                             พื้นที่ส่วนกลาง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="ATM" (change)="ATM($event.target.checked)" [checked]="house.ATM == '1'">
+                            <input type="checkbox" id="" value="1" name="ATM" (change)="ATM($event.target.checked)"
+                              [checked]="house.ATM == '1'">
                             ตู้เอทีเอ็ม /
                             ธนาคาร
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="BeautySalon"
-                            (change)="BeautySalon($event.target.checked)" [checked]="house.BeautySalon == '1'">
+                              (change)="BeautySalon($event.target.checked)" [checked]="house.BeautySalon == '1'">
                             ร้านเสริมสวย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CStore" (change)="CStore($event.target.checked)" [checked]="house.CStore == '1'">
+                            <input type="checkbox" id="" value="1" name="CStore"
+                              (change)="CStore($event.target.checked)" [checked]="house.CStore == '1'">
                             ร้านสะดวกซื้อ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Hairsalon" (change)="Hairsalon($event.target.checked)" [checked]="house.Hairsalon == '1'">
+                            <input type="checkbox" id="" value="1" name="Hairsalon"
+                              (change)="Hairsalon($event.target.checked)" [checked]="house.Hairsalon == '1'">
                             ร้านทำผม
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Laundry" (change)="Laundry($event.target.checked)" [checked]="house.Laundry == '1'">
+                            <input type="checkbox" id="" value="1" name="Laundry"
+                              (change)="Laundry($event.target.checked)" [checked]="house.Laundry == '1'">
                             ร้านซักรีด/ซักแห้ง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Store" (change)="Store($event.target.checked)" [checked]="house.Store == '1'">
+                            <input type="checkbox" id="" value="1" name="Store" (change)="Store($event.target.checked)"
+                              [checked]="house.Store == '1'">
                             ร้านค้า
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Supermarket"
-                            (change)="Supermarket($event.target.checked)" [checked]="house.Supermarket == '1'">
+                              (change)="Supermarket($event.target.checked)" [checked]="house.Supermarket == '1'">
                             ซุปเปอร์มาร์เก็ต
                           </div>
                         </div>
@@ -1380,29 +1436,36 @@
                 <div class="col-md-12 ">
                   <h4>ทำเล</h4>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)" [checked]="house.Blind == '1'">
+                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)"
+                      [checked]="house.Blind == '1'">
                     ที่ตาบอด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Neareducation" (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
+                    <input type="checkbox" id="" value="1" name="Neareducation"
+                      (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
                     ใกล้สถานศึกษา
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)" [checked]="house.Cenmarket == '1'">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)"
+                      [checked]="house.Cenmarket == '1'">
                     ใกล้ศูนย์การค้า
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)" [checked]="house.Market == '1'">
+                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)"
+                      [checked]="house.Market == '1'">
                     ใกล้ตลาด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="River"(change)="River($event.target.checked)" [checked]="house.River == '1'"> ติดแม่น้ำ
+                    <input type="checkbox" id="" value="1" name="River" (change)="River($event.target.checked)"
+                      [checked]="house.River == '1'"> ติดแม่น้ำ
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id=""  name="Mainroad" (change)="Mainroad($event.target.checked)" [checked]="house.Mainroad"> ติดถนน
+                    <input type="checkbox" id="" name="Mainroad" (change)="Mainroad($event.target.checked)"
+                      [checked]="house.Mainroad"> ติดถนน
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)" [checked]="house.Insoi == '1'"> อยู่ในซอย
+                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)"
+                      [checked]="house.Insoi == '1'"> อยู่ในซอย
                   </div>
                   <div class="col-sm-12">
                     <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
@@ -1413,22 +1476,24 @@
                   </div>
                   <h4>สถานะถนน</h4>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'โคลน'"> โคลน
+                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'โคลน'"> โคลน
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'ยางมะตอย'">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'ยางมะตอย'">
                     ยางมะตอย
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="คอนกรีต"  name="RoadType"
-                    (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
+                    <input type="radio" id="" value="คอนกรีต" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
                   </div>
                   <div class="col-sm-12">
                     <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
                   </div>
                   <div *ngIf="Ronther " class="col-sm-12">
                     <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
-                      placeholder="โปรดระบุ" name="RoadType"  (change)="RoadType($event.target.value)" >
+                      placeholder="โปรดระบุ" name="RoadType" (change)="RoadType($event.target.value)">
                   </div>
 
                   <div class="col-sm-12">
@@ -1451,11 +1516,13 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevel" value="สูงกว่าถนน" name="GroundLevel"
-                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'สูงกว่าถนน'"> สูงกว่าถนน
+                          (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'สูงกว่าถนน'">
+                        สูงกว่าถนน
                       </div>
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน" name="GroundLevel"
-                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'ต่ำกว่าถนน'"> ต่ำกว่าถนน
+                          (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'ต่ำกว่าถนน'">
+                        ต่ำกว่าถนน
                       </div>
 
                     </div>
@@ -1487,66 +1554,77 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="airconditioner"
-                            (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
+                              (change)="airconditioner($event.target.checked)" [checked]="house.airconditioner == '1'">
                             เครื่องปรับอากาศ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="afan"(change)="afan($event.target.checked)" [checked]="house.afan == '1'">
+                            <input type="checkbox" id="" value="1" name="afan" (change)="afan($event.target.checked)"
+                              [checked]="house.afan == '1'">
                             พัดลม
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="AirPurifier"
-                            (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
+                              (change)="AirPurifier($event.target.checked)" [checked]="house.AirPurifier == '1'">
                             เครื่องฟอกอากาศ
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Waterheater"
-                            (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
+                              (change)="Waterheater($event.target.checked)" [checked]="house.Waterheater == '1'">
                             เครื่องทำน้ำอุ่น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)" [checked]="house.WIFI == '1'">
+                            <input type="checkbox" id="" value="1" name="WIFI" (change)="WIFI($event.target.checked)"
+                              [checked]="house.WIFI == '1'">
                             มีอินเตอร์เน็ตไร้สาย (Wi-Fi)
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)" [checked]="house.TV == '1'">
+                            <input type="checkbox" id="" value="1" name="TV" (change)="TV($event.target.checked)"
+                              [checked]="house.TV == '1'">
                             เคเบิลทีวี
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="refrigerator"
-                            (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
+                              (change)="refrigerator($event.target.checked)" [checked]="house.refrigerator == '1'">
                             ตู้เย็น
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="microwave" (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
+                            <input type="checkbox" id="" value="1" name="microwave"
+                              (change)="microwave($event.target.checked)" [checked]="house.microwave == '1'">
                             ไมโครเวฟ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="gasstove" (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
+                            <input type="checkbox" id="" value="1" name="gasstove"
+                              (change)="gasstove($event.target.checked)" [checked]="house.gasstove == '1'">
                             เตาแก๊ส
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="wardrobe" (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
+                            <input type="checkbox" id="" value="1" name="wardrobe"
+                              (change)="wardrobe($event.target.checked)" [checked]="house.wardrobe == '1'">
                             ตู้เสื้อผ้า
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)" [checked]="house.TCset == '1'">
+                            <input type="checkbox" id="" value="1" name="TCset" (change)="TCset($event.target.checked)"
+                              [checked]="house.TCset == '1'">
                             ชุดโต๊ะเก้าอี้
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)" [checked]="house.sofa == '1'">
+                            <input type="checkbox" id="" value="1" name="sofa" (change)="sofa($event.target.checked)"
+                              [checked]="house.sofa == '1'">
                             โซฟา
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)" [checked]="house.bed == '1'">
+                            <input type="checkbox" id="" value="1" name="bed" (change)="bed($event.target.checked)"
+                              [checked]="house.bed == '1'">
                             เตียง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="shelves" (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
+                            <input type="checkbox" id="" value="1" name="shelves"
+                              (change)="shelves($event.target.checked)" [checked]="house.shelves == '1'">
                             ชั้นวาง
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)" [checked]="house.CCTV == '1'">
+                            <input type="checkbox" id="" value="1" name="CCTV" (change)="CCTV($event.target.checked)"
+                              [checked]="house.CCTV == '1'">
                             กล้องวงจรปิด CCTV
                           </div>
 
@@ -1560,25 +1638,27 @@
 
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Securityguard"
-                            (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
+                              (change)="Securityguard($event.target.checked)" [checked]="house.Securityguard == '1'">
                             เจ้าหน้าที่รักษาความปลอดภัย
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="pool" (change)="pool($event.target.checked)" [checked]="house.pool == '1'">
+                            <input type="checkbox" id="" value="1" name="pool" (change)="pool($event.target.checked)"
+                              [checked]="house.pool == '1'">
                             สระว่ายน้ำ
                           </div>
                           <div class="col-sm-12">
-                            <input type="checkbox" id="" value="1" name="Fitness" (change)="Fitness($event.target.checked)" [checked]="house.Fitness == '1'">
+                            <input type="checkbox" id="" value="1" name="Fitness"
+                              (change)="Fitness($event.target.checked)" [checked]="house.Fitness == '1'">
                             ฟิตเนส
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="Publicarea"
-                            (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
+                              (change)="Publicarea($event.target.checked)" [checked]="house.Publicarea == '1'">
                             พื้นที่ส่วนกลาง
                           </div>
                           <div class="col-sm-12">
                             <input type="checkbox" id="" value="1" name="ShuttleBus"
-                            (change)="ShuttleBus($event.target.checked)" [checked]="house.ShuttleBus == '1'">
+                              (change)="ShuttleBus($event.target.checked)" [checked]="house.ShuttleBus == '1'">
                             รถรับส่ง
                           </div>
                         </div>
@@ -1599,29 +1679,36 @@
                 <div class="col-md-12 ">
                   <h4>ทำเล</h4>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)" [checked]="house.Blind == '1'">
+                    <input type="checkbox" id="" value="1" name="Blind" (change)="Blind($event.target.checked)"
+                      [checked]="house.Blind == '1'">
                     ที่ตาบอด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Neareducation" (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
+                    <input type="checkbox" id="" value="1" name="Neareducation"
+                      (change)="Neareducation($event.target.checked)" [checked]="house.Neareducation == '1'">
                     ใกล้สถานศึกษา
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)" [checked]="house.Cenmarket == '1'">
+                    <input type="checkbox" id="" value="1" name="Cenmarket" (change)="Cenmarket($event.target.checked)"
+                      [checked]="house.Cenmarket == '1'">
                     ใกล้ศูนย์การค้า
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)" [checked]="house.Market == '1'">
+                    <input type="checkbox" id="" value="1" name="Market" (change)="Market($event.target.checked)"
+                      [checked]="house.Market == '1'">
                     ใกล้ตลาด
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="River"(change)="River($event.target.checked)" [checked]="house.River == '1'"> ติดแม่น้ำ
+                    <input type="checkbox" id="" value="1" name="River" (change)="River($event.target.checked)"
+                      [checked]="house.River == '1'"> ติดแม่น้ำ
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id=""  name="Mainroad" (change)="Mainroad($event.target.checked)" [checked]="house.Mainroad"> ติดถนน
+                    <input type="checkbox" id="" name="Mainroad" (change)="Mainroad($event.target.checked)"
+                      [checked]="house.Mainroad"> ติดถนน
                   </div>
                   <div class="col-sm-12">
-                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)" [checked]="house.Insoi == '1'"> อยู่ในซอย
+                    <input type="checkbox" id="" value="1" name="Insoi" (change)="Insoi($event.target.checked)"
+                      [checked]="house.Insoi == '1'"> อยู่ในซอย
                   </div>
                   <div class="col-sm-12">
                     <input type="checkbox" id=" " value="1" name="onther" [(ngModel)]="onther"> อื่นๆ
@@ -1632,22 +1719,24 @@
                   </div>
                   <h4>สถานะถนน</h4>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'โคลน'"> โคลน
+                    <input type="radio" id="" value="โคลน" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'โคลน'"> โคลน
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'ยางมะตอย'">
+                    <input type="radio" id="" value="ยางมะตอย" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'ยางมะตอย'">
                     ยางมะตอย
                   </div>
                   <div class="col-sm-12">
-                    <input type="radio" id="" value="คอนกรีต"  name="RoadType"
-                    (change)="RoadType($event.target.value)" [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
+                    <input type="radio" id="" value="คอนกรีต" name="RoadType" (change)="RoadType($event.target.value)"
+                      [checked]="house.RoadType == 'คอนกรีต'"> คอนกรีต
                   </div>
                   <div class="col-sm-12">
                     <input type="radio" id=" " value="1" name="RoadType" [(ngModel)]="Ronther"> อื่นๆ
                   </div>
                   <div *ngIf="Ronther " class="col-sm-12">
                     <input style="border-radius: 30px 30px 30px 30px;" type="text" id="RoadType" class="form-control"
-                      placeholder="โปรดระบุ" name="RoadType"  (change)="RoadType($event.target.value)" >
+                      placeholder="โปรดระบุ" name="RoadType" (change)="RoadType($event.target.value)">
                   </div>
 
                   <div class="col-sm-12">
@@ -1670,11 +1759,13 @@
                     <div class="row">
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevel" value="สูงกว่าถนน" name="GroundLevel"
-                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'สูงกว่าถนน'"> สูงกว่าถนน
+                          (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'สูงกว่าถนน'">
+                        สูงกว่าถนน
                       </div>
                       <div class="col-sm-6">
                         <input type="radio" id="GroundLevellow" value="ต่ำกว่าถนน" name="GroundLevel"
-                        (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'ต่ำกว่าถนน'"> ต่ำกว่าถนน
+                          (change)="GroundLevel($event.target.value)" [checked]="house.GroundLevel == 'ต่ำกว่าถนน'">
+                        ต่ำกว่าถนน
                       </div>
 
                     </div>
@@ -1720,9 +1811,18 @@
                     <div class="text-right text-danger">
                       *ท่านสามารถเลือนจุดไปยังสถานที่ที่ท่านต้องการได้
                     </div>
-                    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
-                      placeholder="ค้นหาอยู่ของอสังหา" autocorrect="off" autocapitalize="off" spellcheck="off"
-                      type="text" #search>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+                        placeholder="ค้นหาอยู่ของอสังหา" autocorrect="off" autocapitalize="off" spellcheck="off"
+                        type="text" #search value="{{address}}" name="address">
+                      </div>
+                      <div class="col-md-2">
+                        <button type="button" class="btn btn-warning btn-s" (click)="setCurrentLocation()"
+                        ><i class="far fa-compass"></i> ที่อยู่ปัจจุบัน
+                      </button>
+                      </div>
+                    </div>
                   </div>
                   <div>
                     <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
@@ -1733,9 +1833,9 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-3">ละติจูต: <input class="form-control" readonly type="text" id="latitude"
-                        [(ngModel)]="credentials.Latitude" value='{{latitude}}' name="latitude"> </div>
+                        [(ngModel)]="credentials.Latitude" value="{{latitude}}" name="latitude"> </div>
                     <div class="col-sm-3">ลองจิจูต: <input class="form-control" readonly type="text" id="longitude"
-                        [(ngModel)]="credentials.Longitude" value='{{longitude}}' name="longitude">
+                        [(ngModel)]="credentials.Longitude" value="{{longitude}}" name="longitude">
                     </div>
                   </div>
                 </div>
@@ -1787,6 +1887,8 @@
                                 <select style="border-radius: 30px 30px 30px 30px;" id="province" class="form-control"
                                   name="Lprovince" formControlName="Lprovince" value="{{house.LProvince}}"
                                   (ngModelChange)="selectprovince($event)">
+                                  <option value="">กรุณาเลือก จังหวัด</option>
+                                  <option value="{{house.LProvince}}">{{house.LProvince}}</option>
                                   <option *ngFor="let p of province" [ngValue]="p">
                                     {{p?.PROVINCE_NAME}}
                                   </option>
@@ -1803,6 +1905,8 @@
                                 <select style="border-radius: 30px 30px 30px 30px;" id="amphur" class="form-control"
                                   name="Lamphur" formControlName="Lamphur" value="{{house.LAmphur}}"
                                   (ngModelChange)="selectamphur($event)">
+                                  <option value="">กรุณาเลือก อำเภอ</option>
+                                  <option value="{{house.LAmphur}}">{{house.LAmphur}}</option>
                                   <option *ngFor="let a of amphur" [ngValue]="a">
                                     {{a?.AMPHUR_NAME}}</option>
                                 </select>
@@ -1821,6 +1925,8 @@
                                 <select style="border-radius: 30px 30px 30px 30px;" id="district" class="form-control"
                                   name="Ldistrict" formControlName="Ldistrict" value="{{house.LDistrict}}"
                                   (ngModelChange)="selectdistrict($event)">
+                                  <option value="">กรุณาเลือก ตำบล</option>
+                                  <option value="{{house.LDistrict}}">{{house.LDistrict}}</option>
                                   <option *ngFor="let d of district" [ngValue]="d">
                                     {{d?.DISTRICT_NAME}}
                                   </option>
@@ -1832,6 +1938,10 @@
                             <div class="row">
                               <div class="col-sm-4">
                                 รหัสไปรษณี:
+                              </div>
+                              <div class="col-sm-8" *ngFor="let pp of zipcodeOld">
+                                <input class="form-control" type="text" style="border-radius: 30px 30px 30px 30px;"
+                                  value="{{pp}}" readonly>
                               </div>
                               <div class="col-sm-8" *ngFor="let pp of zipcode">
                                 <input class="form-control" type="text" style="border-radius: 30px 30px 30px 30px;"
@@ -1851,31 +1961,13 @@
       </div>
       <div class="row">
         <div class="col-md-12  ">
-          <h3><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                aria-selected="true">ผู้ติดต่อบุคคลที่
-                1<i class="reqiureinput">*</i></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                aria-selected="false">ผู้ติดต่อบุคคลที่
-                2</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-                aria-selected="false">ผู้ติดต่อบุคคลที่
-                3</a>
-            </li>
-          </ul>
+          <h3 ><i class="fas fa-file-alt"></i> ข้อมูลผู้ติดต่อ</h3>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
               <div>
                 <div class="container jumbotron">
-                  <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 1</h4>
                   <hr>
-                  <div class="container ">
+                  <div class="container">
                     <form [formGroup]="EditContactForm">
                       <div class="form-row">
                         <div class="form-group col-md-4">
@@ -1904,7 +1996,8 @@
                         <div class="form-group col-md-4">
                           <label for="inputPassword4">สถานะ</label>
                           <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactS"
-                            formControlName="ContactS" value="{{conS1}}">
+                            formControlName="ContactS" value="{{conS1}}"
+                            (change)="onGetStatusCon1($event.target.value)">
                             <option value="เจ้าของ">เจ้าของ</option>
                             <option value="นายหน้า">นายหน้า</option>
                           </select>
@@ -1913,28 +2006,57 @@
                       <div class="form-row">
                         <div class="form-group col-md-4">
                           <label for="inputCity">อีเมล</label>
-                          <input type="text" class="form-control" (change)="onEditContactEmail1($event.target.value)"
+                          <input type="text" class="form-control" (change)="onEditContactEmail1($event.target.value)" [disabled]="EditC"
                             value="{{conEmail1}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
                         </div>
                         <div class="form-group col-md-4">
                           <label for="inputZip">เบอร์โทร</label>
-                          <input type="text" class="form-control" (change)="onEditContactPhone1($event.target.value)"
+                          <input type="text" class="form-control" (change)="onEditContactPhone1($event.target.value)" [disabled]="EditC"
                             style="border-radius: 30px 30px 30px 30px;" value="{{conPhone1}}">
                         </div>
                         <div class="form-group col-md-4">
                           <label for="inputZip">ไลน์</label>
-                          <input type="text" class="form-control" (change)="onEditContactLine1($event.target.value)"
+                          <input type="text" class="form-control" (change)="onEditContactLine1($event.target.value)" [disabled]="EditC"
                             style="border-radius: 30px 30px 30px 30px;" value="{{conLine1}}">
                         </div>
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" *ngIf="SelectContact == true">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" id="gridCheck"
                             (change)="onEditContactID1($event.target.value)" [(ngModel)]="allowedit"
                             formControlName="allowedit" name="allowedit" value="{{conID1}}">
                           <label class="form-check-label" for="gridCheck">
                             แก้ไข ข้อมูลผู้ติดต่อ
-                          </label>
+                          </label><a [routerLink] data-toggle="modal" data-target="#Contact1"> <i
+                              class="far fa-question-circle"> </i></a>
+                          <!-- Modal -->
+                          <div class="modal fade" id="Contact1" tabindex="-1" role="dialog" aria-labelledby="Contact1"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="Contact1">แก้ไขข้อมูล ผู้ติดต่อ</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <label>1.แก้ไขผู้ติดต่อคนเดิม</label>
+                                  <p> ทำเครืองหมาย <i class="fas fa-check"></i>
+                                    ในช่องว่างหากต้องการแก้ไขข้อมูลผู้ติดต่อคนเดิม จากนั้น แก้ไขข้อมูลที่ต้องการ</p>
+                                      <p>เมื่อเสร็จแล้ว กดปุ่ม <i style="color: orange;">"บันทึก"</i></p>
+                                  <label>2.เพิ่มผู้ติดต่อใหม่ </label>
+                                  <p>หากต้องการเพิ่มผู้ติดต่อคนใหม่ <i style="color: orangered;">ไม่ต้อง</i>
+                                    ทำเครื่องหมาย <i class="fas fa-check"></i> ในช่องว่าง ท่านสามารถ
+                                    กรอกข้อมูลในช่องว่าง จากนั้นกดปุ่ม <i
+                                      style="color: #519b06;">"บันทึกข้อมูล"</i> </p>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <button *ngIf="allowedit" type="button" (click)="onEditContact1()"
@@ -1944,157 +2066,15 @@
                 </div>
               </div>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              <div>
-                <div class="container jumbotron">
-                  <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 2</h4>
-                  <div class="container">
-                    <form [formGroup]="EditContact2Form">
-                      <div class="form-row">
-                        <div class="form-group col-md-4">
-                          <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                          <div class="ng-autocomplete">
-                            <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name2"
-                              [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
-                              (selected)='onGetContact2($event)' (inputChanged)='onEditContactName2($event)'
-                              (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
-                              [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
-                            </ng-autocomplete>
-
-                            <ng-template #itemTemplate let-item>
-                              <a [innerHTML]="item.Name"></a>
-                            </ng-template>
-
-                            <ng-template #notFoundTemplate let-notFound>
-                              <div [innerHTML]="notFound"></div>
-                            </ng-template>
-                            <div *ngIf="submitted && Et.ContactName.errors" class="invalid-feedback">
-                              <div *ngIf="Et.ContactName.errors.required">
-                                กรุณากรอกข้อมูล</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group col-md-4">
-                          <label for="inputPassword4">สถานะ</label>
-                          <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSt"
-                            formControlName="ContactSt" value="conS2">
-                            <option value="เจ้าของ">เจ้าของ</option>
-                            <option value="นายหน้า">นายหน้า</option>
-                          </select>
-
-                        </div>
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-4">
-                          <label for="inputCity">อีเมล</label>
-                          <input type="text" class="form-control" (change)="onEditContactEmail2($event.target.value)"
-                            value="{{conEmail2}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
-                        </div>
-                        <div class="form-group col-md-4">
-                          <label for="inputZip">เบอร์โทร</label>
-                          <input type="text" class="form-control" (change)="onEditContactPhone2($event.target.value)"
-                            style="border-radius: 30px 30px 30px 30px;" value="{{conPhone2}}">
-                        </div>
-                        <div class="form-group col-md-4">
-                          <label for="inputZip">ไลน์</label>
-                          <input type="text" class="form-control" (change)="onEditContactLine2($event.target.value)"
-                            style="border-radius: 30px 30px 30px 30px;" value="{{conLine2}}">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="gridCheck"
-                            (change)="onEditContactID2($event.target.value)" [(ngModel)]="allowedit2"
-                            formControlName="allowedit2" name="allowedit2" value="{{conID2}}">
-                          <label class="form-check-label" for="gridCheck">
-                            แก้ไข ข้อมูลผู้ติดต่อ
-                          </label>
-                        </div>
-                      </div>
-                      <button *ngIf="allowedit2" type="submit" (click)="onEditContact()"
-                        class="btn btn-warning">บันทึก</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-              <div class="container jumbotron">
-                <h4><i class="fas fa-file-alt"></i> ผู้ติดต่อบุคคลที่ 3</h4>
-                <div class="container">
-                  <form [formGroup]="EditContact3Form">
-                    <div class="form-row">
-                      <div class="form-group col-md-4">
-                        <label for="inputEmail4">ชื่อผู้ติดต่อ</label>
-                        <div class="ng-autocomplete">
-                          <ng-autocomplete [data]="contactUser" formControlName="ContactName" [(ngModel)]="Name3"
-                            [searchKeyword]="keyword" [initialValue]="" placeHolder="กรุณากรอกข้อมูล"
-                            (selected)='onGetContact3($event)' (inputChanged)='onEditContactName3($event)'
-                            (inputFocused)='onFocused($event)' historyIdentifier="contactUser"
-                            [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
-                          </ng-autocomplete>
-
-                          <ng-template #itemTemplate let-item>
-                            <a [innerHTML]="item.Name"></a>
-                          </ng-template>
-
-                          <ng-template #notFoundTemplate let-notFound>
-                            <div [innerHTML]="notFound"></div>
-                          </ng-template>
-                        </div>
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label for="inputPassword4">สถานะ</label>
-                        <select style="border-radius: 30px 30px 30px 30px;" class="form-control" name="ContactSo"
-                          formControlName="ContactSo" value="conS3">
-                          <option value="เจ้าของ">เจ้าของ</option>
-                          <option value="นายหน้า">นายหน้า</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-4">
-                        <label for="inputCity">อีเมล</label>
-                        <input type="text" class="form-control" (change)="onEditContactEmail3($event.target.value)"
-                          value="{{conEmail3}}" id="inputCity" style="border-radius: 30px 30px 30px 30px;">
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label for="inputZip">เบอร์โทร</label>
-                        <input type="text" class="form-control" (change)="onEditContactPhone3($event.target.value)"
-                          style="border-radius: 30px 30px 30px 30px;" value="{{conPhone3}}">
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label for="inputZip">ไลน์</label>
-                        <input type="text" class="form-control" (change)="onEditContactLine3($event.target.value)"
-                          style="border-radius: 30px 30px 30px 30px;" value="{{conLine3}}">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck"
-                          (change)="onEditContactID3($event.target.value)" [(ngModel)]="allowedit3"
-                          formControlName="allowedit3" name="allowedit3" value="{{conID3}}">
-                        <label class="form-check-label" for="gridCheck">
-                          แก้ไข ข้อมูลผู้ติดต่อ
-                        </label>
-                      </div>
-                    </div>
-                    <button *ngIf="allowedit3" type="submit" (click)="onEditContact()"
-                      class="btn btn-warning">บันทึก</button>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       <div class="col-md-12 ">
-              <button class="btn btn-success float-right" (click)="onGo()"  >
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
-              </button>
-            
-        </div>
+        <button class="btn btn-success float-right" (click)="onGo()">
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> บันทึกข้อมูล
+        </button>
+
+      </div>
     </div>
   </div>
 </div>

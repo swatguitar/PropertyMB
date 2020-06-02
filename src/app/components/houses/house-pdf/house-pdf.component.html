@@ -6,7 +6,7 @@
 <div class="container" *ngFor="let house of results">
   <div id="product-container">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <br>
         <ul id="breadcrumb-nav" typeof="BreadcrumbList">
           <li property="itemListElement" typeof="ListItem"><a [routerLink]="[ '/home' ]" property="item"
@@ -27,16 +27,21 @@
         <meta property="position" content="4">
       </li>
         </ul>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
         <br>
         <h1><i style="color: chocolate" class="fas fa-feather-alt "></i>ข้อมูลอสังหาอิเล็กทรอนิกส์</h1>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-2 ">
         <br>
-        <br>
-        <br>
-        <button class="btn btn-success " type="button" (click)="downloadPDF()">บันทึกเป็น PDF</button>
+        <button class="btn btn-success " type="button" (click)="getPDF()">ดาวน์โหลด PDF</button>
       </div>
-
+      <div class="col-md-2">
+        <br>
+        <img *ngIf="loading == true"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div>
+      <div class="col-md-2"></div>
     </div>
     <hr>
     <div class="row">
@@ -104,8 +109,9 @@
           <h5>รูปภาพ</h5>
           <hr>
           <div class="row">
-            <div class="col-md-4" *ngFor="let img of imagenew">
-              <img src="http://www.landvist.xyz/images/{{ img.URL}}" width="200" height="150">
+            <div class="col-md-4" *ngFor="let img of imgbox">
+              <app-loading-spinner *ngIf="showSpinerImg == true"></app-loading-spinner>
+              <img src="{{ img.URL}}" width="200" height="150">
               <div>
                 <br>
               </div>
@@ -115,7 +121,8 @@
           <h5>แผนที่</h5>
           <hr>
           <div class="container">
-            <div class="text-center">
+            <app-loading-spinner *ngIf="showSpiner == true"></app-loading-spinner>
+            <div class="page-content">
                 <img id="imgMap" alt="" style="display: none" width="700" height="350" />
             </div>
           </div>

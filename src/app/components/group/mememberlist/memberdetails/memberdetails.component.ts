@@ -5,8 +5,6 @@ import { HttpClient } from "@angular/common/http";
 import { } from 'googlemaps';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService, UserDetails, PropertyDetails, GroupDetails, ImageID } from '../../../../authentication.service';
-const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadimagegroup';
-//const uri = 'http://localhost:3001/users/upload';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 @Component({
@@ -33,7 +31,6 @@ export class MemberdetailsComponent implements OnInit {
   CreateGroup: boolean = false
   Groups: any[];
   GroupsDetail: any;
-  uploader: FileUploader = new FileUploader({ url: uri });
   folder: any;
   showSpinner: boolean = true;
   GroupMs: any[];
@@ -72,47 +69,25 @@ export class MemberdetailsComponent implements OnInit {
   }
   latnew: any;
   lonnew: any;
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, public sanitizer: DomSanitizer, public auth: AuthenticationService ,private mapsAPILoader: MapsAPILoader, ) {
-    this.uploader.onBeforeUploadItem = (item) => {
-      item.withCredentials = false;
-    }
-    this.uploader.onAfterAddingFile = (fileItem) => {
-      this.renew = false
-      let url = (window.URL) ? window.URL.createObjectURL(fileItem._file) : (window as any).webkitURL.createObjectURL(fileItem._file);
-      this.localImageUrl.push(url)
-      console.log(fileItem._file.size);
-    }
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, public sanitizer: DomSanitizer, public auth: AuthenticationService, private mapsAPILoader: MapsAPILoader, ) {
 
-    this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('ID_Group', this.credentials.ID_Group);
-    };
-    this.uploader.uploadAll();
-    this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
-      this.onFinish()
-      alert(JSON.stringify("อัพโหลดสำเร็จ"))
+  }
 
-      this.refresh()
-    }
-  }
-  onRemoveFile(url) {
-    this.renew = true
-    this.localImageUrl.forEach((element, index) => {
-      if (element == url) {
-        this.localImageUrl.splice(index, 1);
-        this.uploader.queue.splice(index, 1);
-      }
-    });
-  }
 
   ngOnInit() {
+    //************* set show image *************
     this.galleryOptions = [
       { "imageAutoPlay": true, "imageAutoPlayPauseOnHover": true, "previewAutoPlay": true, "previewAutoPlayPauseOnHover": true },
       { "breakpoint": 500, "width": "300px", "height": "300px", "thumbnailsColumns": 3 },
       { "breakpoint": 300, "width": "100%", "height": "200px", "thumbnailsColumns": 2 }
     ]
+
     this.GDetails = []
     this.Lists = []
     this.imagenew = []
+    this.imageH = []
+    this.imageL = []
+    //************* แบ่งหน้า &&  get id property *************
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = params.get('id');
@@ -123,90 +98,73 @@ export class MemberdetailsComponent implements OnInit {
     if (params.has('folder')) {
       this.postfolder = +params.get('folder');
     }
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onForeach()
-    }, 3000);
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.recenter()
-    }, 5000);
-
     this.credentials.ID_Property = this.postID
     this.credentials.ID_Group = this.postgroup
     this.credentials.ID_Folder = this.postfolder
     this.imageID.ID_Property = this.postID
     this.imageID.ID_Lands = this.postID
-    this.auth.getgroupfolder(this.credentials).subscribe((group) => {
-      this.folder = group
-    },
-      err => {
-        console.error(err)
-      })
-
+    this.getGroupDetailMember()
+    this.getGroupFolder()
+    this.getGroup()
+    this.getGroupID()
+    this.getGroupById()
+    this.getDataH()
     this.auth.getimgland(this.imageID).subscribe((img) => {
       this.imageL = img
-      // กรณี resuponse success
-     
     })
     this.auth.getimghouse(this.imageID).subscribe((img) => {
       this.imageH = img
-   
     })
+    this.getImage()
 
     setTimeout(() => {
-      this.imagenew = this.imageL.concat(this.imageH)
-      if (this.imagenew.length == 0) {
-        this.galleryImages = [
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-        ]
-
-      } else {
-        this.galleryImages = this.imagenew.map(item => {
-
-          return {
-            small: 'http://www.landvist.xyz/images/' + item.URL,
-            medium: 'http://www.landvist.xyz/images/' + item.URL,
-            big: 'http://www.landvist.xyz/images/' + item.URL
-          };
-
-        });
+      this.showSpinner = false
+    }, 2000);
+  }
+  //************* get group by owner id *************
+  getDataH() {
+    this.auth.getMemberHDetail(this.credentials).subscribe((result) => {
+      this.Prop = result;
+      this.credentials.ID_User = result[0].Owner
+      if(this.Prop.length != 0){
+        this.getOwnerInfo()
+      }else{
+        this.getDataL()
       }
-      this.auth.getgroupAll().subscribe((group) => {
-        this.GroupsDetail = group.filter(article => {
-          return article.ID_Group == this.postgroup
+    },
+      err => {
+        console.error(err)
 
-        });
-        console.log(this.GroupsDetail)
-      },
-        err => {
-          console.error(err)
+      }
+    )
+  }
+  getDataL() {
+    this.auth.getMemberLDetail(this.credentials).subscribe((result) => {
+      this.Prop = result;
+      this.credentials.ID_User = result[0].Owner
+      this.getOwnerInfo()
+    },
+      err => {
+        console.error(err)
 
-        }
-      )
-    }, 1000);
+      }
+    )
+  }
+
+   //************* get group by owner id *************
+   getOwnerInfo() {
+    this.auth.getGroupOwnerInfo(this.credentials).subscribe((Owner) => {
+      this.Owner = Owner;
+      console.log(this.Owner)
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+  //************* get group by owner id *************
+  getGroup() {
     this.auth.getgroup().subscribe((group) => {
       this.Groups = group;
     },
@@ -215,147 +173,113 @@ export class MemberdetailsComponent implements OnInit {
 
       }
     )
-    this.auth.getgroupM().subscribe((group) => {
-      this.GroupMs = group;
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.auth.getMember(this.credentials).subscribe((member) => {
-      this.listMs = member;
-
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.auth.getMemberlist().subscribe((member) => {
-      this.Userlist = member;
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-
-
-
-
-
-
-
-
-    this.auth.getallhouse().subscribe((Prop) => {
-      this.Prop = Prop.filter(article => {
-
-        return article.ID_Property == this.credentials.ID_Property
-      });
-
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-
-
-
-
-
-
-
-
-    setTimeout(() => {
-      if (this.Prop == '') {
-        this.Getland()
-      }else{
-        this.GETOwner()
-      }
-      this.auth.getgroupAll().subscribe((group) => {
-        this.groupAll = group
-        for (var i = 0; i < this.GroupMs.length; i++) {
-
-          this.temp = group.filter(article => {
-
-            return article.ID_Group == this.GroupMs[i].ID_Group
-          });
-          this.GDetails = this.GDetails.concat(this.temp);
-          //this.GDetails.push([this.temp ]);
-        }
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 1000);
-    setTimeout(() => {
-
-
-      this.auth.getMemberlist().subscribe((member) => {
-        this.MemberList = member
-        for (var i = 0; i < this.listMs.length; i++) {
-
-          this.temp2 = member.filter(article => {
-
-            return article.ID_User == this.listMs[i].ID_User
-          });
-          this.Lists = this.Lists.concat(this.temp2);
-        }
-
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 1000);
-    setTimeout(() => {
-      this.GroupsDetail.forEach((element, index) => {
-        this.ID_Owner = element.Owner
-      });
-      this.showSpinner = false
-      this.auth.getgroupfolder(this.credentials).subscribe((folder) => {
-        this.GFolders = folder.filter(article => {
-          return article.ID_Folder == this.credentials.ID_Folder
-        });
-        console.log(this.GFolders)
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 2000);
-    setTimeout(() => {
-      this.Owner = this.MemberList.filter(article => {
-        return article.ID_User == this.ID_Owner
-      });
-      console.log(this.Owner)
-    }, 3000);
-
   }
-  GETOwner(){
+  //************* get folder of group  *************
+  getGroupFolder() {
+    this.auth.getgroupfolder(this.credentials).subscribe((group) => {
+      if (group) {
+        this.folder = group
+        console.log(this.folder)
+      }
+    },
+      err => {
+        console.error(err)
+      })
+  }
+  //************* get group that you are member  *************
+  getGroupById() {
+    this.auth.getGroupById(this.credentials).subscribe((group) => {
+      this.GroupsDetail = group;
+    },
+      err => {
+        console.error(err)
+      })
+  }
+   //************* get group that you are member  *************
+   getGroupDetailMember() {
+    this.auth.getGroupDetailMember().subscribe((group) => {
+      this.GDetails = group;
+      console.log(this.GDetails)
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+  //************* get image *************
+  getImage() {
+    this.imagenew = this.imageL.concat(this.imageH)
+    if (this.imagenew.length == 0) {
+      this.galleryImages = [
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+        {
+          small: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          medium: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg',
+          big: 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/placeholder.jpg'
+        },
+      ]
+    } else {
+      this.galleryImages = this.imagenew.map(item => {
+        return {
+          small: item.URL,
+          medium: item.URL,
+          big: item.URL
+        };
+      });
+    }
+  }
+  //************* get group ID  *************
+  getGroupID() {
+    this.auth.getgroupfolderID(this.credentials).subscribe((folder) => {
+      this.GFolders = folder;
+      console.log("ssssssss" + folder)
+      console.log("sss" + this.GFolders)
+      this.credentials.ID_Group = folder[0].ID_Group
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+  GETOwner() {
     setTimeout(() => {
       for (var i = 0; i < this.Userlist.length; i++) {
         this.Prop.forEach((element, index) => {
           if (element.Owner == this.Userlist[i].ID_User) {
-            element.Costestimate = this.Userlist[i].Firstname +' '+ this.Userlist[i].Lastname+' | อีเมล '+ this.Userlist[i].Email
+            element.Costestimate = this.Userlist[i].Firstname + ' ' + this.Userlist[i].Lastname + ' | อีเมล ' + this.Userlist[i].Email
           }
 
         });
       }
     }, 2000);
   }
-  GETOwnerL(){
+  GETOwnerL() {
     setTimeout(() => {
       for (var i = 0; i < this.Userlist.length; i++) {
         this.Prop.forEach((element, index) => {
           if (element.Owner == this.Userlist[i].ID_User) {
-            element.Place = this.Userlist[i].Firstname +' '+ this.Userlist[i].Lastname+' | อีเมล '+ this.Userlist[i].Email
+            element.Place = this.Userlist[i].Firstname + ' ' + this.Userlist[i].Lastname + ' | อีเมล ' + this.Userlist[i].Email
           }
 
         });
@@ -409,7 +333,7 @@ export class MemberdetailsComponent implements OnInit {
       err => {
         console.error(err)
       })
-      this.GETOwnerL()
+    this.GETOwnerL()
   }
 
   onFinishedG() {

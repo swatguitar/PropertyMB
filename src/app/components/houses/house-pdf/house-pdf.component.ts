@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { AuthenticationService, ID, UserDetails, PropertyDetails, ImageID } from '../../../authentication.service'
+import { AuthenticationService, ID, UserDetails, PropertyDetails, ImageID, PDF } from '../../../authentication.service'
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import domtoimage from 'dom-to-image';
 import * as jsPDF from 'jspdf';
@@ -14,61 +14,9 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./house-pdf.component.css']
 })
 export class HousePdfComponent implements OnInit {
- public downloadPDF() {
-    console.log("dddddd")
-    var node = document.getElementById('parentdiv');
+  showSpinerImg: boolean;
+  showSpiner: boolean;
 
-    var img;
-    var filename;
-    var newImage;
-
-
-    domtoimage.toPng(node, { bgcolor: '#fff' })
-
-
-      .then(function (dataUrl) {
-
-        img = new Image();
-        img.src = dataUrl;
-        newImage = img.src;
-
-        img.onload = function () {
-
-          var pdfWidth = img.width;
-          var pdfHeight = img.height;
-
-          // FileSaver.saveAs(dataUrl, 'my-pdfimage.png'); // Save as Image
-
-          var doc;
-
-          if (pdfWidth > pdfHeight) {
-            doc = new jsPDF('l', 'px', [pdfWidth, pdfHeight]);
-          }
-          else {
-            doc = new jsPDF('p', 'px', [pdfWidth, pdfHeight]);
-          }
-        
-
-
-    var width = doc.internal.pageSize.getWidth();
-    var height = doc.internal.pageSize.getHeight();
-
-
-    doc.addImage(newImage, 'PNG', 10, 10, width, height);
-    filename = 'PropertyMB_PDF' + '.pdf';
-    doc.save(filename);
-
-  };
-
-
-})
-      .catch (function (error) {
-
-  // Error Handling
-
-});
-
-  }
   filename: any;
 
 
@@ -83,7 +31,9 @@ export class HousePdfComponent implements OnInit {
   public activePage: number;
   results: PropertyDetails[];
   zoom: number = 5;
-  latitude: number = 13.7348534;;
+  latitude: number = 13.7348534; loading: boolean;
+  result: any;
+  ;
   longitude: number = 100.4997134999999;
   lat: number;
   lng: number;
@@ -106,7 +56,7 @@ export class HousePdfComponent implements OnInit {
   IDcontact3: string
   lonnew: number;
   latnew: number;
-  SelectID: ID = {
+  credentials: ID = {
     ID_Lands: '',
     ID_Property: '',
     ContactU: '',
@@ -120,6 +70,14 @@ export class HousePdfComponent implements OnInit {
     ID_Photo: '',
     URL: '',
   }
+  PDF: PDF = {
+    ID_Property: '',
+    ID_Lands: '',
+    ID_Photo: '',
+    content: '',
+    URL: '',
+    filename: '',
+  }
   constructor(private auth: AuthenticationService, private route: ActivatedRoute, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private router: Router) { }
 
 
@@ -129,149 +87,110 @@ export class HousePdfComponent implements OnInit {
     if (params.has('id')) {
       this.postID = params.get('id');
     }
-
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onForeach()
-    }, 5000);
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onSetcontact()
-      this.recenter()
-    }, 7000);
-
-    this.SelectID.ID_Property = this.postID;
+    this.credentials.ID_Property = this.postID;
     this.ImageID.ID_Property = this.postID;
-    this.auth.houseUpdate(this.SelectID).subscribe((house) => {
-      this.results = house
-      this.details = house
-      this.filename = house.AnnouceTH
-      console.log(this.filename)
+    this.getHouse()
+    this.getProfile()
+    this.getImage()
+
+  }
+
+  //************* get property *************
+  getHouse() {
+    this.auth.GetHouseDetail(this.credentials).subscribe((house) => {
+      if (house) {
+        this.results = house
+        this.details = house
+        this.credentials.ContactU = house[0].ContactU
+        this.credentials.ContactUt = house[0].ContactUt
+        this.credentials.ContactUo = house[0].ContactUo
+        this.conS1 = house[0].ContactS
+        this.conS2 = house[0].ContactSt
+        this.conS3 = house[0].ContactSo
+        this.latitude = Number(house[0].Latitude)
+        this.longitude = Number(house[0].Longitude)
+        this.getContact()
+        this.showSpiner = true
+        setTimeout(() => {
+          this.Export()
+        }, 3000);
+
+        //this.showSpinner = false
+      }
     },
       err => {
         console.error(err)
       })
+  }
 
+  //************* get owner*************
+  getProfile() {
     this.auth.profile().subscribe(
       user => {
         this.UserProfile = user
-
       },
       err => {
         console.error(err)
       }
     )
-    //-------- get contact ----
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
+  }
+
+  //************* get Image *************
+  getImage() {
+    this.showSpinerImg = true
+    this.auth.getimghouse(this.ImageID).subscribe((img) => {
+      if (img) {
+        this.showSpinerImg = false
+        this.imgbox = img
+      }
+    })
+  }
+  //************* get PDF *************
+  getPDF() {
+    this.loading = true
+    if(this.PDF.ID_Property == ''){
+      alert(JSON.stringify("กำลังโหลดแผนที่ กรุณาลองอีกครั้ง"))
+      return;
+    }
+    this.auth.PDFHouse(this.PDF).subscribe((result) => {
+ 
+      if (result) {
+        var file = new Blob([result], {type: 'application/pdf'});
+      var fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+        this.showSpiner= false
+        this.loading = false
+      }
+    })
+  }
+
+  //************* get contact *************
+  getContact() {
+    this.selectContact = []
+    this.selectContact2 = []
+    this.selectContact3 = []
+    this.auth.getContactDetail(this.credentials).subscribe((contactUser) => {
+      if (contactUser) {
+        this.contactUser = contactUser;
+        this.selectContact.push(this.contactUser[0])
+        if (contactUser.length == 2) {
+          this.selectContact2.push(this.contactUser[1])
+        } else if (contactUser.length == 3) {
+          this.selectContact3.push(this.contactUser[2])
+          this.selectContact2.push(this.contactUser[1])
+        }
+      }
     },
       err => {
         console.error(err)
       }
     )
-
-
-
-
-
-    this.auth.getimghouse(this.ImageID).subscribe((img) => {
-      this.imgbox = img
-      // กรณี resuponse success
-
-      this.imagenew = this.imgbox.filter(article => {
-        return article.ID_property == this.postID;
-
-      });
-      console.log(this.imagenew)
-      if (this.imagenew.length == 0) {
-        this.galleryImages = [
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-          {
-            small: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            medium: 'http://www.landvist.xyz/images/Defult/placeholder.jpg',
-            big: 'http://www.landvist.xyz/images/Defult/placeholder.jpg'
-          },
-        ]
-
-      } else {
-        this.galleryImages = this.imagenew.map(item => {
-
-          return {
-            small: 'http://www.landvist.xyz/images/' + item.URL,
-            medium: 'http://www.landvist.xyz/images/' + item.URL,
-            big: 'http://www.landvist.xyz/images/' + item.URL
-          };
-
-        });
-      }
-
-    })
-
-  }
-  recenter() {
-    this.latitude = 13.7348534;
-    this.longitude = 100.4997134999999;
-    setTimeout(() => {
-
-      this.latitude = Number(this.latnew)
-      this.longitude = Number(this.lonnew)
-      console.log(this.latnew)
-      console.log(this.lonnew)
-      this.zoom = 15
-
-    }, 3000);
-  }
-
-  onForeach() {
-    this.results.forEach((element, index) => {
-      console.log(this.latitude)
-      this.latnew = element.Latitude
-      this.lonnew = element.Longitude
-      this.lat = element.Latitude
-      this.lng = element.Longitude
-      this.conS1 = element.ContactS
-      this.conS2 = element.ContactSt
-      this.conS3 = element.ContactSo
-      this.IDcontact1 = element.ContactU
-      this.IDcontact2 = element.ContactUt
-      this.IDcontact3 = element.ContactUo
-      console.log(this.latitude)
-    });
-    this.Export()
-  }
-  onSetcontact() {
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact1;
-    });
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact2;
-    });
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact3;
-    });
   }
 
   Export() {
     var map, mapOptions;
     mapOptions = {
-      center: new google.maps.LatLng(this.lat, this.lng),
+      center: new google.maps.LatLng(this.latitude, this.longitude),
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -292,10 +211,14 @@ export class HousePdfComponent implements OnInit {
 
     //Loop and add Markers.
 
-    staticMapUrl += "&markers=color:red|" + this.lat + "," + this.lng + "&key=AIzaSyCtHlvZUC6SiC7cWqS0xm4_PnS9Qc3gF3o";
+    staticMapUrl += "&markers=color:red|" + this.latitude + "," + this.longitude + "&key=AIzaSyCtHlvZUC6SiC7cWqS0xm4_PnS9Qc3gF3o";
 
 
     //Display the Image of Google Map.
+    this.showSpiner = false
+    this.PDF.URL = staticMapUrl
+    this.PDF.ID_Property = this.postID
+    
     var imgMap = document.getElementById("imgMap");
     imgMap.setAttribute("src", staticMapUrl);
     imgMap.style.display = "block";
@@ -304,38 +227,7 @@ export class HousePdfComponent implements OnInit {
 
 
 
-htmltoPDF()
-{
-    // parentdiv is the html element which has to be converted to PDF
-    html2canvas(document.querySelector("parentdiv")).then(canvas => {
-
-      var pdf = new jsPDF('p', 'pt', [canvas.width, canvas.height]);
-
-      var imgData  = canvas.toDataURL("image/jpeg", 1.0);
-      pdf.addImage(imgData,0,0,canvas.width, canvas.height);
-      pdf.save('converteddoc.pdf');
-
-  });
-}
-  captureScreen()  
-  {  
-    var data = document.getElementById('parentdiv');  
-    html2canvas(data).then(canvas => {  
-      // Few necessary setting options  
-      var imgWidth = 208;   
-      var pageHeight = 295;    
-      var imgHeight = canvas.height * imgWidth / canvas.width;  
-      var heightLeft = imgHeight;  
-  
-      const contentDataURL = canvas.toDataURL('image/png')  
-      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;  
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-      pdf.save('MYPdf.pdf'); // Generated PDF   
-    });  
-  }  
 
 
- 
 
 }

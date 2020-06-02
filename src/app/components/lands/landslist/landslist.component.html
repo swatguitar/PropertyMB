@@ -16,13 +16,10 @@
                 <meta property="position" content="2">
               </li>
             </ul>
-
             <h1><i class="fa fa-tree" aria-hidden="true"></i>ที่ดินของคุณ</h1>
           </div>
-
         </div>
       </div>
-
       <div>
         <div>
           <div id="content-container"><br>
@@ -73,7 +70,7 @@
                         </div>
                         <div class="col-md-2">
                           <select id="inputState" class="btn dropdown-toggle btn-outline-secondary" name="searchPro1"
-                            [(ngModel)]="searchPro1" (ngModelChange)="selectProvince($event)">
+                            [(ngModel)]="searchPro1" (ngModelChange)="selectprovince($event)">
                             <option value="">จังหวัด</option>
                             <option *ngFor="let p of province" [ngValue]="p">
                               {{p.PROVINCE_NAME}}

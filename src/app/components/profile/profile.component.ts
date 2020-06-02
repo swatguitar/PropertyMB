@@ -13,7 +13,7 @@ export class ProfileComponent  {
   propertiesclone: any;
   totalLand: any;
   totalHouse: any;
-  Profileimage: string = 'Defult/img_Profile_not.png';
+  Profileimage: string = 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/img_Profile_not.png';
 
   constructor(private auth: AuthenticationService) {}
 
@@ -33,16 +33,14 @@ export class ProfileComponent  {
         this.details = user
        
         this.Profileimage = user.ProfileImg
-        console.log(this.Profileimage+'5555' )
         if(this.Profileimage == null || this.Profileimage == '' ){
           if(user.Gender=='ชาย'){
-            this.Profileimage = 'Defult/img_Profile_men.png'
+            this.Profileimage = 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/img_Profile_men.png'
           }else if(user.Gender=='หญิง'){
-            this.Profileimage = 'Defult/img_Profile_women.png'
+            this.Profileimage = 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/img_Profile_women.png'
           }else{
-            this.Profileimage = 'Defult/img_Profile_not.png'
+            this.Profileimage = 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/img_Profile_not.png'
           }
-          console.log(this.Profileimage+'5555' )
         }
       },
       err => {
@@ -53,11 +51,5 @@ export class ProfileComponent  {
       this.totalItem = this.totalLand+this.totalHouse
     }, 1000);
   }
-  
-  onFinish() {
-
-
-  }
-
   
 }

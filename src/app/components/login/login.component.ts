@@ -12,7 +12,7 @@ export class LoginComponent {
   loading = false;
   logedin = "";
   showPassword = false;
-  showSpinner: boolean = true;
+  showSpinner: boolean ;
   credentials: TokenPayload = {
     ID_User: 0,
     Firstname: '',
@@ -41,7 +41,7 @@ export class LoginComponent {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -173,19 +173,23 @@ export class LoginComponent {
   get f() { return this.form.controls; }
   login() {
     this.submitted = true;
+    this.showSpinner = true
     // stop here if form is invalid
     if (this.form.invalid) {
+      this.showSpinner = false
       return;
     }
     this.auth.login(this.credentials).subscribe(
       () => {
         this.loading = false;
+        this.showSpinner = false
         this.logedin = "success"
         setTimeout(() => {
           this.router.navigateByUrl('/home')
         }, 2000);
       },
       err => {
+        this.showSpinner = false
         this.logedin = "fail";
         console.error(err)
         //alert(JSON.stringify(err.text))

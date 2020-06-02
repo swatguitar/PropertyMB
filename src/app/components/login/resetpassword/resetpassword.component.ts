@@ -38,7 +38,7 @@ export class ResetpasswordComponent implements OnInit {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -180,7 +180,7 @@ export class ResetpasswordComponent implements OnInit {
     this.auth.GetEmail(this.credentials).subscribe((user) => {
       if (!user.error) {
         this.details = user;
-        this.credentials.Email = user.Email
+        this.credentials.Email = user[0].Email
         this.auth.sendEmail(this.credentials).subscribe((response) => {
           if (response) {
             this.next = true

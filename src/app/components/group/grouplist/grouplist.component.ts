@@ -4,8 +4,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService, UserDetails, PropertyDetails, GroupDetails } from '../../../authentication.service';
-const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadG';
-//const uri = 'http://localhost:3001/users/uploadG';
+//const uri = 'http://localhost:3001/users/uploadimagegroup';
+const uri = 'https://backendppmb.herokuapp.com/users/uploadimagegroup';//HUROKU
 
 @Component({
   selector: 'app-grouplist',
@@ -44,7 +44,7 @@ export class GrouplistComponent implements OnInit {
   temp2: any;
   Lists: any;
   Member: any[];
-  
+
   ID_user: string = (this.auth.getUserDetails().ID_User).toString()
   showSpinner2: boolean = false;
   IMG: any;
@@ -64,13 +64,12 @@ export class GrouplistComponent implements OnInit {
     };
     this.uploader.uploadAll();
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
-      this.onFinish()
       this.showSpinner2 = true
       setTimeout(() => {
         this.showSpinner2 = false
         alert(JSON.stringify("อัพโหลดสำเร็จ"))
       }, 15000);
-      
+
     }
   }
   onRemoveFile(url) {
@@ -85,146 +84,83 @@ export class GrouplistComponent implements OnInit {
 
   ngOnInit() {
     this.GDetails = []
-    this.Lists  = []
+    this.Lists = []
+    //************* get id *************
     let params = this.route.snapshot.paramMap;
     if (params.has('id')) {
       this.postID = +params.get('id');
     }
-    
     this.credentials.ID_Group = this.postID
-    this.auth.getgroupfolder(this.credentials).subscribe((group) => {
-      this.folder = group
-      console.log(this.folder)
+    this.getGroupDetailMember()
+    this.getGroup()
+    this.getGroupById()
+    this.getGroupMember()
 
+    this.credentials.ID_Group = this.postID
+    setTimeout(() => {
+      this.showSpinner = false
+    }, 2000);
+
+  }
+  //************* get group by owner id *************
+  getGroup() {
+    this.auth.getgroup().subscribe((group) => {
+      this.Groups = group;
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+
+  //************* get group that you are member  *************
+  getGroupDetailMember() {
+    this.auth.getGroupDetailMember().subscribe((group) => {
+      this.GDetails = group;
+      console.log(this.GDetails)
+    },
+      err => {
+        console.error(err)
+
+      }
+    )
+  }
+  //************* get group that you are member  *************
+  getGroupById() {
+    this.auth.getGroupById(this.credentials).subscribe((group) => {
+      this.GroupsDetail = group;
+      this.getGroupFolder()
     },
       err => {
         console.error(err)
       })
+  }
 
-    this.auth.getgroup().subscribe((group) => {
-      this.Groups = group;
-      this.GroupsDetail = group.filter(article => {
-        return article.ID_Group == this.postID
-
-      });
- 
+  //************* get folder of group  *************
+  getGroupFolder() {
+    this.auth.getgroupfolder(this.credentials).subscribe((group) => {
+      if(group){
+        this.folder = group
+        console.log(this.folder)
+      }
     },
       err => {
         console.error(err)
-
-      }
-    )
-    this.auth.getgroupM().subscribe((group) => {
-      this.GroupMs = group;
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    this.auth.getMember(this.credentials).subscribe((member) => {
-      this.listMs = member;
-    
-    },
-      err => {
-        console.error(err)
-
-      }
-    )
-    setTimeout(() => {
-      this.GroupsDetail.forEach((element, index) => {
-        this.IMG = element.Img
-    });
-      this.auth.getgroupAll().subscribe((group) => {
-        this.groupAll = group
-        for (var i = 0; i < this.GroupMs.length; i++) {
-
-          this.temp = group.filter(article => {
-
-            return article.ID_Group == this.GroupMs[i].ID_Group
-          });
-          this.GDetails = this.GDetails.concat(this.temp);
-          //this.GDetails.push([this.temp ]);
-        }
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 1000);
-    setTimeout(() => {
-      this.auth.getMemberlist().subscribe((member) => {
-        for (var i = 0; i < this.listMs.length; i++) {
-
-          this.temp2 = member.filter(article => {
-
-            return article.ID_User == this.listMs[i].ID_User
-          });
-          this.Lists = this.Lists.concat(this.temp2);
-        }
-       
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 1000);
-    setTimeout(() => {
-      this.showSpinner = false
-      this.auth.getgroupfolder(this.credentials).subscribe((folder) => {
-        this.GFolders = folder;
-      },
-        err => {
-          console.error(err)
-
-        }
-      )
-    }, 2000);
-
+      })
   }
 
-  onCreateG() {
-
-    this.auth.addgroup(this.credentials).subscribe(
-      (r) => {
-        console.log(r)
-      },
-      err => {
-        console.error(err)
-        alert(JSON.stringify(err.text))
-
-      }
-
-    )
-
+  //************* get detail member of group  *************
+  getGroupMember() {
+    this.auth.getMemberlist(this.credentials).subscribe((member) => {
+      this.Lists = member
+  },
+    err => {
+      console.error(err)
+    })
   }
-  onFinishedG() {
-    setTimeout(() => {
-      this.refresh()
-    }, 2000);
-  }
-  createG() {
-    this.CreateGroup = true
-  }
-  onFinish() {
 
-  }
-  reload() {
-    this.showSpinner = true
-    setTimeout(() => {
-
-    }, 100);
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
-
-
-  }
-  refresh(): void {
-    window.location.reload();
-  }
+  //************* Create folder  *************
   CreateFolder() {
     this.auth.CreateF(this.credentials).subscribe(
       () => {
@@ -232,102 +168,102 @@ export class GrouplistComponent implements OnInit {
       },
       err => {
         console.error(err)
-
-      }
-
-    )
-
+      })
   }
+
+ //************* Delete group *************
   onDeleteGroup() {
     this.auth.Deletegroup(this.credentials).subscribe(
-      () => {
-        this.refresh()
-      },
-      err => {
-        console.error(err)
-        alert(JSON.stringify('กลุ่มถูกลบแล้ว'))
+      (result) => {
+        alert(JSON.stringify(result))
         this.router.navigateByUrl('/groups');
-      }
-
-    )
+      },
+      err => {
+        console.error(err)
+      })
   }
-  Deletemember(ID){
+
+   //************* Delete Member *************
+  Deletemember(ID) {
     this.credentials.ID_User = ID
- 
     this.auth.DeletegroupM(this.credentials).subscribe(
-      () => {
+      (result) => {
+        alert(JSON.stringify(result))
         this.refresh()
       },
       err => {
         console.error(err)
-        alert(JSON.stringify('ลบสมาชิกแล้ว'))
-        this.refresh()
-      }
-
-    )
+       
+      })
   }
-  Addmember(){
-    
-    
- 
+  //************* add Member *************
+  Addmember() {
     this.auth.getMemberAdd(this.credentials).subscribe(
-      (r ) => {
+      (r) => {
         alert(JSON.stringify(r))
-        if(r=='เพิ่มสมาชิกสำเร็จ'){
+        if (r == 'เพิ่มสมาชิกสำเร็จ') {
           this.refresh()
         }
-       
       },
       err => {
         console.error(err)
-        
-    
-      }
-
-    )
+      })
   }
-  Findmember(){
+
+  //************* Find Member *************
+  Findmember() {
     this.auth.getMemberchack(this.credentials).subscribe(
-      (r ) => {
-        if(r=='อีเมลนี้ไม่มีอยู่จริง'){
-          alert(JSON.stringify(r))
-          if( this.Member.length != 0){
-          this.Member.forEach((element, index) => {
+      (result) => {
+        console.log(result)
+        if (result == 'ไม่พบผู้ใช้งาน') {
+          alert(JSON.stringify(result))
+          if (this.Member.length != 0) {
+            this.Member.forEach((element, index) => {
               this.Member.splice(index, 1);
-          });
+            });
+          }
+        } else {
+          this.Member = result
+          console.log("aAASDASAS")
         }
-        }else{
-          this.Member = r
-        }
-       
       },
       err => {
         console.error(err)
         alert(JSON.stringify(err))
-      }
-    )
+      })
   }
+  //************* get group name *************
   onGroupname(name) {
     this.credentials.NameG = name
     console.log(this.GroupsDetail.NameG)
   }
+  
+  //************* edit group name *************
   Editname() {
     if (this.credentials.NameG == '') {
       alert(JSON.stringify('กรุณากรอกชื่อกลุ่ม'))
-    }else{
+    } else {
       this.auth.UpdategroupN(this.credentials).subscribe(
         () => {
-  
         },
         err => {
           console.error(err)
           alert(JSON.stringify('บันทึกสำเร็จ'))
           this.refresh()
         }
-  
-      )
-    }
-  
+      )}
+  }
 
+  refresh(): void {
+    window.location.reload();
+  }
+  reload() {
+    this.showSpinner = true
+    setTimeout(() => {
+      this.showSpinner = false
+    }, 2000);
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
 }  

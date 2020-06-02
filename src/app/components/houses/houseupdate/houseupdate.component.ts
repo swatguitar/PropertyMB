@@ -1,7 +1,7 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { AuthenticationService, ID, TokenPayload, locationsDetails,PropertyH, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, ID, TokenPayload, locationsDetails, PropertyH, PropertyDetails, Location,UserType } from '../../../authentication.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { repeat } from 'rxjs/operators';
@@ -35,10 +35,10 @@ export class HouseupdateComponent implements OnInit {
   IDcontact3: string
   IDcon: any;
   ContactID: string;
-  UpdatedS: boolean = false; 
-  UpdatedC: boolean = false; 
-  UpdatedM: boolean = false; 
-  Updated1: boolean = false; 
+  UpdatedS: boolean = false;
+  UpdatedC: boolean = false;
+  UpdatedM: boolean = false;
+  Updated1: boolean = false;
   Updated2: boolean = false;
   Updated3: boolean = false;
   Updated4: boolean = false;
@@ -82,6 +82,11 @@ export class HouseupdateComponent implements OnInit {
   Updated42: boolean = false;
   Updated43: boolean = false;
   UpdatedZ: boolean;
+  zipcodeOld: any;
+  showSpinner: boolean;
+  SelectContact: boolean = true;
+  EditC: boolean = true;
+  reset: boolean;
 
 
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
@@ -152,14 +157,13 @@ export class HouseupdateComponent implements OnInit {
   longitude: number;
   NextstepCon: boolean = false
   address: string;
-  buildage:number
-  province: locationsDetails;
+  province: any;
   Lprovince: any[];
   Ldistrict: any[];
   Lamphur: any[];
   amphur: any[];
   PA: locationsDetails;
-  district: locationsDetails;
+  district: any;
   zipcode: any[];
   private geoCoder;
   createID: string
@@ -182,7 +186,7 @@ export class HouseupdateComponent implements OnInit {
   conLine1: string
   conLine2: string
   conLine3: string
-  allowedit: string
+  allowedit: boolean = false
   allowedit2: string
   allowedit3: string
   con1selected: string = "false"
@@ -233,7 +237,7 @@ export class HouseupdateComponent implements OnInit {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -333,42 +337,78 @@ export class HouseupdateComponent implements OnInit {
     ContactEmail: '',
     ContactLine: '',
     ContactPhone: '',
-
-
+  }
+  Location: Location = {
+    PROVINCE_ID: null,
+    AMPHUR_ID: null,
+    DISTRICT_ID: null,
+    ZIPCODE_ID: null
+  }
+  UserType: UserType = {
+    ID_Property: '',
+    ID_Lands: '',
+    ID_Photo: '',
+    UserType: '',
+    LProvince: '',
+    PriceMax: null,
+    PriceMin: null
   }
   ID_user: string = (this.auth.getUserDetails().ID_User).toString()
-  
-  CommaFormattedS(event) {
-    // skip for arrow keys
-    if (event.which >= 37 && event.which <= 40) return;
 
-    // format number
-    if (event.target.value) {
-      event.target.value = event.target.value.replace(/\D/g, "")
+
+  onGo() {
+    this.submitted = true;
+    if (this.EdithouseForm.invalid) {
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
+    }
+    if (this.SelectContact == false && this.Name1 != '' ) {//***************************************IF contact 1 not select */
+      this.submitted = true;
+      if (this.EditContactForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
+        return;
+      }
+      this.setDataContactA()
+      this.CheckDuplicateIDContact()
+      this.credentials.ContactU = this.credentials.ID_Contact
+    } else {//***************************************IF contact 1/4 not select */
+      if (this.EdithouseForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูล"))
+        return;
+      }
+      this.onUpdate()
+    }
+  }
+
+
+  get f() { return this.EdithouseForm.controls; }
+  get E() { return this.EditContactForm.controls; }
+  get Et() { return this.EditContact2Form.controls; }
+  get Eo() { return this.EditContact3Form.controls; }
+  get C() { return this.CreateContactForm.controls; }
+
+  //************* Check "," and number *************
+  CommaFormattedS(event) {
+    if (event.which >= 37 && event.which <= 40) return;
+    if (this.credentials.SellPrice) {
+      this.credentials.SellPrice = this.credentials.SellPrice.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
   CommaFormattedB(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
-    if (event.target.value) {
-      event.target.value = event.target.value.replace(/\D/g, "")
+    if (this.credentials.CostestimateB) {
+      this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
   CommaFormattedM(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
-    if (event.target.value) {
-      event.target.value = event.target.value.replace(/\D/g, "")
+    if (this.credentials.MarketPrice) {
+      this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
-
   numberCheck(args) {
     if (args.key === 'e' || args.key === '+' || args.key === '-') {
       return false;
@@ -377,337 +417,27 @@ export class HouseupdateComponent implements OnInit {
     }
   }
 
-  onGo() {
-
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.EdithouseForm.invalid) {
-      //console.log(this.addlandForm)
-      alert(JSON.stringify("กรุณากรอกข้อมูล"))
-      return;
-    }
-    if (this.con1selected == 'false'  && this.Name1 != '' && this.EDITED == true) {
-      this.submitted = true;
-      if (this.EditContactForm.invalid) {
-        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
-        return;
-      }
-      this.credentials.ContactName = this.conName1
-      this.credentials.ContactPhone = this.conPhone1
-      this.credentials.ContactEmail = this.conEmail1
-      this.credentials.ContactLine = this.conLine1
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          this.onCheckContact()
-        });
-        while (this.credentials.ContactU == '') {
-          this.credentials.ContactU = this.credentials.ID_Contact
-          this.onCheckContact()
-         
-        }
-        //console.log(this.credentials.ContactU)
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-
-          },
-          err => {
-            console.error(err)
-          }
-        )
-        if (this.con2selected == 'false' && this.Name2 != '' && this.EDITED == true) {
-          this.credentials.ContactName = this.conName2
-          this.credentials.ContactPhone = this.conPhone2
-          this.credentials.ContactEmail = this.conEmail2
-          this.credentials.ContactLine = this.conLine2
-          this.onRandomcontact()
-          this.auth.getContact().subscribe((con) => {
-            this.contactUser = con
-            this.contactUser.filter(article => {
-              this.IDcon = article.ID_Contact
-              this.onCheckContact()
-            });
-            while (this.credentials.ContactUt == '') {
-              this.credentials.ContactUt = this.credentials.ID_Contact
-              this.onCheckContact()
-              //console.log(this.credentials.ContactU+"-***")
-            }
-            //console.log(this.credentials.ContactUt+"two")
-            this.auth.addcontact(this.credentials).subscribe(
-              () => {
-              },
-              err => {
-                console.error(err)
-              }
-            )
-            if (this.con3selected == 'false' && this.Name3 != '' && this.EDITED == true) {
-              this.credentials.ContactName = this.conName3
-              this.credentials.ContactPhone = this.conPhone3
-              this.credentials.ContactEmail = this.conEmail3
-              this.credentials.ContactLine = this.conLine3
-              this.onRandomcontact()
-              this.auth.getContact().subscribe((con) => {
-                this.contactUser = con
-                this.contactUser.filter(article => {
-                  this.IDcon = article.ID_Contact
-                  this.onCheckContact()
-                });
-                while (this.credentials.ContactUo == '') {
-                  this.credentials.ContactUo = this.credentials.ID_Contact
-                  this.onCheckContact()
-                  //console.log(this.credentials.ContactU+"-***")
-                }
-
-               // console.log(this.credentials.ContactUo+"three")
-                 this.auth.addcontact(this.credentials).subscribe(
-                   () => {
-                     this.onUpdate()
-                   },
-                   err => {
-                     console.error(err)
-                   }
-                 )
-              },
-                err => {
-                  console.error(err)
-                }
-              )
-
-            } else if (this.con2selected == 'false' && this.Name3 == '' && this.EDITED == true)  {
-              this.credentials.ContactUo = this.credentials.ID_Contact
-              // stop here if form is invalid
-              if (this.EdithouseForm.invalid) {
-                return;
-              }
-              this.onUpdate()
-            }else {
-              // stop here if form is invalid
-               if (this.EdithouseForm.invalid) {
-                 console.log(this.EdithouseForm)
-                 return;
-               }
-              this.onUpdate()
-            }
-          },
-            err => {
-              console.error(err)
-            }
-          )
-
-
-        } else if (this.con2selected == 'false' && this.Name2 == ''  && this.EDITED == true)  {
-          this.credentials.ContactUt = this.credentials.ID_Contact
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             return;
-           }
-          this.onUpdate()
-        }else {
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             //console.log(this.addlandForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
-          this.onUpdate()
-        }
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-
-    } else if (this.con2selected == 'false' && this.Name2 != ''  && this.EDITED == true) {
-      this.credentials.ContactName = this.conName2
-      this.credentials.ContactPhone = this.conPhone2
-      this.credentials.ContactEmail = this.conEmail2
-      this.credentials.ContactLine = this.conLine2
-
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          this.onCheckContact()
-          //console.log(this.IDcon + "----------------data")
-        });
-        while (this.credentials.ContactUt == '') {
-          this.credentials.ContactUt = this.credentials.ID_Contact
-          this.onCheckContact()
-          //console.log(this.credentials.ContactU+"-***")
-        }
-        //console.log(this.credentials.ContactUt + " two R")
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-          },
-          err => {
-            console.error(err)
-          }
-        )
-        if (this.con3selected == 'false' && this.Name3 != ''  && this.EDITED == true) {
-          this.credentials.ContactName = this.conName3
-          this.credentials.ContactPhone = this.conPhone3
-          this.credentials.ContactEmail = this.conEmail3
-          this.credentials.ContactLine = this.conLine3
-          //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
-          this.onRandomcontact()
-          this.auth.getContact().subscribe((con) => {
-            this.contactUser = con
-            this.contactUser.filter(article => {
-              this.IDcon = article.ID_Contact
-              //console.log(this.IDcon + "----------------data")
-              this.onCheckContact()
-            });
-            while (this.credentials.ContactUo == '') {
-              this.credentials.ContactUo = this.credentials.ID_Contact
-              this.onCheckContact()
-              //console.log(this.credentials.ContactU+"-***")
-            }
-            //console.log(this.credentials.ContactUo + " three")
-            this.auth.addcontact(this.credentials).subscribe(
-              () => {
-                this.onUpdate()
-
-              },
-              err => {
-                console.error(err)
-              }
-            )
-          },
-            err => {
-              console.error(err)
-            }
-          )
-
-        } else if (this.con2selected == 'false' && this.Name3 == ''  && this.EDITED == true)  {
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             //console.log(this.addlandForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
-          this.onUpdate()
-        }else {
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             console.log(this.EdithouseForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
-          this.onUpdate()
-       
-        }
-        
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-
-    } else if (this.con3selected == 'false' && this.Name3 != ''  && this.EDITED == true) {
-      this.credentials.ContactName = this.conName3
-      this.credentials.ContactPhone = this.conPhone3
-      this.credentials.ContactEmail = this.conEmail3
-      this.credentials.ContactLine = this.conLine3
-      //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          //console.log(this.IDcon + "----------------data")
-          this.onCheckContact()
-        });
-        while (this.credentials.ContactUo == '') {
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          this.onCheckContact()
-        }
-        //console.log(this.credentials.ContactUo + " three")
-
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-            this.onUpdate()
-        
-          },
-          err => {
-            console.error(err)
-          }
-        )
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-    } else {
-      // stop here if form is invalid
-       if (this.EdithouseForm.invalid) {
-         //console.log(this.addlandForm)
-         alert(JSON.stringify("กรุณากรอกข้อมูล"))
-         return;
-       }
-      this.onUpdate()
-    
-    }
-  }
-   //*****chack ID Contact */
-   onRandomcontact() {
-    var max = 9;
-    var min = 0;
-    var r = Math.floor(Math.random() * (max - min + 1) + min);
-    var x = Math.floor(Math.random() * (max - min + 1) + min);
-    var y = Math.floor(Math.random() * (max - min + 1) + min);
-    var z = Math.floor(Math.random() * (max - min + 1) + min);
-    this.ContactID = this.ID_user + r + x + y + z;
-
-  }
-
-  loopChackcontact() {
-    this.onRandomcontact()
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
-
-      this.contactUser.filter(article => {
-        this.IDcon = article.ID_Contact
-        // console.log(this.IDcon + "-------Contact222 ")
-        this.onCheckContact()
-      });
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
-  onCheckContact() {
-    //console.log(this.ContactID + "FIrst ")
-    while (this.IDcon == this.ContactID) {
-      this.loopChackcontact()
-    }
-    this.credentials.ID_Contact = this.ContactID
-    console.log(this.credentials.ID_Contact)
-  }
-
-  get f() { return this.EdithouseForm.controls; }
-  get E() { return this.EditContactForm.controls; }
-  get Et() { return this.EditContact2Form.controls; }
-  get Eo() { return this.EditContact3Form.controls; }
-  get C() { return this.CreateContactForm.controls; }
-
-
   ngOnInit() {
-    
-    setTimeout(() => {
-     //load Places Autocomplete
-    this.mapsAPILoader.load().then(() => {
-      this.setCurrentLocation();
-      this.geoCoder = new google.maps.Geocoder;
+    this.showSpinner = true
+    this.zipcodeOld = []
+    //************* แบ่งหน้า ************* 
+    let params = this.route.snapshot.paramMap;
+    if (params.has('id')) {
+      this.postID = params.get('id');
+    }
+    this.SelectID.ID_Property = this.postID;
+    this.LoadMap()
+    this.GetProvince()
+    this.GetHouse()
+    this.GetNowYear()
+  }
 
+  //************* Set Map from google *************
+  LoadMap() {
+    //load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      
+      this.geoCoder = new google.maps.Geocoder;
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: [], componentRestrictions: { 'country': 'TH' }
       });
@@ -715,12 +445,10 @@ export class HouseupdateComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
@@ -728,123 +456,49 @@ export class HouseupdateComponent implements OnInit {
         });
       });
     });
-    }, 1000);
-    
-    let params = this.route.snapshot.paramMap;
-    if (params.has('id')) {
-      this.postID = params.get('id');
-    }
-    this.SelectID.ID_Property = this.postID;
-  console.log( this.credentials.ID_Property)
-      this.auth.houseUpdate(this.SelectID).subscribe((house) => {
-        this.results = house
-        this.details = house
-     
-  
-      },
-        err => {
-          console.error(err)
-        })
+  }
 
-    //-------------------------------------------------
-    var year = new Date().getFullYear();
-    var yearth = year + 543
-    var range = [];
-    range.push(yearth);
-    for (var i = 1; i < 100; i++) {
-      range.push(yearth - i);
-
-    }
-    this.years = range;
-
-    //------------getlocation-------
-    this.auth.getProvine().subscribe((province) => {
-      this.province = province;
+  //************* Get house by id property *************
+  GetHouse() {
+    this.auth.houseUpdate(this.SelectID).subscribe((house) => {
+      this.results = house
+      this.details = house
+      this.SelectID.ContactU = house[0].ContactU
+      this.SelectID.ContactUt = house[0].ContactUt
+      this.SelectID.ContactUo = house[0].ContactUo
+      this.conS1 = house[0].ContactS
+      this.conS2 = house[0].ContactSt
+      this.conS3 = house[0].ContactSo
+      this.latitude = Number(house[0].Latitude)
+      this.longitude = Number(house[0].Longitude)
+      this.zoom = 15
+      this.zipcodeOld.push(house[0].LZipCode)
+      this.getContact()
+      this.showSpinner = false
     },
       err => {
         console.error(err)
+      })
+  }
 
+
+  //************* get contact *************
+  getContact() {
+    this.selectContact = []
+    this.auth.getContactDetail(this.SelectID).subscribe((contactUser) => {
+      if (contactUser.length != 0) {
+        this.contactUser = contactUser;
+        this.selectContact.push(this.contactUser[0])
+        this.SetContactA()
       }
-    )
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.onForeach()
-      this.onSetcontact()
-    }, 5000);
-    setTimeout(() => {    //<<<---    using ()=> syntax
-      this.recenter() 
-    }, 7000);
-    //-------- get contact ----
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
     },
       err => {
         console.error(err)
       }
     )
   }
-  recenter(){
-    this.latitude = 13.7348534;
-    this.longitude = 100.4997134999999;
 
-    setTimeout(()=>{
-      
-        this.latitude = Number(this.latnew)
-        this.longitude  = Number(this.lonnew)
-       this.zoom = 15
-       this.selectContact.forEach((element, index) => {
-        this.Name1 = element.Name
-        this.conEmail1 = element.Email
-        this.conPhone1 = element.Phone
-        this.conLine1 = element.Line
-        this.conID1 = element.ID_Contact
-      });
-      this.selectContact2.forEach((element, index) => {
-        this.Name2 = element.Name
-        this.conEmail2 = element.Email
-        this.conPhone2 = element.Phone
-        this.conLine2 = element.Line
-        this.conID2 = element.ID_Contact
-      });
-      this.selectContact3.forEach((element, index) => {
-        this.Name3 = element.Name
-        this.conEmail3 = element.Email
-        this.conPhone3 = element.Phone
-        this.conLine3 = element.Line
-        this.conID3 = element.ID_Contact
-      });
-      
-    },3000);
-    }
-  
-  onForeach() {
-    this.results.forEach((element, index) => {
-      this.latnew = element.Latitude
-      this.lonnew = element.Longitude
-      this.lat = element.Latitude
-      this.lng = element.Longitude
-      this.conS1 = element.ContactS
-      this.conS2 = element.ContactSt
-      this.conS3 = element.ContactSo
-      this.IDcontact1 = element.ContactU
-      this.IDcontact2 = element.ContactUt
-      this.IDcontact3 = element.ContactUo
-      console.log(this.conS1)
-    });
-  
-
-  }
-  onSetcontact() {
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact1;
-    });
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact2;
-    });
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact3;
-    });
-  }
-  // Get Current Location Coordinates
+  //************* Get Current Location Coordinates *************
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -855,15 +509,12 @@ export class HouseupdateComponent implements OnInit {
       });
     }
   }
-
-
   markerDragEnd($event: MouseEvent) {
     console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.getAddress(this.latitude, this.longitude);
   }
-
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
       console.log(results);
@@ -878,17 +529,16 @@ export class HouseupdateComponent implements OnInit {
       } else {
         console.log('Geocoder failed due to: ' + status);
       }
-
     });
-
   }
-  selectprovince(data) {
-    this.credentials.LProvince = data.PROVINCE_NAME
-    this.auth.getAmphur().subscribe((amphur) => {
-      // กรณี resuponse success
-      this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == data.PROVINCE_ID;
-      });
+
+  //************* get province *************
+  GetProvince() {
+    this.auth.getProvine().subscribe((province) => {
+      if (province) {
+        this.province = province;
+        this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
+      }
     },
       err => {
         console.error(err)
@@ -896,84 +546,60 @@ export class HouseupdateComponent implements OnInit {
     )
   }
 
-  selectamphur(data) {
-    this.credentials.LAmphur = data.AMPHUR_NAME
-    this.auth.getDistrict().subscribe((district) => {
-      // กรณี resuponse success
-      this.district = district.filter(article => {
-        return article.AMPHUR_ID == data.AMPHUR_ID;
-      });
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
-  selectdistrict(data) {
-    this.credentials.LDistrict = data.DISTRICT_NAME
-    this.auth.getZipcode().subscribe((zipcode) => {
-      // กรณี resuponse success
-      this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == data.DISTRICT_ID;
-      });
+  //************* get present year *************
+  GetNowYear() {
+    var year = new Date().getFullYear();
+    var yearth = year + 543
+    var range = [];
+    range.push(yearth);
+    for (var i = 1; i < 100; i++) {
+      range.push(yearth - i);
 
-    },
-      err => {
-        console.error(err)
-      }
-    )
-
+    }
+    this.years = range;
   }
-  getZipCode() {
-    this.zipcode.forEach((element, index) => {
-      this.credentials.LZipCode = element.ZIPCODE
-    });
 
+  //************* Calculate Build age and set it *************
+  buildage: number
+  onGetbuildage(year) {
+    var yearEN = new Date().getFullYear();
+    this.buildage = ((yearEN + 543) - year);
+    this.credentials.BuildingAge = this.buildage.toString()
   }
-  onResiveContact() {
-    //-------- get contact ----
+
+  //************* get contact that owner *************
+  GetContact() {
     this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
+      if (contactUser) {
+        this.contactUser = contactUser;
+        console.log(contactUser)
+      }
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
   onEditContact1() {
+    this.setDataContactA()
+    this.auth.EditContact(this.credentials).subscribe((result) => {
+      if(!result.error){
+        alert(JSON.stringify(result))
+        this.GetContact()
+      }else{
+        alert(JSON.stringify(result.error))
+      } 
+    },
+      err => {
+        console.error(err)
+        alert(JSON.stringify(err.error.error))
+      }
+    )
+  }
 
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.onResiveContact()
-        console.error(err)
-      }
-    )
-  }
-  onEditContact2() {
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.onResiveContact()
-        console.error(err)
-      }
-    )
-  }
-  onEditContact3() {
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.onResiveContact()
-        console.error(err)
-      }
-    )
-  }
 
   onGetContact(item) {
-    this.con1selected = 'true'
+    this.EditC = true
+    this.SelectContact = true
     console.log(this.credentials.ContactName)
     this.conID1 = item.ID_Contact
     this.conName1 = item.Name
@@ -981,45 +607,43 @@ export class HouseupdateComponent implements OnInit {
     this.conPhone1 = item.Phone
     this.conLine1 = item.Line
     this.credentials.ContactU = item.ID_Contact
-  }
-  onGetContact2(item) {
-    this.con2selected = 'true'
-    console.log(this.credentials.ContactName)
-    this.conID2 = item.ID_Contact
-    this.conName2 = item.Name
-    this.conEmail2 = item.Email
-    this.conPhone2 = item.Phone
-    this.conLine2 = item.Line
     this.credentials.ContactUt = item.ID_Contact
-  }
-  onGetContact3(item) {
-    this.con3selected = 'true'
-    console.log(this.credentials.ContactName)
-    this.conID3 = item.ID_Contact
-    this.conName3 = item.Name
-    this.conEmail3 = item.Email
-    this.conPhone3 = item.Phone
-    this.conLine3 = item.Line
     this.credentials.ContactUo = item.ID_Contact
   }
 
   onFocused(e) {
     // do something when input is focused
   }
+   //************* check edit button do this *************
   onEditContactID1(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName1
-    this.credentials.ContactPhone = this.conPhone1
-    this.credentials.ContactEmail = this.conEmail1
-    this.credentials.ContactLine = this.conLine1
+    console.log(this.allowedit)
+    if(this.allowedit == true){
+      this.EditC = false
+      this.reset = false
+      this.credentials.ID_Contact = value
+    }else{
+      this.EditC = true
+      this.reset = true
+    }
   }
+   //************* change name do this  *************
   onEditContactName1(value: string) {
-    this.EDITED = true
-   console.log(this.EDITED )
-    this.conName1 = value
+    console.log(this.reset)
+    if(this.allowedit == false){
+      this.EditC = false
+      this.SelectContact = false
+      this.conPhone1 = null
+      this.conEmail1 = null
+      this.conLine1 = null
+      this.conName1 = value
+    }else{
+      this.conName1 = value
+      this.SelectContact = true
+      this.EditC = false
+    }
+    
   }
   onEditContactLine1(value) {
-
     this.conLine1 = value
     //console.log(this.conLine1)
   }
@@ -1031,51 +655,119 @@ export class HouseupdateComponent implements OnInit {
     this.conEmail1 = value
     //console.log(this.conEmail1)
   }
-
-  onEditContactID2(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName2
-    this.credentials.ContactPhone = this.conPhone2
-    this.credentials.ContactEmail = this.conEmail2
-    this.credentials.ContactLine = this.conLine2
-  }
-  onEditContactName2(value: string) {
-    this.EDITED = true
-    this.conName2 = value
-  }
-  onEditContactLine2(value) {
-    this.conLine2 = value
-  }
-  onEditContactPhone2(value) {
-    this.conPhone2 = value
-  }
-  onEditContactEmail2(value) {
-    this.conEmail2 = value
+ 
+  //************* set data contact  1 *************
+  setDataContactA() {
+    this.credentials.ContactName = this.conName1
+    this.credentials.ContactPhone = this.conPhone1
+    this.credentials.ContactEmail = this.conEmail1
+    this.credentials.ContactLine = this.conLine1
   }
 
+  //************* set data contact 1 To Display  *************
+  SetContactA() {
+    console.log(this.selectContact)
+    this.selectContact.forEach((element, index) => {
+      this.Name1 = element.Name
+      this.conEmail1 = element.Email
+      this.conPhone1 = element.Phone
+      this.conLine1 = element.Line
+      this.conID1 = element.ID_Contact
+    });
+  }
+  
+  //************* Random ID contact *************
+  onRandomcontact() {
+    var max = 9;
+    var min = 0;
+    var r = Math.floor(Math.random() * (max - min + 1) + min);
+    var x = Math.floor(Math.random() * (max - min + 1) + min);
+    var y = Math.floor(Math.random() * (max - min + 1) + min);
+    var z = Math.floor(Math.random() * (max - min + 1) + min);
+    this.SelectID.ContactU = this.ID_user + r + x + y + z;
 
-  onEditContactID3(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName3
-    this.credentials.ContactPhone = this.conPhone3
-    this.credentials.ContactEmail = this.conEmail3
-    this.credentials.ContactLine = this.conLine3
-  }
-  onEditContactName3(value: string) {
-    this.EDITED = true
-    this.conName3 = value
-  }
-  onEditContactLine3(value) {
-    this.conLine3 = value
-  }
-  onEditContactPhone3(value) {
-    this.conPhone3 = value
-  }
-  onEditContactEmail3(value) {
-    this.conEmail3 = value
   }
 
+  //************* Check Duplicate ID contact *************
+  CheckDuplicateIDContact() {
+    this.onRandomcontact()
+    this.auth.getContactDuplicate(this.SelectID).subscribe((contact) => {
+      if (contact.length != 0) {
+        this.onRandomcontact()
+        this.CheckDuplicateIDContact()
+      }
+      else {
+        this.credentials.ID_Contact = this.SelectID.ContactU
+        if (this.credentials.ID_Contact != '') {
+          this.CreateContact()
+        }
+      }
+    },
+      err => {
+        console.error(err)
+      })
+  }
 
+  //************* CreateContact *************
+    CreateContact() {
+    this.auth.addcontact(this.credentials).subscribe(
+      (result) => {
+        if(result){
+          this.credentials.ContactU = this.credentials.ID_Contact
+          this.credentials.ContactUt = this.credentials.ID_Contact
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          this.onUpdate()
+        }
+      },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  //************* get ADDRESS  *************
+  PROVINCE_NAME: string
+  selectprovince(data) {
+    this.credentials.LProvince = data.PROVINCE_NAME
+    this.Location.PROVINCE_ID = data.PROVINCE_ID
+    this.zipcodeOld.length = 0
+    this.auth.getAmphur(this.Location).subscribe((amphur) => {
+      this.amphur = amphur
+      this.amphur.sort((a, b) => a.AMPHUR_NAME.localeCompare(b.AMPHUR_NAME));
+    },
+      err => {
+        console.error(err)
+      })
+  }
+  selectamphur(data) {
+    this.credentials.LAmphur = data.AMPHUR_NAME
+    this.Location.AMPHUR_ID = data.AMPHUR_ID
+    this.auth.getDistrict(this.Location).subscribe((district) => {
+      this.district = district
+      this.district.sort((a, b) => a.DISTRICT_NAME.localeCompare(b.DISTRICT_NAME));
+    },
+      err => {
+        console.error(err)
+      })
+  }
+  selectdistrict(data) {
+    this.credentials.LDistrict = data.DISTRICT_NAME
+    this.Location.DISTRICT_ID = data.DISTRICT_ID
+    this.UpdatedZ = true
+    this.auth.getZipcode(this.Location).subscribe((zipcode) => {
+      this.zipcode = zipcode
+    },
+      err => {
+        console.error(err)
+      })
+  }
+  getZipCode() {
+    this.zipcode.forEach((element, index) => {
+      this.credentials.LZipCode = element.ZIPCODE
+    });
+  }
+
+  //************* Get DATA *************
   onGetAnnounceTH(value) {
     this.credentials.AnnounceTH = value
   }
@@ -1083,7 +775,7 @@ export class HouseupdateComponent implements OnInit {
     this.credentials.CodeDeed = value
   }
   onGetSell(value) {
-  this.UpdatedS = true;
+    this.UpdatedS = true;
     this.credentials.SellPrice = value
   }
   onGetSellB(value) {
@@ -1125,359 +817,353 @@ export class HouseupdateComponent implements OnInit {
   onGetBuildFM(value) {
     this.credentials.BuildFM = value
   }
-  
- 
-  onGetbuildage(year) {
-    this.credentials.BuildFY = year
-    var yearEN = new Date().getFullYear();
-    this.buildage = ((yearEN + 543) - year);
-    this.credentials.BuildingAge = this.buildage.toString()
-  }
+
+
   onGetDirections(value) {
     this.credentials.Directions = value
   }
   airconditioner(value) {
     this.Updated1 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.airconditioner = 1
-    }else{
+    } else {
       this.credentials.airconditioner = 0
     }
   }
   afan(value) {
     this.Updated2 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.afan = 1
-    }else{
+    } else {
       this.credentials.afan = 0
     }
   }
   AirPurifier(value) {
     this.Updated3 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.AirPurifier = 1
-    }else{
+    } else {
       this.credentials.AirPurifier = 0
     }
   }
   Waterheater(value) {
     this.Updated4 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Waterheater = 1
-    }else{
+    } else {
       this.credentials.Waterheater = 0
     }
   }
   WIFI(value) {
     this.Updated5 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.WIFI = 1
-    }else{
+    } else {
       this.credentials.WIFI = 0
     }
   }
   TV(value) {
     this.Updated6 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.TV = 1
-    }else{
+    } else {
       this.credentials.TV = 0
     }
   }
   refrigerator(value) {
     this.Updated7 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.refrigerator = 1
-    }else{
+    } else {
       this.credentials.refrigerator = 0
     }
   }
   microwave(value) {
     this.Updated8 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.microwave = 1
-    }else{
+    } else {
       this.credentials.microwave = 0
     }
   }
   gasstove(value) {
     this.Updated9 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.gasstove = 1
-    }else{
+    } else {
       this.credentials.gasstove = 0
     }
   }
   wardrobe(value) {
     this.Updated10 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.wardrobe = 1
-    }else{
+    } else {
       this.credentials.wardrobe = 0
     }
   }
   TCset(value) {
     this.Updated11 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.TCset = 1
-    }else{
+    } else {
       this.credentials.TCset = 0
     }
   }
   sofa(value) {
     this.Updated12 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.sofa = 1
-    }else{
+    } else {
       this.credentials.sofa = 0
     }
   }
   bed(value) {
     this.Updated13 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.bed = 1
-    }else{
+    } else {
       this.credentials.bed = 0
     }
   }
   shelves(value) {
     this.Updated14 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.shelves = 1
-    }else{
+    } else {
       this.credentials.shelves = 0
     }
   }
   Securityguard(value) {
     this.Updated15 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Securityguard = 1
-    }else{
+    } else {
       this.credentials.Securityguard = 0
     }
   }
   pool(value) {
     this.Updated16 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.pool = 1
-    }else{
+    } else {
       this.credentials.pool = 0
     }
   }
   Fitness(value) {
-    this.Updated17 =true
-    if(value == true){
+    this.Updated17 = true
+    if (value == true) {
       this.credentials.Fitness = 1
-    }else{
+    } else {
       this.credentials.Fitness = 0
     }
   }
   Publicarea(value) {
     this.Updated18 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Publicarea = 1
-    }else{
+    } else {
       this.credentials.Publicarea = 0
     }
   }
   ShuttleBus(value) {
     this.Updated19 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.ShuttleBus = 1
-    }else{
+    } else {
       this.credentials.ShuttleBus = 0
     }
   }
   WVmachine(value) {
     this.Updated20 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.WVmachine = 1
-    }else{
+    } else {
       this.credentials.WVmachine = 0
     }
   }
   CWmachine(value) {
     this.Updated21 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.CWmachine = 1
-    }else{
+    } else {
       this.credentials.CWmachine = 0
     }
   }
   Elevator(value) {
-     this.Updated22 = true
-    if(value == true){
+    this.Updated22 = true
+    if (value == true) {
       this.credentials.Elevator = 1
-    }else{
+    } else {
       this.credentials.Elevator = 0
     }
   }
   Lobby(value) {
     this.Updated23 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Lobby = 1
-    }else{
+    } else {
       this.credentials.Lobby = 0
     }
   }
   CCTV(value) {
     this.Updated24 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.CCTV = 1
-    }else{
+    } else {
       this.credentials.CCTV = 0
     }
   }
   Kitchen(value) {
-    this.Updated25= true
-    if(value == true){
+    this.Updated25 = true
+    if (value == true) {
       this.credentials.Kitchen = 1
-    }else{
+    } else {
       this.credentials.Kitchen = 0
     }
   }
   LivingR(value) {
     this.Updated26 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.LivingR = 1
-    }else{
+    } else {
       this.credentials.LivingR = 0
     }
   }
   EventR(value) {
     this.Updated27 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.EventR = 1
-    }else{
+    } else {
       this.credentials.EventR = 0
     }
   }
   MeetingR(value) {
     this.Updated28 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.MeetingR = 1
-    }else{
+    } else {
       this.credentials.MeetingR = 0
     }
   }
   Balcony(value) {
     this.Updated29 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Balcony = 1
-    }else{
+    } else {
       this.credentials.Balcony = 0
     }
   }
   ATM(value) {
     this.Updated30 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.ATM = 1
-    }else{
+    } else {
       this.credentials.ATM = 0
     }
   }
   BeautySalon(value) {
     this.Updated31 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.BeautySalon = 1
-    }else{
+    } else {
       this.credentials.BeautySalon = 0
     }
   }
   CStore(value) {
     this.Updated32 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.CStore = 1
-    }else{
+    } else {
       this.credentials.CStore = 0
     }
   }
   Hairsalon(value) {
     this.Updated33 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Hairsalon = 1
-    }else{
+    } else {
       this.credentials.Hairsalon = 0
     }
   }
   Laundry(value) {
     this.Updated34 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Laundry = 1
-    }else{
+    } else {
       this.credentials.Laundry = 0
     }
   }
   Store(value) {
     this.Updated35 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Store = 1
-    }else{
+    } else {
       this.credentials.Store = 0
     }
   }
   Supermarket(value) {
     this.Updated36 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Supermarket = 1
-    }else{
+    } else {
       this.credentials.Supermarket = 0
     }
   }
   Blind(value) {
     this.Updated37 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Blind = 1
-    }else{
+    } else {
       this.credentials.Blind = 0
     }
   }
   Neareducation(value) {
     this.Updated38 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Neareducation = 1
-    }else{
+    } else {
       this.credentials.Neareducation = 0
     }
   }
   Cenmarket(value) {
     this.Updated39 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Cenmarket = 1
-    }else{
+    } else {
       this.credentials.Cenmarket = 0
     }
   }
   Market(value) {
     this.Updated40 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Market = 1
-    }else{
+    } else {
       this.credentials.Market = 0
     }
   }
   River(value) {
     this.Updated41 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.River = 1
-    }else{
+    } else {
       this.credentials.River = 0
     }
   }
   Mainroad(value) {
     this.Updated42 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Mainroad = 1
-    }else{
+    } else {
       this.credentials.Mainroad = 0
-    } 
+    }
   }
   Insoi(value) {
     this.Updated43 = true
     //-----------
-    if(value == true){
+    if (value == true) {
       this.credentials.Insoi = 1
-    }else{
+    } else {
       this.credentials.Insoi = 0
     }
   }
@@ -1515,328 +1201,344 @@ export class HouseupdateComponent implements OnInit {
   onGetLocation(value) {
     this.credentials.Location = value
   }
+  onGetStatusCon1(value) {
+    this.credentials.ContactS = value
+  }
+  onGetStatusCon2(value) {
+    this.credentials.ContactSt = value
+  }
+  onGetStatusCon3(value) {
+    this.credentials.ContactSo = value
+  }
 
-  onUpdate(){
+
+  onUpdate() {
     this.submitted = true;
-
     // stop here if form is invalid
     if (this.EdithouseForm.invalid) {
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
-    if(this.credentials.PropertyType == ''){
+    if (this.credentials.PropertyType == '') {
       this.credentials.PropertyType = this.details.PropertyType
     }
-    if(this.credentials.AnnounceTH == ''){
+    if (this.credentials.AnnounceTH == '') {
       this.credentials.AnnounceTH = this.details.AnnounceTH
     }
-    if(this.credentials.CodeDeed == ''){
+    if (this.credentials.CodeDeed == '') {
       this.credentials.CodeDeed = this.details.CodeDeed
     }
-    if(this.credentials.SellPrice == ''){
+    if (this.credentials.SellPrice == '') {
       this.credentials.SellPrice = this.details.SellPrice
     }
-    if(this.credentials.Costestimate == ''){
+    if (this.credentials.Costestimate == '') {
       this.credentials.Costestimate = this.details.Costestimate
     }
-    if(this.credentials.CostestimateB == ''){
+    if (this.credentials.CostestimateB == '') {
       this.credentials.CostestimateB = this.details.CostestimateB
     }
-    if(this.credentials.MarketPrice == ''){
+    if (this.credentials.MarketPrice == '') {
       this.credentials.MarketPrice = this.details.MarketPrice
     }
-    if(this.credentials.BathRoom == ''){
+    if (this.credentials.BathRoom == '') {
       this.credentials.BathRoom = this.details.BathRoom
     }
-    if(this.credentials.BedRoom == ''){
+    if (this.credentials.BedRoom == '') {
       this.credentials.BedRoom = this.details.BedRoom
     }
-    if(this.credentials.CarPark == ''){
+    if (this.credentials.CarPark == '') {
       this.credentials.CarPark = this.details.CarPark
     }
-    if(this.credentials.HouseArea == ''){
+    if (this.credentials.HouseArea == 0) {
       this.credentials.HouseArea = this.details.HouseArea
     }
-    if(this.credentials.Floor == ''){
+    if (this.credentials.Floor == '') {
       this.credentials.Floor = this.details.Floor
     }
-    if(this.credentials.LandR == ''){
+    if (this.credentials.LandR == '') {
       this.credentials.LandR = this.details.LandR
     }
-    if(this.credentials.LandG == ''){
+    if (this.credentials.LandG == '') {
       this.credentials.LandG = this.details.LandG
     }
-    if(this.credentials.LandWA == ''){
+    if (this.credentials.LandWA == '') {
       this.credentials.LandWA = this.details.LandWA
     }
-    if(this.credentials.LandU == ''){
+    if (this.credentials.LandU == '') {
       this.credentials.LandU = this.details.LandU
     }
-    if(this.credentials.HomeCondition == ''){
+    if (this.credentials.HomeCondition == '') {
       this.credentials.HomeCondition = this.details.HomeCondition
     }
-    if(this.credentials.BuildingAge == ''){
+    if (this.credentials.BuildingAge == '') {
       this.credentials.BuildingAge = this.details.BuildingAge
     }
-    if(this.credentials.BuildFD == ''){
+    if (this.credentials.BuildFD == '') {
       this.credentials.BuildFD = this.details.BuildFD
     }
-    if(this.credentials.BuildFM == ''){
+    if (this.credentials.BuildFM == '') {
       this.credentials.BuildFM = this.details.BuildFM
     }
-    if(this.credentials.AnnounceTH == ''){
+    if (this.credentials.AnnounceTH == '') {
       this.credentials.AnnounceTH = this.details.AnnounceTH
     }
-    if(this.credentials.BuildFY == ''){
+    if (this.credentials.BuildFY == '') {
       this.credentials.BuildFY = this.details.BuildFY
     }
-    if(this.credentials.Directions == ''){
+    if (this.credentials.Directions == '') {
       this.credentials.Directions = this.details.Directions
     }
-    if(this.credentials.RoadType == ''){
+    if (this.credentials.RoadType == '') {
       this.credentials.RoadType = this.details.RoadType
     }
-    if(this.credentials.RoadWide == ''){
+    if (this.credentials.RoadWide == '') {
       this.credentials.RoadWide = this.details.RoadWide
     }
-    if(this.credentials.GroundLevel == ''){
+    if (this.credentials.GroundLevel == '') {
       this.credentials.GroundLevel = this.details.GroundLevel
     }
-    if(this.credentials.GroundValue == ''){
+    if (this.credentials.GroundValue == '') {
       this.credentials.GroundValue = this.details.GroundValue
     }
-    if(this.credentials.MoreDetails == ''){
+    if (this.credentials.MoreDetails == '') {
       this.credentials.MoreDetails = this.details.MoreDetails
     }
-    if(this.credentials.Latitude == 0){
+    if (this.credentials.Latitude == 0) {
       this.credentials.Latitude = this.details.Latitude
     }
-    if(this.credentials.Longitude == 0){
+    if (this.credentials.Longitude == 0) {
       this.credentials.Longitude = this.details.Longitude
     }
-    if(this.credentials.AsseStatus == ''){
+    if (this.credentials.AsseStatus == '') {
       this.credentials.AsseStatus = this.details.AsseStatus
     }
-    if(this.credentials.ObservationPoint == ''){
+    if (this.credentials.ObservationPoint == '') {
       this.credentials.ObservationPoint = this.details.ObservationPoint
     }
-    if(this.credentials.Location == ''){
+    if (this.credentials.Location == '') {
       this.credentials.Location = this.details.Location
     }
-    if(this.credentials.LProvince == ''){
+    if (this.credentials.LProvince == '') {
       this.credentials.LProvince = this.details.LProvince
     }
-    if(this.credentials.LAmphur == ''){
+    if (this.credentials.LAmphur == '') {
       this.credentials.LAmphur = this.details.LAmphur
     }
-    if(this.credentials.LDistrict == ''){
+    if (this.credentials.LDistrict == '') {
       this.credentials.LDistrict = this.details.LDistrict
     }
-    if(this.credentials.LZipCode == ''){
+    if (this.credentials.LZipCode == '') {
       this.credentials.LZipCode = this.details.LZipCode
     }
-    if(this.credentials.ContactU == ''){
+    if (this.credentials.ContactU == '') {
       this.credentials.ContactU = this.details.ContactU
     }
-    if(this.credentials.ContactS == ''){
+    if (this.credentials.ContactS == '') {
       this.credentials.ContactS = this.details.ContactS
     }
-    if(this.credentials.ContactUo == ''){
+    if (this.credentials.ContactUo == '') {
       this.credentials.ContactUo = this.details.ContactUo
     }
-    if(this.credentials.ContactSo == ''){
+    if (this.credentials.ContactSo == '') {
       this.credentials.ContactSo = this.details.ContactSo
     }
-    if(this.credentials.ContactUt == ''){
+    if (this.credentials.ContactUt == '') {
       this.credentials.ContactUt = this.details.ContactUt
     }
-    if(this.credentials.ContactSt == ''){
+    if (this.credentials.ContactSt == '') {
       this.credentials.ContactSt = this.details.ContactSt
     }
-    if(this.credentials.ContactSt == ''){
+    if (this.credentials.ContactSt == '') {
       this.credentials.ContactSt = this.details.ContactSt
     }
-    if(this.credentials.airconditioner == 0 && this.Updated1 == false){
+    if (this.credentials.airconditioner == 0 && this.Updated1 == false) {
       this.credentials.airconditioner = this.details.airconditioner
     }
-    if(this.credentials.afan == 0 && this.Updated2 == false){
+    if (this.credentials.afan == 0 && this.Updated2 == false) {
       this.credentials.afan = this.details.afan
     }
-    if(this.credentials.AirPurifier == 0 && this.Updated3 == false){
+    if (this.credentials.AirPurifier == 0 && this.Updated3 == false) {
       this.credentials.AirPurifier = this.details.AirPurifier
     }
-    if(this.credentials.Waterheater == 0 && this.Updated4 == false){
+    if (this.credentials.Waterheater == 0 && this.Updated4 == false) {
       this.credentials.Waterheater = this.details.Waterheater
     }
-    if(this.credentials.WIFI == 0 && this.Updated5 == false){
+    if (this.credentials.WIFI == 0 && this.Updated5 == false) {
       this.credentials.WIFI = this.details.WIFI
     }
-    if(this.credentials.TV == 0 && this.Updated6 == false){
+    if (this.credentials.TV == 0 && this.Updated6 == false) {
       this.credentials.TV = this.details.TV
     }
-    if(this.credentials.refrigerator == 0 && this.Updated7 == false){
+    if (this.credentials.refrigerator == 0 && this.Updated7 == false) {
       this.credentials.refrigerator = this.details.refrigerator
     }
-    if(this.credentials.microwave == 0 && this.Updated8 == false){
+    if (this.credentials.microwave == 0 && this.Updated8 == false) {
       this.credentials.microwave = this.details.microwave
     }
-    if(this.credentials.gasstove == 0 && this.Updated9 == false){
+    if (this.credentials.gasstove == 0 && this.Updated9 == false) {
       this.credentials.gasstove = this.details.gasstove
     }
-    if(this.credentials.wardrobe == 0 && this.Updated10 == false){
+    if (this.credentials.wardrobe == 0 && this.Updated10 == false) {
       this.credentials.wardrobe = this.details.wardrobe
     }
-    if(this.credentials.TCset == 0 && this.Updated11 == false){
+    if (this.credentials.TCset == 0 && this.Updated11 == false) {
       this.credentials.TCset = this.details.TCset
     }
-    if(this.credentials.sofa == 0 && this.Updated12 == false){
+    if (this.credentials.sofa == 0 && this.Updated12 == false) {
       this.credentials.sofa = this.details.sofa
     }
-    if(this.credentials.bed == 0 && this.Updated13 == false){
+    if (this.credentials.bed == 0 && this.Updated13 == false) {
       this.credentials.bed = this.details.bed
     }
-    if(this.credentials.shelves == 0 && this.Updated14 == false){
+    if (this.credentials.shelves == 0 && this.Updated14 == false) {
       this.credentials.shelves = this.details.shelves
     }
-    if(this.credentials.Securityguard == 0 && this.Updated15 == false){
+    if (this.credentials.Securityguard == 0 && this.Updated15 == false) {
       this.credentials.Securityguard = this.details.Securityguard
     }
-    if(this.credentials.pool == 0 && this.Updated16 == false){
+    if (this.credentials.pool == 0 && this.Updated16 == false) {
       this.credentials.pool = this.details.pool
     }
-    if(this.credentials.Fitness == 0 && this.Updated17 == false){
+    if (this.credentials.Fitness == 0 && this.Updated17 == false) {
       this.credentials.Fitness = this.details.Fitness
     }
-    if(this.credentials.Publicarea == 0 && this.Updated18 == false){
+    if (this.credentials.Publicarea == 0 && this.Updated18 == false) {
       this.credentials.Publicarea = this.details.Publicarea
     }
-    if(this.credentials.ShuttleBus == 0 && this.Updated19 == false){
+    if (this.credentials.ShuttleBus == 0 && this.Updated19 == false) {
       this.credentials.ShuttleBus = this.details.ShuttleBus
     }
-    if(this.credentials.WVmachine == 0 && this.Updated20 == false){
+    if (this.credentials.WVmachine == 0 && this.Updated20 == false) {
       this.credentials.WVmachine = this.details.WVmachine
     }
-    if(this.credentials.CWmachine == 0 && this.Updated21 == false){
+    if (this.credentials.CWmachine == 0 && this.Updated21 == false) {
       this.credentials.CWmachine = this.details.CWmachine
     }
-    if(this.credentials.Elevator == 0 && this.Updated22 == false){
+    if (this.credentials.Elevator == 0 && this.Updated22 == false) {
       this.credentials.Elevator = this.details.Elevator
     }
-    if(this.credentials.Lobby == 0 && this.Updated23 == false){
+    if (this.credentials.Lobby == 0 && this.Updated23 == false) {
       this.credentials.Lobby = this.details.Lobby
     }
-    if(this.credentials.CCTV == 0 && this.Updated24 == false){
+    if (this.credentials.CCTV == 0 && this.Updated24 == false) {
       this.credentials.CCTV = this.details.CCTV
     }
-    if(this.credentials.Kitchen == 0 && this.Updated25 == false){
+    if (this.credentials.Kitchen == 0 && this.Updated25 == false) {
       this.credentials.Kitchen = this.details.Kitchen
     }
-    if(this.credentials.LivingR == 0 && this.Updated26 == false){
+    if (this.credentials.LivingR == 0 && this.Updated26 == false) {
       this.credentials.LivingR = this.details.LivingR
     }
-    if(this.credentials.EventR == 0 && this.Updated27 == false){
+    if (this.credentials.EventR == 0 && this.Updated27 == false) {
       this.credentials.EventR = this.details.EventR
     }
-    if(this.credentials.MeetingR == 0 && this.Updated28 == false){
+    if (this.credentials.MeetingR == 0 && this.Updated28 == false) {
       this.credentials.MeetingR = this.details.MeetingR
     }
-    if(this.credentials.Balcony == 0 && this.Updated29 == false){
+    if (this.credentials.Balcony == 0 && this.Updated29 == false) {
       this.credentials.Balcony = this.details.Balcony
     }
-    if(this.credentials.ATM == 0 && this.Updated30 == false){
+    if (this.credentials.ATM == 0 && this.Updated30 == false) {
       this.credentials.ATM = this.details.ATM
     }
-    if(this.credentials.BeautySalon == 0 && this.Updated31 == false){
+    if (this.credentials.BeautySalon == 0 && this.Updated31 == false) {
       this.credentials.BeautySalon = this.details.BeautySalon
     }
-    if(this.credentials.CStore == 0 && this.Updated32 == false){
+    if (this.credentials.CStore == 0 && this.Updated32 == false) {
       this.credentials.CStore = this.details.CStore
     }
-    if(this.credentials.Hairsalon == 0 && this.Updated33 == false){
+    if (this.credentials.Hairsalon == 0 && this.Updated33 == false) {
       this.credentials.Hairsalon = this.details.Hairsalon
     }
-    if(this.credentials.Laundry == 0 && this.Updated34 == false){
+    if (this.credentials.Laundry == 0 && this.Updated34 == false) {
       this.credentials.Laundry = this.details.Laundry
     }
-    if(this.credentials.Store == 0 && this.Updated35 == false){
+    if (this.credentials.Store == 0 && this.Updated35 == false) {
       this.credentials.Store = this.details.Store
     }
-    if(this.credentials.Supermarket == 0 && this.Updated36 == false){
+    if (this.credentials.Supermarket == 0 && this.Updated36 == false) {
       this.credentials.Supermarket = this.details.Supermarket
     }
-    if(this.credentials.Blind == 0 && this.Updated37 == false){
+    if (this.credentials.Blind == 0 && this.Updated37 == false) {
       this.credentials.Blind = this.details.Blind
     }
-    if(this.credentials.Neareducation == 0 && this.Updated38 == false){
+    if (this.credentials.Neareducation == 0 && this.Updated38 == false) {
       this.credentials.Neareducation = this.details.Neareducation
     }
-    if(this.credentials.Cenmarket == 0 && this.Updated39 == false){
+    if (this.credentials.Cenmarket == 0 && this.Updated39 == false) {
       this.credentials.Cenmarket = this.details.Cenmarket
     }
-    if(this.credentials.Market == 0 && this.Updated40 == false){
+    if (this.credentials.Market == 0 && this.Updated40 == false) {
       this.credentials.Market = this.details.Market
     }
-    if(this.credentials.River == 0 && this.Updated41 == false){
+    if (this.credentials.River == 0 && this.Updated41 == false) {
       this.credentials.River = this.details.River
     }
-    if(this.credentials.Mainroad == 0 && this.Updated42 == false){
+    if (this.credentials.Mainroad == 0 && this.Updated42 == false) {
       this.credentials.Mainroad = this.details.Mainroad
     }
-    if(this.credentials.Insoi == 0 && this.Updated43 == false){
+    if (this.credentials.Insoi == 0 && this.Updated43 == false) {
       this.credentials.Insoi = this.details.Insoi
     }
-    if(this.credentials.MFee == ''){
+    if (this.credentials.MFee == '') {
       this.credentials.MFee = this.details.MFee
     }
-    if(this.credentials.LandAge == ''){
+    if (this.credentials.LandAge == '') {
       this.credentials.LandAge = this.details.LandAge
     }
-    if(this.credentials.PPStatus == ''){
+    if (this.credentials.PPStatus == '') {
       this.credentials.PPStatus = this.details.PPStatus
     }
-    if(this.credentials.ImageEX == null){
+    if (this.credentials.ImageEX == null) {
       this.credentials.ImageEX = this.details.ImageEX
     }
-    if(this.credentials.Owner == ''){
+    if (this.credentials.Owner == '') {
       this.credentials.Owner = this.details.Owner
     }
 
-    
-    
-   
-  
-   this.credentials.ID_Property = this.postID
-   if(this.UpdatedS == true){
-    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
-   }
-   if(this.UpdatedC == true){
-    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
-   } 
-   if(this.UpdatedM == true){
-    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
-   }
-   if(this.UpdatedZ == true){
-    this.getZipCode()
-   }
-   
-  
+    this.credentials.ID_Property = this.postID
+    if (this.UpdatedS == true) {
+      this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    }
+    if (this.UpdatedC == true) {
+      this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    }
+    if (this.UpdatedM == true) {
+      this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
+    }
+    if (this.UpdatedZ == true) {
+      this.getZipCode()
+    }
+
+    console.log(this.credentials)
+    this.UserType.ID_Property = this.credentials.ID_Property
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
     this.auth.EditHouse(this.credentials).subscribe(
-      () => {
-
+      (result) => {
+        if (!result.erorr) {
+          alert(JSON.stringify(result))
+         this.Phyton()
+        } else {
+          alert(JSON.stringify(result.erorr))
+        }
       },
       err => {
-   
-        alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
-        this.router.navigate(['/houses',this.credentials.ID_Property] );
         console.error(err)
-
-      }
-
-    )
+      })
   }
-  
+  //************* Phyton *************
+  Phyton() {
+    console.log("************* Phyton *************")
+    this.auth.PythonHouse(this.UserType).subscribe((result) => {
+      console.log(result)
+      console.log("************* Phyton  RESULT*************")
+      this.router.navigate(['/houses', this.credentials.ID_Property]);
+    },
+      err => {
+        console.error(err)
+      })
+  }
 
 }
 

@@ -5,7 +5,6 @@
 input {
   border-radius: 30px 30px 30px 30px;
   padding: 20px;
-  width: 300px;
   height: 40px;
 }
 .showpass {
@@ -14,6 +13,15 @@ input {
 }
 .PMB {
   font-family: 'Poppins', 'Prompt', sans-serif;
+}
+.page-content-auto {
+  max-width: 100%;
+  height: auto!important;
+}
+
+.page-content img {
+  max-width: 100%;
+  height: auto!important;
 }
 
 

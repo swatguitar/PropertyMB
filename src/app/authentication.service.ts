@@ -31,7 +31,23 @@ export interface ImageID {
   ID_Photo: string
   URL: string
 }
-
+export interface PDF {
+  ID_Property: string
+  ID_Lands: string
+  ID_Photo: string
+  URL: string
+  content: string
+  filename:string
+}
+export interface UserType {
+  ID_Property: string
+  ID_Lands: string
+  ID_Photo: string
+  LProvince: string
+  PriceMax: number
+  PriceMin: number
+  UserType: string
+}
 export interface FilterProperty {
   PropertyType: string
   HomeCondition: string
@@ -84,7 +100,7 @@ export interface PropertyH {
   BathRoom: string
   BedRoom: string
   CarPark: string
-  HouseArea: string
+  HouseArea: number
   Floor: string
   LandR: string
   LandG: string
@@ -192,7 +208,7 @@ export interface PropertyDetails {
   BathRoom: string
   BedRoom: string
   CarPark: string
-  HouseArea: string
+  HouseArea: number
   Floor: string
   LandR: string
   LandG: string
@@ -300,6 +316,12 @@ export interface ID {
   ContactUt: string
 }
 
+export interface Location {
+  PROVINCE_ID: number
+  AMPHUR_ID: number
+  DISTRICT_ID: number
+  ZIPCODE_ID: number
+}
 
 
 export interface TokenPayload {
@@ -342,7 +364,7 @@ export interface TokenPayload {
   BathRoom: string
   BedRoom: string
   CarPark: string
-  HouseArea: string
+  HouseArea: number
   Floor: string
   LandR: string
   LandG: string
@@ -487,7 +509,7 @@ export class AuthenticationService {
   public resetpassword(user: TokenPayload): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/ResetPass`, user, {
       headers: { Authorization: ` ${this.getToken()}` }
-    })
+    },)
   }
   public resetpasswordM(user: TokenPayload): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/ResetPassM`, user, {
@@ -636,6 +658,8 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+
+   //************************ Group  ************************* */
   public getgroup(): Observable<any> {
     return this.http.get(this.ROOT_URL + `/users/group`, {
       headers: { Authorization: ` ${this.getToken()}` }
@@ -671,13 +695,17 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  
+  //************* get group member *************
   public getMember(gruop: GroupDetails): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/group/member`, gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getMemberlist(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/group/member/list`, {
+
+  //************* get group user *************
+  public getMemberlist(gruop: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/group/ListDetailMember`, gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -691,16 +719,45 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public gethouse(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/house`, {
+  public getGroupDetailMember(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/group/groupDetailMember`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getallhouse(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/houses`, {
+  public getGroupById(gruop: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/group/groupbById`,gruop, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+  public getPeropertyInFolder(gruop: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/group/folder/Listproperty`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getLandInFolder(gruop: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/group/folder/ListLand`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getGroupOwnerInfo(gruop: GroupDetails): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/group/owner`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  public getMemberHDetail(gruop: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member/houseDetail`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  public getMemberLDetail(gruop: GroupDetails): Observable<any> {
+    return this.http.put(this.ROOT_URL + `/users/group/member/landDetail`,gruop, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  
 
   //************************ Update  ************************* */
   public houseUpdate(house: ID): Observable<any> {
@@ -765,18 +822,18 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getAmphur(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/Amphur`, {
+  public getAmphur(location): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/Amphur`,location, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getDistrict(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/District`, {
+  public getDistrict(location): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/District`,location, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
-  public getZipcode(): Observable<any> {
-    return this.http.get(this.ROOT_URL + `/users/Zipcode`, {
+  public getZipcode(location): Observable<any> {
+    return this.http.post(this.ROOT_URL + `/users/Zipcode`,location, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -803,6 +860,17 @@ export class AuthenticationService {
   }
   public getimghouse(house: ImageID): Observable<any> {
     return this.http.put(this.ROOT_URL + `/users/imghouse`, house, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+
+  public gethouse(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/house`, {
+      headers: { Authorization: ` ${this.getToken()}` }
+    })
+  }
+  public getallhouse(): Observable<any> {
+    return this.http.get(this.ROOT_URL + `/users/houses`, {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
@@ -837,6 +905,43 @@ export class AuthenticationService {
       headers: { Authorization: ` ${this.getToken()}` }
     })
   }
+
+    //************************ Recommend *********************** **** */
+    public RecommendLnad(userType: UserType): Observable<any> {
+      return this.http.put(this.ROOT_URL + `/users/LandRecommend`, userType, {
+        headers: { Authorization: ` ${this.getToken()}` }
+      })
+    }
+    public RecommendHouse(userType: UserType): Observable<any> {
+      return this.http.put(this.ROOT_URL + `/users/HouseRecommend`, userType, {
+        headers: { Authorization: ` ${this.getToken()}` }
+      })
+    }
+
+    public PythonLand(userType: UserType): Observable<any> {
+      return this.http.post(this.ROOT_URL + `/recommendLand`, userType, {
+        headers: { Authorization: ` ${this.getToken()}` }
+      })
+    }
+    public PythonHouse(userType: UserType): Observable<any> {
+      return this.http.post(this.ROOT_URL + `/recommendHouse`, userType, {
+        headers: { Authorization: ` ${this.getToken()}` }
+      })
+    }
+
+    
+    //************************ PDF *********************** **** */
+    public PDFLnad(PDF: PDF): Observable<any> {
+      return this.http.post(this.ROOT_URL + `/users/LandPDF`, PDF, {
+        headers: { Authorization: ` ${this.getToken()}` },responseType: 'arraybuffer'
+      })
+    }
+    public PDFHouse(PDF: PDF): Observable<any> {
+      return this.http.post(this.ROOT_URL + `/users/HousePDF`, PDF, {
+        headers: { Authorization: ` ${this.getToken()}` },responseType: 'arraybuffer'
+      })
+    }
+  
 
   public logout(): void {
     this.token = ''

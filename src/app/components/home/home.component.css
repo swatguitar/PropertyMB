@@ -1,66 +1,35 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
 
-body {
-  padding: 100px;
-}
-::-webkit-scrollbar{width:10px;height:10px;}
-::-webkit-scrollbar-button{width:10px;height:10px;}
 
-div{
-  box-sizing:border-box;
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 body {
   background: #111;
 }
 
-.horizontal-scroll-wrapper{
-  position:absolute;
-  display:block;
-  top:150px;
-  left:0;
-  right: 80px;
-  width:160px;
-  max-height:700px;
-  margin:0;
-
-  overflow-y:auto;
-  overflow-x:hidden;
-  transform:rotate(-90deg) translateY(-80px);
-  transform-origin: top;
+.horizontal-scroll-wrapper{  
+  overflow-x:auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  
 }
-.horizontal-scroll-wrapper > div{
-  display:block;
-  padding:5px;
- 
-  transform:rotate(90deg);
-  transform-origin: right top;
+.horizontal-scroll-wrapper > .itemG{
+  padding: 25px;
+  display:inline-block
+}
+main {
+  position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
-.squares{
-  padding:100px 100px 0 0;
-}
 
-.squares > div{
-  width:100px;
-  height:80px;
-  margin:50px;
-}
 
-.rectangles{
-  top:100px;
-  padding:100px 0 0 0;
-}
-.rectangles > div{
-  width:140px;
-  height:60px;
-  margin:50px 10px;
-  padding:5px;
-  background:#cab;
-  transform:rotate(90deg) translateY(80px);
-  transform-origin: right top;
-}
+
+
 a {
   outline: none !important;
   text-decoration: none !important;
@@ -237,7 +206,10 @@ a {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
+.page-content img {
+  max-width: 100%;
+  height: auto!important;
+}
 .content-box header a {
   color: #75A2AA;
 }

@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-md-3">
                           <select id="inputState" class="btn dropdown-toggle btn-outline-secondary" name="searchPro1" [(ngModel)]="searchPro1"
-                            (ngModelChange)="selectProvince($event)">
+                            (ngModelChange)="selectprovince($event)">
                             <option value="" >จังหวัด</option>
                             <option *ngFor="let p of province" [ngValue]="p">
                               {{p.PROVINCE_NAME}}
@@ -147,7 +147,7 @@
 
                         <a [routerLink]="['/houses',houses.ID_Property]" [queryParams]="{page: activePage}"
                           target="_blank">
-                          <div class="title" style="white-space: nowrap; 	
+                          <div class="title" style="
                               overflow: hidden; text-overflow: ellipsis;">
                             {{houses.AnnounceTH}} <br>
                           </div>

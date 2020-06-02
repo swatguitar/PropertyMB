@@ -1,28 +1,16 @@
 <div class="Font">
 
   <nav class="main-header  fixed-top navbar navbar-expand-lg navbar-white navbar-light bd-light">
-    <!-- Left navbar links -->
-
-    <!-- SEARCH FORM
-      <form class="form-inline ml-3">
-        <div class="input-group input-group-sm">
-          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-navbar" type="submit">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </form> -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-widget="pushmenu"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse " id="navbarText">
       <ul class="navbar-nav mr-auto ">
-        <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-        </li>
         <li *ngIf="auth.isLoggedIn()" class="nav-item active">
           <a class="nav-link " routerLink="/home">หน้าหลัก <span class="sr-only">(current)</span></a>
         </li>
@@ -57,9 +45,7 @@
         </li>
       </ul>
       <div class="d-flex flex-row-reverse">
-
         <ul class="navbar-nav mr-auto">
-
           <li *ngIf="auth.isLoggedIn()" class="nav-item">
             <a class="nav-link" routerLink="/profile"><img src="{{ auth.getUserDetails()?.Profile1}}" alt=""><i
                 class="fa fa-user-circle"></i></a>
@@ -81,13 +67,11 @@
       </div>
     </div>
   </nav>
-
-
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" data-widget="pushmenu">
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -96,15 +80,17 @@
           <li class="nav-header">
             <h5>กลุ่ม</h5>
           </li>
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <li class="nav-header">
             <button type="button" class="btn btn-success" [routerLink]="['/groups/creategroup']"><i
-                class="fas fa-plus-circle"></i> สร้างกลุ่มใหม่</button>
+              class="fas fa-plus-circle"></i> สร้างกลุ่มใหม่</button>
+          </li>
+          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
-              <a href="#" class="d-block"></a>
+              <a class="d-block"></a>
             </div>
           </div>
           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
+            <a  class="nav-link active">
               <i class="fas fa-users-cog"></i>
               <p>
                 กลุ่มที่คุณจัดการ
@@ -114,8 +100,8 @@
             <ul class="nav nav-treeview">
               <div class="user-panel mt-3 pb-3 mb-3 d-flex" *ngFor="let group of Groups">
                 <div class="image">
-                  <img src="http://www.landvist.xyz/images/{{group.Img}}" class="img-circle elevation-2"
-                    alt="User Image" width="20px" height="20px">
+                  <img src="{{group.Img}}" class="img-circle elevation-2"
+                    width="20px" height="20px">
                 </div>
                 <div class="info">
                   <a [routerLink]="['/groups/groupfolder',group.ID_Group]" (click)="reload()"
@@ -125,7 +111,7 @@
             </ul>
           </li>
           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
+            <a  class="nav-link active">
               <i class="fas fa-users"></i>
               <p>
                 กลุ่มที่คุณเป็นสมาชิก
@@ -135,8 +121,8 @@
             <ul class="nav nav-treeview">
               <div class="user-panel mt-3 pb-3 mb-3 d-flex" *ngFor="let group of GDetails">
                 <div class="image">
-                  <img src="http://www.landvist.xyz/images/{{group.Img}}" class="img-circle elevation-2"
-                    alt="Group Image" width="20px" height="20px">
+                  <img src="{{group.Img}}" class="img-circle elevation-2"
+                    width="20px" height="20px">
                 </div>
                 <div class="info">
                   <a [routerLink]="['/groups/member/groupfolder',group.ID_Group]"  class="d-block">{{group.NameG}}</a>
@@ -181,8 +167,8 @@
               <div class="col-md-4">
                 <div class="row">
                   <h1> <a [routerLink] data-toggle="modal" data-target="#Image"><img
-                        src="http://www.landvist.xyz/images/{{group.Img}}" class="img-circle elevation-2"
-                        alt="Group Image" width="65px" height="65px"></a> {{group.NameG}}</h1>
+                        src="{{group.Img}}" class="img-circle elevation-2"
+                         width="65px" height="65px"></a> {{group.NameG}}</h1>
                   <div class="col-md-2"><a [routerLink] data-toggle="modal" data-target="#Name"><i
                         class="far fa-edit"></i></a>
                     <!-- Modal -->
@@ -231,7 +217,7 @@
                                                   <span aria-hidden="true">&times;</span>
                                                 </button>
                                                 <img class="card-img-top"
-                                                  src="http://www.landvist.xyz/images/{{url.URL}}" width="200px"
+                                                  src="{{url.URL}}" width="200px"
                                                   height="150px">
 
                                               </button>
@@ -311,8 +297,8 @@
                                   <ul class="nav nav-treeview">
                                     <div class="user-panel mt-3 pb-3 mb-3 d-flex" *ngFor="let item of Lists">
                                       <div class="image">
-                                        <img src="http://www.landvist.xyz/images/{{item.ProfileImg}}"
-                                          class="img-circle elevation-2" alt="User Image" width="20px" height="20px">
+                                        <img src="{{item.ProfileImg}}"
+                                          class="img-circle elevation-2" width="20px" height="20px">
                                       </div>
                                       <div class="info">
                                         
@@ -339,7 +325,7 @@
                                         <br>
                                         <div *ngFor="let item of Member" class="col-md-6">
                                             <a class="" [routerLink]><img
-                                                src="http://www.landvist.xyz/images/{{item.ProfileImg}}" class="img-circle " alt="User Image" width="70px"
+                                                src="{{item.ProfileImg}}" class="img-circle "  width="70px"
                                                 height="70px"></a>
                                             <div class="">{{item.Firstname}} {{item.Lastname}} </div>
                                             <br>

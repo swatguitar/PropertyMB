@@ -6,7 +6,10 @@
   font: normal 36px 'Cookie', cursive;
   margin: 0;
 }
-
+.page-content img {
+  max-width: 100%;
+  height: auto!important;
+}
 .logo-distributed h3 span{
   color:  #2fbd2a;
 }

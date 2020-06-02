@@ -12,7 +12,7 @@
                   <span class="input-group-text">อัพโหลด</span>
                 </div>
                 <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="inputGroupFile01" name="file"multiple ng2FileSelect
+                  <input type="file" class="custom-file-input" id="inputGroupFile01" name="file" multiple ng2FileSelect
                     [uploader]="uploader">
                   <label class="custom-file-label" for="inputGroupFile01">เลือกรูปภาพ</label>
                 </div>
@@ -29,37 +29,39 @@
                 </div>
               </div>
               <br />
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th width="50%">ชื่อ</th>
-                    <th>ขนาด</th>
-                    <th>สถานะ</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of uploader.queue">
-                    <td><strong>{{ item?.file?.name }}</strong></td>
-                    <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                    <td>
-                      <div class="progress" style="margin-bottom: 0;">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }">
+              <div style="overflow-x: auto;">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th width="50%">ชื่อ</th>
+                      <th>ขนาด</th>
+                      <th>สถานะ</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of uploader.queue">
+                      <td><strong>{{ item?.file?.name }}</strong></td>
+                      <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                      <td>
+                        <div class="progress" style="margin-bottom: 0;">
+                          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }">
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td >
-                      <div *ngIf="item.isSuccess" class="badge badge-success text-wrap" style="width: 6rem;">
-                        อัพโหลดสำเร็จ
-                      </div>
-                      <div *ngIf="item.isError" class="badge badge-danger text-wrap" style="width: 6rem;">
-                        อัพโหลดผิดพลาด
-                      </div>
-                      <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      </td>
+                      <td>
+                        <div *ngIf="item.isSuccess" class="badge badge-success text-wrap" style="width: 6rem;">
+                          อัพโหลดสำเร็จ
+                        </div>
+                        <div *ngIf="item.isError" class="badge badge-danger text-wrap" style="width: 6rem;">
+                          อัพโหลดผิดพลาด
+                        </div>
+                        <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <div>
                 <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
                   [disabled]="!uploader.getNotUploadedItems().length">

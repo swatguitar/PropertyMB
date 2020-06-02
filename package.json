@@ -25,6 +25,7 @@
     "@angular/router": "^8.2.14",
     "@hallysonh/ngx-imageviewer": "^2.0.4",
     "@ks89/angular-modal-gallery": "^7.2.5",
+    "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@ngx-gallery/core": "^3.3.1",
     "@ngx-gallery/gallerize": "^3.3.1",
     "@ngx-gallery/lightbox": "^3.3.1",

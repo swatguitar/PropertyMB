@@ -1,3 +1,4 @@
+
 .Font {
     font-family: 'Poppins', 'Prompt', sans-serif;
   }
@@ -10,7 +11,11 @@
     background-color: #292c2f;
   
   }
-  
+  .wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
   /*button circle*/
   .btn-circle.btn-xl {
     font-family: 'Poppins', 'Prompt', sans-serif;
@@ -99,6 +104,15 @@
     font-weight: 400;
     color: #333;
   }
+  
+
+
+
+
+
+
+
+
   
   
   

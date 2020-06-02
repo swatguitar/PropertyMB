@@ -4,7 +4,13 @@
   font: normal 36px 'Cookie', cursive;
   margin: 0;
 }
-
+.page-content ngx-gallery {
+  max-width: 100%;
+  height: auto!important;
+}
+.container{
+  font-family: 'Poppins', 'Prompt', sans-serif;
+}
 .logo-distributed h3 span{
   color:  #2fbd2a;
 }
@@ -32,17 +38,10 @@ gallery{
   cursor: pointer      
      }      
      
- ul { padding:0; width:1200px; margin:20px auto;margin-left: 80px}      
+   
  li { display:inline;}  
-hr {
-  width: 1000px;
-}
-.well {
-  background-color: #92a8d1;
-  width: 1000px;
-  padding: 10px; 
-  height: 40px;
-}
+
+
 
 /* Top Left text */
 .text-block {
@@ -57,16 +56,7 @@ hr {
 agm-map {
   height: 300px;
 }
-input
-    {
-        border-radius: 30px 30px 30px 30px;
-        padding: 20px; 
-        width: 1000px;
-        height: 40px; 
-      }   
-      input[type=text]:focus {
-        border: 3px solid #555;
-      }
+
 
 .containsm input[type=text] {
   width: 100px;

@@ -96,7 +96,8 @@
                   </div>
                 </div>
                 <br />
-                <table class="table">
+                <div style="overflow-x: auto;">
+                <table >
                   <thead>
                     <tr>
                       <th width="50%">ชื่อ</th>
@@ -127,6 +128,7 @@
                     </tr>
                   </tbody>
                 </table>
+              </div>
                 <div>
                   <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
                     [disabled]="!uploader.getNotUploadedItems().length">

@@ -1,3 +1,22 @@
+
+div.img-resize img {
+	width: 64px;
+	height: auto;
+}
+
+div.img-resize {
+	width: 64px;
+	height: 64px;
+	overflow: hidden;
+	text-align: center;
+}
+
+.page-content img {
+  max-width: 100%;
+  height: auto!important;
+}
+
+
 .float-right{
     margin: auto;
   }

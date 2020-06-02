@@ -1,6 +1,6 @@
 <div class="container PMB">
   <div class="row">
-    <div class="col-md-8 jumbotron col-12 col-md-6" style="height: 650%;">
+    <div class="col-md-8 jumbotron col-sm-12 col-lg-8 page-content-auto" >
       <div class="text-center" style="margin: 20%">
         <h1>ยินดีต้อนรับ</h1>
         <p class="font-weight-light  ">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="col-md-4 ">
-      <div class="col-xs-12- col-sm-6 col-md-12 ">
+      <div class="col-xs-12- col-sm-6 col-md-12 page-content">
         <header class="text-center">
           <img src="http://www.landvist.xyz/images/Defult/logo2.png" width="300" height="250" alt="">
           <br>
@@ -23,13 +23,14 @@
             <div *ngIf="logedin == 'fail'" class="alert alert-danger" role="alert">
               อีเมลหรือรหัสผ่าน ไม่ถูกต้อง
             </div>
+            <app-loading-spinner *ngIf="showSpinner == true"></app-loading-spinner>
           </div>
         </header>
         <hr>
         <form (submit)="login()" [formGroup]="form">
           <div class="form-group">
             <label>อีเมล</label>
-            <input type="text" [(ngModel)]="credentials.Email" formControlName="Email" class="form-control" style="width: 320px;"
+            <input type="text" [(ngModel)]="credentials.Email" formControlName="Email" class="form-control" 
               placeholder="อีเมล" [ngClass]="{ 'is-invalid': submitted && f.Email.errors }" />
             <div *ngIf="submitted && f.Email.errors" class="invalid-feedback">
               <div *ngIf="f.Email.errors.required">โปรดกรอกอีเมล</div>
@@ -52,16 +53,15 @@
             <a class="f" [routerLink]="['/resetPassword']" routerLinkActive="router-link-active">หากลืมรหัสผ่าน</a>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col-sm-12 col-md-6 col-lg-6">
               <div class="form-group  ">
                 <a [routerLink]="['/register']" routerLinkActive="router-link-active">สร้างบัญชี</a>
               </div>
             </div>
-            <div class="col">
+            <div class="col-sm-12 col-md-6 col-lg-6">
               <div class="form-group">
                 <button class="btn btn-outline-primary float-right" type="submit">ลงชื่อเข้าใช้</button>
-                <img *ngIf="loading"
-                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+       
               </div>
             </div>
           </div>

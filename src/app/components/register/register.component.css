@@ -9,3 +9,12 @@ select{
 .PMB{
     font-family: 'Poppins', 'Prompt', sans-serif;
 }
+.page-content-auto {
+  max-width: 100%;
+  height: auto!important;
+}
+
+.page-content img {
+  max-width: 100%;
+  height: auto!important;
+}

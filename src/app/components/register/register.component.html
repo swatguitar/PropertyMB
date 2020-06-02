@@ -1,6 +1,6 @@
 <div class="container PMB">
   <div class="row">
-    <div class="col-md-8 jumbotron col-12 col-md-6" style="height: 900%;">
+    <div class="col-md-8 jumbotron col-sm-12 col-lg-8  page-content-auto" >
       <div class="text-center  " style="margin: 20%">
         <h1>ยินดีต้อนรับ</h1>
         <p class="font-weight-light  ">
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="col-md-4 ">
-      <div class="col-xs-12- col-sm-6 col-md-12 ">
+      <div class="col-xs-12- col-sm-6 col-md-12 page-content">
 
         <header class="text-center">
           <img src="http://www.landvist.xyz/images/Defult/logo2.png" width="300px" height="250px" alt="">
@@ -35,19 +35,6 @@
               [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
             <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
               <div *ngIf="f.lastName.errors.required">กรุณากรอกนามสกุล</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>ลักษณะผู้ใช้งาน</label>
-            <select class="form-control" formControlName="UserType"
-              [ngClass]="{ 'is-invalid': submitted && f.UserType.errors }" [(ngModel)]="credentials.UserType">
-              <option value="ระยะสั้น">
-                ระยะสั้น ต่ำกว่าหรือเท่ากับ 1 ปี</option>
-              <option value="ระยะยาว">
-                ระยะยาว 1 ปีขึ้นไป</option>
-            </select>
-            <div *ngIf="submitted && f.UserType.errors" class="invalid-feedback">
-              <div *ngIf="f.UserType.errors.required">กรุณาเลือกลักษณะผู้ใช้งาน</div>
             </div>
           </div>
           <br>

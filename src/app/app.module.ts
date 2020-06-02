@@ -150,10 +150,7 @@ import { DetailComponent } from './components/detail/detail.component';
     NgxGalleryModule,
     AutocompleteLibModule,
     AutocompleteModule.forRoot(),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCtHlvZUC6SiC7cWqS0xm4_PnS9Qc3gF3o',
-      libraries: ['places']
-    }),
+    AgmCoreModule.forRoot(),
     PDFExportModule,
     BrowserAnimationsModule,
    

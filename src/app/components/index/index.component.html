@@ -1,19 +1,22 @@
  <app-navbar></app-navbar>
  <!--<div class="parallax1"></div>-->
- <section>
- <a [routerLink]="['/register']" routerLinkActive="router-link-active"><img src="../../../assets/001.png" alt="index.png"
-     style="width:100%;"></a>
-     <a href="#" class="scroll-down" address="true"></a>
-</section>
+<div class="col-12">
+    <a [routerLink]="['/register']" routerLinkActive="router-link-active"><img src="../../../assets/001.png"
+        alt="index.png" class="responsive" style="width:100%;"></a>
+   
+        <a [routerLink] (click)="scroll(target)" class="scroll-down" address="true"></a>
+</div>
+
+  
  <div #target>
    <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
-       src="../../../assets/2.01.png" alt="index.png" style="width:25%;"></a>
+       src="../../../assets/2.01.png" id="optionalstuff" alt="index.png" style="width:25%;"></a>
    <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
-       src="../../../assets/2.02.png" alt="index.png" style="width:25%;"></a>
+       src="../../../assets/2.02.png" id="optionalstuff" alt="index.png" style="width:25%;"></a>
    <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
-       src="../../../assets/2.03.png" alt="index.png" style="width:25%;"></a>
+       src="../../../assets/2.03.png" id="optionalstuff" alt="index.png" style="width:25%;"></a>
    <a [routerLink]="['/detail']" routerLinkActive="router-link-active"><img class="inline-photo show-on-scroll"
-       src="../../../assets/2.04.png" alt="index.png" style="width:25%;"></a>
+       src="../../../assets/2.04.png" id="optionalstuff" alt="index.png" style="width:25%;"></a>
  </div>
  <div class="inner" id="content">
    <img src="../../../assets/003.png" alt="index.png" style="width:100%;">
@@ -22,5 +25,6 @@
  </div>
  <img src="../../../assets/004.png" alt="index.png" style="width:100%;">
  <img src="../../../assets/005.png" alt="index.png" style="width:100%;">
- 
+ <section>
+ </section>
  <app-footer></app-footer>

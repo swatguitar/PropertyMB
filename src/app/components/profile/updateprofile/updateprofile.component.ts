@@ -1,14 +1,13 @@
 import { Component, OnInit, } from '@angular/core';
 import { AuthenticationService, UserDetails, TokenPayload } from '../../../authentication.service'
-import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { FileSelectDirective, FileUploader } from 'ng2-file-upload';
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from '@angular/platform-browser';
 import { MustMatch } from '../../register/helper/must-match.validator';
 import { Router } from '@angular/router';
-const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadprofile';
-//const uri = 'http://localhost:3001/users/uploadprofile';
-//const uri = 'https://polar-fjord-21366.herokuapp.com/users/uploadprofile';
+const uri = 'http://localhost:3001/users/uploadprofile';
+//const uri = 'https://backendppmb.herokuapp.com/users/uploadprofile';//HUROKU
 @Component({
   selector: 'app-updateprofile',
   templateUrl: './updateprofile.component.html',
@@ -17,33 +16,30 @@ const uri = 'https://upbeat-repeater-264507.appspot.com/users/uploadprofile';
 
 export class UpdateprofileComponent implements OnInit {
   ID_User: number
-  showSpinner2: boolean ;
-  constructor(private auth: AuthenticationService, private formBuilder: FormBuilder,private http: HttpClient, public sanitizer: DomSanitizer,private router: Router) { 
+  showSpinner2: boolean;
+  constructor(private auth: AuthenticationService, private formBuilder: FormBuilder, private http: HttpClient, public sanitizer: DomSanitizer, private router: Router) {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     }
     this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
-      form.append('ID_User' , this.ID_User);
-     };
+      form.append('ID_User', this.ID_User);
+    };
     this.uploader.onAfterAddingFile = () => {
       this.uploader.uploadAll();
     }
-    
-    
+
+
     this.uploader.onSuccessItem = (item: any, response: string, status: number, headers: any): any => {
-      this.onFinish()
       this.showSpinner2 = true
-      setTimeout(() => {
+      if (response) {
         this.showSpinner2 = false
         alert(JSON.stringify("อัพโหลดสำเร็จ"))
-      }, 15000);
-    
-   if(response){
-    console.log("response"+JSON.stringify(response));
+        console.log("response" + JSON.stringify(response));
+      }
+    }
   }
- }
-  }
-  uploader: FileUploader = new FileUploader({ url: uri 
+  uploader: FileUploader = new FileUploader({
+    url: uri
   });
   credentials: TokenPayload = {
     ID_User: 0,
@@ -73,7 +69,7 @@ export class UpdateprofileComponent implements OnInit {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -155,7 +151,7 @@ export class UpdateprofileComponent implements OnInit {
     Balcony: 0,
     MeetingR: 0,
     EventR: 0,
-    Kitchen:0,
+    Kitchen: 0,
     LivingR: 0,
     Supermarket: 0,
     CStore: 0,
@@ -175,7 +171,7 @@ export class UpdateprofileComponent implements OnInit {
     ContactPhone: " ",
   }
   details: UserDetails
-  Profileimage:string
+  Profileimage: string
   updateForm: FormGroup;
   updateDForm: FormGroup;
   updateQForm: FormGroup;
@@ -185,11 +181,11 @@ export class UpdateprofileComponent implements OnInit {
   change1: boolean = false
   change2: boolean = false
   change3: boolean = false
-  OldPassword:string
-  UserType:string
+  OldPassword: string
+  UserType: string
 
   ngOnInit() {
-    this.updateForm =  new FormGroup({
+    this.updateForm = new FormGroup({
       firstName: new FormControl(''),
       lastName: new FormControl(''),
       LocationU: new FormControl(''),
@@ -223,30 +219,28 @@ export class UpdateprofileComponent implements OnInit {
         this.UserType = user.UserType
         this.Profileimage = user.ProfileImg
         this.ID_User = user.ID_User
-        if(this.Profileimage == null || this.Profileimage ==  ''){
-          if(user.Gender=='ชาย'){
-            this.Profileimage = 'Defult/img_Profile_men.png'
-          }else if(user.Gender=='หญิง'){
-            this.Profileimage = 'Defult/img_Profile_women.png'
-          }else{
-            this.Profileimage = 'Defult/img_Profile_not.png'
+        if (this.Profileimage == null || this.Profileimage == '') {
+          if (user.Gender == 'ชาย') {
+            this.Profileimage = 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/img_Profile_men.png'
+          } else if (user.Gender == 'หญิง') {
+            this.Profileimage = 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/img_Profile_women.png'
+          } else {
+            this.Profileimage = 'https://backendppmb.s3.us-east-2.amazonaws.com/Defult/img_Profile_not.png'
           }
-          console.log(this.Profileimage+'5555' )
         }
-        
+
       },
       err => {
         console.error(err)
       }
     )
-    this.onFinish()
   }
   get U() { return this.updateForm.controls; }
   get D() { return this.updateDForm.controls; }
   get Q() { return this.updateQForm.controls; }
   get P() { return this.updatepassForm.controls; }
 
-
+  //************* set value *************
   onChange1() {
     this.change1 = false
     this.change2 = false
@@ -286,54 +280,53 @@ export class UpdateprofileComponent implements OnInit {
   onGetUpdateD(value) {
     this.UserType = value
   }
-  onUpdateA(){
-    this.submitted = true;
 
+  //************* update profile info *************
+  onUpdateA() {
+    this.submitted = true;
     // stop here if form is invalid
     if (this.updateForm.invalid) {
       return;
     }
     //this.loading = true
-    if(this.credentials.Firstname == ''){
+    if (this.credentials.Firstname == '') {
       this.credentials.Firstname = this.details.Firstname
     }
-    if(this.credentials.Lastname == ''){
+    if (this.credentials.Lastname == '') {
       this.credentials.Lastname = this.details.Lastname
     }
-    if(this.credentials.LocationU == ''){
+    if (this.credentials.LocationU == '') {
       this.credentials.LocationU = this.details.LocationU
     }
-    if(this.credentials.Phone == ''){
+    if (this.credentials.Phone == '') {
       this.credentials.Phone = this.details.Phone
     }
-    if(this.credentials.Gender == ''){
+    if (this.credentials.Gender == '') {
       this.credentials.Gender = this.details.Gender
     }
-    if(this.credentials.Birthday == ''){
+    if (this.credentials.Birthday == '') {
       this.credentials.Birthday = this.details.Birthday
     }
-    if(this.credentials.Age == ''){
+    if (this.credentials.Age == '') {
       this.credentials.Age = this.details.Age
     }
-    if(this.credentials.UserType == ''){
+    if (this.credentials.UserType == '') {
       this.credentials.UserType = this.details.UserType
     }
-   
-
-
     this.auth.updateprofile(this.credentials).subscribe(
-      () => {
+      (result) => {
         //this.loading = false
-        alert(JSON.stringify("บันทึกสำเร็จ"))
+        alert(JSON.stringify(result))
         //this.router.navigateByUrl('/login');
       },
       err => {
         console.error(err);
-
       }
     );
   }
-  comparePassword(){
+
+  //************* compare password *************
+  comparePassword() {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -342,38 +335,34 @@ export class UpdateprofileComponent implements OnInit {
     }
     this.auth.resetpasswordM(this.credentials).subscribe(
       (response) => {
-        if(response.error){
+        if (response.error) {
           alert(JSON.stringify(response.error))
-        }else{
-          alert(JSON.stringify("รีเซ็ท รหัสผ่าน สำเร็จ"))
+        } else {
+          alert(JSON.stringify(response))
         }
-        
       },
       err => {
         console.error(err);
-
       }
     );
- 
+
   }
- 
-  RemoveImage(){
-    this.auth.removeimgProfile(this.credentials).subscribe(() => {
-      alert(JSON.stringify("ลบรูปภาพสำเร็จ"))
+
+  //************* remove Inage *************
+  RemoveImage() {
+    this.auth.removeimgProfile(this.credentials).subscribe((result) => {
+      alert(JSON.stringify(result))
       this.refresh()
     },
       err => {
         console.error(err)
       }
     )
-    
-  }
-  onFinish() {
-
   }
 
+  //************* refresh UI *************
   refresh(): void {
     window.location.reload();
-}
+  }
 
 }

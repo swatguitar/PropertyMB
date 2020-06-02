@@ -57,9 +57,9 @@
                 </div>
                 <div class="form-group ">
                   <label for="inputCity">ที่อยู่</label>
-                  <input type="text" class="form-control" (change)="onGetUpdateLu($event.target.value)"
+                  <textarea rows="3" class="form-control" (change)="onGetUpdateLu($event.target.value)"
                     formControlName="LocationU" value="{{details?.LocationU}}" id="inputCity"
-                    style="border-radius: 30px 30px 30px 30px;">
+                    style="border-radius: 30px 30px 30px 30px;"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="inputZip">เบอร์โทรศัพท์</label>
@@ -97,7 +97,7 @@
           <div class="col-md-4">
             <h5>รูปโปรไฟล์</h5>
             <div class="card">
-              <img src="http://www.landvist.xyz/images/{{Profileimage}}" class="card-img-top" width="260px"
+              <img src="{{Profileimage}}" class="card-img-top" width="260px"
                 height="260px">
               <div class="card-body">
                 <div class="btn-group">

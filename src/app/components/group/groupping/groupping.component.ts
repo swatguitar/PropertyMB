@@ -31,9 +31,17 @@ export class GrouppingComponent implements OnInit {
   temp:any[] ;
   groupAll:any[]
   constructor(public auth: AuthenticationService, private router: Router,private http: HttpClient, public sanitizer: DomSanitizer,) { }
- 
+
   ngOnInit() {
     this.GDetails = []
+    this.getGroupDetailMember()
+    this.getGroup()
+  }
+  toggleClass(){
+    $('#sidebar').toggleClass('active');
+  }
+   //************* get group by owner id *************
+   getGroup() {
     this.auth.getgroup().subscribe((group) => {
       this.Groups = group;
     },
@@ -42,34 +50,19 @@ export class GrouppingComponent implements OnInit {
 
       }
     )
-    this.auth.getgroupM().subscribe((group) => {
-      this.GroupMs = group;
+  }
+
+//************* get group that you are member  *************
+  getGroupDetailMember() {
+    this.auth.getGroupDetailMember().subscribe((group) => {
+      this.GDetails = group;
+      console.log(this.GDetails)
     },
       err => {
         console.error(err)
 
       }
     )
-
-    setTimeout(() => {
-      this.auth.getgroupAll().subscribe((group) => {
-        this.groupAll = group
-        for (var i = 0; i < this.GroupMs.length; i++) {
-    
-         this.temp = group.filter(article => {
-       
-            return article.ID_Group == this.GroupMs[i].ID_Group
-          });
-          this.GDetails = this.GDetails.concat(this.temp);
-          //this.GDetails.push([this.temp ]);
-      }
-      },
-        err => {
-          console.error(err)
-    
-        }
-      )
-    }, 1000);
   }
 
 

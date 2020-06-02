@@ -1,7 +1,7 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from 'googlemaps';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { AuthenticationService, ID, TokenPayload, locationsDetails,PropertyH, PropertyDetails } from '../../../authentication.service'
+import { AuthenticationService, ID, TokenPayload, locationsDetails, PropertyH, PropertyDetails, Location,UserType } from '../../../authentication.service'
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { repeat } from 'rxjs/operators';
@@ -35,11 +35,11 @@ export class LandsupdateComponent implements OnInit {
   IDcontact3: string
   IDcon: any;
   ContactID: string;
-  UpdatedS: boolean = false; 
-  UpdatedC: boolean = false; 
-  UpdatedM: boolean = false; 
-  UpdatedMB: boolean = false; 
-  Updated1: boolean = false; 
+  UpdatedS: boolean = false;
+  UpdatedC: boolean = false;
+  UpdatedM: boolean = false;
+  UpdatedMB: boolean = false;
+  Updated1: boolean = false;
   Updated2: boolean = false;
   Updated3: boolean = false;
   Updated4: boolean = false;
@@ -85,6 +85,11 @@ export class LandsupdateComponent implements OnInit {
   SellP: string;
   cal: any;
   UpdatedZ: boolean;
+  zipcodeOld: any[];
+  showSpinner: boolean;
+  SelectContact: boolean  = true;
+  EditC: boolean  = false;
+  reset: boolean  = false; 
 
 
   constructor(private auth: AuthenticationService, private router: Router, private mapsAPILoader: MapsAPILoader,
@@ -154,13 +159,13 @@ export class LandsupdateComponent implements OnInit {
   longitude: number;
   NextstepCon: boolean = false
   address: string;
-  province: locationsDetails;
+  province: any;
   Lprovince: any[];
   Ldistrict: any[];
   Lamphur: any[];
   amphur: any[];
   PA: locationsDetails;
-  district: locationsDetails;
+  district: any;
   zipcode: any[];
   private geoCoder;
   createID: string
@@ -183,7 +188,7 @@ export class LandsupdateComponent implements OnInit {
   conLine1: string
   conLine2: string
   conLine3: string
-  allowedit: string
+  allowedit: boolean  = false
   allowedit2: string
   allowedit3: string
   con1selected: string = "false"
@@ -234,7 +239,7 @@ export class LandsupdateComponent implements OnInit {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -334,136 +339,77 @@ export class LandsupdateComponent implements OnInit {
     ContactEmail: '',
     ContactLine: '',
     ContactPhone: '',
-
-
+  }
+  Location: Location = {
+    PROVINCE_ID: null,
+    AMPHUR_ID: null,
+    DISTRICT_ID: null,
+    ZIPCODE_ID: null
+  }
+  UserType: UserType = {
+    ID_Property: '',
+    ID_Lands: '',
+    ID_Photo: '',
+    UserType: '',
+    LProvince: '',
+    PriceMax: null,
+    PriceMin: null
   }
   ID_user: string = (this.auth.getUserDetails().ID_User).toString()
 
-  ngOnInit() {
-    setTimeout(() => {
-      
-      //load Places Autocomplete
-     this.mapsAPILoader.load().then(() => {
-       this.setCurrentLocation();
-       this.geoCoder = new google.maps.Geocoder;
- 
-       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-         types: [], componentRestrictions: { 'country': 'TH' }
-       });
-       autocomplete.addListener("place_changed", () => {
-         this.ngZone.run(() => {
-           //get the place result
-           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
- 
-           //verify result
-           if (place.geometry === undefined || place.geometry === null) {
-             return;
-           }
- 
-           //set latitude, longitude and zoom
-           this.latitude = place.geometry.location.lat();
-           this.longitude = place.geometry.location.lng();
-           this.zoom = 15;
-         });
-       });
-     });
-     }, 1000);
-     
-     let params = this.route.snapshot.paramMap;
-     if (params.has('id')) {
-       this.postID = params.get('id');
-     }
-     this.SelectID.ID_Lands = this.postID;
-     console.log( this.SelectID.ID_Lands)
-       this.auth.landUpdate(this.SelectID).subscribe((land) => {
-         this.results = land
-         this.details = land
-     
-   
-       },
-         err => {
-           console.error(err)
-         })
- 
-     //-------------------------------------------------
-     var year = new Date().getFullYear();
-     var yearth = year + 543
-     var range = [];
-     range.push(yearth);
-     for (var i = 1; i < 100; i++) {
-       range.push(yearth - i);
- 
-     }
-     this.years = range;
- 
-     //------------getlocation-------
-     this.auth.getProvine().subscribe((province) => {
-       this.province = province;
-     },
-       err => {
-         console.error(err)
- 
-       }
-     )
-     setTimeout(() => { 
-       this.results.forEach((element, index) => {
-         this.cal = element.PriceWA
-        this.credentials.SellPrice = element.SellPrice
-        this.credentials.LandR = element.LandR
-        this.credentials.LandG = element.LandG
-        this.credentials.LandWA = element.LandWA
+  get f() { return this.EdithouseForm.controls; }
+  get E() { return this.EditContactForm.controls; }
+  get Et() { return this.EditContact2Form.controls; }
+  get Eo() { return this.EditContact3Form.controls; }
+  get C() { return this.CreateContactForm.controls; }
 
-        console.log( this.cal)
-      });
-     
-          //<<<---    using ()=> syntax
-       this.onForeach()
-       this.onSetcontact()
-     }, 3000);
-     setTimeout(() => {    //<<<---    using ()=> syntax
-       this.recenter() 
-     }, 5000);
-     //-------- get contact ----
-     this.auth.getContact().subscribe((contactUser) => {
-       this.contactUser = contactUser;
-     },
-       err => {
-         console.error(err)
-       }
-     )
+  
+  onGo() {
+    this.submitted = true;
+    if (this.EdithouseForm.invalid) {
+      alert(JSON.stringify("กรุณากรอกข้อมูล"))
+      return;
+    }
+    if (this.SelectContact == false && this.Name1 != '') {//***************************************IF contact 1 not select */
+      this.submitted = true;
+      if (this.EditContactForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
+        return;
+      }
+      this.setDataContactA()
+      this.CheckDuplicateIDContact()
+      this.credentials.ContactU = this.credentials.ID_Contact
+    } else {//***************************************IF contact 1/4 not select */
+      if (this.EdithouseForm.invalid) {
+        alert(JSON.stringify("กรุณากรอกข้อมูล"))
+        return;
+      }
+      this.onUpdate()
+    }
   }
 
+   //************* Check "," and number *************
   CommaFormattedS(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
     if (event.target.value) {
       event.target.value = event.target.value.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
   CommaFormattedB(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
     if (event.target.value) {
       event.target.value = event.target.value.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
   CommaFormattedM(event) {
-    // skip for arrow keys
     if (event.which >= 37 && event.which <= 40) return;
-
-    // format number
     if (event.target.value) {
       event.target.value = event.target.value.replace(/\D/g, "")
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   }
-
   numberCheck(args) {
     if (args.key === 'e' || args.key === '+' || args.key === '-') {
       return false;
@@ -472,391 +418,97 @@ export class LandsupdateComponent implements OnInit {
     }
   }
 
-  onGo() {
-
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.EdithouseForm.invalid) {
-      //console.log(this.addlandForm)
-      alert(JSON.stringify("กรุณากรอกข้อมูล"))
-      return;
-    }
-    if (this.con1selected == 'false'  && this.Name1 != '' && this.EDITED == true) {
-      this.submitted = true;
-      if (this.EditContactForm.invalid) {
-        alert(JSON.stringify("กรุณากรอกข้อมูลติดต่อ"))
-        return;
-      }
-      this.credentials.ContactName = this.conName1
-      this.credentials.ContactPhone = this.conPhone1
-      this.credentials.ContactEmail = this.conEmail1
-      this.credentials.ContactLine = this.conLine1
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          this.onCheckContact()
-        });
-        while (this.credentials.ContactU == '') {
-          this.credentials.ContactU = this.credentials.ID_Contact
-          this.onCheckContact()
-         
-        }
-        //console.log(this.credentials.ContactU)
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-
-          },
-          err => {
-            console.error(err)
-          }
-        )
-        if (this.con2selected == 'false' && this.Name2 != '' && this.EDITED == true) {
-          this.credentials.ContactName = this.conName2
-          this.credentials.ContactPhone = this.conPhone2
-          this.credentials.ContactEmail = this.conEmail2
-          this.credentials.ContactLine = this.conLine2
-          this.onRandomcontact()
-          this.auth.getContact().subscribe((con) => {
-            this.contactUser = con
-            this.contactUser.filter(article => {
-              this.IDcon = article.ID_Contact
-              this.onCheckContact()
-            });
-            while (this.credentials.ContactUt == '') {
-              this.credentials.ContactUt = this.credentials.ID_Contact
-              this.onCheckContact()
-              //console.log(this.credentials.ContactU+"-***")
-            }
-            //console.log(this.credentials.ContactUt+"two")
-            this.auth.addcontact(this.credentials).subscribe(
-              () => {
-              },
-              err => {
-                console.error(err)
-              }
-            )
-            if (this.con3selected == 'false' && this.Name3 != '' && this.EDITED == true) {
-              this.credentials.ContactName = this.conName3
-              this.credentials.ContactPhone = this.conPhone3
-              this.credentials.ContactEmail = this.conEmail3
-              this.credentials.ContactLine = this.conLine3
-              this.onRandomcontact()
-              this.auth.getContact().subscribe((con) => {
-                this.contactUser = con
-                this.contactUser.filter(article => {
-                  this.IDcon = article.ID_Contact
-                  this.onCheckContact()
-                });
-                while (this.credentials.ContactUo == '') {
-                  this.credentials.ContactUo = this.credentials.ID_Contact
-                  this.onCheckContact()
-                  //console.log(this.credentials.ContactU+"-***")
-                }
-
-               // console.log(this.credentials.ContactUo+"three")
-                 this.auth.addcontact(this.credentials).subscribe(
-                   () => {
-                     this.onUpdate()
-                   },
-                   err => {
-                     console.error(err)
-                   }
-                 )
-              },
-                err => {
-                  console.error(err)
-                }
-              )
-
-            } else if (this.con2selected == 'false' && this.Name3 == '' && this.EDITED == true)  {
-              this.credentials.ContactUo = this.credentials.ID_Contact
-              // stop here if form is invalid
-              if (this.EdithouseForm.invalid) {
-                return;
-              }
-              this.onUpdate()
-            }else {
-              // stop here if form is invalid
-               if (this.EdithouseForm.invalid) {
-                 console.log(this.EdithouseForm)
-                 return;
-               }
-              this.onUpdate()
-            }
-          },
-            err => {
-              console.error(err)
-            }
-          )
-
-
-        } else if (this.con2selected == 'false' && this.Name2 == ''  && this.EDITED == true)  {
-          this.credentials.ContactUt = this.credentials.ID_Contact
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             return;
-           }
-          this.onUpdate()
-        }else {
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             //console.log(this.addlandForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
-          this.onUpdate()
-        }
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-
-    } else if (this.con2selected == 'false' && this.Name2 != ''  && this.EDITED == true) {
-      this.credentials.ContactName = this.conName2
-      this.credentials.ContactPhone = this.conPhone2
-      this.credentials.ContactEmail = this.conEmail2
-      this.credentials.ContactLine = this.conLine2
-
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          this.onCheckContact()
-          //console.log(this.IDcon + "----------------data")
-        });
-        while (this.credentials.ContactUt == '') {
-          this.credentials.ContactUt = this.credentials.ID_Contact
-          this.onCheckContact()
-          //console.log(this.credentials.ContactU+"-***")
-        }
-        //console.log(this.credentials.ContactUt + " two R")
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-          },
-          err => {
-            console.error(err)
-          }
-        )
-        if (this.con3selected == 'false' && this.Name3 != ''  && this.EDITED == true) {
-          this.credentials.ContactName = this.conName3
-          this.credentials.ContactPhone = this.conPhone3
-          this.credentials.ContactEmail = this.conEmail3
-          this.credentials.ContactLine = this.conLine3
-          //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
-          this.onRandomcontact()
-          this.auth.getContact().subscribe((con) => {
-            this.contactUser = con
-            this.contactUser.filter(article => {
-              this.IDcon = article.ID_Contact
-              //console.log(this.IDcon + "----------------data")
-              this.onCheckContact()
-            });
-            while (this.credentials.ContactUo == '') {
-              this.credentials.ContactUo = this.credentials.ID_Contact
-              this.onCheckContact()
-              //console.log(this.credentials.ContactU+"-***")
-            }
-            //console.log(this.credentials.ContactUo + " three")
-            this.auth.addcontact(this.credentials).subscribe(
-              () => {
-                this.onUpdate()
-
-              },
-              err => {
-                console.error(err)
-              }
-            )
-          },
-            err => {
-              console.error(err)
-            }
-          )
-
-        } else if (this.con2selected == 'false' && this.Name3 == ''  && this.EDITED == true)  {
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             //console.log(this.addlandForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
-          this.onUpdate()
-        }else {
-          // stop here if form is invalid
-           if (this.EdithouseForm.invalid) {
-             console.log(this.EdithouseForm)
-             alert(JSON.stringify("กรุณากรอกข้อมูล"))
-             return;
-           }
-          this.onUpdate()
-       
-        }
-        
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-
-    } else if (this.con3selected == 'false' && this.Name3 != ''  && this.EDITED == true) {
-      this.credentials.ContactName = this.conName3
-      this.credentials.ContactPhone = this.conPhone3
-      this.credentials.ContactEmail = this.conEmail3
-      this.credentials.ContactLine = this.conLine3
-      //console.log(this.credentials.ContactName + "" + this.credentials.ContactPhone + "" + this.credentials.ContactEmail + "" + this.credentials.ContactLine + " three")
-      this.onRandomcontact()
-      this.auth.getContact().subscribe((con) => {
-        this.contactUser = con
-        this.contactUser.filter(article => {
-          this.IDcon = article.ID_Contact
-          //console.log(this.IDcon + "----------------data")
-          this.onCheckContact()
-        });
-        while (this.credentials.ContactUo == '') {
-          this.credentials.ContactUo = this.credentials.ID_Contact
-          this.onCheckContact()
-        }
-        //console.log(this.credentials.ContactUo + " three")
-
-        this.auth.addcontact(this.credentials).subscribe(
-          () => {
-            this.onUpdate()
-        
-          },
-          err => {
-            console.error(err)
-          }
-        )
-      },
-        err => {
-          console.error(err)
-        }
-      )
-
-    } else {
-      // stop here if form is invalid
-       if (this.EdithouseForm.invalid) {
-         //console.log(this.addlandForm)
-         alert(JSON.stringify("กรุณากรอกข้อมูล"))
-         return;
-       }
-      this.onUpdate()
+  ngOnInit() {
     
+    this.zipcodeOld = []
+    this.showSpinner = true
+    //************* แบ่งหน้า ************* 
+    let params = this.route.snapshot.paramMap;
+    if (params.has('id')) {
+      this.postID = params.get('id');
     }
-  }
-   //*****chack ID Contact */
-   onRandomcontact() {
-    var max = 9;
-    var min = 0;
-    var r = Math.floor(Math.random() * (max - min + 1) + min);
-    var x = Math.floor(Math.random() * (max - min + 1) + min);
-    var y = Math.floor(Math.random() * (max - min + 1) + min);
-    var z = Math.floor(Math.random() * (max - min + 1) + min);
-    this.ContactID = this.ID_user + r + x + y + z;
-
+    this.SelectID.ID_Lands = this.postID;
+    console.log(this.SelectID.ID_Lands)
+    this.GetProvince()
+    this.GetLand()
+    this.LoadMap()
   }
 
-  loopChackcontact() {
-    this.onRandomcontact()
-    this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
+  //************* Set Map from google *************
+  LoadMap() {
+    //load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      this.geoCoder = new google.maps.Geocoder;
 
-      this.contactUser.filter(article => {
-        this.IDcon = article.ID_Contact
-        // console.log(this.IDcon + "-------Contact222 ")
-        this.onCheckContact()
+      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+        types: [], componentRestrictions: { 'country': 'TH' }
       });
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          //verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          //set latitude, longitude and zoom
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+          this.zoom = 15;
+        });
+      });
+    });
+  }
+
+  //************* Get Land by id Land *************
+  GetLand(){
+    this.auth.landUpdate(this.SelectID).subscribe((land) => {
+      if(land){
+        this.results = land
+        this.details = land
+        this.SelectID.ContactU = land[0].ContactU
+        this.SelectID.ContactUt = land[0].ContactUt
+        this.SelectID.ContactUo = land[0].ContactUo
+        this.conS1 = land[0].ContactS
+        this.conS2 = land[0].ContactSt
+        this.conS3 = land[0].ContactSo
+        this.latitude = Number(land[0].Latitude)
+        this.longitude = Number(land[0].Longitude)
+        this.cal = land[0].PriceWA
+        this.zoom = 15
+        this.zipcodeOld.push(land[0].LZipCode)
+        this.credentials.SellPrice = land[0].SellPrice
+        this.credentials.LandR = land[0].LandR
+        this.credentials.LandG = land[0].LandG
+        this.credentials.LandWA = land[0].LandWA
+        this.getContact()
+        this.showSpinner = false
+      }
+    },
+      err => {
+        console.error(err)
+      })
+  }
+
+  //************* get contact *************
+  getContact() {
+    this.selectContact = []
+    this.auth.getContactDetail(this.SelectID).subscribe((contactUser) => {
+      if (contactUser.length != 0) {
+        this.contactUser = contactUser;
+        this.selectContact.push(this.contactUser[0])
+        this.SetContactA()
+      }
     },
       err => {
         console.error(err)
       }
     )
   }
-  onCheckContact() {
-    //console.log(this.ContactID + "FIrst ")
-    while (this.IDcon == this.ContactID) {
-      this.loopChackcontact()
-    }
-    this.credentials.ID_Contact = this.ContactID
-    console.log(this.credentials.ID_Contact)
-  }
 
-  get f() { return this.EdithouseForm.controls; }
-  get E() { return this.EditContactForm.controls; }
-  get Et() { return this.EditContact2Form.controls; }
-  get Eo() { return this.EditContact3Form.controls; }
-  get C() { return this.CreateContactForm.controls; }
-
-  recenter(){
-    this.latitude = 13.7348534;
-    this.longitude = 100.4997134999999;
-
-    setTimeout(()=>{
-      
-        this.latitude = Number(this.latnew)
-        this.longitude  = Number(this.lonnew)
-       this.zoom = 15
-       this.selectContact.forEach((element, index) => {
-        this.Name1 = element.Name
-        this.conEmail1 = element.Email
-        this.conPhone1 = element.Phone
-        this.conLine1 = element.Line
-        this.conID1 = element.ID_Contact
-      });
-      this.selectContact2.forEach((element, index) => {
-        this.Name2 = element.Name
-        this.conEmail2 = element.Email
-        this.conPhone2 = element.Phone
-        this.conLine2 = element.Line
-        this.conID2 = element.ID_Contact
-      });
-      this.selectContact3.forEach((element, index) => {
-        this.Name3 = element.Name
-        this.conEmail3 = element.Email
-        this.conPhone3 = element.Phone
-        this.conLine3 = element.Line
-        this.conID3 = element.ID_Contact
-      });
-      
-    },3000);
-    }
-  
-  onForeach() {
-    this.results.forEach((element, index) => {
-      this.latnew = element.Latitude
-      this.lonnew = element.Longitude
-      this.lat = element.Latitude
-      this.lng = element.Longitude
-      this.conS1 = element.ContactS
-      this.conS2 = element.ContactSt
-      this.conS3 = element.ContactSo
-      this.IDcontact1 = element.ContactU
-      this.IDcontact2 = element.ContactUt
-      this.IDcontact3 = element.ContactUo
-      console.log(this.conS1)
-    });
-  
-
-  }
-  onSetcontact() {
-    this.selectContact = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact1;
-    });
-    this.selectContact2 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact2;
-    });
-    this.selectContact3 = this.contactUser.filter(article => {
-      return article.ID_Contact == this.IDcontact3;
-    });
-  }
-  // Get Current Location Coordinates
+  //************* Get Current Location Coordinates *************
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -867,15 +519,12 @@ export class LandsupdateComponent implements OnInit {
       });
     }
   }
-
-
   markerDragEnd($event: MouseEvent) {
     console.log($event);
     this.latitude = $event.coords.lat;
     this.longitude = $event.coords.lng;
     this.getAddress(this.latitude, this.longitude);
   }
-
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
       console.log(results);
@@ -890,102 +539,97 @@ export class LandsupdateComponent implements OnInit {
       } else {
         console.log('Geocoder failed due to: ' + status);
       }
-
     });
-
   }
+
+  //************* get province *************
+  GetProvince() {
+    this.auth.getProvine().subscribe((province) => {
+      if (province) {
+        this.province = province;
+        this.province.sort((a, b) => a.PROVINCE_NAME.localeCompare(b.PROVINCE_NAME));
+      }
+    },
+      err => {
+        console.error(err)
+      }
+    )
+  }
+
+  //************* get ADDRESS  *************
+  PROVINCE_NAME: string
   selectprovince(data) {
     this.credentials.LProvince = data.PROVINCE_NAME
-    this.auth.getAmphur().subscribe((amphur) => {
-      // กรณี resuponse success
-      this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == data.PROVINCE_ID;
-      });
+    this.Location.PROVINCE_ID = data.PROVINCE_ID
+    this.auth.getAmphur(this.Location).subscribe((amphur) => {
+      this.amphur = amphur
+      this.amphur.sort((a, b) => a.AMPHUR_NAME.localeCompare(b.AMPHUR_NAME));
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
-
   selectamphur(data) {
     this.credentials.LAmphur = data.AMPHUR_NAME
-    this.auth.getDistrict().subscribe((district) => {
-      // กรณี resuponse success
-      this.district = district.filter(article => {
-        return article.AMPHUR_ID == data.AMPHUR_ID;
-      });
+    this.Location.AMPHUR_ID = data.AMPHUR_ID
+    this.auth.getDistrict(this.Location).subscribe((district) => {
+      this.district = district
+      this.district.sort((a, b) => a.DISTRICT_NAME.localeCompare(b.DISTRICT_NAME));
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
   selectdistrict(data) {
     this.credentials.LDistrict = data.DISTRICT_NAME
-    this.auth.getZipcode().subscribe((zipcode) => {
-      // กรณี resuponse success
-      this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == data.DISTRICT_ID;
-      });
-
+    this.Location.DISTRICT_ID = data.DISTRICT_ID
+    this.UpdatedZ = true
+    this.auth.getZipcode(this.Location).subscribe((zipcode) => {
+      this.zipcode = zipcode
     },
       err => {
         console.error(err)
-      }
-    )
-
+      })
   }
   getZipCode() {
     this.zipcode.forEach((element, index) => {
       this.credentials.LZipCode = element.ZIPCODE
     });
-
   }
-  onResiveContact() {
-    //-------- get contact ----
+
+  //************* get contact that owner *************
+  GetContact() {
     this.auth.getContact().subscribe((contactUser) => {
-      this.contactUser = contactUser;
+      if (contactUser) {
+        this.contactUser = contactUser;
+        console.log(contactUser)
+      }
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
   onEditContact1() {
+    this.setDataContactA()
+    this.auth.EditContact(this.credentials).subscribe((result) => {
+      if(!result.error){
+        alert(JSON.stringify(result))
+        this.GetContact()
+      }else{
+        alert(JSON.stringify(result.error))
+      } 
+    },
+      err => {
+        console.error(err)
+        alert(JSON.stringify(err.error.error))
+      }
+    )
+  }
 
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.onResiveContact()
-        console.error(err)
-      }
-    )
-  }
-  onEditContact2() {
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.onResiveContact()
-        console.error(err)
-      }
-    )
-  }
-  onEditContact3() {
-    this.auth.EditContact(this.credentials).subscribe(() => {
-    },
-      err => {
-        alert(JSON.stringify("บันทึกสำเร็จ"))
-        this.onResiveContact()
-        console.error(err)
-      }
-    )
-  }
 
   onGetContact(item) {
-    this.con1selected = 'true'
+    this.EditC = true
+    this.SelectContact = true
     console.log(this.credentials.ContactName)
     this.conID1 = item.ID_Contact
     this.conName1 = item.Name
@@ -993,45 +637,45 @@ export class LandsupdateComponent implements OnInit {
     this.conPhone1 = item.Phone
     this.conLine1 = item.Line
     this.credentials.ContactU = item.ID_Contact
-  }
-  onGetContact2(item) {
-    this.con2selected = 'true'
-    console.log(this.credentials.ContactName)
-    this.conID2 = item.ID_Contact
-    this.conName2 = item.Name
-    this.conEmail2 = item.Email
-    this.conPhone2 = item.Phone
-    this.conLine2 = item.Line
     this.credentials.ContactUt = item.ID_Contact
-  }
-  onGetContact3(item) {
-    this.con3selected = 'true'
-    console.log(this.credentials.ContactName)
-    this.conID3 = item.ID_Contact
-    this.conName3 = item.Name
-    this.conEmail3 = item.Email
-    this.conPhone3 = item.Phone
-    this.conLine3 = item.Line
     this.credentials.ContactUo = item.ID_Contact
   }
 
   onFocused(e) {
     // do something when input is focused
   }
+   //************* check edit button do this *************
   onEditContactID1(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName1
-    this.credentials.ContactPhone = this.conPhone1
-    this.credentials.ContactEmail = this.conEmail1
-    this.credentials.ContactLine = this.conLine1
+    console.log(this.allowedit)
+    if(this.allowedit == true){
+      this.EditC = false
+      this.reset = false
+      this.credentials.ID_Contact = value
+    }else{
+      this.EditC = true
+      this.reset = true
+    }
   }
+   //************* change name do this  *************
   onEditContactName1(value: string) {
-    this.EDITED = true
-   console.log(this.EDITED )
-    this.conName1 = value
+    
+    if(this.allowedit == false){
+      this.EditC = false
+      this.SelectContact = false
+      this.conPhone1 = null
+      this.conEmail1 = null
+      this.conLine1 = null
+      this.conName1 = value
+    }else{
+      this.conName1 = value
+      this.SelectContact = true
+      this.EditC = false
+      console.log("SelectContactB :"+this.SelectContact)
+      console.log("alloweditB :"+this.allowedit)
+    }
+    
   }
   onEditContactLine1(value) {
-
     this.conLine1 = value
     //console.log(this.conLine1)
   }
@@ -1043,48 +687,74 @@ export class LandsupdateComponent implements OnInit {
     this.conEmail1 = value
     //console.log(this.conEmail1)
   }
-
-  onEditContactID2(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName2
-    this.credentials.ContactPhone = this.conPhone2
-    this.credentials.ContactEmail = this.conEmail2
-    this.credentials.ContactLine = this.conLine2
-  }
-  onEditContactName2(value: string) {
-    this.EDITED = true
-    this.conName2 = value
-  }
-  onEditContactLine2(value) {
-    this.conLine2 = value
-  }
-  onEditContactPhone2(value) {
-    this.conPhone2 = value
-  }
-  onEditContactEmail2(value) {
-    this.conEmail2 = value
+ 
+  //************* set data contact  1 *************
+  setDataContactA() {
+    this.credentials.ContactName = this.conName1
+    this.credentials.ContactPhone = this.conPhone1
+    this.credentials.ContactEmail = this.conEmail1
+    this.credentials.ContactLine = this.conLine1
   }
 
+  //************* set data contact 1 To Display  *************
+  SetContactA() {
+    console.log(this.selectContact)
+    this.selectContact.forEach((element, index) => {
+      this.Name1 = element.Name
+      this.conEmail1 = element.Email
+      this.conPhone1 = element.Phone
+      this.conLine1 = element.Line
+      this.conID1 = element.ID_Contact
+    });
+  }
 
-  onEditContactID3(value) {
-    this.credentials.ID_Contact = value
-    this.credentials.ContactName = this.conName3
-    this.credentials.ContactPhone = this.conPhone3
-    this.credentials.ContactEmail = this.conEmail3
-    this.credentials.ContactLine = this.conLine3
+  //************* Random ID contact *************
+  onRandomcontact() {
+    var max = 9;
+    var min = 0;
+    var r = Math.floor(Math.random() * (max - min + 1) + min);
+    var x = Math.floor(Math.random() * (max - min + 1) + min);
+    var y = Math.floor(Math.random() * (max - min + 1) + min);
+    var z = Math.floor(Math.random() * (max - min + 1) + min);
+    this.SelectID.ContactU = this.ID_user + r + x + y + z;
+
   }
-  onEditContactName3(value: string) {
-    this.EDITED = true
-    this.conName3 = value
+
+  //************* Check Duplicate ID contact *************
+  CheckDuplicateIDContact() {
+    this.onRandomcontact()
+    this.auth.getContactDuplicate(this.SelectID).subscribe((contact) => {
+      if (contact.length != 0) {
+        this.onRandomcontact()
+        this.CheckDuplicateIDContact()
+      }
+      else {
+        this.credentials.ID_Contact = this.SelectID.ContactU
+        if (this.credentials.ID_Contact != '') {
+          this.CreateContact()
+        }
+      }
+    },
+      err => {
+        console.error(err)
+      })
   }
-  onEditContactLine3(value) {
-    this.conLine3 = value
-  }
-  onEditContactPhone3(value) {
-    this.conPhone3 = value
-  }
-  onEditContactEmail3(value) {
-    this.conEmail3 = value
+
+  //************* CreateContact *************
+  CreateContact() {
+    this.auth.addcontact(this.credentials).subscribe(
+      (result) => {
+        if(result){
+          this.credentials.ContactU = this.credentials.ID_Contact
+          this.credentials.ContactUt = this.credentials.ID_Contact
+          this.credentials.ContactUo = this.credentials.ID_Contact
+          this.onUpdate()
+        }
+      },
+      err => {
+        console.error(err)
+      }
+    )
   }
 
   onGetAnnounceTH(value) {
@@ -1100,7 +770,7 @@ export class LandsupdateComponent implements OnInit {
     this.credentials.Deed = value
   }
   onGetSell(value) {
-  this.UpdatedS = true;
+    this.UpdatedS = true;
     this.credentials.SellPrice = value.replace(/,/g, "");
     this.calPWA()
   }
@@ -1116,14 +786,26 @@ export class LandsupdateComponent implements OnInit {
     this.UpdatedM = true;
     this.credentials.MarketPrice = value
   }
+
+  //************* Calculate PriceWA *************
   calPWA() {
-    //---------------calulate p/wa-----
-    this.SellP = this.credentials.SellPrice
-   
   
+    if(this.credentials.SellPrice ==""){
+      this.credentials.SellPrice ="0"
+    }
+    if(this.credentials.LandR ==""){
+      this.credentials.LandR ="0"
+    }
+    if(this.credentials.LandG ==""){
+      this.credentials.LandG ="0"
+    }
+    if(this.credentials.LandWA ==""){
+      this.credentials.LandWA ="0"
+    }
+    this.SellP = this.credentials.SellPrice
     this.cal = parseInt(this.SellP) / ((parseInt(this.credentials.LandR) * 400) + (parseInt(this.credentials.LandG) * 100) + parseInt(this.credentials.LandWA));
     this.credentials.PriceWA = this.cal.toString()
-    console.log( this.cal)
+
   }
 
   onGetAsseStatus(value) {
@@ -1133,62 +815,60 @@ export class LandsupdateComponent implements OnInit {
   LandAge(value) {
     this.credentials.LandAge = value
   }
- 
- 
+
   Blind(value) {
     this.Updated37 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Blind = 1
-    }else{
+    } else {
       this.credentials.Blind = 0
     }
   }
   Neareducation(value) {
     this.Updated38 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Neareducation = 1
-    }else{
+    } else {
       this.credentials.Neareducation = 0
     }
   }
   Cenmarket(value) {
     this.Updated39 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Cenmarket = 1
-    }else{
+    } else {
       this.credentials.Cenmarket = 0
     }
   }
   Market(value) {
     this.Updated40 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Market = 1
-    }else{
+    } else {
       this.credentials.Market = 0
     }
   }
   River(value) {
     this.Updated41 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.River = 1
-    }else{
+    } else {
       this.credentials.River = 0
     }
   }
   Mainroad(value) {
     this.Updated42 = true
-    if(value == true){
+    if (value == true) {
       this.credentials.Mainroad = 1
-    }else{
+    } else {
       this.credentials.Mainroad = 0
-    } 
+    }
   }
   Insoi(value) {
     this.Updated43 = true
-    //-----------
-    if(value == true){
+    if (value == true) {
       this.credentials.Insoi = 1
-    }else{
+    } else {
       this.credentials.Insoi = 0
     }
   }
@@ -1207,15 +887,15 @@ export class LandsupdateComponent implements OnInit {
     this.calPWA()
   }
   onGetLandG(value) {
-    
+
     this.credentials.LandG = value
     this.calPWA()
   }
-  CodeProperty(value){
+  CodeProperty(value) {
     this.credentials.CodeProperty = value
   }
   onGetLandWA(value) {
-    
+
     this.credentials.LandWA = value
     this.calPWA()
   }
@@ -1237,227 +917,242 @@ export class LandsupdateComponent implements OnInit {
   onGetLocation(value) {
     this.credentials.Location = value
   }
+  onGetStatusCon1(value) {
+    this.credentials.ContactS = value
+  }
+  onGetStatusCon2(value) {
+    this.credentials.ContactSt = value
+  }
+  onGetStatusCon3(value) {
+    this.credentials.ContactSo = value
+  }
 
-  onUpdate(){
+  onUpdate() {
     this.submitted = true;
-
-    // stop here if form is invalid
     if (this.EdithouseForm.invalid) {
       alert(JSON.stringify("กรุณากรอกข้อมูล"))
       return;
     }
-    if(this.credentials.ColorType == ''){
+    if (this.credentials.ColorType == '') {
       this.credentials.ColorType = this.details.ColorType
     }
-    if(this.credentials.AnnounceTH == ''){
+    if (this.credentials.AnnounceTH == '') {
       this.credentials.AnnounceTH = this.details.AnnounceTH
     }
-    if(this.credentials.CodeDeed == ''){
+    if (this.credentials.CodeDeed == '') {
       this.credentials.CodeDeed = this.details.CodeDeed
     }
-    if(this.credentials.PriceWA == ''){
+    if (this.credentials.PriceWA == '') {
       this.credentials.PriceWA = this.details.PriceWA
     }
-    if(this.credentials.SellPrice == ''){
+    if (this.credentials.SellPrice == '') {
       this.credentials.SellPrice = this.details.SellPrice
     }
-    if(this.credentials.Costestimate == ''){
+    if (this.credentials.Costestimate == '') {
       this.credentials.Costestimate = this.details.Costestimate
     }
-    if(this.credentials.CostestimateB == ''){
+    if (this.credentials.CostestimateB == '') {
       this.credentials.CostestimateB = this.details.CostestimateB
     }
-    if(this.credentials.MarketPrice == ''){
+    if (this.credentials.MarketPrice == '') {
       this.credentials.MarketPrice = this.details.MarketPrice
     }
-    if(this.credentials.BathRoom == ''){
+    if (this.credentials.BathRoom == '') {
       this.credentials.BathRoom = this.details.BathRoom
     }
-    if(this.credentials.BedRoom == ''){
+    if (this.credentials.BedRoom == '') {
       this.credentials.BedRoom = this.details.BedRoom
     }
-    if(this.credentials.CarPark == ''){
+    if (this.credentials.CarPark == '') {
       this.credentials.CarPark = this.details.CarPark
     }
-    if(this.credentials.HouseArea == ''){
+    if (this.credentials.HouseArea == 0) {
       this.credentials.HouseArea = this.details.HouseArea
     }
-    if(this.credentials.Land == ''){
+    if (this.credentials.Land == '') {
       this.credentials.Land = this.details.Land
     }
-    if(this.credentials.LandR == ''){
+    if (this.credentials.LandR == '') {
       this.credentials.LandR = this.details.LandR
     }
-    if(this.credentials.LandG == ''){
+    if (this.credentials.LandG == '') {
       this.credentials.LandG = this.details.LandG
     }
-    if(this.credentials.LandWA == ''){
+    if (this.credentials.LandWA == '') {
       this.credentials.LandWA = this.details.LandWA
     }
-    if(this.credentials.LandU == ''){
+    if (this.credentials.LandU == '') {
       this.credentials.LandU = this.details.LandU
     }
-    if(this.credentials.Deed == ''){
+    if (this.credentials.Deed == '') {
       this.credentials.Deed = this.details.Deed
     }
-    if(this.credentials.CodeProperty == ''){
+    if (this.credentials.CodeProperty == '') {
       this.credentials.CodeProperty = this.details.CodeProperty
     }
-    if(this.credentials.HomeCondition == ''){
+    if (this.credentials.HomeCondition == '') {
       this.credentials.HomeCondition = this.details.HomeCondition
     }
-    if(this.credentials.BuildingAge == ''){
+    if (this.credentials.BuildingAge == '') {
       this.credentials.BuildingAge = this.details.BuildingAge
     }
-    if(this.credentials.BuildFD == ''){
+    if (this.credentials.BuildFD == '') {
       this.credentials.BuildFD = this.details.BuildFD
     }
-    if(this.credentials.BuildFM == ''){
+    if (this.credentials.BuildFM == '') {
       this.credentials.BuildFM = this.details.BuildFM
     }
-    if(this.credentials.BuildFY == ''){
+    if (this.credentials.BuildFY == '') {
       this.credentials.BuildFY = this.details.BuildFY
     }
-    if(this.credentials.Directions == ''){
+    if (this.credentials.Directions == '') {
       this.credentials.Directions = this.details.Directions
     }
-    if(this.credentials.RoadType == ''){
+    if (this.credentials.RoadType == '') {
       this.credentials.RoadType = this.details.RoadType
     }
-    if(this.credentials.RoadWide == ''){
+    if (this.credentials.RoadWide == '') {
       this.credentials.RoadWide = this.details.RoadWide
     }
-    if(this.credentials.GroundLevel == ''){
+    if (this.credentials.GroundLevel == '') {
       this.credentials.GroundLevel = this.details.GroundLevel
     }
-    if(this.credentials.GroundValue == ''){
+    if (this.credentials.GroundValue == '') {
       this.credentials.GroundValue = this.details.GroundValue
     }
-    if(this.credentials.MoreDetails == ''){
+    if (this.credentials.MoreDetails == '') {
       this.credentials.MoreDetails = this.details.MoreDetails
     }
-    if(this.credentials.Latitude == 0){
+    if (this.credentials.Latitude == 0) {
       this.credentials.Latitude = this.details.Latitude
     }
-    if(this.credentials.Longitude == 0){
+    if (this.credentials.Longitude == 0) {
       this.credentials.Longitude = this.details.Longitude
     }
-    if(this.credentials.AsseStatus == ''){
+    if (this.credentials.AsseStatus == '') {
       this.credentials.AsseStatus = this.details.AsseStatus
     }
-    if(this.credentials.ObservationPoint == ''){
+    if (this.credentials.ObservationPoint == '') {
       this.credentials.ObservationPoint = this.details.ObservationPoint
     }
-    if(this.credentials.Location == ''){
+    if (this.credentials.Location == '') {
       this.credentials.Location = this.details.Location
     }
-    if(this.credentials.LProvince == ''){
+    if (this.credentials.LProvince == '') {
       this.credentials.LProvince = this.details.LProvince
     }
-    if(this.credentials.LAmphur == ''){
+    if (this.credentials.LAmphur == '') {
       this.credentials.LAmphur = this.details.LAmphur
     }
-    if(this.credentials.LDistrict == ''){
+    if (this.credentials.LDistrict == '') {
       this.credentials.LDistrict = this.details.LDistrict
     }
-    if(this.credentials.LZipCode == ''){
+    if (this.credentials.LZipCode == '') {
       this.credentials.LZipCode = this.details.LZipCode
     }
-    if(this.credentials.ContactU == ''){
+    if (this.credentials.ContactU == '') {
       this.credentials.ContactU = this.details.ContactU
     }
-    if(this.credentials.ContactS == ''){
+    if (this.credentials.ContactS == '') {
       this.credentials.ContactS = this.details.ContactS
     }
-    if(this.credentials.ContactUo == ''){
+    if (this.credentials.ContactUo == '') {
       this.credentials.ContactUo = this.details.ContactUo
     }
-    if(this.credentials.ContactSo == ''){
+    if (this.credentials.ContactSo == '') {
       this.credentials.ContactSo = this.details.ContactSo
     }
-    if(this.credentials.ContactUt == ''){
+    if (this.credentials.ContactUt == '') {
       this.credentials.ContactUt = this.details.ContactUt
     }
-    if(this.credentials.ContactSt == ''){
+    if (this.credentials.ContactSt == '') {
       this.credentials.ContactSt = this.details.ContactSt
     }
-    if(this.credentials.ContactSt == ''){
+    if (this.credentials.ContactSt == '') {
       this.credentials.ContactSt = this.details.ContactSt
     }
-    if(this.credentials.Blind == 0 && this.Updated37 == false){
+    if (this.credentials.Blind == 0 && this.Updated37 == false) {
       this.credentials.Blind = this.details.Blind
     }
-    if(this.credentials.Neareducation == 0 && this.Updated38 == false){
+    if (this.credentials.Neareducation == 0 && this.Updated38 == false) {
       this.credentials.Neareducation = this.details.Neareducation
     }
-    if(this.credentials.Cenmarket == 0 && this.Updated39 == false){
+    if (this.credentials.Cenmarket == 0 && this.Updated39 == false) {
       this.credentials.Cenmarket = this.details.Cenmarket
     }
-    if(this.credentials.Market == 0 && this.Updated40 == false){
+    if (this.credentials.Market == 0 && this.Updated40 == false) {
       this.credentials.Market = this.details.Market
     }
-    if(this.credentials.River == 0 && this.Updated41 == false){
+    if (this.credentials.River == 0 && this.Updated41 == false) {
       this.credentials.River = this.details.River
     }
-    if(this.credentials.Mainroad == 0 && this.Updated42 == false){
+    if (this.credentials.Mainroad == 0 && this.Updated42 == false) {
       this.credentials.Mainroad = this.details.Mainroad
     }
-    if(this.credentials.Insoi == 0 && this.Updated43 == false){
+    if (this.credentials.Insoi == 0 && this.Updated43 == false) {
       this.credentials.Insoi = this.details.Insoi
     }
-    if(this.credentials.MFee == ''){
+    if (this.credentials.MFee == '') {
       this.credentials.MFee = this.details.MFee
     }
-    if(this.credentials.LandAge == ''){
+    if (this.credentials.LandAge == '') {
       this.credentials.LandAge = this.details.LandAge
     }
-    if(this.credentials.PPStatus == ''){
+    if (this.credentials.PPStatus == '') {
       this.credentials.PPStatus = this.details.PPStatus
     }
-    if(this.credentials.ImageEX == null){
+    if (this.credentials.ImageEX == null) {
       this.credentials.ImageEX = this.details.ImageEX
     }
-    if(this.credentials.Owner == ''){
+    if (this.credentials.Owner == '') {
       this.credentials.Owner = this.details.Owner
     }
+    this.credentials.ID_Lands = this.postID
+    if (this.UpdatedS == true) {
+      this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
+    }
+    if (this.UpdatedC == true) {
+      this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
+    }
+    if (this.UpdatedMB == true) {
+      this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
+    }
+    if (this.UpdatedM == true) {
+      this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
+    }
+    if (this.UpdatedZ == true) {
+      this.getZipCode()
+    }
 
-    
-    
-   
-  
-   this.credentials.ID_Lands = this.postID
-   if(this.UpdatedS == true){
-    this.credentials.SellPrice = this.credentials.SellPrice.replace(/,/g, "")
-   }
-   if(this.UpdatedC == true){
-    this.credentials.CostestimateB = this.credentials.CostestimateB.replace(/,/g, "")
-   } 
-   if(this.UpdatedMB == true){
-    this.credentials.Costestimate = this.credentials.Costestimate.replace(/,/g, "")
-   }
-   if(this.UpdatedM == true){
-    this.credentials.MarketPrice = this.credentials.MarketPrice.replace(/,/g, "")
-   }
-   if(this.UpdatedZ == true){
-    this.getZipCode()
-   }
-   
-  
+
     this.credentials.Latitude = this.latitude
     this.credentials.Longitude = this.longitude
+    this.UserType.ID_Lands = this.credentials.ID_Lands
     this.auth.EditLand(this.credentials).subscribe(
-      () => {
-
+      (result) => {
+        if (!result.erorr) {
+        alert(JSON.stringify(result))
+        this.Phyton()
+      } else {
+        alert(JSON.stringify(result.erorr))
+      }
       },
-      err => {
-   
-        alert(JSON.stringify("อัพเดทข้อมูล สำเร็จ"))
-        this.router.navigate(['/lands',this.credentials.ID_Lands]);
+      err => { 
         console.error(err)
-
       }
 
     )
   }
-
+  //************* Phyton *************
+  Phyton() {
+    console.log("************* Phyton *************")
+    this.auth.PythonLand(this.UserType).subscribe((result) => {
+      console.log(result)
+      console.log("************* Phyton  RESULT*************")
+      this.router.navigate(['/lands', this.credentials.ID_Lands]);
+    },
+      err => {
+        console.error(err)
+      })
+  }
 }

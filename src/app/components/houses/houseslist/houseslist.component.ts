@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { AuthenticationService, UserDetails, PropertyDetails, locationsDetails, TokenPayload, GroupDetails, FilterProperty } from "../../../authentication.service";
+import { AuthenticationService, UserDetails, PropertyDetails, locationsDetails, TokenPayload, GroupDetails, FilterProperty, Location } from "../../../authentication.service";
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { FormGroup } from '@angular/forms';
 
@@ -25,7 +25,7 @@ export class HouseslistComponent implements OnInit {
   public prevPage: number;
   public nextPage: number;
   public activePage: number;
-  public totalItem: number = 100; // สมมติจำนวนรายการทั้งหมดเริ่มต้น หรือเป็น 0 ก็ได้
+  public totalItem: number = 0; // สมมติจำนวนรายการทั้งหมดเริ่มต้น หรือเป็น 0 ก็ได้
   public perPage: number = 12; // จำนวนรายการที่แสดงต่อหน้า
   public totalPage: number;
   public maxShowPage: number;
@@ -64,7 +64,7 @@ export class HouseslistComponent implements OnInit {
   Lamphur: any[];
   amphur: any[];
   PA: locationsDetails;
-  district: locationsDetails;
+  district: any;
   zipcode: any[];
   createID: string
   years: any[];
@@ -98,6 +98,12 @@ export class HouseslistComponent implements OnInit {
     LProvince: '',
     LAmphur: '',
     LDistrict: ''
+  }
+  Location: Location ={
+    PROVINCE_ID: null,
+    AMPHUR_ID: null,
+    DISTRICT_ID: null,
+    ZIPCODE_ID: null
   }
   folder: any;
   @Output() filtering = new EventEmitter();
@@ -320,48 +326,40 @@ export class HouseslistComponent implements OnInit {
   }
 
   //************* select province *************
-  selectProvince(data) {
+  PROVINCE_NAME: string
+  selectprovince(data) {
     this.filterHouse.LProvince = data.PROVINCE_NAME
-    this.auth.getAmphur().subscribe((amphur) => {
-      this.amphur = amphur.filter(article => {
-        return article.PROVINCE_ID == data.PROVINCE_ID;
-      });
+    this.Location.PROVINCE_ID = data.PROVINCE_ID
+    this.auth.getAmphur(this.Location).subscribe((amphur) => {
+      this.amphur = amphur
+      this.amphur.sort((a, b) => a.AMPHUR_NAME.localeCompare(b.AMPHUR_NAME));
     },
       err => {
         console.error(err)
-      }
-    )
+      })
   }
-
-  //************* select Amphur *************
-  selectAmphur(data) {
+  selectamphur(data) {
     this.filterHouse.LAmphur = data.AMPHUR_NAME
-    this.auth.getDistrict().subscribe((district) => {
-      // กรณี resuponse success
-      this.district = district.filter(article => {
-        return article.AMPHUR_ID == data.AMPHUR_ID;
-      });
+    this.Location.AMPHUR_ID = data.AMPHUR_ID
+    this.auth.getDistrict(this.Location).subscribe((district) => {
+      this.district = district
+      this.district.sort((a, b) => a.DISTRICT_NAME.localeCompare(b.DISTRICT_NAME));
     },
       err => {
         console.error(err)
-      }
-    )
+      })
+  }
+  selectdistrict(data) {
+    this.filterHouse.LDistrict = data.DISTRICT_NAME
+    this.Location.DISTRICT_ID = data.DISTRICT_ID
+    this.auth.getZipcode(this.Location).subscribe((zipcode) => {
+      this.zipcode = zipcode
+    },
+      err => {
+        console.error(err)
+      })
   }
 
-  //************* select district *************
-  selectDistrict(data) {
-    this.filterHouse.LDistrict = data.DISTRICT_NAME
-    this.auth.getZipcode().subscribe((zipcode) => {
-      // กรณี resuponse success
-      this.zipcode = zipcode.filter(article => {
-        return article.DISTRICT_ID == data.DISTRICT_ID;
-      });
-    },
-      err => {
-        console.error(err)
-      }
-    )
-  }
 //************* select Filter *************
   selectPropertyType(type) {
     this.filterHouse.PropertyType = type

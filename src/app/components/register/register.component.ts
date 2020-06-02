@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
     BathRoom: '',
     BedRoom: '',
     CarPark: '',
-    HouseArea: '',
+    HouseArea: 0,
     Floor: '',
     LandR: '',
     LandG: '',
@@ -159,7 +159,6 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       allowedit:[''],
-      UserType:['', Validators.required],
       
     }, {
         validator: MustMatch('password', 'confirmPassword')
